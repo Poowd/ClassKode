@@ -1,6 +1,6 @@
 .main-header {
-  max-height: 8vh;
-  height: 8vh;
+  max-height: 6vh;
+  height: 6vh;
   overflow-y: hidden;
 }
 
@@ -9,16 +9,32 @@
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  padding: 0 1em;
+  padding: 0 0.5em;
 }
 
 .main-content {
-  max-height: 92vh;
-  height: 92vh;
+  max-height: 94vh;
+  height: 94vh;
   overflow-y: hidden;
-  padding: 0.5em 1em;
+  padding: 0em 0.5em 0.5em 0.5em;
+}
+.dashboard-cards {
+  height: 25%;
 }
 
+/* 
 * {
     outline: red 1px solid;
+} */
+
+@media only screen and (width < 1000px) {
+  .dashboard-cards {
+    height: auto;
+  }
+}
+
+@media only screen and (width < 500px) {
+  .dashboard-cards {
+    height: auto;
+  }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-export class DefaultButton extends React.Component {
+export class DefaultDropdown extends React.Component {
   render() {
     return (
       <div
@@ -15,9 +15,9 @@ export class DefaultButton extends React.Component {
             "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 " +
             this.props.class
           }
-          type={this.props.type}
+          type={"button"}
           disabled={this.props.disabled}
-          data-bs-toggle={this.props.toggle}
+          data-bs-toggle={"dropdown"}
           data-bs-target={this.props.target}
           data-bs-dismiss={this.props.dismiss}
         >
@@ -32,6 +32,7 @@ export class DefaultButton extends React.Component {
         ) : (
           ""
         )}
+        <ul class="dropdown-menu">{this.props.dropdownitems}</ul>
       </div>
     );
   }

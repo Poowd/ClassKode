@@ -1,0 +1,24 @@
+.main-header {
+  max-height: 8vh;
+  height: 8vh;
+  overflow-y: hidden;
+}
+
+.main-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 1em;
+}
+
+.main-content {
+  max-height: 92vh;
+  height: 92vh;
+  overflow-y: hidden;
+  padding: 0.5em 1em;
+}
+
+* {
+    outline: red 1px solid;
+}

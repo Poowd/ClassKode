@@ -1,0 +1,3 @@
+:root {
+  font-size: min(max(12px, 1vw), 18px);
+}

@@ -127,15 +127,15 @@ function App() {
                     </Route>
                     <Route path={"/miscellaneous"}>
                       <Route
-                        path={"/miscellaneous/archives"}
+                        path={"/miscellaneous/archive"}
                         element={<NoDisplay />}
                       ></Route>
                       <Route
-                        path={"/miscellaneous/logs"}
+                        path={"/miscellaneous/log"}
                         element={<NoDisplay />}
                       ></Route>
                       <Route
-                        path={"/miscellaneous/users"}
+                        path={"/miscellaneous/user"}
                         element={<NoDisplay />}
                       ></Route>
                     </Route>

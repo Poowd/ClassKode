@@ -1,39 +1,41 @@
 import React from "react";
+import "../Dropdown.css";
 
 export class DefaultDropdown extends React.Component {
   render() {
     return (
-      <div
+      <button
         className={
-          this.props.reversed
-            ? "d-flex align-items-center justify-content-center flex-row-reverse"
-            : "d-flex align-items-center justify-content-center"
+          "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-1 " +
+          this.props.class
         }
+        type={"button"}
+        disabled={this.props.disabled}
+        data-bs-toggle={"dropdown"}
+        data-bs-target={this.props.target}
+        data-bs-dismiss={this.props.dismiss}
       >
-        <button
+        {" "}
+        <div
           className={
-            "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 " +
-            this.props.class
+            this.props.reversed
+              ? "d-flex align-items-center justify-content-center flex-row-reverse gap-2"
+              : "d-flex align-items-center justify-content-center gap-2"
           }
-          type={"button"}
-          disabled={this.props.disabled}
-          data-bs-toggle={"dropdown"}
-          data-bs-target={this.props.target}
-          data-bs-dismiss={this.props.dismiss}
         >
           {this.props.icon}
-        </button>
-        {this.props.text != null ? (
-          <small>
-            <span className="fw-semibold text-decoration-underline">
-              {this.props.text}
-            </span>
-          </small>
-        ) : (
-          ""
-        )}
+          {this.props.text != null ? (
+            <small className="p-0 m-0">
+              <span className="button-text fw-semibold text-decoration-underline p-0 m-0">
+                {this.props.text}
+              </span>
+            </small>
+          ) : (
+            ""
+          )}
+        </div>
         <ul class="dropdown-menu">{this.props.dropdownitems}</ul>
-      </div>
+      </button>
     );
   }
 }

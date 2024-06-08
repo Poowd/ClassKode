@@ -22,6 +22,10 @@
   height: 25%;
 }
 
+.sticky-top {
+  z-index: 1;
+}
+
 /* 
 * {
     outline: red 1px solid;

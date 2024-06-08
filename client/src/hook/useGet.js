@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 
-export default function usePost() {
+export default function useGet() {
   const [data, setData] = useState([]);
   const link = "http://localhost:8081/";
 
-  function postServer(target, data) {
+  function getServer(target) {
     axios
-      .post(link.concat(target), data)
+      .get(link.concat(target))
       .then((res) => {
         try {
           setData(res.data);
@@ -18,6 +18,5 @@ export default function usePost() {
       .catch((err) => console.log(err));
   }
 
-  return [data, setData, postServer];
+  return [data, setData, getServer];
 }
-  

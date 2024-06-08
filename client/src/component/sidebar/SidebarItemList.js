@@ -91,28 +91,16 @@ export class SidebarItemList extends React.Component {
               <>
                 {/* Coach Course Department Program Room Section */}
                 <SidebarDropdownItem
-                  navigate={"/miscellaneous/coach"}
-                  text={"Coach"}
+                  navigate={"/miscellaneous/archive"}
+                  text={"Archive"}
                 />
                 <SidebarDropdownItem
-                  navigate={"/miscellaneous/course"}
-                  text={"Course"}
+                  navigate={"/miscellaneous/log"}
+                  text={"Log"}
                 />
                 <SidebarDropdownItem
-                  navigate={"/miscellaneous/department"}
-                  text={"Department"}
-                />
-                <SidebarDropdownItem
-                  navigate={"/miscellaneous/program"}
-                  text={"Program"}
-                />
-                <SidebarDropdownItem
-                  navigate={"/institution/room"}
-                  text={"Room"}
-                />
-                <SidebarDropdownItem
-                  navigate={"/institution/section"}
-                  text={"Section"}
+                  navigate={"/miscellaneous/user"}
+                  text={"User"}
                 />
               </>
             }

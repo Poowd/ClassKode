@@ -139,8 +139,13 @@ app.get("/status", (req, res) => {
   res.send("server is running");
 });
 
-app.use("/css", express.static("./node_modules/bootstrap/dist/css"));
-app.use("/js", express.static("./node_modules/bootstrap/dist/js"));
+const router = (global.router = express.Router());
+import Generate from "./routes/logic/Generate.js";
+import Schedule from "./routes/logic/Schedule.js";
+import Read from "./routes/database/Read.js";
+app.use(Generate);
+app.use(Schedule);
+app.use(Read);
 
 /* ==============================================
     This section pertains to CRUD Operations:
@@ -153,14 +158,7 @@ app.use("/js", express.static("./node_modules/bootstrap/dist/js"));
 /*
     Entity Name: Coach
 */
-app.post("/coach-selection", (req, res) => {
-  const sql = "SELECT * FROM tbl_coach WHERE Deleted='False'";
 
-  db.query(sql, (err, data) => {
-    if (err) return res.json({ Message: "Server Sided Error" });
-    return res.json(data);
-  });
-});
 app.post("/display-coach", (req, res) => {
   const sql =
     "SELECT * FROM tbl_coach " +
@@ -1898,151 +1896,158 @@ app.post("/archive-academic-year", (req, res) => {
 //let to while is block of code, logic itself
 //return res.json(result) -- ibabato na nya from server to client ung output ng block of code, pwedeng single value, pwedeng object, pwedeng array ang ibabato
 
-app.get("/random-code-generator", (req, res) => {
-  let result = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const charactersLength = characters.length;
-  let counter = 0;
-  const length = 4;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return res.json(result);
-});
-
 app.get("/genetic-algorithm", (req, res) => {
-    class GeneticAlgorithm {
-      constructor(populationSize, mutationRate, crossoverRate, maxGenerations, reqBody) {
-        this.populationSize = populationSize;
-        this.mutationRate = mutationRate;
-        this.crossoverRate = crossoverRate;
-        this.maxGenerations = maxGenerations;
-        this.reqBody = reqBody;
-        this.population = [];
-        this.generation = 0;
+  class GeneticAlgorithm {
+    constructor(
+      populationSize,
+      mutationRate,
+      crossoverRate,
+      maxGenerations,
+      reqBody
+    ) {
+      this.populationSize = populationSize;
+      this.mutationRate = mutationRate;
+      this.crossoverRate = crossoverRate;
+      this.maxGenerations = maxGenerations;
+      this.reqBody = reqBody;
+      this.population = [];
+      this.generation = 0;
+    }
+
+    // Initialize the population with random schedules
+    initializePopulation() {
+      for (let i = 0; i < this.populationSize; i++) {
+        const individual = this.createRandomSchedule();
+        this.population.push({ genes: individual, fitness: 0 });
       }
-  
-      // Initialize the population with random schedules
-      initializePopulation() {
-        for (let i = 0; i < this.populationSize; i++) {
-          const individual = this.createRandomSchedule();
-          this.population.push({ genes: individual, fitness: 0 });
-        }
+    }
+
+    // Shuffle array function
+    shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
-  
-      // Shuffle array function
-      shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-      }
-  
-      // Helper functions for time and room assignment
-      setTimeFormat(time) {
-        const hour = Math.floor(time / 60);
-        const minute = (time % 60) > 0 ? "30" : "00";
-        const cycle = hour >= 12 ? "PM" : "AM";
-        const formattedHour = hour % 12 || 12;
-        return `${formattedHour}:${minute} ${cycle}`;
-      }
-  
-      convertUnitsTime(units) {
-        return units * 60;
-      }
-  
-      // Create a random schedule (individual)
-      createRandomSchedule() {
-        const CurrentSemester = this.reqBody.semester;
-        const DayStart = 480; // 8:00 am
-        const WeekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        const WeekDaysScheduled = WeekDays.reduce((acc, day) => ({ ...acc, [day]: DayStart }), {});
-  
-        const ListofCoach = [...this.reqBody.coach];
-        const ListofCourse = [...this.reqBody.course];
-        const ListofRoom = [...this.reqBody.room];
-  
-        const SetOfScheduled = [];
-        const TempRoom = [];
-        const TempCoach = [];
-  
-        const checkRoomUnits = (Rooms, CurrentRoom) => {
-          return Rooms.filter(room => room.Room === CurrentRoom)
-            .reduce((total, room) => total + room.TimeSlot, 0);
-        };
-  
-        const assignCoursesToRoom = (ClassType) => {
-          return ClassType === "Laboratory" ? "Laboratory" : "Regular Room";
-        };
-  
-        const checkCoachAvailability = (Coach) => {
-          return !SetOfScheduled.some(schedule => schedule.Coach === Coach);
-        };
-  
-        for (let i = 0; i < WeekDays.length; i++) {
-          this.shuffleArray(ListofCourse);
-          for (let j = 0; j < ListofRoom.length; j++) {
-            for (let k = 0; k < ListofCourse.length; k++) {
-              TempCoach.length = 0;
-              ListofCoach.forEach(coach => {
-                if (coach.CourseName === ListofCourse[k].CourseName) TempCoach.push(coach);
-              });
-  
-              if (TempCoach.length === 0) return [];
-  
-              this.shuffleArray(TempCoach);
-  
-              if (
-                ListofRoom[j].Type === assignCoursesToRoom(ListofCourse[k].Type) &&
-                ListofRoom[j].Capacity >= ListofCourse[k].SCT_Population
-              ) {
-                if (checkRoomUnits(TempRoom, ListofRoom[j].RoomName) < 540) {
-                  if (ListofCourse[k].Semester === CurrentSemester) {
-                    if (checkCoachAvailability(TempCoach[0].LastName)) {
-                      const st = DayStart + checkRoomUnits(TempRoom, ListofRoom[j].RoomName);
-                      const et = st + this.convertUnitsTime(ListofCourse[k].AssignedUnits);
-  
-                      const sectionNoConflict = !SetOfScheduled.some(schedule =>
+      return array;
+    }
+
+    // Helper functions for time and room assignment
+    setTimeFormat(time) {
+      const hour = Math.floor(time / 60);
+      const minute = time % 60 > 0 ? "30" : "00";
+      const cycle = hour >= 12 ? "PM" : "AM";
+      const formattedHour = hour % 12 || 12;
+      return `${formattedHour}:${minute} ${cycle}`;
+    }
+
+    convertUnitsTime(units) {
+      return units * 60;
+    }
+
+    // Create a random schedule (individual)
+    createRandomSchedule() {
+      const CurrentSemester = this.reqBody.semester;
+      const DayStart = 480; // 8:00 am
+      const WeekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+      const WeekDaysScheduled = WeekDays.reduce(
+        (acc, day) => ({ ...acc, [day]: DayStart }),
+        {}
+      );
+
+      const ListofCoach = [...this.reqBody.coach];
+      const ListofCourse = [...this.reqBody.course];
+      const ListofRoom = [...this.reqBody.room];
+
+      const SetOfScheduled = [];
+      const TempRoom = [];
+      const TempCoach = [];
+
+      const checkRoomUnits = (Rooms, CurrentRoom) => {
+        return Rooms.filter((room) => room.Room === CurrentRoom).reduce(
+          (total, room) => total + room.TimeSlot,
+          0
+        );
+      };
+
+      const assignCoursesToRoom = (ClassType) => {
+        return ClassType === "Laboratory" ? "Laboratory" : "Regular Room";
+      };
+
+      const checkCoachAvailability = (Coach) => {
+        return !SetOfScheduled.some((schedule) => schedule.Coach === Coach);
+      };
+
+      for (let i = 0; i < WeekDays.length; i++) {
+        this.shuffleArray(ListofCourse);
+        for (let j = 0; j < ListofRoom.length; j++) {
+          for (let k = 0; k < ListofCourse.length; k++) {
+            TempCoach.length = 0;
+            ListofCoach.forEach((coach) => {
+              if (coach.CourseName === ListofCourse[k].CourseName)
+                TempCoach.push(coach);
+            });
+
+            if (TempCoach.length === 0) return [];
+
+            this.shuffleArray(TempCoach);
+
+            if (
+              ListofRoom[j].Type ===
+                assignCoursesToRoom(ListofCourse[k].Type) &&
+              ListofRoom[j].Capacity >= ListofCourse[k].SCT_Population
+            ) {
+              if (checkRoomUnits(TempRoom, ListofRoom[j].RoomName) < 540) {
+                if (ListofCourse[k].Semester === CurrentSemester) {
+                  if (checkCoachAvailability(TempCoach[0].LastName)) {
+                    const st =
+                      DayStart +
+                      checkRoomUnits(TempRoom, ListofRoom[j].RoomName);
+                    const et =
+                      st + this.convertUnitsTime(ListofCourse[k].AssignedUnits);
+
+                    const sectionNoConflict = !SetOfScheduled.some(
+                      (schedule) =>
                         schedule.Section === ListofCourse[k].SectionName &&
                         schedule.Day === WeekDays[i] &&
                         schedule.RawEndTime > st
+                    );
+
+                    if (sectionNoConflict) {
+                      SetOfScheduled.push({
+                        CRRID: ListofCourse[k].CRRID,
+                        CRSID: ListofCourse[k].CRSID,
+                        SCTID: ListofCourse[k].SCTID,
+                        RMID: ListofRoom[j].RMID,
+                        CCHID: TempCoach[0].CCHID,
+                        AYID: ListofCourse[k].AYID,
+                        Semester: CurrentSemester,
+                        CourseCode: ListofCourse[k].CourseCode,
+                        CourseName: ListofCourse[k].CourseName,
+                        Section: ListofCourse[k].SectionName,
+                        CourseLevel: ListofCourse[k].CourseLevel,
+                        Day: WeekDays[i],
+                        RawStartTime: st,
+                        RawEndTime: et,
+                        StartTime: this.setTimeFormat(st),
+                        EndTime: this.setTimeFormat(et),
+                        Time: `${this.setTimeFormat(st)} - ${this.setTimeFormat(
+                          et
+                        )}`,
+                        Room: ListofRoom[j].RoomName,
+                        LessonType: ListofCourse[k].Type,
+                        Coach: TempCoach[0].LastName,
+                        Capacity: ListofRoom[j].Capacity,
+                        Population: ListofCourse[k].SCT_Population,
+                      });
+                      TempRoom.push({
+                        Room: ListofRoom[j].RoomName,
+                        TimeSlot: this.convertUnitsTime(ListofCourse[k].Units),
+                      });
+                      WeekDaysScheduled[WeekDays[i]] += this.convertUnitsTime(
+                        ListofCourse[k].Units
                       );
-  
-                      if (sectionNoConflict) {
-                        SetOfScheduled.push({
-                          CRRID: ListofCourse[k].CRRID,
-                          CRSID: ListofCourse[k].CRSID,
-                          SCTID: ListofCourse[k].SCTID,
-                          RMID: ListofRoom[j].RMID,
-                          CCHID: TempCoach[0].CCHID,
-                          AYID: ListofCourse[k].AYID,
-                          Semester: CurrentSemester,
-                          CourseCode: ListofCourse[k].CourseCode,
-                          CourseName: ListofCourse[k].CourseName,
-                          Section: ListofCourse[k].SectionName,
-                          CourseLevel: ListofCourse[k].CourseLevel,
-                          Day: WeekDays[i],
-                          RawStartTime: st,
-                          RawEndTime: et,
-                          StartTime: this.setTimeFormat(st),
-                          EndTime: this.setTimeFormat(et),
-                          Time: `${this.setTimeFormat(st)} - ${this.setTimeFormat(et)}`,
-                          Room: ListofRoom[j].RoomName,
-                          LessonType: ListofCourse[k].Type,
-                          Coach: TempCoach[0].LastName,
-                          Capacity: ListofRoom[j].Capacity,
-                          Population: ListofCourse[k].SCT_Population,
-                        });
-                        TempRoom.push({
-                          Room: ListofRoom[j].RoomName,
-                          TimeSlot: this.convertUnitsTime(ListofCourse[k].Units),
-                        });
-                        WeekDaysScheduled[WeekDays[i]] += this.convertUnitsTime(ListofCourse[k].Units);
-                        ListofCourse.splice(k, 1);
-                        k--;
-                      }
+                      ListofCourse.splice(k, 1);
+                      k--;
                     }
                   }
                 }
@@ -2050,90 +2055,98 @@ app.get("/genetic-algorithm", (req, res) => {
             }
           }
         }
-        return SetOfScheduled;
       }
-  
-      // Evaluate the fitness of an individual
-      evaluateFitness(individual) {
-        let conflictPenalty = 0;
-        let roomUtilization = 0;
-        let totalRoomCapacity = 0;
-        let totalCoursePopulation = 0;
-  
-        const DayStart = 480; // 8:00 am
-        const DayEnd = 1140; // 8:00 pm
-        const WeekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  
-        const ScheduledCourses = individual.map(schedule => ({
-          Day: schedule.Day,
-          Room: schedule.Room,
-          StartTime: schedule.RawStartTime,
-          EndTime: schedule.RawEndTime,
-          Population: schedule.Population,
-        }));
-  
-        WeekDays.forEach(day => {
-          const daySchedules = ScheduledCourses.filter(s => s.Day === day);
-  
-          for (let i = 0; i < daySchedules.length; i++) {
-            for (let j = i + 1; j < daySchedules.length; j++) {
-              if (daySchedules[i].Room === daySchedules[j].Room) {
-                if (!(daySchedules[i].EndTime <= daySchedules[j].StartTime ||
-                      daySchedules[i].StartTime >= daySchedules[j].EndTime)) {
-                  conflictPenalty++;
-                }
+      return SetOfScheduled;
+    }
+
+    // Evaluate the fitness of an individual
+    evaluateFitness(individual) {
+      let conflictPenalty = 0;
+      let roomUtilization = 0;
+      let totalRoomCapacity = 0;
+      let totalCoursePopulation = 0;
+
+      const DayStart = 480; // 8:00 am
+      const DayEnd = 1140; // 8:00 pm
+      const WeekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+      const ScheduledCourses = individual.map((schedule) => ({
+        Day: schedule.Day,
+        Room: schedule.Room,
+        StartTime: schedule.RawStartTime,
+        EndTime: schedule.RawEndTime,
+        Population: schedule.Population,
+      }));
+
+      WeekDays.forEach((day) => {
+        const daySchedules = ScheduledCourses.filter((s) => s.Day === day);
+
+        for (let i = 0; i < daySchedules.length; i++) {
+          for (let j = i + 1; j < daySchedules.length; j++) {
+            if (daySchedules[i].Room === daySchedules[j].Room) {
+              if (
+                !(
+                  daySchedules[i].EndTime <= daySchedules[j].StartTime ||
+                  daySchedules[i].StartTime >= daySchedules[j].EndTime
+                )
+              ) {
+                conflictPenalty++;
               }
             }
           }
-        });
-  
-        individual.forEach(schedule => {
-          totalRoomCapacity += schedule.Capacity;
-          totalCoursePopulation += schedule.Population;
-        });
-  
-        roomUtilization = (totalCoursePopulation / totalRoomCapacity) * 100;
-  
-        const fitness = (roomUtilization / 100) - conflictPenalty;
-  
-        return fitness;
-      }
-  
-      // Evaluate the entire population
-      evaluatePopulation() {
-        this.population.forEach(individual => {
-          individual.fitness = this.evaluateFitness(individual.genes);
-        });
-      }
-  
-      // Select two parents based on their fitness (roulette wheel selection)
-      selectParents() {
-        const totalFitness = this.population.reduce((sum, individual) => sum + individual.fitness, 0);
-        const pick = () => {
-          let rand = Math.random() * totalFitness;
-          for (const individual of this.population) {
-            rand -= individual.fitness;
-            if (rand <= 0) return individual;
-          }
-        };
-  
-        return [pick(), pick()];
-      }
-  
-      // Crossover two parents to produce a child
-      crossover(parent1, parent2) {
-        if (Math.random() < this.crossoverRate) {
-          const crossoverPoint = Math.floor(Math.random() * parent1.genes.length);
-          const childGenes = [
-            ...parent1.genes.slice(0, crossoverPoint),
-            ...parent2.genes.slice(crossoverPoint),
-          ];
-          return { genes: childGenes, fitness: 0 };
         }
-        return Math.random() < 0.5 ? { ...parent1 } : { ...parent2 };
+      });
+
+      individual.forEach((schedule) => {
+        totalRoomCapacity += schedule.Capacity;
+        totalCoursePopulation += schedule.Population;
+      });
+
+      roomUtilization = (totalCoursePopulation / totalRoomCapacity) * 100;
+
+      const fitness = roomUtilization / 100 - conflictPenalty;
+
+      return fitness;
+    }
+
+    // Evaluate the entire population
+    evaluatePopulation() {
+      this.population.forEach((individual) => {
+        individual.fitness = this.evaluateFitness(individual.genes);
+      });
+    }
+
+    // Select two parents based on their fitness (roulette wheel selection)
+    selectParents() {
+      const totalFitness = this.population.reduce(
+        (sum, individual) => sum + individual.fitness,
+        0
+      );
+      const pick = () => {
+        let rand = Math.random() * totalFitness;
+        for (const individual of this.population) {
+          rand -= individual.fitness;
+          if (rand <= 0) return individual;
+        }
+      };
+
+      return [pick(), pick()];
+    }
+
+    // Crossover two parents to produce a child
+    crossover(parent1, parent2) {
+      if (Math.random() < this.crossoverRate) {
+        const crossoverPoint = Math.floor(Math.random() * parent1.genes.length);
+        const childGenes = [
+          ...parent1.genes.slice(0, crossoverPoint),
+          ...parent2.genes.slice(crossoverPoint),
+        ];
+        return { genes: childGenes, fitness: 0 };
       }
-  
-      /* Original Format
+      return Math.random() < 0.5 ? { ...parent1 } : { ...parent2 };
+    }
+
+    /* Original Format
           mutate(individual) {
         for (let i = 0; i < individual.genes.length; i++) {
           if (Math.random() < this.mutationRate) {
@@ -2143,77 +2156,77 @@ app.get("/genetic-algorithm", (req, res) => {
         }
       }
       */
-      // Mutate an individual's genes
-      mutate(individual) {
-        if (Math.random() < this.mutationRate) {
-          const geneLength = individual.genes.length;
-      
-          // Select a random start and end point for the subset
-          const start = Math.floor(Math.random() * geneLength);
-          const end = Math.floor(Math.random() * geneLength);
-      
-          // Ensure that start is less than end
-          const [lower, upper] = start < end ? [start, end] : [end, start];
-      
-          // Extract the subset
-          const subset = individual.genes.slice(lower, upper + 1);
-      
-          // Shuffle the subset
-          for (let i = subset.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [subset[i], subset[j]] = [subset[j], subset[i]];
-          }
-      
-          // Replace the original subset with the shuffled subset
-          individual.genes.splice(lower, upper - lower + 1, ...subset);
+    // Mutate an individual's genes
+    mutate(individual) {
+      if (Math.random() < this.mutationRate) {
+        const geneLength = individual.genes.length;
+
+        // Select a random start and end point for the subset
+        const start = Math.floor(Math.random() * geneLength);
+        const end = Math.floor(Math.random() * geneLength);
+
+        // Ensure that start is less than end
+        const [lower, upper] = start < end ? [start, end] : [end, start];
+
+        // Extract the subset
+        const subset = individual.genes.slice(lower, upper + 1);
+
+        // Shuffle the subset
+        for (let i = subset.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [subset[i], subset[j]] = [subset[j], subset[i]];
         }
-      }
-  
-      // Run the genetic algorithm
-      run() {
-        this.initializePopulation();
-        this.evaluatePopulation();
-  
-        while (this.generation < this.maxGenerations) {
-          const newPopulation = [];
-  
-          for (let i = 0; i < this.populationSize; i++) {
-            const [parent1, parent2] = this.selectParents();
-            const child = this.crossover(parent1, parent2);
-            this.mutate(child);
-            newPopulation.push(child);
-          }
-  
-          this.population = newPopulation;
-          this.evaluatePopulation();
-          this.generation++;
-  
-          const bestIndividual = this.population.reduce((best, individual) => 
-            individual.fitness > best.fitness ? individual : best
-          );
-  
-          console.log(`Generation ${this.generation}: Best fitness = ${bestIndividual.fitness}`);
-        }
-  
-        return this.getBestIndividual();
-      }
-  
-      // Get the best individual in the population
-      getBestIndividual() {
-        return this.population.reduce((best, individual) => 
-          individual.fitness > best.fitness ? individual : best
-        );
+
+        // Replace the original subset with the shuffled subset
+        individual.genes.splice(lower, upper - lower + 1, ...subset);
       }
     }
-  
-    const ga = new GeneticAlgorithm(100, 0.01, 0.7, 50, req.body);
-    const bestSchedule = ga.run();
-  
-    return res.json({ data: bestSchedule.genes, Status: "Success" });
-  });
-  return res.json("output");
-;
 
+    // Run the genetic algorithm
+    run() {
+      this.initializePopulation();
+      this.evaluatePopulation();
+
+      while (this.generation < this.maxGenerations) {
+        const newPopulation = [];
+
+        for (let i = 0; i < this.populationSize; i++) {
+          const [parent1, parent2] = this.selectParents();
+          const child = this.crossover(parent1, parent2);
+          this.mutate(child);
+          newPopulation.push(child);
+        }
+
+        this.population = newPopulation;
+        this.evaluatePopulation();
+        this.generation++;
+
+        const bestIndividual = this.population.reduce((best, individual) =>
+          individual.fitness > best.fitness ? individual : best
+        );
+
+        console.log(
+          `Generation ${this.generation}: Best fitness = ${bestIndividual.fitness}`
+        );
+      }
+
+      return this.getBestIndividual();
+    }
+
+    // Get the best individual in the population
+    getBestIndividual() {
+      return this.population.reduce((best, individual) =>
+        individual.fitness > best.fitness ? individual : best
+      );
+    }
+  }
+
+  const ga = new GeneticAlgorithm(100, 0.01, 0.7, 50, req.body);
+  const bestSchedule = ga.run();
+
+  return res.json({ data: bestSchedule.genes, Status: "Success" });
+});
+// return res.json(output: "output");
 app.post("/get-scheduable-courses", (req, res) => {
   const sql = `SELECT *
       FROM 
@@ -2257,246 +2270,4 @@ app.post("/get-scheduable-courses", (req, res) => {
     if (err) return res.json({ Message: "Server Sided Error" });
     return res.json(data);
   });
-});
-
-app.post("/generate-schedule", (req, res) => {
-  //Logic Here
-  // Function to shuffle an array
-  function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    return array;
-  }
-
-  function setTimeFormat(time) {
-    var Hour = Math.floor(time / 60); //convert minutes to hours
-    const Minute = time / 60 - Hour; //convert minutes to hours minus the hour to get the remainder
-    const Cycle = Hour >= 12 ? "PM" : "AM";
-    Hour = Hour % 12 || 12;
-    const tempMinute = Minute > 0 ? "30" : "00";
-    const Format = Hour + ":" + tempMinute.toString() + " " + Cycle;
-    return Format;
-  }
-
-  function convertUnitsTime(units) {
-    const ConvertedUnits = units * 60;
-    return ConvertedUnits;
-  }
-
-  function createSchedule() {
-    const CurrentSemester = req.body.semester;
-    const DayStart = 480; //8:00 am
-    const DayEnd = 960; //8:00 pm
-    const WeekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    const WeekDaysScheduled = {
-      Monday: DayStart,
-      Tuesday: DayStart,
-      Wednesday: DayStart,
-      Thursday: DayStart,
-      Friday: DayStart,
-    };
-
-    var EmptryArray = [];
-    var SetOfScheduled = [];
-    var TempRoom = [];
-    var TempCoach = [];
-
-    const ListofCoach = [];
-    req.body.coach.map((coach) => {
-      ListofCoach.push(coach);
-    });
-
-    const ListofCourse = [];
-    req.body.course.map((course) => {
-      ListofCourse.push(course);
-    });
-
-    const ListofRoom = [];
-    req.body.room.map((room) => {
-      ListofRoom.push(room);
-    });
-
-    shuffleArray(ListofRoom);
-
-    //DaysWeekDaysScheduled
-    for (let i = 0; i < WeekDays.length; i++) {
-      var TempDayStart = DayStart;
-      shuffleArray(ListofCourse);
-      //Room
-      for (let j = 0; j < ListofRoom.length; j++) {
-        var RoomUnits = 0;
-        //Course
-        for (let k = 0; k < ListofCourse.length; k++) {
-          //shuffleArray(WeekDays);
-          function checkRoomUnits(Rooms, CurrentRoom) {
-            var TempRoomUnits = 0;
-            for (let j in Rooms) {
-              if (CurrentRoom === Rooms[j].Room) {
-                TempRoomUnits += Rooms[j].TimeSlot;
-              }
-            }
-            return TempRoomUnits;
-          }
-
-          function assignCoursesToRoom(ClassType) {
-            const RoomType1 = "Regular Room";
-            const RoomType2 = "Laboratory";
-            switch (ClassType) {
-              case "Tutorial":
-                return RoomType1;
-              case "Lecture":
-                return RoomType1;
-              case "Laboratory":
-                return RoomType2;
-            }
-          }
-
-          function checkCoachExisting(Coach) {
-            if (Coach > 0) {
-              return true;
-            }
-            return false;
-          }
-
-          function checkCoachAvailability(Coach) {
-            SetOfScheduled.map((schedule) => {
-              if (schedule.Coach === Coach) {
-                return false;
-              }
-            });
-            return true;
-          }
-
-          ListofCoach.map((coach) => {
-            coach.CourseName === ListofCourse[k].CourseName
-              ? TempCoach.push(coach)
-              : "";
-          });
-
-          if (checkCoachExisting(TempCoach.length) === false) {
-            var data = EmptryArray;
-            return res.json({ data: data, Status: "Failed" });
-          }
-
-          shuffleArray(TempCoach);
-
-          if (
-            ListofRoom[j].Type === assignCoursesToRoom(ListofCourse[k].Type) &&
-            ListofRoom[j].Capacity >= ListofCourse[k].SCT_Population
-          ) {
-            if (checkRoomUnits(TempRoom, ListofRoom[j].RoomName) < 600) {
-              if (ListofCourse[k].Semester === CurrentSemester) {
-                if (checkCoachAvailability(TempCoach[0].LastName)) {
-                  var st =
-                    DayStart + checkRoomUnits(TempRoom, ListofRoom[j].RoomName);
-                  var et =
-                    DayStart + checkRoomUnits(TempRoom, ListofRoom[j].RoomName);
-                  et += convertUnitsTime(ListofCourse[k].AssignedUnits);
-
-                  var sectionNoConflict = true;
-                  for (var p in SetOfScheduled) {
-                    if (
-                      SetOfScheduled[p].Section === ListofCourse[k].SectionName
-                    ) {
-                      if (SetOfScheduled[p].Day === WeekDays[i]) {
-                        if (SetOfScheduled[p].RawEndTime > st) {
-                          sectionNoConflict = false;
-                          console.log("Conflicted");
-                        }
-                      }
-                    }
-                  }
-                  switch (WeekDays[i]) {
-                    case "Wednesday":
-                      if (setTimeFormat(st) === "1:00 PM") {
-                        st += 180;
-                      } else if (setTimeFormat(st) === "2:00 PM") {
-                        st += 60;
-                      } else if (setTimeFormat(et) === "2:00 PM") {
-                        break;
-                      }
-                    default:
-                      if (sectionNoConflict === true) {
-                        SetOfScheduled.push({
-                          CRRID: ListofCourse[k].CRRID,
-                          CRSID: ListofCourse[k].CRSID,
-                          SCTID: ListofCourse[k].SCTID,
-                          RMID: ListofRoom[j].RMID,
-                          CCHID: TempCoach[0].CCHID,
-                          AYID: ListofCourse[k].AYID,
-                          Semester: req.body.semester,
-                          CourseCode: ListofCourse[k].CourseCode,
-                          CourseName: ListofCourse[k].CourseName,
-                          Section: ListofCourse[k].SectionName,
-                          CourseLevel: ListofCourse[k].CourseLevel,
-                          Day: WeekDays[i],
-                          RawStartTime: st,
-                          RawEndTime: et,
-                          StartTime: setTimeFormat(st),
-                          EndTime: setTimeFormat(et),
-                          Time: setTimeFormat(st).concat(
-                            " - ",
-                            setTimeFormat(et)
-                          ),
-                          Room: ListofRoom[j].RoomName,
-                          LessonType: ListofCourse[k].Type,
-                          Coach: TempCoach[0].LastName,
-                          Capacity: ListofRoom[j].Capacity,
-                          Population: ListofCourse[k].SCT_Population,
-                        });
-                        TempRoom.push({
-                          Room: ListofRoom[j].RoomName,
-                          TimeSlot: convertUnitsTime(
-                            ListofCourse[k].AssignedUnits
-                          ),
-                        });
-                        WeekDaysScheduled[WeekDays[i]] += convertUnitsTime(
-                          ListofCourse[k].AssignedUnits
-                        );
-                        ListofCourse.splice(k, 1);
-                        k--;
-                      }
-                  }
-                }
-              } else {
-                shuffleArray(TempCoach);
-              }
-            }
-          }
-          while (TempCoach.length > 0) {
-            TempCoach.pop();
-          }
-        }
-      }
-      TempDayStart = 0;
-    }
-
-    console.log(TempRoom);
-
-    var counter = 0;
-    var tempCourses = [];
-
-    req.body.course.map((course) => {
-      tempCourses.push(course);
-    });
-
-    for (var q in tempCourses) {
-      if (tempCourses[q].Semester === req.body.semester) {
-        counter++;
-      }
-    }
-
-    if (SetOfScheduled.length === counter) {
-      var data = SetOfScheduled;
-      return res.json({ data: data, Status: "Success" });
-    } else if (SetOfScheduled.length !== counter) {
-      createSchedule();
-      console.log("re-enter");
-    }
-  }
-  createSchedule();
 });

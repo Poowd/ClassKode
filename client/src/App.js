@@ -6,8 +6,16 @@ import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
 import { NoDisplay } from "./component/placeholder/NoDisplay";
 import { Error404 } from "./component/placeholder/Error404";
-import { Department } from "./pages/private/Department";
-import { Curriculum } from "./pages/private/Curriculum";
+import { Department } from "./pages/private/file maintainance/Department";
+import { Curriculum } from "./pages/private/utilities/Curriculum";
+import { Program } from "./pages/private/file maintainance/Program";
+import { Course } from "./pages/private/file maintainance/Course";
+import { Section } from "./pages/private/file maintainance/Section";
+import { Room } from "./pages/private/file maintainance/Room";
+import { Coach } from "./pages/private/file maintainance/Coach";
+import { AcademicYear } from "./pages/private/utilities/AcademicYear";
+import { Schedule } from "./pages/private/utilities/Schedule";
+import { Locator } from "./pages/private/utilities/Locator";
 
 function App() {
   const navigate = useNavigate();
@@ -80,23 +88,23 @@ function App() {
                       ></Route>
                       <Route
                         path={"/institution/program"}
-                        element={<NoDisplay />}
+                        element={<Program />}
                       ></Route>
                       <Route
                         path={"/institution/course"}
-                        element={<NoDisplay />}
+                        element={<Course />}
                       ></Route>
                       <Route
                         path={"/institution/section"}
-                        element={<NoDisplay />}
+                        element={<Section />}
                       ></Route>
                       <Route
                         path={"/institution/room"}
-                        element={<NoDisplay />}
+                        element={<Room />}
                       ></Route>
                       <Route
                         path={"/institution/coach"}
-                        element={<NoDisplay />}
+                        element={<Coach />}
                       ></Route>
                     </Route>
                     <Route path={"/utilities"}>
@@ -106,28 +114,28 @@ function App() {
                       ></Route>
                       <Route
                         path={"/utilities/academicyear"}
-                        element={<NoDisplay />}
+                        element={<AcademicYear />}
                       ></Route>
                       <Route
                         path={"/utilities/schedule"}
-                        element={<NoDisplay />}
+                        element={<Schedule />}
                       ></Route>
                       <Route
                         path={"/utilities/locator"}
-                        element={<NoDisplay />}
+                        element={<Locator />}
                       ></Route>
                     </Route>
-                    <Route path={"/miscelleneous"}>
+                    <Route path={"/miscellaneous"}>
                       <Route
-                        path={"/miscelleneous/archives"}
+                        path={"/miscellaneous/archives"}
                         element={<NoDisplay />}
                       ></Route>
                       <Route
-                        path={"/miscelleneous/logs"}
+                        path={"/miscellaneous/logs"}
                         element={<NoDisplay />}
                       ></Route>
                       <Route
-                        path={"/miscelleneous/users"}
+                        path={"/miscellaneous/users"}
                         element={<NoDisplay />}
                       ></Route>
                     </Route>

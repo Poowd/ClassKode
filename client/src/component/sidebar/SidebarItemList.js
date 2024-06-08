@@ -29,8 +29,28 @@ export class SidebarItemList extends React.Component {
               <>
                 {/* Coach Course Department Program Room Section */}
                 <SidebarDropdownItem
+                  navigate={"/institution/coach"}
+                  text={"Coach"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/course"}
+                  text={"Course"}
+                />
+                <SidebarDropdownItem
                   navigate={"/institution/department"}
                   text={"Department"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/program"}
+                  text={"Program"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/room"}
+                  text={"Room"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/section"}
+                  text={"Section"}
                 />
               </>
             }
@@ -42,52 +62,58 @@ export class SidebarItemList extends React.Component {
             parent={"#menu"}
             itemlist={
               <>
-                {/* Curriculum AcademicYear Schedule Locator */}
-                <li className="nav-item">
-                  <Link
-                    to="/utilities/curriculum"
-                    className="nav-link align-middle px-0"
-                  >
-                    <span className="ms-2 d-none d-sm-inline text-dark fw-medium">
-                      Curriculum
-                    </span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    to="/utilities/academicyear"
-                    className="nav-link align-middle px-0"
-                  >
-                    <span className="ms-2 d-none d-sm-inline text-dark fw-medium">
-                      AcademicYear
-                    </span>
-                  </Link>
-                </li>
-                <SidebarDropdown
-                  text={"Schedule"}
-                  reference={"#schedule"}
-                  referenced={"schedule"}
-                  parent={"#menu-utilities"}
-                  itemlist={
-                    <>
-                      {/* Coach Course Department Program Room Section */}
-                      <SidebarDropdownItem
-                        navigate={"/utilities/classschedules"}
-                        text={"Class Schedules"}
-                      />
-                    </>
-                  }
+                {/* Coach Course Department Program Room Section */}
+                <SidebarDropdownItem
+                  navigate={"/utilities/curriculum"}
+                  text={"Curriculum"}
                 />
-                <li className="nav-item">
-                  <Link
-                    to="/utilities/facultylocator"
-                    className="nav-link align-middle px-0"
-                  >
-                    <span className="ms-2 d-none d-sm-inline text-dark fw-medium">
-                      Faculty Locator
-                    </span>
-                  </Link>
-                </li>
+                <SidebarDropdownItem
+                  navigate={"/utilities/academicyear"}
+                  text={"Academic Year"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/utilities/schedule"}
+                  text={"Schedule"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/utilities/locator"}
+                  text={"Faculty Locator"}
+                />
+              </>
+            }
+          />
+          <SidebarDropdown
+            text={"Miscellaneous"}
+            reference={"#miscellaneous"}
+            referenced={"miscellaneous"}
+            parent={"#menu"}
+            itemlist={
+              <>
+                {/* Coach Course Department Program Room Section */}
+                <SidebarDropdownItem
+                  navigate={"/miscellaneous/coach"}
+                  text={"Coach"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/miscellaneous/course"}
+                  text={"Course"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/miscellaneous/department"}
+                  text={"Department"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/miscellaneous/program"}
+                  text={"Program"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/room"}
+                  text={"Room"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/section"}
+                  text={"Section"}
+                />
               </>
             }
           />

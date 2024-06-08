@@ -19,7 +19,7 @@ export class FileMaintainanceTemplate extends React.Component {
               <main className="h-100 position-relative">
                 <section className="sticky-top w-100 bg-white shadow-sm p-2 mb-2">
                   <div className="d-flex justify-content-end">
-                    <DefaultButton class="btn-primary" icon={<FaFilter />} />
+                    <DefaultButton class="" icon={<FaFilter />} />
                   </div>
                 </section>
                 <section>

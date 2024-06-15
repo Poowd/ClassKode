@@ -6,11 +6,11 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "db_sticlasskode",
+  database: "db_classkode",
 });
 
-app.post("/coach-selection", (req, res) => {
-  const sql = "SELECT * FROM tbl_coach WHERE Deleted='False'";
+app.post("/program", (req, res) => {
+  const sql = "SELECT * FROM program";
 
   db.query(sql, (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });

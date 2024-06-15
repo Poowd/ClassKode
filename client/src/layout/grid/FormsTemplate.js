@@ -2,10 +2,12 @@ import React from "react";
 import { DefaultDropdown } from "../../component/dropdown/default/DefaultDropdown";
 import { NoDisplay } from "../../component/placeholder/NoDisplay";
 import { DefaultButton } from "../../component/button/DefaultButton";
-import { DefaultInput } from "../../component/input/DefaultInput";
+import { DefaultText } from "../../component/input/DefaultInput";
 import { FaFilter } from "react-icons/fa6";
+import { RiStickyNoteAddLine } from "react-icons/ri";
+import { PiGearSixFill } from "react-icons/pi";
 
-export class FileMaintainanceTemplate extends React.Component {
+export class FormsTemplate extends React.Component {
   render() {
     return (
       <main className="h-100 overflow-y-auto">
@@ -18,19 +20,11 @@ export class FileMaintainanceTemplate extends React.Component {
             </section>
             <section className="col-lg-9 p-2">
               <main className="h-100 position-relative">
-                <section className="sticky-top w-100 bg-white shadow-sm p-2 mb-2">
-                  <div className="d-flex justify-content-end gap-2">
-                    <DefaultInput placeholder="Search" />
-                    <DefaultButton class="" icon={<FaFilter />} />
-                    {this.props.control}
-                  </div>
-                </section>
-                <section>{this.props.list}</section>
+                <section>{this.props.content}</section>
               </main>
             </section>
           </main>
         </main>
-        {this.props.coachdetails}
       </main>
     );
   }

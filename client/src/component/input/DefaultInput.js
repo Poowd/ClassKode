@@ -1,10 +1,10 @@
 import React from "react";
 
-export class DefaultText extends React.Component {
+export class DefaultInput extends React.Component {
   render() {
     return (
       <input
-        class="form-control form-control-sm"
+        className={"form-control form-control-sm"}
         type="text"
         placeholder={this.props.placeholder}
       />

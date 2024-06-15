@@ -1,10 +1,9 @@
 import "./App.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Form } from "react-router-dom";
 import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
-import { NoDisplay } from "./component/placeholder/NoDisplay";
 import { Error404 } from "./component/placeholder/Error404";
 import { Department } from "./pages/private/file maintainance/Department";
 import { Curriculum } from "./pages/private/utilities/Curriculum";
@@ -16,6 +15,14 @@ import { Coach } from "./pages/private/file maintainance/Coach";
 import { AcademicYear } from "./pages/private/utilities/AcademicYear";
 import { Schedule } from "./pages/private/utilities/Schedule";
 import { Locator } from "./pages/private/utilities/Locator";
+import { Setup } from "./pages/private/miscellaneous/Setup";
+import { User } from "./pages/private/miscellaneous/User";
+import { Logs } from "./pages/private/miscellaneous/Logs";
+import { Archives } from "./pages/private/miscellaneous/Archives";
+import {
+  DataController,
+  DataForms,
+} from "./pages/private/forms/DataController";
 
 function App() {
   const navigate = useNavigate();
@@ -69,6 +76,12 @@ function App() {
   //     .catch((err) => console.log(err));
   // };
 
+  //Detect wether the Tab is Closing
+  // window.addEventListener("beforeunload", function (e) {
+  //   e.preventDefault();
+  //   e.returnValue = "";
+  // });
+
   return (
     <main>
       {/* Loading Screen */}
@@ -106,6 +119,11 @@ function App() {
                         path={"/institution/coach"}
                         element={<Coach />}
                       ></Route>
+                      {/* a */}
+                      <Route
+                        path={"/institution/:module/:form/:id"}
+                        element={<DataController />}
+                      ></Route>
                     </Route>
                     <Route path={"/utilities"}>
                       <Route
@@ -128,15 +146,19 @@ function App() {
                     <Route path={"/miscellaneous"}>
                       <Route
                         path={"/miscellaneous/archive"}
-                        element={<NoDisplay />}
+                        element={<Archives />}
                       ></Route>
                       <Route
                         path={"/miscellaneous/log"}
-                        element={<NoDisplay />}
+                        element={<Logs />}
                       ></Route>
                       <Route
                         path={"/miscellaneous/user"}
-                        element={<NoDisplay />}
+                        element={<User />}
+                      ></Route>
+                      <Route
+                        path={"/miscellaneous/setup"}
+                        element={<Setup />}
                       ></Route>
                     </Route>
                     <Route path={"/*"} element={<Error404 />}></Route>

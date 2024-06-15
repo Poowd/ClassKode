@@ -102,6 +102,10 @@ export class SidebarItemList extends React.Component {
                   navigate={"/miscellaneous/user"}
                   text={"User"}
                 />
+                <SidebarDropdownItem
+                  navigate={"/miscellaneous/setup"}
+                  text={"Setup"}
+                />
               </>
             }
           />

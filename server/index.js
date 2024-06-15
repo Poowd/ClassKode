@@ -143,9 +143,11 @@ const router = (global.router = express.Router());
 import Generate from "./routes/logic/Generate.js";
 import Schedule from "./routes/logic/Schedule.js";
 import Read from "./routes/database/Read.js";
+import Coach from "./routes/database/table/Coach.js";
 app.use(Generate);
 app.use(Schedule);
 app.use(Read);
+app.use(Coach);
 
 /* ==============================================
     This section pertains to CRUD Operations:

@@ -13,6 +13,7 @@ export class DefaultButton extends React.Component {
         }
         type={this.props.type}
         disabled={this.props.disabled}
+        onClick={this.props.function}
         data-bs-toggle={this.props.toggle}
         data-bs-target={this.props.target}
         data-bs-dismiss={this.props.dismiss}
@@ -27,7 +28,7 @@ export class DefaultButton extends React.Component {
           {this.props.icon}
           {this.props.text != null ? (
             <small>
-              <span className="fw-semibold text-decoration-underline">
+              <span className="fw-semibold">
                 {this.props.text}
               </span>
             </small>

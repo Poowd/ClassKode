@@ -142,12 +142,12 @@ app.get("/status", (req, res) => {
 const router = (global.router = express.Router());
 import Generate from "./routes/logic/Generate.js";
 import Schedule from "./routes/logic/Schedule.js";
-import Read from "./routes/database/Read.js";
 import Coach from "./routes/database/table/Coach.js";
+import Department from "./routes/database/table/Department.js";
 app.use(Generate);
 app.use(Schedule);
-app.use(Read);
 app.use(Coach);
+app.use(Department);
 
 /* ==============================================
     This section pertains to CRUD Operations:

@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { DefaultText } from "../../../component/input/DefaultInput";
 import { CreateCoach } from "./create/CreateCoach";
 import { ViewCoach } from "./view/ViewCoach";
+import { EditCoach } from "./edit/EditCoach";
 
 export function DataController() {
   const params = useParams();
@@ -30,7 +31,7 @@ export function DataController() {
             ) : params.form === "view" ? (
               <ViewCoach />
             ) : params.form === "edit" ? (
-              <h1>Edit</h1>
+              <EditCoach />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (

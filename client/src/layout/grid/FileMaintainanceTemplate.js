@@ -3,7 +3,6 @@ import { DefaultDropdown } from "../../component/dropdown/default/DefaultDropdow
 import { NoDisplay } from "../../component/placeholder/NoDisplay";
 import { DefaultButton } from "../../component/button/DefaultButton";
 import { DefaultInput } from "../../component/input/DefaultInput";
-import { FaFilter } from "react-icons/fa6";
 
 export class FileMaintainanceTemplate extends React.Component {
   render() {
@@ -21,7 +20,6 @@ export class FileMaintainanceTemplate extends React.Component {
                 <section className="sticky-top w-100 bg-white shadow-sm p-2 mb-2">
                   <div className="d-flex justify-content-end gap-2">
                     <DefaultInput placeholder="Search" />
-                    <DefaultButton class="" icon={<FaFilter />} />
                     {this.props.control}
                   </div>
                 </section>

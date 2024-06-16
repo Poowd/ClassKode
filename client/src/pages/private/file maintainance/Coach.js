@@ -6,9 +6,13 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { GrView } from "react-icons/gr";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
+import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
+import { FaFilter } from "react-icons/fa6";
 
 export function Coach() {
+  const navigate = useNavigate();
   const [getdata, setGetData, getServer] = useGet();
   const [postdata, setPostData, postServer] = usePost();
 
@@ -21,10 +25,28 @@ export function Coach() {
     <FileMaintainanceTemplate
       control={
         <>
+          <DefaultDropdown
+            class="border-0"
+            reversed={true}
+            icon={<FaFilter />}
+            dropdownitems={
+              <>
+                <DefaultDropdownItem title={"Profile"} />
+                <DefaultDropdownItem title={"Contact"} />
+                <DefaultDropdownItem title={"Visit us"} />
+                <hr />
+                <DefaultDropdownItem title={"Logout"} />
+              </>
+            }
+          />
           <DefaultButton class="btn-outline-primary" icon={<PiGearSixFill />} />
-          <Link to={"/institution/coach/create/0"}>
-            <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />
-          </Link>
+          <DefaultButton
+            class="btn-primary"
+            icon={<RiStickyNoteAddLine />}
+            function={() => {
+              navigate("/institution/coach/create/0");
+            }}
+          />
         </>
       }
       list={postdata.map((item, i) => (

@@ -13,21 +13,41 @@ import { SelectButton } from "../../../../component/dropdown/select/SelectButton
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import usePost from "../../../../hook/usePost";
+import useHandleChange from "../../../../hook/useHandleChange";
 
 export function EditCoach() {
   const params = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const [data, setData] = useState(state.data);
+  const [coach, setCoach, getCoach] = usePost();
+
+  const [data, setData] = useState({
+    CCHID: state.data[0].CCHID,
+    SCHLID: state.data[0].SCHLID,
+    CCH_FirstName: state.data[0].CCH_FirstName,
+    CCH_MiddleInitial: state.data[0].CCH_MiddleInitial,
+    CCH_LastName: state.data[0].CCH_LastName,
+    CCH_Gender: state.data[0].CCH_Gender,
+    DPT_Department: state.data[0].DPTID,
+    CCH_Email: state.data[0].CCH_Email,
+    CCH_Contact: state.data[0].CCH_Contact,
+    CCH_Facebook: state.data[0].CCH_Facebook,
+  });
   const [postdata, setPostData, postServer] = usePost();
+  const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
     postServer("department");
   }, [postdata]);
 
   return (
-    <form onSubmit={() => {}}>
+    <form
+      onSubmit={() => {
+        getCoach("update-existing-coach", data);
+        navigate("/institution/coach");
+      }}
+    >
       <DataControllerTemplate
         title={"Edit A Coach"}
         description={"This module edits a coach"}
@@ -48,32 +68,36 @@ export function EditCoach() {
             />
           </>
         }
-        content={data.map((item, i) => (
+        content={
           <>
             <FormInput
               label="School ID"
-              id="a"
+              id="SCHLID"
               class={""}
-              value={item.SCHLID}
+              trigger={dataChange}
+              value={data.SCHLID}
             />
             <MultipleFormInput
               label="First Name, Middle Initial, & Last Name"
               item={
                 <>
                   <MultipleFormInputItem
-                    id="a"
+                    id="CCH_FirstName"
                     placeholder="First Name"
-                    value={item.CCH_FirstName}
+                    trigger={dataChange}
+                    value={data.CCH_FirstName}
                   />
                   <MultipleFormInputItem
-                    id="b"
+                    id="CCH_MiddleInitial"
                     placeholder="Middle Initial"
-                    value={item.CCH_MiddleInitial}
+                    trigger={dataChange}
+                    value={data.CCH_MiddleInitial}
                   />
                   <MultipleFormInputItem
-                    id="c"
+                    id="CCH_LastName"
                     placeholder="Last Name"
-                    value={item.CCH_LastName}
+                    trigger={dataChange}
+                    value={data.CCH_LastName}
                   />
                 </>
               }
@@ -83,27 +107,39 @@ export function EditCoach() {
               selection={
                 <>
                   <RadioButton
-                    id="ab"
-                    group="asd"
+                    id="male"
+                    option="MALE"
+                    group="CCH_Gender"
                     label="Male"
-                    checked={item.CCH_Gender === "MALE" ? true : false}
+                    trigger={dataChange}
+                    checked={data.CCH_Gender === "MALE"}
                   />
                   <RadioButton
-                    id="ab"
-                    group="asd"
+                    id="female"
+                    option="FEMALE"
+                    group="CCH_Gender"
                     label="Female"
-                    checked={item.CCH_Gender === "FEMALE" ? true : false}
+                    trigger={dataChange}
+                    checked={data.CCH_Gender === "FEMALE"}
                   />
                 </>
               }
             />
             <SelectButton
+              id="DPT_Department"
+              trigger={dataChange}
               option={
                 <>
-                  <SelectButtonItemSelected content={item.DPT_Department} />
+                  <SelectButtonItemSelected
+                    content={postdata.map((option, i) =>
+                      data.DPT_Department === option.DPTID
+                        ? option.DPT_Department
+                        : ""
+                    )}
+                  />
                   {postdata.map((option, i) => (
                     <>
-                      {item.DPT_Department !== option.DPT_Department ? (
+                      {data.DPT_Department !== option.DPTID ? (
                         <SelectButtonItem
                           value={option.DPTID}
                           content={option.DPT_Department}
@@ -121,26 +157,29 @@ export function EditCoach() {
               item={
                 <>
                   <MultipleFormInputItem
-                    id="a"
+                    id="CCH_Email"
                     placeholder="Email"
-                    value={item.CCH_Email}
+                    trigger={dataChange}
+                    value={data.CCH_Email}
                   />
                   <MultipleFormInputItem
-                    id="b"
+                    id="CCH_Contact"
                     placeholder="Contact"
-                    value={item.CCH_Contact}
+                    trigger={dataChange}
+                    value={data.CCH_Contact}
                   />
                 </>
               }
             />
             <FormInput
               label="Facebook"
-              id="a"
+              id="CCH_Facebook"
               class={""}
-              value={item.CCH_Facebook}
+              trigger={dataChange}
+              value={data.CCH_Facebook}
             />
           </>
-        ))}
+        }
         additional={<></>}
       />
     </form>

@@ -7,12 +7,14 @@ import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTe
 import { DataControlView } from "../../../../component/datacontrolview/DataControlView";
 import { DataControlViewItem } from "../../../../component/datacontrolview/DataControlViewItem";
 import { GrView } from "react-icons/gr";
+import usePost from "../../../../hook/usePost";
 
 export function ViewCoach() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
   const [data, setData] = useState([state.data]);
+  const [coach, setCoach, getCoach] = usePost();
 
   return (
     <DataControllerTemplate
@@ -37,6 +39,7 @@ export function ViewCoach() {
             class="btn-danger px-2"
             icon={<GrView />}
             function={() => {
+              getCoach("archive-existing-coach", data[0]);
               navigate("/institution/coach");
             }}
           />

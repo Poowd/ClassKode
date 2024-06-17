@@ -11,12 +11,17 @@ export class FormInput extends React.Component {
         </label>
         <input
           id={this.props.id}
+          name={this.props.id}
           type={"text"}
           className={"form-control shadow-none " + this.props.class}
           placeholder={this.props.placeholder}
+          onChange={this.props.trigger}
           value={this.props.value}
           required
         />
+        <small>
+          <p className={"p-0 m-0 " + this.props.success}>{this.props.alert}</p>
+        </small>
       </div>
     );
   }

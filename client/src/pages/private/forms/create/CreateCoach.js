@@ -20,19 +20,7 @@ export function CreateCoach() {
   const navigate = useNavigate();
   const [department, setDepartment, getDepartment] = usePost();
   const [coach, setCoach, getCoach] = usePost();
-  const [
-    a_len,
-    aLength,
-    a_rng,
-    aRange,
-    a_phn,
-    aPhone,
-    a_invchr,
-    aInvalidCharacter,
-    a_num,
-    aNumerical,
-  ] = useValidation();
-  const [b_len, bLength, b_rng, bRange] = useValidation();
+  const [ValidateID, ValidateName] = useValidation();
 
   const [data, setData] = useState({
     SCHLID: "",
@@ -46,29 +34,37 @@ export function CreateCoach() {
     CCH_Facebook: "",
   });
 
+  const [validation, setValidation] = useState({
+    SCHLID: ValidateID(data.SCHLID),
+    CCH_FirstName: ValidateName(data.CCH_FirstName),
+    CCH_MiddleInitial: ValidateName(data.CCH_MiddleInitial),
+    CCH_LastName: ValidateName(data.CCH_LastName),
+  });
+
   const [dataChange] = useHandleChange(setData);
   useEffect(() => {
     getDepartment("department");
   }, [department]);
 
+  useEffect(() => {
+    setValidation({
+      SCHLID: ValidateID(data.SCHLID),
+      CCH_FirstName: ValidateName(data.CCH_FirstName),
+      CCH_MiddleInitial: ValidateName(data.CCH_MiddleInitial),
+      CCH_LastName: ValidateName(data.CCH_LastName),
+    });
+  }, [data]);
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        aLength(data.CCH_FirstName, 2, 5);
-        aRange(data.SCHLID, 5, 10);
-        aPhone(data.CCH_Contact);
-        aInvalidCharacter(data.CCH_LastName);
-        aNumerical(data.CCH_Facebook);
-        if (
-          aLength(data.CCH_FirstName, 2, 5) &&
-          aRange(data.SCHLID, 5, 10) &&
-          aPhone(data.CCH_Contact) &&
-          aInvalidCharacter(data.CCH_LastName) &&
-          aNumerical(data.CCH_Facebook)
-        ) {
-          getCoach("add-new-coach", data);
-          navigate("/institution/coach");
+        if (validation.SCHLID[0].Result) {
+          console.log(validation.CCH_FirstName[0].Result);
+          //getCoach("add-new-coach", data);
+          //navigate("/institution/coach");
+        } else {
+          console.log(validation.CCH_FirstName[0].Result);
         }
       }}
     >
@@ -97,63 +93,62 @@ export function CreateCoach() {
             <FormInput
               label="School ID"
               id="SCHLID"
-              alert={a_rng.Message}
-              success={
-                a_rng.Message === "Looks Good!" ? "text-success" : "text-danger"
-              }
-              class={a_rng.Result}
+              alert={validation.SCHLID[0].Message}
+              class={validation.SCHLID[0].State[0]}
+              success={validation.SCHLID[0].State[1]}
               trigger={dataChange}
               value={data.SCHLID}
+              required={true}
             />
             <MultipleFormInput
               label="First Name, Middle Initial, & Last Name"
+              success={validation.CCH_FirstName[0].State[1]}
               alert={
-                <div className="d-flex gap-2">
-                  <p
-                    className={
-                      "p-0 m-0 " + a_len.Message === "Looks Good!"
-                        ? "text-success"
-                        : "text-danger"
-                    }
-                  >
-                    {a_len.Message}
-                  </p>
-                  <p
-                    className={
-                      "p-0 m-0 " + a_invchr.Message === "Looks Good!"
-                        ? "text-success"
-                        : "text-danger"
-                    }
-                  >
-                    {a_invchr.Message}
-                  </p>
-                </div>
+                <>
+                  <span className={"col p-0"}>
+                    {validation.CCH_FirstName[0].Message}
+                  </span>
+                  <span className={"col p-0"}>
+                    {validation.CCH_MiddleInitial[0].Message}
+                  </span>
+                  <span className={"col p-0"}>
+                    {validation.CCH_LastName[0].Message}
+                  </span>
+                </>
               }
               item={
                 <>
                   <MultipleFormInputItem
                     id="CCH_FirstName"
                     placeholder="First Name"
-                    class={a_len.Result}
+                    class={validation.CCH_FirstName[0].State[0]}
+                    success={validation.CCH_FirstName[0].State[1]}
                     trigger={dataChange}
                     value={data.CCH_FirstName}
+                    required={true}
                   />
                   <MultipleFormInputItem
                     id="CCH_MiddleInitial"
                     placeholder="Middle Initial"
+                    class={validation.CCH_MiddleInitial[0].State[0]}
+                    success={validation.CCH_MiddleInitial[0].State[1]}
                     trigger={dataChange}
                     value={data.CCH_MiddleInitial}
+                    required={false}
                   />
                   <MultipleFormInputItem
                     id="CCH_LastName"
                     placeholder="Last Name"
-                    class={a_invchr.Result}
+                    class={validation.CCH_LastName[0].State[0]}
+                    success={validation.CCH_LastName[0].State[1]}
                     trigger={dataChange}
                     value={data.CCH_LastName}
+                    required={true}
                   />
                 </>
               }
             />
+
             <RadioGroup
               label="Gender"
               selection={
@@ -180,6 +175,7 @@ export function CreateCoach() {
             <SelectButton
               id="DPT_Department"
               trigger={dataChange}
+              required={true}
               option={
                 <>
                   <SelectButtonItemSelected
@@ -208,19 +204,6 @@ export function CreateCoach() {
             />
             <MultipleFormInput
               label="Email & Contact"
-              alert={
-                <div className="d-flex gap-2">
-                  <p
-                    className={
-                      "p-0 m-0 " + a_phn.Message === "Looks Good!"
-                        ? "text-success"
-                        : "text-danger"
-                    }
-                  >
-                    {a_phn.Message}
-                  </p>
-                </div>
-              }
               item={
                 <>
                   <MultipleFormInputItem
@@ -228,13 +211,14 @@ export function CreateCoach() {
                     placeholder="Email"
                     trigger={dataChange}
                     value={data.CCH_Email}
+                    required={true}
                   />
                   <MultipleFormInputItem
                     id="CCH_Contact"
                     placeholder="Contact"
-                    class={a_phn.Result}
                     trigger={dataChange}
                     value={data.CCH_Contact}
+                    required={true}
                   />
                 </>
               }
@@ -243,13 +227,9 @@ export function CreateCoach() {
             <FormInput
               label="Facebook"
               id="CCH_Facebook"
-              alert={a_num.Message}
-              success={
-                a_num.Message === "Looks Good!" ? "text-success" : "text-danger"
-              }
-              class={a_num.Result}
               trigger={dataChange}
               value={data.CCH_Facebook}
+              required={true}
             />
           </>
         }
@@ -260,14 +240,14 @@ export function CreateCoach() {
               <h6>ID</h6>
             </small>
             <p className="p-0 m-0">
-              <span className="d-block">
+              {/* <span className="d-block">
                 <span>is Numeric: </span>
                 {a_num.Message}
               </span>
               <span className="d-block">
                 <span>is valid phone: </span>
                 {a_phn.Message}
-              </span>
+              </span> */}
             </p>
             {/* <h6>{data.SCHLID}</h6>
             <h6>{data.CCH_FirstName}</h6>

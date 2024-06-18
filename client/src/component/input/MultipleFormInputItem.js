@@ -12,7 +12,7 @@ export class MultipleFormInputItem extends React.Component {
           placeholder={this.props.placeholder}
           onChange={this.props.trigger}
           value={this.props.value}
-          required
+          required={this.props.required}
         />
       </>
     );

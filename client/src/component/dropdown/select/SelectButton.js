@@ -9,6 +9,7 @@ export class SelectButton extends React.Component {
         onChange={this.props.trigger}
         name={this.props.id}
         id={this.props.id}
+        required={this.props.required}
       >
         {this.props.option}
       </select>

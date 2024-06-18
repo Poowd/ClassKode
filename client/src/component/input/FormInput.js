@@ -17,7 +17,7 @@ export class FormInput extends React.Component {
           placeholder={this.props.placeholder}
           onChange={this.props.trigger}
           value={this.props.value}
-          required
+          required={this.props.required}
         />
         <small>
           <p className={"p-0 m-0 " + this.props.success}>{this.props.alert}</p>

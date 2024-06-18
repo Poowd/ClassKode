@@ -12,7 +12,9 @@ export class MultipleFormInput extends React.Component {
           </label>
           <div class="input-group p-0">{this.props.item}</div>
         </div>
-        <small>{this.props.alert}</small>
+        <small>
+          <div className={"row m-0 " + this.props.success}>{this.props.alert}</div>
+        </small>
       </div>
     );
   }

@@ -25,14 +25,14 @@ export function EditCoach() {
   const [data, setData] = useState({
     CCHID: state.data[0].CCHID,
     SCHLID: state.data[0].SCHLID,
-    CCH_FirstName: state.data[0].CCH_FirstName,
-    CCH_MiddleInitial: state.data[0].CCH_MiddleInitial,
-    CCH_LastName: state.data[0].CCH_LastName,
-    CCH_Gender: state.data[0].CCH_Gender,
-    DPT_Department: state.data[0].DPTID,
-    CCH_Email: state.data[0].CCH_Email,
-    CCH_Contact: state.data[0].CCH_Contact,
-    CCH_Facebook: state.data[0].CCH_Facebook,
+    FirstName: state.data[0].FirstName,
+    MiddleInitial: state.data[0].MiddleInitial,
+    LastName: state.data[0].LastName,
+    Gender: state.data[0].Gender,
+    Department: state.data[0].DPT_Code,
+    Email: state.data[0].Email,
+    Phone: state.data[0].Phone,
+    Facebook: state.data[0].Facebook,
   });
   const [postdata, setPostData, postServer] = usePost();
   const [dataChange] = useHandleChange(setData);
@@ -54,7 +54,7 @@ export function EditCoach() {
         control={
           <>
             <DefaultButton
-              class="btn-primary"
+              class="btn-outline-secondary"
               type="button"
               icon={<IoMdArrowRoundBack />}
               function={() => {
@@ -62,7 +62,7 @@ export function EditCoach() {
               }}
             />
             <DefaultButton
-              class="btn-primary px-2"
+              class="btn-success px-2"
               type="submit"
               text="Submit"
             />
@@ -82,22 +82,22 @@ export function EditCoach() {
               item={
                 <>
                   <MultipleFormInputItem
-                    id="CCH_FirstName"
+                    id="FirstName"
                     placeholder="First Name"
                     trigger={dataChange}
-                    value={data.CCH_FirstName}
+                    value={data.FirstName}
                   />
                   <MultipleFormInputItem
-                    id="CCH_MiddleInitial"
+                    id="MiddleInitial"
                     placeholder="Middle Initial"
                     trigger={dataChange}
-                    value={data.CCH_MiddleInitial}
+                    value={data.MiddleInitial}
                   />
                   <MultipleFormInputItem
-                    id="CCH_LastName"
+                    id="LastName"
                     placeholder="Last Name"
                     trigger={dataChange}
-                    value={data.CCH_LastName}
+                    value={data.LastName}
                   />
                 </>
               }
@@ -108,41 +108,41 @@ export function EditCoach() {
                 <>
                   <RadioButton
                     id="male"
-                    option="MALE"
-                    group="CCH_Gender"
+                    option="Male"
+                    group="Gender"
                     label="Male"
                     trigger={dataChange}
-                    checked={data.CCH_Gender === "MALE"}
+                    checked={data.Gender === "Male"}
                   />
                   <RadioButton
                     id="female"
-                    option="FEMALE"
-                    group="CCH_Gender"
+                    option="Female"
+                    group="Gender"
                     label="Female"
                     trigger={dataChange}
-                    checked={data.CCH_Gender === "FEMALE"}
+                    checked={data.Gender === "Female"}
                   />
                 </>
               }
             />
             <SelectButton
-              id="DPT_Department"
+              id="Department"
               trigger={dataChange}
               option={
                 <>
                   <SelectButtonItemSelected
                     content={postdata.map((option, i) =>
-                      data.DPT_Department === option.DPTID
-                        ? option.DPT_Department
+                      data.Department === option.DPT_Code
+                        ? option.Department
                         : ""
                     )}
                   />
                   {postdata.map((option, i) => (
                     <>
-                      {data.DPT_Department !== option.DPTID ? (
+                      {data.Department !== option.DPT_Code ? (
                         <SelectButtonItem
-                          value={option.DPTID}
-                          content={option.DPT_Department}
+                          value={option.DPT_Code}
+                          content={option.Department}
                         />
                       ) : (
                         ""
@@ -153,30 +153,30 @@ export function EditCoach() {
               }
             />
             <MultipleFormInput
-              label="Email & Contact"
+              label="Email & Phone"
               item={
                 <>
                   <MultipleFormInputItem
-                    id="CCH_Email"
+                    id="Email"
                     placeholder="Email"
                     trigger={dataChange}
-                    value={data.CCH_Email}
+                    value={data.Email}
                   />
                   <MultipleFormInputItem
-                    id="CCH_Contact"
-                    placeholder="Contact"
+                    id="Phone"
+                    placeholder="Phone"
                     trigger={dataChange}
-                    value={data.CCH_Contact}
+                    value={data.Phone}
                   />
                 </>
               }
             />
             <FormInput
               label="Facebook"
-              id="CCH_Facebook"
+              id="Facebook"
               class={""}
               trigger={dataChange}
-              value={data.CCH_Facebook}
+              value={data.Facebook}
             />
           </>
         }

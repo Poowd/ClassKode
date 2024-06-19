@@ -13,7 +13,7 @@ export function Department() {
   const [postdata, setPostData, postServer] = usePost();
 
   useEffect(() => {
-    postServer("department-selection");
+    postServer("department");
     getServer("random-code-generator");
   }, [postdata]);
 
@@ -30,19 +30,19 @@ export function Department() {
       list={postdata.map((item, i) => (
         <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
           <section className="col-2 p-0 m-0">
-            <h6 className="p-0 m-0">{item.DepartmentCode}</h6>
+            <h6 className="p-0 m-0">{item.DPT_Code}</h6>
           </section>
           <section className="col-7 p-0 m-0">
-            <h6 className="p-0 m-0">{item.DepartmentName}</h6>
+            <h6 className="p-0 m-0">{item.Department}</h6>
             <small>
               <p className="p-0 m-0 text-secondary fst-italic">
-                <span>{item.DateCreated}</span>
+                <span>{item.DPT_Created}</span>
               </p>
             </small>
           </section>
           <section className="col-2 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <p className="p-0 m-0 text-end">{item.DepartmentAbbrev}</p>
+              <p className="p-0 m-0 text-end">{item.DPT_Abbreviation}</p>
               <small>
                 <p className="p-0 m-0 text-secondary fst-italic">
                   <span>...</span>

@@ -89,7 +89,7 @@ export default function useValidation() {
     return true;
   }
 
-  function ValidateID(data) {
+  function ValidateID(data, min_len, max_len, min_rng, max_rng) {
     if (data === "") {
       return [
         {
@@ -100,8 +100,8 @@ export default function useValidation() {
       ];
     }
     if (
-      Length(data, 11, 11) === true &&
-      Range(data, 2000000000, 3000000000) === true &&
+      Length(data, min_len, max_len) === true &&
+      Range(data, min_rng, max_rng) === true &&
       Numerical(data)
     ) {
       return [
@@ -121,7 +121,7 @@ export default function useValidation() {
     ];
   }
 
-  function ValidateName(data) {
+  function ValidateName(data, min_len, max_len) {
     if (data === "") {
       return [
         {
@@ -131,7 +131,7 @@ export default function useValidation() {
         },
       ];
     }
-    if (Length(data, 2, 150) && InvalidCharacter(data)) {
+    if (Length(data, min_len, max_len) && InvalidCharacter(data)) {
       return [
         {
           Result: true,
@@ -149,5 +149,89 @@ export default function useValidation() {
     ];
   }
 
-  return [ValidateID, ValidateName];
+  function ValidateEmail(data, min_len, max_len) {
+    if (data === "") {
+      return [
+        {
+          Result: null,
+          State: "",
+          Message: "",
+        },
+      ];
+    }
+    if (Length(data, min_len, max_len) && InvalidCharacter(data)) {
+      return [
+        {
+          Result: true,
+          State: valid,
+          Message: message[0],
+        },
+      ];
+    }
+    return [
+      {
+        Result: false,
+        State: invalid,
+        Message: message[1],
+      },
+    ];
+  }
+
+  function ValidatePhone(data, min_len, max_len) {
+    if (data === "") {
+      return [
+        {
+          Result: null,
+          State: "",
+          Message: "",
+        },
+      ];
+    }
+    if (Length(data, min_len, max_len) && Numerical(data)) {
+      return [
+        {
+          Result: true,
+          State: valid,
+          Message: message[0],
+        },
+      ];
+    }
+    return [
+      {
+        Result: false,
+        State: invalid,
+        Message: message[1],
+      },
+    ];
+  }
+
+  function ValidateLink(data, min_len, max_len) {
+    if (data === "") {
+      return [
+        {
+          Result: null,
+          State: "",
+          Message: "",
+        },
+      ];
+    }
+    if (Length(data, min_len, max_len)) {
+      return [
+        {
+          Result: true,
+          State: valid,
+          Message: message[0],
+        },
+      ];
+    }
+    return [
+      {
+        Result: false,
+        State: invalid,
+        Message: message[1],
+      },
+    ];
+  }
+
+  return [ValidateID, ValidateName, ValidateEmail, ValidatePhone, ValidateLink];
 }

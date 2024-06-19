@@ -20,4 +20,3 @@ export default function usePost() {
 
   return [data, setData, postServer];
 }
-  

@@ -20,25 +20,29 @@ export function CreateCoach() {
   const navigate = useNavigate();
   const [department, setDepartment, getDepartment] = usePost();
   const [coach, setCoach, getCoach] = usePost();
-  const [ValidateID, ValidateName] = useValidation();
+  const [ValidateID, ValidateName, ValidateEmail, ValidatePhone, ValidateLink] =
+    useValidation();
 
   const [data, setData] = useState({
     SCHLID: "",
-    CCH_FirstName: "",
-    CCH_MiddleInitial: "",
-    CCH_LastName: "",
-    CCH_Gender: "",
-    DPT_Department: "",
-    CCH_Email: "",
-    CCH_Contact: "",
-    CCH_Facebook: "",
+    FirstName: "",
+    MiddleInitial: "",
+    LastName: "",
+    Gender: "",
+    Department: "",
+    Email: "",
+    Phone: "",
+    Facebook: "",
   });
 
   const [validation, setValidation] = useState({
     SCHLID: ValidateID(data.SCHLID),
-    CCH_FirstName: ValidateName(data.CCH_FirstName),
-    CCH_MiddleInitial: ValidateName(data.CCH_MiddleInitial),
-    CCH_LastName: ValidateName(data.CCH_LastName),
+    FirstName: ValidateName(data.FirstName),
+    MiddleInitial: ValidateName(data.MiddleInitial),
+    LastName: ValidateName(data.LastName),
+    Email: ValidateEmail(data.Email),
+    Phone: ValidatePhone(data.Phone),
+    Facebook: ValidateLink(data.Facebook),
   });
 
   const [dataChange] = useHandleChange(setData);
@@ -48,10 +52,13 @@ export function CreateCoach() {
 
   useEffect(() => {
     setValidation({
-      SCHLID: ValidateID(data.SCHLID),
-      CCH_FirstName: ValidateName(data.CCH_FirstName),
-      CCH_MiddleInitial: ValidateName(data.CCH_MiddleInitial),
-      CCH_LastName: ValidateName(data.CCH_LastName),
+      SCHLID: ValidateID(data.SCHLID, 11, 11, 2000000000, 3000000000),
+      FirstName: ValidateName(data.FirstName, 2, 100),
+      MiddleInitial: ValidateName(data.MiddleInitial, 1, 100),
+      LastName: ValidateName(data.LastName, 2, 100),
+      Email: ValidateEmail(data.Email, 2, 100),
+      Phone: ValidatePhone(data.Phone, 11, 11),
+      Facebook: ValidateLink(data.Facebook, 2, 100),
     });
   }, [data]);
 
@@ -59,12 +66,10 @@ export function CreateCoach() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (validation.SCHLID[0].Result) {
-          console.log(validation.CCH_FirstName[0].Result);
-          //getCoach("add-new-coach", data);
-          //navigate("/institution/coach");
+        if (true) {
+          getCoach("add-new-coach", data);
+          navigate("/institution/coach");
         } else {
-          console.log(validation.CCH_FirstName[0].Result);
         }
       }}
     >
@@ -74,7 +79,7 @@ export function CreateCoach() {
         control={
           <>
             <DefaultButton
-              class="btn-primary"
+              class="btn-outline-secondary"
               type="button"
               icon={<IoMdArrowRoundBack />}
               function={() => {
@@ -82,7 +87,7 @@ export function CreateCoach() {
               }}
             />
             <DefaultButton
-              class="btn-primary px-2"
+              class="btn-success px-2"
               type="submit"
               text="Submit"
             />
@@ -102,47 +107,54 @@ export function CreateCoach() {
             />
             <MultipleFormInput
               label="First Name, Middle Initial, & Last Name"
-              success={validation.CCH_FirstName[0].State[1]}
               alert={
                 <>
-                  <span className={"col p-0"}>
-                    {validation.CCH_FirstName[0].Message}
+                  <span
+                    className={"col p-0 " + validation.FirstName[0].State[1]}
+                  >
+                    {validation.FirstName[0].Message}
                   </span>
-                  <span className={"col p-0"}>
-                    {validation.CCH_MiddleInitial[0].Message}
+                  <span
+                    className={
+                      "col p-0 " + validation.MiddleInitial[0].State[1]
+                    }
+                  >
+                    {validation.MiddleInitial[0].Message}
                   </span>
-                  <span className={"col p-0"}>
-                    {validation.CCH_LastName[0].Message}
+                  <span
+                    className={"col p-0 " + validation.LastName[0].State[1]}
+                  >
+                    {validation.LastName[0].Message}
                   </span>
                 </>
               }
               item={
                 <>
                   <MultipleFormInputItem
-                    id="CCH_FirstName"
+                    id="FirstName"
                     placeholder="First Name"
-                    class={validation.CCH_FirstName[0].State[0]}
-                    success={validation.CCH_FirstName[0].State[1]}
+                    class={validation.FirstName[0].State[0]}
+                    success={validation.FirstName[0].State[1]}
                     trigger={dataChange}
-                    value={data.CCH_FirstName}
+                    value={data.FirstName}
                     required={true}
                   />
                   <MultipleFormInputItem
-                    id="CCH_MiddleInitial"
+                    id="MiddleInitial"
                     placeholder="Middle Initial"
-                    class={validation.CCH_MiddleInitial[0].State[0]}
-                    success={validation.CCH_MiddleInitial[0].State[1]}
+                    class={validation.MiddleInitial[0].State[0]}
+                    success={validation.MiddleInitial[0].State[1]}
                     trigger={dataChange}
-                    value={data.CCH_MiddleInitial}
+                    value={data.MiddleInitial}
                     required={false}
                   />
                   <MultipleFormInputItem
-                    id="CCH_LastName"
+                    id="LastName"
                     placeholder="Last Name"
-                    class={validation.CCH_LastName[0].State[0]}
-                    success={validation.CCH_LastName[0].State[1]}
+                    class={validation.LastName[0].State[0]}
+                    success={validation.LastName[0].State[1]}
                     trigger={dataChange}
-                    value={data.CCH_LastName}
+                    value={data.LastName}
                     required={true}
                   />
                 </>
@@ -155,25 +167,25 @@ export function CreateCoach() {
                 <>
                   <RadioButton
                     id="male"
-                    option="MALE"
-                    group="CCH_Gender"
+                    option="Male"
+                    group="Gender"
                     label="Male"
                     trigger={dataChange}
-                    checked={data.CCH_Gender === "MALE"}
+                    checked={data.Gender === "Male"}
                   />
                   <RadioButton
                     id="female"
-                    option="FEMALE"
-                    group="CCH_Gender"
+                    option="Female"
+                    group="Gender"
                     label="Female"
                     trigger={dataChange}
-                    checked={data.CCH_Gender === "FEMALE"}
+                    checked={data.Gender === "Female"}
                   />
                 </>
               }
             />
             <SelectButton
-              id="DPT_Department"
+              id="Department"
               trigger={dataChange}
               required={true}
               option={
@@ -181,18 +193,18 @@ export function CreateCoach() {
                   <SelectButtonItemSelected
                     content={department.map((option, i) => (
                       <>
-                        {option.DPTID === data.DPT_Department
-                          ? option.DPT_Department
+                        {option.DPT_Code === data.Department
+                          ? option.Department
                           : ""}
                       </>
                     ))}
                   />
                   {department.map((option, i) => (
                     <>
-                      {data.DPT_Department !== option.DPTID ? (
+                      {data.Department !== option.DPT_Code ? (
                         <SelectButtonItem
-                          value={option.DPTID}
-                          content={option.DPT_Department}
+                          value={option.DPT_Code}
+                          content={option.Department}
                         />
                       ) : (
                         ""
@@ -203,21 +215,35 @@ export function CreateCoach() {
               }
             />
             <MultipleFormInput
-              label="Email & Contact"
+              label="Email & Phone"
+              alert={
+                <>
+                  <span className={"col p-0 " + validation.Email[0].State[1]}>
+                    {validation.Email[0].Message}
+                  </span>
+                  <span className={"col p-0 " + validation.Phone[0].State[1]}>
+                    {validation.Phone[0].Message}
+                  </span>
+                </>
+              }
               item={
                 <>
                   <MultipleFormInputItem
-                    id="CCH_Email"
+                    id="Email"
                     placeholder="Email"
+                    class={validation.Email[0].State[0]}
+                    success={validation.Email[0].State[1]}
                     trigger={dataChange}
-                    value={data.CCH_Email}
+                    value={data.Email}
                     required={true}
                   />
                   <MultipleFormInputItem
-                    id="CCH_Contact"
-                    placeholder="Contact"
+                    id="Phone"
+                    placeholder="Phone"
+                    class={validation.Phone[0].State[0]}
+                    success={validation.Phone[0].State[1]}
                     trigger={dataChange}
-                    value={data.CCH_Contact}
+                    value={data.Phone}
                     required={true}
                   />
                 </>
@@ -226,9 +252,12 @@ export function CreateCoach() {
 
             <FormInput
               label="Facebook"
-              id="CCH_Facebook"
+              id="Facebook"
+              alert={validation.Facebook[0].Message}
+              class={validation.Facebook[0].State[0]}
+              success={validation.Facebook[0].State[1]}
               trigger={dataChange}
-              value={data.CCH_Facebook}
+              value={data.Facebook}
               required={true}
             />
           </>
@@ -250,22 +279,22 @@ export function CreateCoach() {
               </span> */}
             </p>
             {/* <h6>{data.SCHLID}</h6>
-            <h6>{data.CCH_FirstName}</h6>
-            <h6>{data.CCH_MiddleInitial}</h6>
-            <h6>{data.CCH_LastName}</h6>
-            <h6>{data.CCH_Gender}</h6>
+            <h6>{data.FirstName}</h6>
+            <h6>{data.MiddleInitial}</h6>
+            <h6>{data.LastName}</h6>
+            <h6>{data.Gender}</h6>
             <h6>
               {department.map((option, i) => (
                 <>
-                  {option.DPTID === data.DPT_Department
-                    ? option.DPT_Department
+                  {option.DPTID === data.Department
+                    ? option.Department
                     : ""}
                 </>
               ))}
             </h6>
-            <h6>{data.CCH_Email}</h6>
-            <h6>{data.CCH_Contact}</h6>
-            <h6>{data.CCH_Facebook}</h6> */}
+            <h6>{data.Email}</h6>
+            <h6>{data.Phone}</h6>
+            <h6>{data.Facebook}</h6> */}
           </main>
         }
       />

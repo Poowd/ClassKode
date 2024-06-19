@@ -24,7 +24,7 @@ export function DataController() {
   return (
     <FormsTemplate
       content={
-        <main>
+        <main className="h-100">
           {params.module === "coach" ? (
             params.form === "create" ? (
               <CreateCoach />

@@ -8,6 +8,8 @@ import { DataControlView } from "../../../../component/datacontrolview/DataContr
 import { DataControlViewItem } from "../../../../component/datacontrolview/DataControlViewItem";
 import { GrView } from "react-icons/gr";
 import usePost from "../../../../hook/usePost";
+import { LuFileEdit } from "react-icons/lu";
+import { LuFolderArchive } from "react-icons/lu";
 
 export function ViewCoach() {
   const navigate = useNavigate();
@@ -15,6 +17,20 @@ export function ViewCoach() {
   const { state } = useLocation();
   const [data, setData] = useState([state.data]);
   const [coach, setCoach, getCoach] = usePost();
+  const [coachstatus, setCoachStatus, getCoachStatus] = usePost();
+  const [coachspecialization, setCoachSpecilization, getCoachSpecilization] =
+    usePost();
+
+  useEffect(() => {
+    getCoachStatus("coach-status", {
+      SCHLID: data[0].SCHLID,
+      ACY_Code: "AY2425",
+    });
+    getCoachSpecilization("coach-specialization", {
+      SCHLID: data[0].SCHLID,
+      ACY_Code: "AY2425",
+    });
+  }, []);
 
   return (
     <DataControllerTemplate
@@ -23,7 +39,7 @@ export function ViewCoach() {
       control={
         <>
           <DefaultButton
-            class="btn-primary"
+            class="btn-outline-secondary"
             icon={<IoMdArrowRoundBack />}
             function={() => {
               navigate("/institution/coach");
@@ -33,11 +49,11 @@ export function ViewCoach() {
             to={"/institution/coach/edit/" + params.id}
             state={{ data: data }}
           >
-            <DefaultButton class="btn-warning" icon={<GrView />} />
+            <DefaultButton class="btn-warning" icon={<LuFileEdit />} />
           </Link>
           <DefaultButton
             class="btn-danger px-2"
-            icon={<GrView />}
+            icon={<LuFolderArchive />}
             function={() => {
               getCoach("archive-existing-coach", data[0]);
               navigate("/institution/coach");
@@ -51,14 +67,14 @@ export function ViewCoach() {
             <main key={i} className="px-0 py-3 m-0">
               <header>
                 <h1>
-                  <span>{item.CCH_Gender === "MALE" ? "Mr. " : "Ms. "}</span>
-                  <span>{item.CCH_FirstName}</span>
+                  <span>{item.Gender === "MALE" ? "Mr. " : "Ms. "}</span>
+                  <span>{item.FirstName}</span>
                   <span>
-                    {item.CCH_MiddleInitial !== null
-                      ? " " + item.CCH_MiddleInitial + ". "
+                    {item.MiddleInitial !== null
+                      ? " " + item.MiddleInitial + ". "
                       : ""}
                   </span>
-                  <span>{item.CCH_LastName}</span>
+                  <span>{item.LastName}</span>
                 </h1>
               </header>
 
@@ -71,17 +87,17 @@ export function ViewCoach() {
                     />
                     <DataControlViewItem
                       label={"Department"}
-                      content={item.DPT_Department}
+                      content={item.Department}
                     />
                     <DataControlViewItem
                       label={"Contacts"}
                       content={
                         <>
-                          <span className="d-block">{item.CCH_Email}</span>
-                          <span className="d-block">{item.CCH_Contact}</span>
+                          <span className="d-block">{item.Phone}</span>
+                          <span className="d-block">{item.Email}</span>
                           <span className="d-block">
-                            <a href={item.CCH_Facebook} target="_blank">
-                              {item.CCH_Facebook}
+                            <a href={item.Facebook} target="_blank">
+                              {item.Facebook}
                             </a>
                           </span>
                         </>
@@ -91,6 +107,14 @@ export function ViewCoach() {
                       label={"Created"}
                       content={item.CCH_Created}
                     />
+                    <DataControlViewItem
+                      label={"Status"}
+                      content={
+                        coachstatus.length > 0
+                          ? coachstatus.map((item, i) => item.CoachType)
+                          : "Not Available"
+                      }
+                    />
                   </>
                 }
               />
@@ -98,7 +122,16 @@ export function ViewCoach() {
           ))}
         </>
       }
-      additional={<></>}
+      additional={
+        <>
+          <h6>Coach Specialization</h6>
+          {coachspecialization.length > 0
+            ? coachspecialization.map((item, i) => (
+                <div className="p-2 shadow-sm mb-2 rounded">{item.Course}</div>
+              ))
+            : "None"}
+        </>
+      }
     />
   );
 }

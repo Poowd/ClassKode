@@ -144,10 +144,18 @@ import Generate from "./routes/logic/Generate.js";
 import Schedule from "./routes/logic/Schedule.js";
 import Coach from "./routes/database/table/Coach.js";
 import Department from "./routes/database/table/Department.js";
+import Course from "./routes/database/table/Course.js";
+import Program from "./routes/database/table/Program.js";
+import Room from "./routes/database/table/Room.js";
+import Section from "./routes/database/table/Section.js";
+app.use(Section);
+app.use(Room);
 app.use(Generate);
 app.use(Schedule);
 app.use(Coach);
 app.use(Department);
+app.use(Course);
+app.use(Program);
 
 /* ==============================================
     This section pertains to CRUD Operations:

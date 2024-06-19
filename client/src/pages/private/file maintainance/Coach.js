@@ -56,11 +56,9 @@ export function Coach() {
           </section>
           <section className="col-7 p-0 m-0">
             <h6 className="p-0 m-0">
-              {item.CCH_FirstName + " "}
-              {item.CCH_MiddleInitial !== null
-                ? item.CCH_MiddleInitial + ". "
-                : ""}
-              {item.CCH_LastName + " "}
+              {item.FirstName + " "}
+              {item.MiddleInitial !== null ? item.MiddleInitial + ". " : ""}
+              {item.LastName + " "}
             </h6>
             <small>
               <p className="p-0 m-0 text-secondary fst-italic">

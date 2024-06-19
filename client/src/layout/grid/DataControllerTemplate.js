@@ -10,18 +10,20 @@ import { PiGearSixFill } from "react-icons/pi";
 export class DataControllerTemplate extends React.Component {
   render() {
     return (
-      <main>
+      <main className="h-100">
         <header>
           <h3 className="m-0 p-0">{this.props.title}</h3>
           <p className="m-0 p-0 text-secondary">{this.props.description}</p>
           <hr className="p-0 mx-0 my-2" />
         </header>
-        <main>
+        <main className="">
           <div className="d-flex gap-2 my-2">{this.props.control}</div>
-          <section>
+          <section className="">
             <main className="row m-0">
               <section className="col-8 p-0">{this.props.content}</section>
-              <section className="col-4 p-0">{this.props.additional}</section>
+              <section className="col-4 p-0">
+                <main className="">{this.props.additional}</main>
+              </section>
             </main>
           </section>
         </main>

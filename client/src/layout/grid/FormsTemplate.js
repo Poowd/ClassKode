@@ -18,9 +18,9 @@ export class FormsTemplate extends React.Component {
                 <NoDisplay />
               </main>
             </section>
-            <section className="col-lg-9 p-2">
+            <section className="col-lg-9 p-2 h-100">
               <main className="h-100 position-relative">
-                <section>{this.props.content}</section>
+                <section className="h-100">{this.props.content}</section>
               </main>
             </section>
           </main>

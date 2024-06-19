@@ -13,7 +13,7 @@ export function Program() {
   const [postdata, setPostData, postServer] = usePost();
 
   useEffect(() => {
-    postServer("department-selection");
+    postServer("program");
     getServer("random-code-generator");
   }, [postdata]);
 
@@ -30,13 +30,13 @@ export function Program() {
       list={postdata.map((item, i) => (
         <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
           <section className="col-2 p-0 m-0">
-            <h6 className="p-0 m-0">{item.SCHLID}</h6>
+            <h6 className="p-0 m-0">{item.PRG_Code}</h6>
           </section>
           <section className="col-7 p-0 m-0">
-            <h6 className="p-0 m-0">{item.FirstName}</h6>
+            <h6 className="p-0 m-0">{item.Program}</h6>
             <small>
               <p className="p-0 m-0 text-secondary fst-italic">
-                <span>{item.DateCreated}</span>
+                <span>{item.PRG_Created}</span>
               </p>
             </small>
           </section>

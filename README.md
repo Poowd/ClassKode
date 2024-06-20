@@ -87,6 +87,19 @@
     -   ARCHIVE ( HIDDEN BUT NOT DELETED ENTRIES )
     -   PENDING ( THIS WILL BE SET UPON REQUEST FROM LOWER USER LEVEL ( SPECIAL PERMISSION FOR COACHES ) )
 
+### LOG ENTRY 5 - 20/06/2024
+
+1. FIXES FROM THE DATABASE DESIGN AND ATTRIBUTES INCLUING THE NORMALIZATION.
+2. FIX VALIDATION FOR UI AND FORM CHECKING, ADDED A DUPLICATE, CODEID, CODE, ETC.
+3. ADDED MODAL COMPONENT AND MODAL HOOK. GENERAL DESIGN.
+4. FINALIZE THE FORMS FOR THE COACH:
+  -   CREATE
+  -   UPDATE
+  -   ARCHIVE + MODAL CONFIRMATION
+5. CHANGES BUTTON COLORS ACCORDING TO THE PURPOSE.
+6. UPDATE DATABASE TABLE RELATIONSHIPS.
+
+
 ## SYSTEM MANUAL FOR WEB-APPLICATION DEVELOPMENT ( SMWD )
 
 ### SYSTEM SETUP FOR WEB-APPLICATION DEVELOPMENT
@@ -173,6 +186,9 @@
 ![image](https://github.com/Poowd/ClassKode/assets/121615238/df2c51d6-dfbc-48c9-99ed-1654fce0976b)
 ![image](https://github.com/Poowd/ClassKode/assets/121615238/e45aa3e3-f7b7-4b73-b4da-14f455eaad5e)
 ![image](https://github.com/Poowd/ClassKode/assets/121615238/7f218986-2bc0-4dee-b011-9fd1989611d3)
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
+![image](https://github.com/Poowd/ClassKode/assets/121615238/910a05c7-2f3c-42b8-a14d-7e0c69583ec1)
+![image](https://github.com/Poowd/ClassKode/assets/121615238/d1c1b125-c38a-4906-bc42-254914c62c35)
+![image](https://github.com/Poowd/ClassKode/assets/121615238/39b91bff-1289-4350-aaa6-58dde2c63543)
+![image](https://github.com/Poowd/ClassKode/assets/121615238/1fb6d782-e63e-49d4-a229-e615d84594c0)
+![image](https://github.com/Poowd/ClassKode/assets/121615238/a3212f5f-e1aa-4368-a7c1-95f2554d4950)
+![image](https://github.com/Poowd/ClassKode/assets/121615238/492eb3b0-5323-4dd5-ae63-e9a3406b0df2)

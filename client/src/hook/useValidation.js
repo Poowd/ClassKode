@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import usePost from "./usePost";
 
 export default function useValidation() {
   const valid = ["is-valid", "text-success"];
@@ -89,7 +90,7 @@ export default function useValidation() {
     return true;
   }
 
-  function ValidateID(data, min_len, max_len, min_rng, max_rng) {
+  function ValidateID(data, min_len, max_len, min_rng, max_rng, duplicate) {
     if (data === "") {
       return [
         {
@@ -102,7 +103,8 @@ export default function useValidation() {
     if (
       Length(data, min_len, max_len) === true &&
       Range(data, min_rng, max_rng) === true &&
-      Numerical(data)
+      Numerical(data) &&
+      duplicate
     ) {
       return [
         {
@@ -149,7 +151,7 @@ export default function useValidation() {
     ];
   }
 
-  function ValidateEmail(data, min_len, max_len) {
+  function ValidateEmail(data, min_len, max_len, duplicate) {
     if (data === "") {
       return [
         {
@@ -159,7 +161,7 @@ export default function useValidation() {
         },
       ];
     }
-    if (Length(data, min_len, max_len) && InvalidCharacter(data)) {
+    if (Length(data, min_len, max_len) && duplicate) {
       return [
         {
           Result: true,
@@ -177,7 +179,7 @@ export default function useValidation() {
     ];
   }
 
-  function ValidatePhone(data, min_len, max_len) {
+  function ValidatePhone(data, min_len, max_len, duplicate) {
     if (data === "") {
       return [
         {
@@ -187,7 +189,7 @@ export default function useValidation() {
         },
       ];
     }
-    if (Length(data, min_len, max_len) && Numerical(data)) {
+    if (Length(data, min_len, max_len) && Numerical(data) && duplicate) {
       return [
         {
           Result: true,
@@ -205,7 +207,7 @@ export default function useValidation() {
     ];
   }
 
-  function ValidateLink(data, min_len, max_len) {
+  function ValidateLink(data, min_len, max_len, duplicate) {
     if (data === "") {
       return [
         {
@@ -215,7 +217,7 @@ export default function useValidation() {
         },
       ];
     }
-    if (Length(data, min_len, max_len)) {
+    if (Length(data, min_len, max_len) && duplicate) {
       return [
         {
           Result: true,
@@ -233,5 +235,40 @@ export default function useValidation() {
     ];
   }
 
-  return [ValidateID, ValidateName, ValidateEmail, ValidatePhone, ValidateLink];
+  function ValidateCode(data, min_len, max_len, code, input) {
+    if (data === "") {
+      return [
+        {
+          Result: null,
+          State: "",
+          Message: "",
+        },
+      ];
+    }
+    if (Length(data, min_len, max_len) && code === input) {
+      return [
+        {
+          Result: true,
+          State: valid,
+          Message: message[0],
+        },
+      ];
+    }
+    return [
+      {
+        Result: false,
+        State: invalid,
+        Message: message[1],
+      },
+    ];
+  }
+
+  return [
+    ValidateID,
+    ValidateName,
+    ValidateEmail,
+    ValidatePhone,
+    ValidateLink,
+    ValidateCode,
+  ];
 }

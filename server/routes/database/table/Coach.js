@@ -56,7 +56,7 @@ app.post("/add-new-coach", (req, res) => {
   ];
 
   db.query(sql, [values], (err, data) => {
-    if (err) return res.json({ Message: "Server Sided Error" });
+    if (err) return res.json({ Message: err });
     return res.json(data);
   });
 });

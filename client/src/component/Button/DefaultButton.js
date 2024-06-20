@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export class DefaultButton extends React.Component {
   render() {
@@ -28,9 +29,7 @@ export class DefaultButton extends React.Component {
           {this.props.icon}
           {this.props.text != null ? (
             <small>
-              <span className="fw-semibold">
-                {this.props.text}
-              </span>
+              <span className="fw-semibold">{this.props.text}</span>
             </small>
           ) : (
             ""

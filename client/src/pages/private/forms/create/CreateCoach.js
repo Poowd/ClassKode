@@ -18,10 +18,6 @@ import useValidation from "../../../../hook/useValidation";
 
 export function CreateCoach() {
   const navigate = useNavigate();
-  const [department, setDepartment, getDepartment] = usePost();
-  const [coach, setCoach, getCoach] = usePost();
-  const [ValidateID, ValidateName, ValidateEmail, ValidatePhone, ValidateLink] =
-    useValidation();
 
   const [data, setData] = useState({
     SCHLID: "",
@@ -35,6 +31,20 @@ export function CreateCoach() {
     Facebook: "",
   });
 
+  const [department, setDepartment, getDepartment] = usePost();
+  const [coaches, setCoaches, getCoaches] = usePost();
+  const [coach, setCoach, getCoach] = usePost();
+  const [
+    ValidateID,
+    ValidateName,
+    ValidateEmail,
+    ValidatePhone,
+    ValidateLink,
+    ValidateCode,
+  ] = useValidation();
+
+  const [dataChange] = useHandleChange(setData);
+
   const [validation, setValidation] = useState({
     SCHLID: ValidateID(data.SCHLID),
     FirstName: ValidateName(data.FirstName),
@@ -45,31 +55,84 @@ export function CreateCoach() {
     Facebook: ValidateLink(data.Facebook),
   });
 
-  const [dataChange] = useHandleChange(setData);
   useEffect(() => {
     getDepartment("department");
+    getCoaches("coach");
   }, [department]);
 
   useEffect(() => {
     setValidation({
-      SCHLID: ValidateID(data.SCHLID, 11, 11, 2000000000, 3000000000),
+      SCHLID: ValidateID(
+        data.SCHLID,
+        11,
+        11,
+        2000000000,
+        3000000000,
+        schl_dupe()
+      ),
       FirstName: ValidateName(data.FirstName, 2, 100),
       MiddleInitial: ValidateName(data.MiddleInitial, 1, 100),
       LastName: ValidateName(data.LastName, 2, 100),
-      Email: ValidateEmail(data.Email, 2, 100),
-      Phone: ValidatePhone(data.Phone, 11, 11),
-      Facebook: ValidateLink(data.Facebook, 2, 100),
+      Email: ValidateEmail(data.Email, 2, 100, email_dupe()),
+      Phone: ValidatePhone(data.Phone, 11, 11, phone_dupe()),
+      Facebook: ValidateLink(data.Facebook, 2, 100, facebook_dupe()),
     });
   }, [data]);
+
+  function schl_dupe() {
+    for (var i = 0; i < coaches.length; i++) {
+      if (
+        coaches[i].SCHLID === data.SCHLID &&
+        coaches[i].CCHID !== data.CCHID
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function email_dupe() {
+    for (var i = 0; i < coaches.length; i++) {
+      if (coaches[i].Email === data.Email) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function phone_dupe() {
+    for (var i = 0; i < coaches.length; i++) {
+      if (coaches[i].Phone === data.Phone) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function facebook_dupe() {
+    for (var i = 0; i < coaches.length; i++) {
+      if (coaches[i].Facebook === data.Facebook) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (true) {
+        if (
+          validation.SCHLID[0].Result &&
+          validation.FirstName[0].Result &&
+          validation.MiddleInitial[0].Result &&
+          validation.LastName[0].Result &&
+          validation.Email[0].Result &&
+          validation.Phone[0].Result &&
+          validation.Facebook[0].Result
+        ) {
           getCoach("add-new-coach", data);
           navigate("/institution/coach");
-        } else {
         }
       }}
     >
@@ -82,9 +145,7 @@ export function CreateCoach() {
               class="btn-outline-secondary"
               type="button"
               icon={<IoMdArrowRoundBack />}
-              function={() => {
-                navigate("/institution/coach");
-              }}
+              function={() => navigate(-1)}
             />
             <DefaultButton
               class="btn-success px-2"
@@ -262,41 +323,7 @@ export function CreateCoach() {
             />
           </>
         }
-        additional={
-          <main className="px-3">
-            <h6>Errors:</h6>
-            <small>
-              <h6>ID</h6>
-            </small>
-            <p className="p-0 m-0">
-              {/* <span className="d-block">
-                <span>is Numeric: </span>
-                {a_num.Message}
-              </span>
-              <span className="d-block">
-                <span>is valid phone: </span>
-                {a_phn.Message}
-              </span> */}
-            </p>
-            {/* <h6>{data.SCHLID}</h6>
-            <h6>{data.FirstName}</h6>
-            <h6>{data.MiddleInitial}</h6>
-            <h6>{data.LastName}</h6>
-            <h6>{data.Gender}</h6>
-            <h6>
-              {department.map((option, i) => (
-                <>
-                  {option.DPTID === data.Department
-                    ? option.Department
-                    : ""}
-                </>
-              ))}
-            </h6>
-            <h6>{data.Email}</h6>
-            <h6>{data.Phone}</h6>
-            <h6>{data.Facebook}</h6> */}
-          </main>
-        }
+        additional={<></>}
       />
     </form>
   );

@@ -23,7 +23,9 @@ export class FileMaintainanceTemplate extends React.Component {
                     {this.props.control}
                   </div>
                 </section>
-                <section className="h-100">{this.props.list}</section>
+                <section className="px-1">
+                  {this.props.list}
+                </section>
               </main>
             </section>
           </main>

@@ -4,7 +4,10 @@ export class FormInput extends React.Component {
   render() {
     return (
       <div className="my-2">
-        <label for={this.props.id}>
+        <label
+          for={this.props.id}
+          className={this.props.hidden ? "d-none" : "d-block"}
+        >
           <small>
             <span className="fw-semibold">{this.props.label}</span>
           </small>

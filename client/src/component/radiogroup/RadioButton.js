@@ -12,6 +12,7 @@ export class RadioButton extends React.Component {
           onChange={this.props.trigger}
           value={this.props.option}
           id={this.props.id}
+          required={this.props.required}
         />
         <label class="form-check-label" for={this.props.id}>
           {this.props.label}

@@ -20,7 +20,7 @@ export class FormsTemplate extends React.Component {
             </section>
             <section className="col-lg-9 p-2 h-100">
               <main className="h-100 position-relative">
-                <section className="h-100">{this.props.content}</section>
+                <section className="">{this.props.content}</section>
               </main>
             </section>
           </main>

@@ -5,7 +5,7 @@ import usePost from "../../../hook/usePost";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { GrView } from "react-icons/gr";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DefaultText } from "../../../component/input/DefaultInput";
 import { CreateCoach } from "./create/CreateCoach";
 import { ViewCoach } from "./view/ViewCoach";
@@ -14,8 +14,11 @@ import { CreateDepartment } from "./create/CreateDepartment";
 import { ViewDepartment } from "./view/ViewDepartment";
 import { ViewProgram } from "./view/ViewProgram";
 import { ViewCourse } from "./view/ViewCourse";
+import { ViewSection } from "./view/ViewSection";
+import { ViewRoom } from "./view/ViewRoom";
 
 export function DataController() {
+  const navigate = useNavigate();
   const params = useParams();
   const [getdata, setGetData, getServer] = useGet();
   const [postdata, setPostData, postServer] = usePost();
@@ -37,10 +40,10 @@ export function DataController() {
             ) : params.form === "edit" ? (
               <EditCoach />
             ) : (
-              ""
+              () => navigate(-1)
             )
           ) : (
-            ""
+            () => navigate(-1)
           )}
           {params.module === "course" ? (
             params.form === "create" ? (
@@ -50,10 +53,10 @@ export function DataController() {
             ) : params.form === "edit" ? (
               <EditCoach />
             ) : (
-              ""
+              () => navigate(-1)
             )
           ) : (
-            ""
+            () => navigate(-1)
           )}
           {params.module === "department" ? (
             params.form === "create" ? (
@@ -63,10 +66,10 @@ export function DataController() {
             ) : params.form === "edit" ? (
               <EditCoach />
             ) : (
-              ""
+              () => navigate(-1)
             )
           ) : (
-            ""
+            () => navigate(-1)
           )}
           {params.module === "program" ? (
             params.form === "create" ? (
@@ -78,40 +81,40 @@ export function DataController() {
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (
-              ""
+              () => navigate(-1)
             )
           ) : (
-            ""
+            () => navigate(-1)
           )}
           {params.module === "room" ? (
             params.form === "create" ? (
               <h1>Create</h1>
             ) : params.form === "view" ? (
-              <h1>View</h1>
+              <ViewRoom />
             ) : params.form === "edit" ? (
               <h1>Edit</h1>
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (
-              ""
+              () => navigate(-1)
             )
           ) : (
-            ""
+            () => navigate(-1)
           )}
           {params.module === "section" ? (
             params.form === "create" ? (
               <h1>Create</h1>
             ) : params.form === "view" ? (
-              <h1>View</h1>
+              <ViewSection />
             ) : params.form === "edit" ? (
               <h1>Edit</h1>
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (
-              ""
+              () => navigate(-1)
             )
           ) : (
-            ""
+            () => navigate(-1)
           )}
         </main>
       }

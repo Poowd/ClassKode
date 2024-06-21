@@ -19,7 +19,7 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 
-export function ViewCourse() {
+export function ViewSection() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
@@ -43,7 +43,7 @@ export function ViewCourse() {
 
   const [getdata, setGetData, getServer] = useGet();
 
-  const [course, setCourse, getCourse] = usePost();
+  const [section, setSection, getSection] = usePost();
 
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
@@ -69,8 +69,8 @@ export function ViewCourse() {
   return (
     <>
       <DataControllerTemplate
-        title={"View A Course"}
-        description={"This module views a course"}
+        title={"View A Section"}
+        description={"This module views a section"}
         control={
           <>
             <DefaultButton
@@ -96,7 +96,9 @@ export function ViewCourse() {
                     <span>Type the code </span>
                     <span className="fw-bold text-black">{getdata}</span>
                     <span> to archive </span>
-                    <span className="fw-bold text-black">{data[0].Course}</span>
+                    <span className="fw-bold text-black">
+                      {data[0].Section}
+                    </span>
                   </>
                 )
               }
@@ -110,7 +112,7 @@ export function ViewCourse() {
               <main key={i} className="px-0 py-3 m-0">
                 <header>
                   <h1>
-                    <span>{item.Course}</span>
+                    <span>{item.Section}</span>
                   </h1>
                 </header>
 
@@ -118,16 +120,24 @@ export function ViewCourse() {
                   content={
                     <>
                       <DataControlViewItem
-                        label={"Course Code"}
-                        content={item.CRS_Code}
+                        label={"Program"}
+                        content={item.Program}
                       />
                       <DataControlViewItem
                         label={"Level"}
                         content={item.AcademicLevel}
                       />
                       <DataControlViewItem
+                        label={"Year Level"}
+                        content={item.YearLevel}
+                      />
+                      <DataControlViewItem
+                        label={"Semester"}
+                        content={item.Semester}
+                      />
+                      <DataControlViewItem
                         label={"Created"}
-                        content={item.CRS_Created}
+                        content={item.SCT_Created}
                       />
                     </>
                   }
@@ -158,8 +168,8 @@ export function ViewCourse() {
         }
         trigger={() =>
           ArchiveEntry(
-            "archive-existing-course",
-            getCourse,
+            "archive-existing-section",
+            getSection,
             getdata,
             confirmCode.Confirm,
             data[0]

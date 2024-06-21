@@ -81,7 +81,6 @@ export default function useValidation() {
     if (Math.floor(parseFloat(data)) > max) {
       return false;
     }
-
     return true;
   }
 
@@ -131,7 +130,13 @@ export default function useValidation() {
       Length(data, min_len, max_len) === true &&
       Range(data, min_rng, max_rng) === true &&
       Numerical(data) &&
-      duplicate
+      duplicate &&
+      InvalidCharacter(
+        data,
+        "!@#$%^&*()_+-=~`{}|:<>?[];',./'" +
+          character.uppercase +
+          character.lowercase
+      )
     ) {
       return [
         {
@@ -160,10 +165,7 @@ export default function useValidation() {
         },
       ];
     }
-    if (
-      Length(data, min_len, max_len) === true &&
-      duplicate
-    ) {
+    if (Length(data, min_len, max_len) === true && duplicate) {
       return [
         {
           Result: true,
@@ -296,7 +298,7 @@ export default function useValidation() {
     ];
   }
 
-  function ValidateCode(data, min_len, max_len, code, input) {
+  function ValidateCode(data, min_len, max_len, code) {
     if (data === "") {
       return [
         {
@@ -306,7 +308,7 @@ export default function useValidation() {
         },
       ];
     }
-    if (Length(data, min_len, max_len) && code === input) {
+    if (Length(data, min_len, max_len) && code === data) {
       return [
         {
           Result: true,
@@ -324,7 +326,18 @@ export default function useValidation() {
     ];
   }
 
+  function Base() {
+    return [
+      {
+        Result: false,
+        State: "",
+        Message: "",
+      },
+    ];
+  }
+
   return [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,

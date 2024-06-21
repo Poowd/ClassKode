@@ -17,6 +17,7 @@ import useGet from "../../../../hook/useGet";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
+import useArchiveEntry from "../../../../hook/useArchiveEntry";
 
 export function ViewProgram() {
   const navigate = useNavigate();
@@ -42,15 +43,11 @@ export function ViewProgram() {
 
   const [getdata, setGetData, getServer] = useGet();
 
-  const [coach, setCoach, getCoach] = usePost();
+  const [program, setProgram, getProgram] = usePost();
 
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [dataChange] = useHandleChange(setConfirmCode);
-
-  useEffect(() => {
-    getServer("random-code-generator");
-  }, []);
 
   useEffect(() => {
     setValidation({
@@ -64,13 +61,10 @@ export function ViewProgram() {
     });
   }, [confirmCode]);
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    if (getdata === confirmCode.Confirm) {
-      getCoach("archive-existing-coach", data[0]);
-      navigate(-1);
-    }
-  };
+  useEffect(() => {
+    getServer("random-code-generator");
+  }, []);
+  const [ArchiveEntry] = useArchiveEntry();
 
   return (
     <>
@@ -103,7 +97,7 @@ export function ViewProgram() {
                     <span className="fw-bold text-black">{getdata}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">
-                      {data[0].FirstName.concat(" ", data[0].LastName)}
+                      {data[0].Program}
                     </span>
                   </>
                 )
@@ -172,7 +166,15 @@ export function ViewProgram() {
             />
           </>
         }
-        trigger={formSubmit}
+        trigger={() =>
+          ArchiveEntry(
+            "archive-existing-program",
+            getProgram,
+            getdata,
+            confirmCode.Confirm,
+            data[0]
+          )
+        }
       />
     </>
   );

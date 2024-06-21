@@ -16,6 +16,7 @@ import { PassiveModal } from "../../../../component/modal/PassiveModal";
 import useGet from "../../../../hook/useGet";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
+import useArchiveEntry from "../../../../hook/useArchiveEntry";
 
 export function ViewDepartment() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export function ViewDepartment() {
 
   const [getdata, setGetData, getServer] = useGet();
 
-  const [coach, setCoach, getCoach] = usePost();
+  const [department, setDepartment, getDepartment] = usePost();
   const [coachstatus, setCoachStatus, getCoachStatus] = usePost();
   const [coachspecialization, setCoachSpecilization, getCoachSpecilization] =
     usePost();
@@ -59,7 +60,6 @@ export function ViewDepartment() {
       SCHLID: data[0].SCHLID,
       ACY_Code: "AY2425",
     });
-    getServer("random-code-generator");
   }, []);
 
   useEffect(() => {
@@ -74,13 +74,10 @@ export function ViewDepartment() {
     });
   }, [confirmCode]);
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    if (getdata === confirmCode.Confirm) {
-      getCoach("archive-existing-coach", data[0]);
-      navigate(-1);
-    }
-  };
+  useEffect(() => {
+    getServer("random-code-generator");
+  }, []);
+  const [ArchiveEntry] = useArchiveEntry();
 
   return (
     <>
@@ -186,7 +183,15 @@ export function ViewDepartment() {
             />
           </>
         }
-        trigger={formSubmit}
+        trigger={() =>
+          ArchiveEntry(
+            "archive-existing-department",
+            getDepartment,
+            getdata,
+            confirmCode.Confirm,
+            data[0]
+          )
+        }
       />
     </>
   );

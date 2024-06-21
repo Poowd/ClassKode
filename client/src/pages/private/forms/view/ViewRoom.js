@@ -19,7 +19,7 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 
-export function ViewCourse() {
+export function ViewRoom() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
@@ -43,7 +43,7 @@ export function ViewCourse() {
 
   const [getdata, setGetData, getServer] = useGet();
 
-  const [course, setCourse, getCourse] = usePost();
+  const [room, setRoom, getRoom] = usePost();
 
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
@@ -69,8 +69,8 @@ export function ViewCourse() {
   return (
     <>
       <DataControllerTemplate
-        title={"View A Course"}
-        description={"This module views a course"}
+        title={"View A Room"}
+        description={"This module views a room"}
         control={
           <>
             <DefaultButton
@@ -96,7 +96,7 @@ export function ViewCourse() {
                     <span>Type the code </span>
                     <span className="fw-bold text-black">{getdata}</span>
                     <span> to archive </span>
-                    <span className="fw-bold text-black">{data[0].Course}</span>
+                    <span className="fw-bold text-black">{data[0].Room}</span>
                   </>
                 )
               }
@@ -110,7 +110,7 @@ export function ViewCourse() {
               <main key={i} className="px-0 py-3 m-0">
                 <header>
                   <h1>
-                    <span>{item.Course}</span>
+                    <span>{item.Room}</span>
                   </h1>
                 </header>
 
@@ -118,16 +118,24 @@ export function ViewCourse() {
                   content={
                     <>
                       <DataControlViewItem
-                        label={"Course Code"}
-                        content={item.CRS_Code}
+                        label={"Capacity"}
+                        content={item.Capacity}
                       />
                       <DataControlViewItem
-                        label={"Level"}
-                        content={item.AcademicLevel}
+                        label={"Facility"}
+                        content={item.Facility}
+                      />
+                      <DataControlViewItem
+                        label={"Building"}
+                        content={item.Building}
+                      />
+                      <DataControlViewItem
+                        label={"Floor"}
+                        content={item.Floor}
                       />
                       <DataControlViewItem
                         label={"Created"}
-                        content={item.CRS_Created}
+                        content={item.ROM_Created}
                       />
                     </>
                   }
@@ -158,8 +166,8 @@ export function ViewCourse() {
         }
         trigger={() =>
           ArchiveEntry(
-            "archive-existing-course",
-            getCourse,
+            "archive-existing-room",
+            getRoom,
             getdata,
             confirmCode.Confirm,
             data[0]

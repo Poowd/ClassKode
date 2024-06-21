@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import useGet from "../../../hook/useGet";
 import usePost from "../../../hook/usePost";
@@ -6,16 +6,23 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { GrView } from "react-icons/gr";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useDatabase from "../../../hook/useDatabase";
 
 export function Course() {
-  const [getdata, setGetData, getServer] = useGet();
-  const [postdata, setPostData, postServer] = usePost();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState([]);
+  const [code, setCode] = useState("");
+  const [get, post] = useDatabase();
 
   useEffect(() => {
-    postServer("course");
-    getServer("random-code-generator");
-  }, [postdata]);
+    post("course", data, setData);
+  }, [data]);
+
+  useEffect(() => {
+    get("random-code-generator", setCode);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
@@ -27,7 +34,7 @@ export function Course() {
           </Link>
         </>
       }
-      list={postdata.map((item, i) => (
+      list={data.map((item, i) => (
         <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
           <section className="col-2 p-0 m-0">
             <h6 className="p-0 m-0">{item.CRS_Code}</h6>
@@ -45,7 +52,7 @@ export function Course() {
               <p className="p-0 m-0 text-end">{item.AcademicLevel}</p>
               <small>
                 <p className="p-0 m-0 text-secondary fst-italic">
-                  <span>a</span>
+                  <span></span>
                 </p>
               </small>
             </div>

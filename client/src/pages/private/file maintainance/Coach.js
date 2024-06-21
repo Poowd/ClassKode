@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import useGet from "../../../hook/useGet";
 import usePost from "../../../hook/usePost";
@@ -10,17 +10,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
 import { FaFilter } from "react-icons/fa6";
+import useDatabase from "../../../hook/useDatabase";
 
 export function Coach() {
   const navigate = useNavigate();
-  const [getdata, setGetData, getServer] = useGet();
 
-  const [postdata, setPostData, postServer] = usePost();
+  const [data, setData] = useState([]);
+  const [code, setCode] = useState("");
+  const [get, post] = useDatabase();
 
   useEffect(() => {
-    postServer("coach");
-    getServer("random-code-generator");
-  }, [postdata]);
+    post("coach", data, setData);
+  }, [data]);
+
+  useEffect(() => {
+    get("random-code-generator", setCode);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
@@ -50,7 +55,7 @@ export function Coach() {
           />
         </>
       }
-      list={postdata.map((item, i) => (
+      list={data.map((item, i) => (
         <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
           <section className="col-2 p-0 m-0">
             <h6 className="p-0 m-0">{item.SCHLID}</h6>

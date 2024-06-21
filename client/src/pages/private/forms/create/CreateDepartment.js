@@ -15,20 +15,14 @@ import { SelectButtonItem } from "../../../../component/dropdown/select/SelectBu
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
+import useValidate from "../../../../hook/useValidate";
+import useDatabase from "../../../../hook/useDatabase";
 
 export function CreateDepartment() {
   const navigate = useNavigate();
-
-  const [data, setData] = useState({
-    DPT_Code: "",
-    Department: "",
-    DPT_Abbreviation: "",
-    DPT_Description: "",
-  });
-
-  const [department, setDepartment, getDepartment] = usePost();
-  const [coach, setCoach, getCoach] = usePost();
+  const [get, post] = useDatabase();
   const [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,
@@ -39,26 +33,36 @@ export function CreateDepartment() {
     ValidateCodeID,
   ] = useValidation();
 
-  const [dataChange] = useHandleChange(setData);
-
+  const [department, setDepartment] = useState([]);
+  const [data, setData] = useState({
+    DPT_Code: "",
+    Department: "",
+    DPT_Abbreviation: "",
+    DPT_Description: "",
+  });
   const [validation, setValidation] = useState({
-    DPT_Code: ValidateCodeID(data.DPT_Code),
-    Department: ValidateName(data.Department),
-    DPT_Abbreviation: ValidateName(data.DPT_Abbreviation),
-    DPT_Description: ValidateName(data.DPT_Description),
+    DPT_Code: Base(data.DPT_Code),
+    Department: Base(data.Department),
+    DPT_Abbreviation: Base(data.DPT_Abbreviation),
+    DPT_Description: Base(data.DPT_Description),
   });
 
+  const [dataChange] = useHandleChange(setData);
+  const [ValidateCoach, ValidateDepartment] = useValidate();
+
   useEffect(() => {
-    getDepartment("department");
+    post("department", department, setDepartment);
   }, [department]);
 
   useEffect(() => {
-    setValidation({
-      DPT_Code: ValidateCodeID(data.DPT_Code, 3, 25, dpt_dupe()),
-      Department: ValidateName(data.Department, 5, 100),
-      DPT_Abbreviation: ValidateName(data.DPT_Abbreviation, 2, 25),
-      DPT_Description: ValidateName(data.DPT_Description, 0, 255),
-    });
+    ValidateDepartment(
+      data.DPT_Code,
+      data.Department,
+      data.DPT_Abbreviation,
+      data.DPT_Description,
+      dpt_dupe(),
+      setValidation
+    );
   }, [data]);
 
   function dpt_dupe() {
@@ -71,7 +75,6 @@ export function CreateDepartment() {
           return false;
         }
       }
-    } else {
     }
     return true;
   }
@@ -81,12 +84,11 @@ export function CreateDepartment() {
       onSubmit={(e) => {
         e.preventDefault();
         if (
-          ValidateCodeID(data.DPT_Code, 10, 25, dpt_dupe()) &&
-          ValidateName(data.Department, 5, 100) &&
-          ValidateName(data.DPT_Abbreviation, 2, 25) &&
-          ValidateName(data.DPT_Description, 0, 255)
+          validation.DPT_Code[0].Result &&
+          validation.Department[0].Result &&
+          validation.DPT_Abbreviation[0].Result
         ) {
-          getCoach("add-new-department", data);
+          post("add-new-department", data, setData);
           navigate(-1);
         }
       }}

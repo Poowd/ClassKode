@@ -15,10 +15,26 @@ import { SelectButtonItem } from "../../../../component/dropdown/select/SelectBu
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
+import useDatabase from "../../../../hook/useDatabase";
+import useValidate from "../../../../hook/useValidate";
 
 export function CreateCoach() {
   const navigate = useNavigate();
+  const [get, post] = useDatabase();
+  const [
+    Base,
+    ValidateID,
+    ValidateName,
+    ValidateEmail,
+    ValidatePhone,
+    ValidateLink,
+    ValidateCode,
+    ValidateEmpty,
+    ValidateCodeID,
+  ] = useValidation();
 
+  const [department, setDepartment] = useState([]);
+  const [coach, setCoach] = useState([]);
   const [data, setData] = useState({
     SCHLID: "",
     FirstName: "",
@@ -30,64 +46,46 @@ export function CreateCoach() {
     Phone: "",
     Facebook: "",
   });
-
-  const [department, setDepartment, getDepartment] = usePost();
-  const [coaches, setCoaches, getCoaches] = usePost();
-  const [coach, setCoach, getCoach] = usePost();
-  const [
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-  ] = useValidation();
-
-  const [dataChange] = useHandleChange(setData);
-
   const [validation, setValidation] = useState({
-    SCHLID: ValidateID(data.SCHLID),
-    FirstName: ValidateName(data.FirstName),
-    MiddleInitial: ValidateName(data.MiddleInitial),
-    LastName: ValidateName(data.LastName),
-    Gender: ValidateEmpty(data.Gender),
-    Email: ValidateEmail(data.Email),
-    Phone: ValidatePhone(data.Phone),
-    Facebook: ValidateLink(data.Facebook),
+    SCHLID: Base(data.SCHLID),
+    FirstName: Base(data.FirstName),
+    MiddleInitial: Base(data.MiddleInitial),
+    LastName: Base(data.LastName),
+    Gender: Base(data.Gender),
+    Email: Base(data.Email),
+    Phone: Base(data.Phone),
+    Facebook: Base(data.Facebook),
   });
 
-  useEffect(() => {
-    getDepartment("department");
-    getCoaches("coach");
-  }, [department]);
+  const [dataChange] = useHandleChange(setData);
+  const [ValidateCoach, ValidateDepartment] = useValidate();
 
   useEffect(() => {
-    setValidation({
-      SCHLID: ValidateID(
-        data.SCHLID,
-        11,
-        11,
-        2000000000,
-        3000000000,
-        schl_dupe()
-      ),
-      FirstName: ValidateName(data.FirstName, 2, 100),
-      MiddleInitial: ValidateName(data.MiddleInitial, 1, 100),
-      LastName: ValidateName(data.LastName, 2, 100),
-      Gender: ValidateEmpty(data.Gender),
-      Email: ValidateEmail(data.Email, 2, 100, email_dupe()),
-      Phone: ValidatePhone(data.Phone, 11, 11, phone_dupe()),
-      Facebook: ValidateLink(data.Facebook, 2, 100, facebook_dupe()),
-    });
+    post("department", department, setDepartment);
+    post("coach", coach, setCoach);
+  }, [coach, department]);
+
+  useEffect(() => {
+    ValidateCoach(
+      data.SCHLID,
+      data.FirstName,
+      data.MiddleInitial,
+      data.LastName,
+      data.Gender,
+      data.Email,
+      data.Phone,
+      data.Facebook,
+      schl_dupe(),
+      email_dupe(),
+      phone_dupe(),
+      facebook_dupe(),
+      setValidation
+    );
   }, [data]);
 
   function schl_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (
-        coaches[i].SCHLID === data.SCHLID &&
-        coaches[i].CCHID !== data.CCHID
-      ) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === data.SCHLID && coach[i].CCHID !== data.CCHID) {
         return false;
       }
     }
@@ -95,8 +93,8 @@ export function CreateCoach() {
   }
 
   function email_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].Email === data.Email) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Email === data.Email) {
         return false;
       }
     }
@@ -104,8 +102,8 @@ export function CreateCoach() {
   }
 
   function phone_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].Phone === data.Phone) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Phone === data.Phone) {
         return false;
       }
     }
@@ -113,8 +111,8 @@ export function CreateCoach() {
   }
 
   function facebook_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].Facebook === data.Facebook) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Facebook === data.Facebook) {
         return false;
       }
     }
@@ -135,7 +133,7 @@ export function CreateCoach() {
           validation.Phone[0].Result &&
           validation.Facebook[0].Result
         ) {
-          getCoach("add-new-coach", data);
+          post("add-new-coach", data, setData);
           navigate("/institution/coach");
         }
       }}

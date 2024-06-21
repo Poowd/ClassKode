@@ -17,6 +17,7 @@ import useGet from "../../../../hook/useGet";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
+import useArchiveEntry from "../../../../hook/useArchiveEntry";
 
 export function ViewCoach() {
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ export function ViewCoach() {
     ValidatePhone,
     ValidateLink,
     ValidateCode,
+    ValidateEmpty,
+    ValidateCodeID,
   ] = useValidation();
 
   const [data, setData] = useState([state.data]);
@@ -55,28 +58,18 @@ export function ViewCoach() {
     getAssignment("coach-assignment", { SCHLID: data[0].SCHLID });
     getSpecilization("coach-specialization", { SCHLID: data[0].SCHLID });
     getAcademicYear("academicyear-current");
-    getServer("random-code-generator");
   }, [assigment]);
 
   useEffect(() => {
     setValidation({
-      Confirm: ValidateCode(
-        confirmCode.Confirm,
-        4,
-        4,
-        getdata,
-        confirmCode.Confirm
-      ),
+      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, getdata),
     });
   }, [confirmCode]);
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    if (getdata === confirmCode.Confirm) {
-      getCoach("archive-existing-coach", data[0]);
-      navigate(-1);
-    }
-  };
+  useEffect(() => {
+    getServer("random-code-generator");
+  }, []);
+  const [ArchiveEntry] = useArchiveEntry();
 
   return (
     <>
@@ -250,7 +243,15 @@ export function ViewCoach() {
             />
           </>
         }
-        trigger={formSubmit}
+        trigger={() =>
+          ArchiveEntry(
+            "archive-existing-coach",
+            getCoach,
+            getdata,
+            confirmCode.Confirm,
+            data[0]
+          )
+        }
       />
     </>
   );

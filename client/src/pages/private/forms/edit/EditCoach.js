@@ -21,6 +21,15 @@ export function EditCoach() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
+  const [
+    ValidateID,
+    ValidateName,
+    ValidateEmail,
+    ValidatePhone,
+    ValidateLink,
+    ValidateCode,
+  ] = useValidation();
+
   const [data, setData] = useState({
     CCHID: state.data[0].CCHID,
     SCHLID: state.data[0].SCHLID,
@@ -46,15 +55,6 @@ export function EditCoach() {
   const [coach, setCoach, getCoach] = usePost();
   const [coaches, setCoaches, getCoaches] = usePost();
   const [postdata, setPostData, postServer] = usePost();
-
-  const [
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-  ] = useValidation();
 
   const [dataChange] = useHandleChange(setData);
 

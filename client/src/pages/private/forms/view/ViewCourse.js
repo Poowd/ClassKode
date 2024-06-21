@@ -18,7 +18,7 @@ import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 
-export function ViewCoach() {
+export function ViewCourse() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
@@ -43,20 +43,14 @@ export function ViewCoach() {
   const [getdata, setGetData, getServer] = useGet();
 
   const [coach, setCoach, getCoach] = usePost();
-  const [assigment, setAssignment, getAssignment] = usePost();
-  const [specialization, setSpecialization, getSpecilization] = usePost();
-  const [academicyear, setAcademicYear, getAcademicYear] = usePost();
 
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    getAssignment("coach-assignment", { SCHLID: data[0].SCHLID });
-    getSpecilization("coach-specialization", { SCHLID: data[0].SCHLID });
-    getAcademicYear("academicyear-current");
     getServer("random-code-generator");
-  }, [assigment]);
+  }, []);
 
   useEffect(() => {
     setValidation({
@@ -81,8 +75,8 @@ export function ViewCoach() {
   return (
     <>
       <DataControllerTemplate
-        title={"View A Coach"}
-        description={"This module views a coach"}
+        title={"View A Program"}
+        description={"This module views a program"}
         control={
           <>
             <DefaultButton
@@ -124,14 +118,7 @@ export function ViewCoach() {
               <main key={i} className="px-0 py-3 m-0">
                 <header>
                   <h1>
-                    <span>{item.Gender === "Male" ? "Mr. " : "Ms. "}</span>
-                    <span>{item.FirstName}</span>
-                    <span>
-                      {item.MiddleInitial !== (null || "")
-                        ? " " + item.MiddleInitial + ". "
-                        : " "}
-                    </span>
-                    <span>{item.LastName}</span>
+                    <span>{item.Course}</span>
                   </h1>
                 </header>
 
@@ -139,56 +126,16 @@ export function ViewCoach() {
                   content={
                     <>
                       <DataControlViewItem
-                        label={"School ID"}
-                        content={item.SCHLID}
+                        label={"Course Code"}
+                        content={item.CRS_Code}
                       />
                       <DataControlViewItem
-                        label={"Department"}
-                        content={item.Department}
-                      />
-                      <DataControlViewItem
-                        label={"Contacts"}
-                        content={
-                          <>
-                            <span className="d-block">{item.Phone}</span>
-                            <span className="d-block">{item.Email}</span>
-                            <span className="d-block">
-                              <a href={item.Facebook} target="_blank">
-                                {item.Facebook}
-                              </a>
-                            </span>
-                          </>
-                        }
+                        label={"Level"}
+                        content={item.AcademicLevel}
                       />
                       <DataControlViewItem
                         label={"Created"}
-                        content={item.CCH_Created}
-                      />
-                      <DataControlViewItem
-                        label={"Status"}
-                        content={
-                          assigment.length > 0
-                            ? assigment.map((item, i) =>
-                                item.ACY_Code === academicyear[0].ACY_Code
-                                  ? item.CoachType
-                                  : "Not Available"
-                              )
-                            : "Not Available"
-                        }
-                      />
-                      <DataControlViewItem
-                        label={"Specialized Courses"}
-                        content={
-                          specialization.length > 0
-                            ? specialization.map((item, i) =>
-                                item.ACY_Code === academicyear[0].ACY_Code ? (
-                                  <span className="d-block">{item.Course}</span>
-                                ) : (
-                                  "None"
-                                )
-                              )
-                            : "None"
-                        }
+                        content={item.CRS_Created}
                       />
                     </>
                   }
@@ -197,40 +144,7 @@ export function ViewCoach() {
             ))}
           </>
         }
-        additional={
-          <>
-            <ViewCard
-              height="20vh"
-              title="Assignments"
-              content={
-                assigment.length > 0
-                  ? assigment.map((item, i) => (
-                      <li className="d-flex gap-2">
-                        <span className="fw-semibold">{item.ACY_Code}</span>
-                        <span className="">-</span>
-                        <span className="">{item.CoachType}</span>
-                      </li>
-                    ))
-                  : "None"
-              }
-            />
-            <ViewCard
-              height="20vh"
-              title="Specialized Courses"
-              content={
-                specialization.length > 0
-                  ? specialization.map((item, i) => (
-                      <li className="d-flex gap-2">
-                        <span className="fw-semibold">{item.ACY_Code}</span>
-                        <span className="">-</span>
-                        <span className="">{item.Course}</span>
-                      </li>
-                    ))
-                  : "None"
-              }
-            />
-          </>
-        }
+        additional={<></>}
       />
       <PassiveModal
         id={"Modal"}

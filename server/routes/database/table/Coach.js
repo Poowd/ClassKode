@@ -10,8 +10,16 @@ const db = mysql.createConnection({
 });
 
 app.post("/coach", (req, res) => {
-  const sql =
-    "SELECT * FROM coach INNER JOIN department ON coach.DPT_Code = department.DPT_Code WHERE coach.CCH_Status = 'ACTIVE'";
+  const sql = `
+      SELECT * 
+        FROM coach 
+          INNER JOIN department 
+            ON coach.DPT_Code = department.DPT_Code 
+          
+          WHERE coach.CCH_Status = 'ACTIVE' 
+          
+          ORDER BY CCHID ASC
+    `;
 
   db.query(sql, (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
@@ -19,21 +27,46 @@ app.post("/coach", (req, res) => {
   });
 });
 
-app.post("/coach-status", (req, res) => {
-  const sql =
-    "SELECT * FROM currentcoach INNER JOIN assignment ON currentcoach.SCHLID = assignment.SCHLID WHERE currentcoach.SCHLID = ? AND currentcoach.ACY_Code = ?";
+app.post("/coach-assignment", (req, res) => {
+  const sql = `
+      SELECT *
+        FROM assignment
+          INNER JOIN coach_type
+            ON assignment.CoachType = coach_type.CoachType
+          INNER JOIN academicyear
+            ON assignment.ACY_Code = academicyear.ACY_Code
+          
+          WHERE assignment.ASG_Status = 'ACTIVE' 
+            AND assignment.SCHLID = ?
+          
+          ORDER BY ACYID DESC
+    `;
 
-  db.query(sql, [req.body.SCHLID, req.body.ACY_Code], (err, data) => {
+  db.query(sql, [req.body.SCHLID], (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
     return res.json(data);
   });
 });
 
 app.post("/coach-specialization", (req, res) => {
-  const sql =
-    "SELECT * FROM specialization INNER JOIN course ON specialization.CRS_Code = course.CRS_Code WHERE SCHLID = ? AND ACY_Code = ?";
+  const sql = `
+      SELECT * 
+        FROM specialization 
+          INNER JOIN assignment 
+            ON specialization.SCHLID = assignment.SCHLID
+          INNER JOIN course
+            ON specialization.CRS_Code = course.CRS_Code
+          INNER JOIN academicyear
+            ON specialization.ACY_Code = academicyear.ACY_Code
+          
+          
+          WHERE specialization.SPL_Status = 'ACTIVE' 
+            AND specialization.SCHLID = ?
+          
+          ORDER BY ACYID DESC 
+    `;
 
-  db.query(sql, [req.body.SCHLID, req.body.ACY_Code], (err, data) => {
+  db.query(sql, [req.body.SCHLID], (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
     return res.json(data);
   });

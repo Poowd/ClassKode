@@ -41,6 +41,7 @@ export function CreateCoach() {
     ValidatePhone,
     ValidateLink,
     ValidateCode,
+    ValidateEmpty,
   ] = useValidation();
 
   const [dataChange] = useHandleChange(setData);
@@ -50,6 +51,7 @@ export function CreateCoach() {
     FirstName: ValidateName(data.FirstName),
     MiddleInitial: ValidateName(data.MiddleInitial),
     LastName: ValidateName(data.LastName),
+    Gender: ValidateEmpty(data.Gender),
     Email: ValidateEmail(data.Email),
     Phone: ValidatePhone(data.Phone),
     Facebook: ValidateLink(data.Facebook),
@@ -73,6 +75,7 @@ export function CreateCoach() {
       FirstName: ValidateName(data.FirstName, 2, 100),
       MiddleInitial: ValidateName(data.MiddleInitial, 1, 100),
       LastName: ValidateName(data.LastName, 2, 100),
+      Gender: ValidateEmpty(data.Gender),
       Email: ValidateEmail(data.Email, 2, 100, email_dupe()),
       Phone: ValidatePhone(data.Phone, 11, 11, phone_dupe()),
       Facebook: ValidateLink(data.Facebook, 2, 100, facebook_dupe()),
@@ -127,6 +130,7 @@ export function CreateCoach() {
           validation.FirstName[0].Result &&
           validation.MiddleInitial[0].Result &&
           validation.LastName[0].Result &&
+          validation.Gender[0].Result &&
           validation.Email[0].Result &&
           validation.Phone[0].Result &&
           validation.Facebook[0].Result

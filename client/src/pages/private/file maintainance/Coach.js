@@ -14,6 +14,7 @@ import { FaFilter } from "react-icons/fa6";
 export function Coach() {
   const navigate = useNavigate();
   const [getdata, setGetData, getServer] = useGet();
+
   const [postdata, setPostData, postServer] = usePost();
 
   useEffect(() => {
@@ -70,10 +71,10 @@ export function Coach() {
           </section>
           <section className="col-2 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <p className="p-0 m-0">Available</p>
+              <p className="p-0 m-0">{item.DPT_Abbreviation}</p>
               <small>
                 <p className="p-0 m-0 text-secondary fst-italic">
-                  <span>Last A.Y. </span>2024-2025
+                  <span>{item.Email}</span>
                 </p>
               </small>
             </div>

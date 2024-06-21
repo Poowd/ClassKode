@@ -10,6 +10,10 @@ import { DefaultText } from "../../../component/input/DefaultInput";
 import { CreateCoach } from "./create/CreateCoach";
 import { ViewCoach } from "./view/ViewCoach";
 import { EditCoach } from "./edit/EditCoach";
+import { CreateDepartment } from "./create/CreateDepartment";
+import { ViewDepartment } from "./view/ViewDepartment";
+import { ViewProgram } from "./view/ViewProgram";
+import { ViewCourse } from "./view/ViewCourse";
 
 export function DataController() {
   const params = useParams();
@@ -32,8 +36,6 @@ export function DataController() {
               <ViewCoach />
             ) : params.form === "edit" ? (
               <EditCoach />
-            ) : params.form === "archive" ? (
-              <h1>Archive</h1>
             ) : (
               ""
             )
@@ -42,13 +44,11 @@ export function DataController() {
           )}
           {params.module === "course" ? (
             params.form === "create" ? (
-              <h1>Create</h1>
+              <CreateCoach />
             ) : params.form === "view" ? (
-              <h1>View</h1>
+              <ViewCourse />
             ) : params.form === "edit" ? (
-              <h1>Edit</h1>
-            ) : params.form === "archive" ? (
-              <h1>Archive</h1>
+              <EditCoach />
             ) : (
               ""
             )
@@ -57,13 +57,11 @@ export function DataController() {
           )}
           {params.module === "department" ? (
             params.form === "create" ? (
-              <h1>Create</h1>
+              <CreateDepartment />
             ) : params.form === "view" ? (
-              <h1>View</h1>
+              <ViewDepartment />
             ) : params.form === "edit" ? (
-              <h1>Edit</h1>
-            ) : params.form === "archive" ? (
-              <h1>Archive</h1>
+              <EditCoach />
             ) : (
               ""
             )
@@ -74,7 +72,7 @@ export function DataController() {
             params.form === "create" ? (
               <h1>Create</h1>
             ) : params.form === "view" ? (
-              <h1>View</h1>
+              <ViewProgram />
             ) : params.form === "edit" ? (
               <h1>Edit</h1>
             ) : params.form === "archive" ? (

@@ -52,7 +52,10 @@ export function Department() {
           </section>
           <section className="col-1 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <Link to={"/institution/department/view/0"}>
+              <Link
+                to={"/institution/department/view/" + item.DPTID}
+                state={{ data: item }}
+              >
                 <DefaultButton class="btn-primary" icon={<GrView />} />
               </Link>
             </div>

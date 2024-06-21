@@ -3,7 +3,7 @@ import React from "react";
 export class RadioGroup extends React.Component {
   render() {
     return (
-      <div className="my-2">
+      <div className={"my-2"}>
         <label for={this.props.id}>
           <small>
             <span className="fw-semibold">{this.props.label}</span>

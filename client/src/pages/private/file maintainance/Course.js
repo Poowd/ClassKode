@@ -42,7 +42,7 @@ export function Course() {
           </section>
           <section className="col-2 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <p className="p-0 m-0 text-end">Senior High School</p>
+              <p className="p-0 m-0 text-end">{item.AcademicLevel}</p>
               <small>
                 <p className="p-0 m-0 text-secondary fst-italic">
                   <span>a</span>
@@ -52,7 +52,10 @@ export function Course() {
           </section>
           <section className="col-1 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <Link to={"/institution/course/view/0"}>
+              <Link
+                to={"/institution/course/view/" + item.CRSID}
+                state={{ data: item }}
+              >
                 <DefaultButton class="btn-primary" icon={<GrView />} />
               </Link>
             </div>

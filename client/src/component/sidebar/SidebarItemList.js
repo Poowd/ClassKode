@@ -29,14 +29,6 @@ export class SidebarItemList extends React.Component {
               <>
                 {/* Coach Course Department Program Room Section */}
                 <SidebarDropdownItem
-                  navigate={"/institution/coach"}
-                  text={"Coach"}
-                />
-                <SidebarDropdownItem
-                  navigate={"/institution/course"}
-                  text={"Course"}
-                />
-                <SidebarDropdownItem
                   navigate={"/institution/department"}
                   text={"Department"}
                 />
@@ -45,12 +37,20 @@ export class SidebarItemList extends React.Component {
                   text={"Program"}
                 />
                 <SidebarDropdownItem
-                  navigate={"/institution/room"}
-                  text={"Room"}
+                  navigate={"/institution/course"}
+                  text={"Course"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/coach"}
+                  text={"Coach"}
                 />
                 <SidebarDropdownItem
                   navigate={"/institution/section"}
                   text={"Section"}
+                />
+                <SidebarDropdownItem
+                  navigate={"/institution/room"}
+                  text={"Room"}
                 />
               </>
             }

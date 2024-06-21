@@ -148,6 +148,8 @@ import Course from "./routes/database/table/Course.js";
 import Program from "./routes/database/table/Program.js";
 import Room from "./routes/database/table/Room.js";
 import Section from "./routes/database/table/Section.js";
+import AcademicYear from "./routes/database/table/AcademicYear.js";
+app.use(AcademicYear);
 app.use(Section);
 app.use(Room);
 app.use(Generate);

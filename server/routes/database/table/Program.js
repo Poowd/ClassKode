@@ -10,7 +10,12 @@ const db = mysql.createConnection({
 });
 
 app.post("/program", (req, res) => {
-  const sql = "SELECT * FROM program";
+  const sql = `
+      SELECT * 
+        FROM program
+          INNER JOIN department
+            ON program.DPT_Code = department.DPT_Code
+  `;
 
   db.query(sql, (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });

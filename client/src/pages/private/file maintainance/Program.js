@@ -52,7 +52,10 @@ export function Program() {
           </section>
           <section className="col-1 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <Link to={"/institution/program/view/0"}>
+              <Link
+                to={"/institution/program/view/" + item.PRGID}
+                state={{ data: item }}
+              >
                 <DefaultButton class="btn-primary" icon={<GrView />} />
               </Link>
             </div>

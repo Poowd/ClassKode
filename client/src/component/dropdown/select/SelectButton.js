@@ -3,7 +3,12 @@ import React from "react";
 export class SelectButton extends React.Component {
   render() {
     return (
-      <>
+      <div className="my-2">
+        <label for={this.props.id}>
+          <small>
+            <span className="fw-semibold">{this.props.label}</span>
+          </small>
+        </label>
         <select
           class={"form-select " + this.props.class}
           aria-label="Default select example"
@@ -17,7 +22,7 @@ export class SelectButton extends React.Component {
         <small>
           <p className={"p-0 m-0 " + this.props.success}>{this.props.alert}</p>
         </small>
-      </>
+      </div>
     );
   }
 }

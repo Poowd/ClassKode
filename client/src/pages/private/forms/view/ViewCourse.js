@@ -18,22 +18,32 @@ import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
+import useDatabase from "../../../../hook/useDatabase";
 
 export function ViewCourse() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
-
+  const [get, post] = useDatabase();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [ArchiveEntry] = useArchiveEntry();
   const [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,
     ValidatePhone,
     ValidateLink,
     ValidateCode,
+    ValidateEmpty,
+    ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
+  const [prerequisite, setPreRequisite] = useState([]);
+  const [academicyear, setAcademicYear] = useState([]);
   const [data, setData] = useState([state.data]);
+  const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
@@ -41,30 +51,26 @@ export function ViewCourse() {
     Confirm: ValidateCode(confirmCode.Confirm),
   });
 
-  const [getdata, setGetData, getServer] = useGet();
-
-  const [course, setCourse, getCourse] = usePost();
-
-  const [modalcontent, showModal, hideModal, getModal] = useModal();
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    setValidation({
-      Confirm: ValidateCode(
-        confirmCode.Confirm,
-        4,
-        4,
-        getdata,
-        confirmCode.Confirm
-      ),
-    });
-  }, [confirmCode]);
+    get("random-code-generator", setCode);
+  }, []);
 
   useEffect(() => {
-    getServer("random-code-generator");
-  }, []);
-  const [ArchiveEntry] = useArchiveEntry();
+    post(
+      "course-prerequisite",
+      { CRS_Code: data[0].CRS_Code },
+      setPreRequisite
+    );
+    post("academicyear-current", academicyear, setAcademicYear);
+  }, [prerequisite, academicyear]);
+
+  useEffect(() => {
+    setValidation({
+      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
+    });
+  }, [confirmCode]);
 
   return (
     <>
@@ -94,7 +100,7 @@ export function ViewCourse() {
                   "Archive Entry",
                   <>
                     <span>Type the code </span>
-                    <span className="fw-bold text-black">{getdata}</span>
+                    <span className="fw-bold text-black">{code}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">{data[0].Course}</span>
                   </>
@@ -129,6 +135,20 @@ export function ViewCourse() {
                         label={"Created"}
                         content={item.CRS_Created}
                       />
+                      <DataControlViewItem
+                        label={"Pre-Requisite/s"}
+                        content={
+                          prerequisite.length > 0
+                            ? prerequisite.map((item, i) =>
+                                item.CRR_Code === academicyear[0].CRR_Code ? (
+                                  <span className="d-block">{item.Course}</span>
+                                ) : (
+                                  "None"
+                                )
+                              )
+                            : "None"
+                        }
+                      />
                     </>
                   }
                 />
@@ -136,7 +156,25 @@ export function ViewCourse() {
             ))}
           </>
         }
-        additional={<></>}
+        additional={
+          <>
+            <ViewCard
+              height="20vh"
+              title="Pre-Requisite"
+              content={
+                prerequisite.length > 0
+                  ? prerequisite.map((item, i) => (
+                      <li className="d-flex gap-2">
+                        <span className="fw-semibold">{item.CRR_Code}</span>
+                        <span className="">-</span>
+                        <span className="">{item.Course}</span>
+                      </li>
+                    ))
+                  : "None"
+              }
+            />
+          </>
+        }
       />
       <PassiveModal
         id={"Modal"}
@@ -159,8 +197,8 @@ export function ViewCourse() {
         trigger={() =>
           ArchiveEntry(
             "archive-existing-course",
-            getCourse,
-            getdata,
+            post,
+            code,
             confirmCode.Confirm,
             data[0]
           )

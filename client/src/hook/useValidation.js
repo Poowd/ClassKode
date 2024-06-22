@@ -326,6 +326,34 @@ export default function useValidation() {
     ];
   }
 
+  function ValidateTitle(data, min_len, max_len) {
+    if (data === "") {
+      return [
+        {
+          Result: null,
+          State: "",
+          Message: "",
+        },
+      ];
+    }
+    if (Length(data, min_len, max_len)) {
+      return [
+        {
+          Result: true,
+          State: valid,
+          Message: message[0],
+        },
+      ];
+    }
+    return [
+      {
+        Result: false,
+        State: invalid,
+        Message: message[1],
+      },
+    ];
+  }
+
   function Base() {
     return [
       {
@@ -346,5 +374,6 @@ export default function useValidation() {
     ValidateCode,
     ValidateEmpty,
     ValidateCodeID,
+    ValidateTitle,
   ];
 }

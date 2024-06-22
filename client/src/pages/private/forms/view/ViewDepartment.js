@@ -17,22 +17,30 @@ import useGet from "../../../../hook/useGet";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
+import useDatabase from "../../../../hook/useDatabase";
 
 export function ViewDepartment() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
-
+  const [get, post] = useDatabase();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [ArchiveEntry] = useArchiveEntry();
   const [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,
     ValidatePhone,
     ValidateLink,
     ValidateCode,
+    ValidateEmpty,
+    ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   const [data, setData] = useState([state.data]);
+  const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
@@ -40,44 +48,17 @@ export function ViewDepartment() {
     Confirm: ValidateCode(confirmCode.Confirm),
   });
 
-  const [getdata, setGetData, getServer] = useGet();
-
-  const [department, setDepartment, getDepartment] = usePost();
-  const [coachstatus, setCoachStatus, getCoachStatus] = usePost();
-  const [coachspecialization, setCoachSpecilization, getCoachSpecilization] =
-    usePost();
-
-  const [modalcontent, showModal, hideModal, getModal] = useModal();
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    getCoachStatus("coach-status", {
-      SCHLID: data[0].SCHLID,
-      ACY_Code: "AY2425",
-    });
-    getCoachSpecilization("coach-specialization", {
-      SCHLID: data[0].SCHLID,
-      ACY_Code: "AY2425",
-    });
-  }, []);
+    get("random-code-generator", setCode);
+  }, [data]);
 
   useEffect(() => {
     setValidation({
-      Confirm: ValidateCode(
-        confirmCode.Confirm,
-        4,
-        4,
-        getdata,
-        confirmCode.Confirm
-      ),
+      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
     });
   }, [confirmCode]);
-
-  useEffect(() => {
-    getServer("random-code-generator");
-  }, []);
-  const [ArchiveEntry] = useArchiveEntry();
 
   return (
     <>
@@ -107,7 +88,7 @@ export function ViewDepartment() {
                   "Archive Entry",
                   <>
                     <span>Type the code </span>
-                    <span className="fw-bold text-black">{getdata}</span>
+                    <span className="fw-bold text-black">{code}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">
                       {data[0].Department}
@@ -186,8 +167,8 @@ export function ViewDepartment() {
         trigger={() =>
           ArchiveEntry(
             "archive-existing-department",
-            getDepartment,
-            getdata,
+            post,
+            code,
             confirmCode.Confirm,
             data[0]
           )

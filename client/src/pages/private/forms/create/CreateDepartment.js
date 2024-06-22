@@ -31,6 +31,7 @@ export function CreateDepartment() {
     ValidateCode,
     ValidateEmpty,
     ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   const [department, setDepartment] = useState([]);
@@ -48,7 +49,8 @@ export function CreateDepartment() {
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment] = useValidate();
+  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
+    useValidate();
 
   useEffect(() => {
     post("department", department, setDepartment);
@@ -124,26 +126,46 @@ export function CreateDepartment() {
               required={true}
             />
 
-            <FormInput
+            <MultipleFormInput
               label="Department"
-              id="Department"
-              alert={validation.Department[0].Message}
-              class={validation.Department[0].State[0]}
-              success={validation.Department[0].State[1]}
-              trigger={dataChange}
-              value={data.Department}
-              required={true}
-            />
-
-            <FormInput
-              label="Abbreviation"
-              id="DPT_Abbreviation"
-              alert={validation.DPT_Abbreviation[0].Message}
-              class={validation.DPT_Abbreviation[0].State[0]}
-              success={validation.DPT_Abbreviation[0].State[1]}
-              trigger={dataChange}
-              value={data.DPT_Abbreviation}
-              required={true}
+              alert={
+                <>
+                  <span
+                    className={"col p-0 " + validation.Department[0].State[1]}
+                  >
+                    {validation.Department[0].Message}
+                  </span>
+                  <span
+                    className={
+                      "col p-0 " + validation.DPT_Abbreviation[0].State[1]
+                    }
+                  >
+                    {validation.DPT_Abbreviation[0].Message}
+                  </span>
+                </>
+              }
+              item={
+                <>
+                  <MultipleFormInputItem
+                    id="Department"
+                    placeholder="Department"
+                    class={validation.Department[0].State[0]}
+                    success={validation.Department[0].State[1]}
+                    trigger={dataChange}
+                    value={data.Department}
+                    required={true}
+                  />
+                  <MultipleFormInputItem
+                    id="DPT_Abbreviation"
+                    placeholder="DPT_Abbreviation"
+                    class={validation.DPT_Abbreviation[0].State[0]}
+                    success={validation.DPT_Abbreviation[0].State[1]}
+                    trigger={dataChange}
+                    value={data.DPT_Abbreviation}
+                    required={true}
+                  />
+                </>
+              }
             />
 
             <FormInput

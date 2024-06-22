@@ -19,8 +19,16 @@ app.post("/academicyear", (req, res) => {
 });
 
 app.post("/academicyear-current", (req, res) => {
-  const sql =
-    "SELECT * FROM academicyear WHERE ACY_Status = 'ACTIVE' ORDER BY ACYID DESC Limit 1";
+  const sql = `
+      SELECT * 
+        FROM academicyear 
+
+          WHERE ACY_Status = 'ACTIVE' 
+          
+          ORDER BY ACYID DESC 
+          
+          Limit 1
+  `;
 
   db.query(sql, (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });

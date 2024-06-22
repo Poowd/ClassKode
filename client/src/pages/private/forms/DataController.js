@@ -16,6 +16,8 @@ import { ViewProgram } from "./view/ViewProgram";
 import { ViewCourse } from "./view/ViewCourse";
 import { ViewSection } from "./view/ViewSection";
 import { ViewRoom } from "./view/ViewRoom";
+import { CreateProgram } from "./create/CreateProgram";
+import { CreateCourse } from "./create/CreateCourse";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ export function DataController() {
           )}
           {params.module === "course" ? (
             params.form === "create" ? (
-              <CreateCoach />
+              <CreateCourse />
             ) : params.form === "view" ? (
               <ViewCourse />
             ) : params.form === "edit" ? (
@@ -73,7 +75,7 @@ export function DataController() {
           )}
           {params.module === "program" ? (
             params.form === "create" ? (
-              <h1>Create</h1>
+              <CreateProgram />
             ) : params.form === "view" ? (
               <ViewProgram />
             ) : params.form === "edit" ? (

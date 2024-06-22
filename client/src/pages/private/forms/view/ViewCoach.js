@@ -18,13 +18,17 @@ import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
+import useDatabase from "../../../../hook/useDatabase";
 
 export function ViewCoach() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
-
+  const [get, post] = useDatabase();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [ArchiveEntry] = useArchiveEntry();
   const [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,
@@ -33,9 +37,14 @@ export function ViewCoach() {
     ValidateCode,
     ValidateEmpty,
     ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   const [data, setData] = useState([state.data]);
+  const [assigment, setAssignment] = useState([]);
+  const [specialization, setSpecialization] = useState([]);
+  const [academicyear, setAcademicYear] = useState([]);
+  const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
@@ -43,33 +52,31 @@ export function ViewCoach() {
     Confirm: ValidateCode(confirmCode.Confirm),
   });
 
-  const [getdata, setGetData, getServer] = useGet();
-
-  const [coach, setCoach, getCoach] = usePost();
-  const [assigment, setAssignment, getAssignment] = usePost();
-  const [specialization, setSpecialization, getSpecilization] = usePost();
-  const [academicyear, setAcademicYear, getAcademicYear] = usePost();
-
-  const [modalcontent, showModal, hideModal, getModal] = useModal();
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    getAssignment("coach-assignment", { SCHLID: data[0].SCHLID });
-    getSpecilization("coach-specialization", { SCHLID: data[0].SCHLID });
-    getAcademicYear("academicyear-current");
-  }, [assigment]);
+    get("random-code-generator", setCode);
+  }, [data]);
+
+  useEffect(() => {
+    try {
+      post("coach-assignment", { SCHLID: data[0].SCHLID }, setAssignment);
+      post(
+        "coach-specialization",
+        { SCHLID: data[0].SCHLID },
+        setSpecialization
+      );
+      post("academicyear-current", academicyear, setAcademicYear);
+    } catch (err) {
+      navigate(-1);
+    }
+  }, [assigment, specialization, academicyear]);
 
   useEffect(() => {
     setValidation({
-      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, getdata),
+      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
     });
   }, [confirmCode]);
-
-  useEffect(() => {
-    getServer("random-code-generator");
-  }, []);
-  const [ArchiveEntry] = useArchiveEntry();
 
   return (
     <>
@@ -99,7 +106,7 @@ export function ViewCoach() {
                   "Archive Entry",
                   <>
                     <span>Type the code </span>
-                    <span className="fw-bold text-black">{getdata}</span>
+                    <span className="fw-bold text-black">{code}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">
                       {data[0].FirstName.concat(" ", data[0].LastName)}
@@ -246,8 +253,8 @@ export function ViewCoach() {
         trigger={() =>
           ArchiveEntry(
             "archive-existing-coach",
-            getCoach,
-            getdata,
+            post,
+            code,
             confirmCode.Confirm,
             data[0]
           )

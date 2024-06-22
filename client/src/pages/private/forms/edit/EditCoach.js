@@ -22,12 +22,16 @@ export function EditCoach() {
   const navigate = useNavigate();
 
   const [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,
     ValidatePhone,
     ValidateLink,
     ValidateCode,
+    ValidateEmpty,
+    ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   const [data, setData] = useState({

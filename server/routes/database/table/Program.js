@@ -27,6 +27,27 @@ app.post("/program", (req, res) => {
   });
 });
 
+app.post("/add-new-program", (req, res) => {
+  const sql = `
+      INSERT INTO program (PRG_Code, Program, PRG_Abbreviation, DPT_Code, AcademicLevel, PRG_Description) 
+        VALUES (?)
+  `;
+
+  const values = [
+    req.body.PRG_Code,
+    req.body.Program,
+    req.body.PRG_Abbreviation,
+    req.body.DPT_Code,
+    req.body.AcademicLevel,
+    req.body.PRG_Description,
+  ];
+
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
 app.post("/archive-existing-program", (req, res) => {
   const sql = "UPDATE program SET PRG_Status = 'ARCHIVE' WHERE PRGID = ? ";
 

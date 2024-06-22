@@ -18,22 +18,30 @@ import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
+import useDatabase from "../../../../hook/useDatabase";
 
 export function ViewProgram() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
-
+  const [get, post] = useDatabase();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [ArchiveEntry] = useArchiveEntry();
   const [
+    Base,
     ValidateID,
     ValidateName,
     ValidateEmail,
     ValidatePhone,
     ValidateLink,
     ValidateCode,
+    ValidateEmpty,
+    ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   const [data, setData] = useState([state.data]);
+  const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
@@ -41,30 +49,17 @@ export function ViewProgram() {
     Confirm: ValidateCode(confirmCode.Confirm),
   });
 
-  const [getdata, setGetData, getServer] = useGet();
-
-  const [program, setProgram, getProgram] = usePost();
-
-  const [modalcontent, showModal, hideModal, getModal] = useModal();
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    setValidation({
-      Confirm: ValidateCode(
-        confirmCode.Confirm,
-        4,
-        4,
-        getdata,
-        confirmCode.Confirm
-      ),
-    });
-  }, [confirmCode]);
+    get("random-code-generator", setCode);
+  }, [data]);
 
   useEffect(() => {
-    getServer("random-code-generator");
-  }, []);
-  const [ArchiveEntry] = useArchiveEntry();
+    setValidation({
+      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
+    });
+  }, [confirmCode]);
 
   return (
     <>
@@ -94,7 +89,7 @@ export function ViewProgram() {
                   "Archive Entry",
                   <>
                     <span>Type the code </span>
-                    <span className="fw-bold text-black">{getdata}</span>
+                    <span className="fw-bold text-black">{code}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">
                       {data[0].Program}
@@ -169,8 +164,8 @@ export function ViewProgram() {
         trigger={() =>
           ArchiveEntry(
             "archive-existing-program",
-            getProgram,
-            getdata,
+            post,
+            code,
             confirmCode.Confirm,
             data[0]
           )

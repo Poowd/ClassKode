@@ -31,6 +31,7 @@ export function CreateCoach() {
     ValidateCode,
     ValidateEmpty,
     ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   const [department, setDepartment] = useState([]);
@@ -58,7 +59,8 @@ export function CreateCoach() {
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment] = useValidate();
+  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
+    useValidate();
 
   useEffect(() => {
     post("department", department, setDepartment);
@@ -248,6 +250,7 @@ export function CreateCoach() {
               }
             />
             <SelectButton
+              label="Department"
               id="Department"
               trigger={dataChange}
               required={true}
@@ -277,6 +280,7 @@ export function CreateCoach() {
                 </>
               }
             />
+
             <MultipleFormInput
               label="Email & Phone"
               alert={

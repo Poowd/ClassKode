@@ -11,10 +11,10 @@ import useDatabase from "../../../hook/useDatabase";
 
 export function Department() {
   const navigate = useNavigate();
+  const [get, post] = useDatabase();
 
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
-  const [get, post] = useDatabase();
 
   useEffect(() => {
     post("department", data, setData);

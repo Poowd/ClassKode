@@ -22,7 +22,7 @@ export class DashboardTemplate extends React.Component {
             </section>
           </main>
         </header>
-        <main className="h-75 overflow-y-auto">
+        <main className="h-75">
           <main className="row h-100 m-0">
             <section className="col-lg-8 p-2">
               <main className="h-100">{this.props.chart1}</main>

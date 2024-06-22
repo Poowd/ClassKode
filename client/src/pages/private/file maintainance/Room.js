@@ -11,10 +11,10 @@ import useDatabase from "../../../hook/useDatabase";
 
 export function Room() {
   const navigate = useNavigate();
+  const [get, post] = useDatabase();
 
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
-  const [get, post] = useDatabase();
 
   useEffect(() => {
     post("room", data, setData);

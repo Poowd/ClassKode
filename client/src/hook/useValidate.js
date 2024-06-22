@@ -13,6 +13,7 @@ export default function useValidate() {
     ValidateCode,
     ValidateEmpty,
     ValidateCodeID,
+    ValidateTitle,
   ] = useValidation();
 
   function ValidateCoach(
@@ -51,5 +52,21 @@ export default function useValidate() {
     });
   }
 
-  return [ValidateCoach, ValidateDepartment];
+  function ValidateProgram(item1, item2, item3, item4, dupe1, trigger) {
+    trigger({
+      PRG_Code: ValidateCodeID(item1, 3, 25, dupe1),
+      Program: ValidateName(item2, 5, 100),
+      PRG_Abbreviation: ValidateName(item3, 2, 25),
+      PRG_Description: ValidateName(item4, 0, 255),
+    });
+  }
+
+  function ValidateCourse(item1, item2, dupe1, trigger) {
+    trigger({
+      CRS_Code: ValidateCodeID(item1, 3, 25, dupe1),
+      Course: ValidateTitle(item2, 5, 100),
+    });
+  }
+
+  return [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse];
 }

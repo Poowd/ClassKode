@@ -35,6 +35,9 @@ export function CreateProgram() {
   ] = useValidation();
 
   const [department, setDepartment] = useState([]);
+  const [section, setSection] = useState([]);
+  const [yearlevel, setYearLevel] = useState([]);
+  const [semester, setSemester] = useState([]);
   const [program, setProgram] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
   const [data, setData] = useState({
@@ -60,9 +63,12 @@ export function CreateProgram() {
 
   useEffect(() => {
     post("department", department, setDepartment);
+    post("section", section, setSection);
     post("program", program, setProgram);
+    post("yearlevel", yearlevel, setYearLevel);
+    post("semester", semester, setSemester);
     post("academiclevel", academiclevel, setAcademicLevel);
-  }, [department, academiclevel]);
+  }, [department, academiclevel, yearlevel, semester]);
 
   useEffect(() => {
     ValidateProgram(

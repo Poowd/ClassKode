@@ -23,4 +23,84 @@ app.post("/academiclevel", (req, res) => {
   });
 });
 
+app.post("/yearlevel", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM yearlevel 
+
+          WHERE YRL_Status = 'ACTIVE'
+
+          ORDER BY YRLID ASC
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
+app.post("/semester", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM semester 
+
+          WHERE SMS_Status = 'ACTIVE'
+
+          ORDER BY SMSID ASC
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
+app.post("/facility", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM rom_facility 
+
+          WHERE FLT_Status = 'ACTIVE'
+
+          ORDER BY FLTID ASC
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
+app.post("/building", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM rom_building 
+
+          WHERE BLG_Status = 'ACTIVE'
+
+          ORDER BY BLGID ASC
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
+app.post("/floor", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM rom_floor 
+
+          WHERE FLR_Status = 'ACTIVE'
+
+          ORDER BY FLRID ASC
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
 export default app;

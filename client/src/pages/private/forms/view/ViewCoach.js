@@ -60,13 +60,13 @@ export function ViewCoach() {
 
   useEffect(() => {
     try {
+      post("academicyear-current", academicyear, setAcademicYear);
       post("coach-assignment", { SCHLID: data[0].SCHLID }, setAssignment);
       post(
         "coach-specialization",
         { SCHLID: data[0].SCHLID },
         setSpecialization
       );
-      post("academicyear-current", academicyear, setAcademicYear);
     } catch (err) {
       navigate(-1);
     }

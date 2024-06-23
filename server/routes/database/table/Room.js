@@ -31,6 +31,26 @@ app.post("/room", (req, res) => {
   });
 });
 
+app.post("/add-new-room", (req, res) => {
+  const sql = `
+      INSERT INTO room (Room, Capacity, Facility, Building, Floor) 
+        VALUES (?)
+  `;
+
+  const values = [
+    req.body.Room,
+    req.body.Capacity,
+    req.body.Facility,
+    req.body.Building,
+    req.body.Floor,
+  ];
+
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
 app.post("/archive-existing-room", (req, res) => {
   const sql = "UPDATE room SET ROM_Status = 'ARCHIVE' WHERE ROMID = ? ";
 

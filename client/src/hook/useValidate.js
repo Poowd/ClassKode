@@ -67,6 +67,18 @@ export default function useValidate() {
       Course: ValidateTitle(item2, 5, 100),
     });
   }
+  function ValidateRoom(item1, item2, dupe1, trigger) {
+    trigger({
+      CRS_Code: ValidateCodeID(item1, 3, 25, dupe1),
+      Course: ValidateTitle(item2, 5, 100),
+    });
+  }
 
-  return [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse];
+  return [
+    ValidateCoach,
+    ValidateDepartment,
+    ValidateProgram,
+    ValidateCourse,
+    ValidateRoom,
+  ];
 }

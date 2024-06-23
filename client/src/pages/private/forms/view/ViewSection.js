@@ -40,6 +40,7 @@ export function ViewSection() {
     ValidateTitle,
   ] = useValidation();
 
+  const [projection, setProjection] = useState([]);
   const [data, setData] = useState([state.data]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
@@ -52,8 +53,12 @@ export function ViewSection() {
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    get("random-code-generator", setCode);
+    post("section-projection", { Section: data[0].Section }, setProjection);
   }, [data]);
+
+  useEffect(() => {
+    get("random-code-generator", setCode);
+  }, []);
 
   useEffect(() => {
     setValidation({
@@ -134,6 +139,21 @@ export function ViewSection() {
                         label={"Created"}
                         content={item.SCT_Created}
                       />
+                      <DataControlViewItem
+                        label={"Status"}
+                        content={
+                          projection.length > 0
+                            ? projection.map((proj, i) =>
+                                item.Section === proj.Section
+                                  ? item.Section +
+                                    " ( " +
+                                    proj.Population +
+                                    " Students ) "
+                                  : "Not Available"
+                              )
+                            : "None"
+                        }
+                      />
                     </>
                   }
                 />
@@ -141,7 +161,27 @@ export function ViewSection() {
             ))}
           </>
         }
-        additional={<></>}
+        additional={
+          <>
+            <ViewCard
+              height="20vh"
+              title="Projection"
+              content={
+                projection.length > 0
+                  ? projection.map((item, i) => (
+                      <li className="d-flex gap-2">
+                        <span className="fw-semibold">{item.ACY_Code}</span>
+                        <span className="">-</span>
+                        <span className="">
+                          {item.Section} ( {item.Population} Students )
+                        </span>
+                      </li>
+                    ))
+                  : "None"
+              }
+            />
+          </>
+        }
       />
       <PassiveModal
         id={"Modal"}

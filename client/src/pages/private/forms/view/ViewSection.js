@@ -144,12 +144,13 @@ export function ViewSection() {
                         content={
                           projection.length > 0
                             ? projection.map((proj, i) =>
-                                item.Section === proj.Section
+                                item.Section === proj.Section &&
+                                proj.ACY_Code === "AY-2425"
                                   ? item.Section +
                                     " ( " +
                                     proj.Population +
                                     " Students ) "
-                                  : "Not Available"
+                                  : null
                               )
                             : "None"
                         }

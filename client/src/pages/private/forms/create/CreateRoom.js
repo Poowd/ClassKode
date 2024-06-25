@@ -110,7 +110,7 @@ export function CreateRoom() {
     setRoomName(
       roomList.indexOf(data.Floor) + 1 + "0" + (temp.length + 1) + "" + buildin
     );
-  }, [data]);
+  }, [data.Facility, data.Building, data.Floor]);
 
   useEffect(() => {
     setData((prev) => ({

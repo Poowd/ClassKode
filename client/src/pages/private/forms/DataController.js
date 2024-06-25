@@ -20,6 +20,7 @@ import { CreateProgram } from "./create/CreateProgram";
 import { CreateCourse } from "./create/CreateCourse";
 import { CreateSection } from "./create/CreateSection";
 import { CreateRoom } from "./create/CreateRoom";
+import { GenerateSection } from "./create/GenerateSection";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -112,6 +113,8 @@ export function DataController() {
               <ViewSection />
             ) : params.form === "edit" ? (
               <h1>Edit</h1>
+            ) : params.form === "generate" ? (
+              <GenerateSection />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (

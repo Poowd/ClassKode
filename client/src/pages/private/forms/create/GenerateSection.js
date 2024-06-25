@@ -18,8 +18,9 @@ import useValidation from "../../../../hook/useValidation";
 import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 import useGetSection from "../../../../hook/useGetSection";
+import axios from "axios";
 
-export function CreateSection() {
+export function GenerateSection() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [
@@ -40,9 +41,8 @@ export function CreateSection() {
   const [yearlevel, setYearLevel] = useState([]);
   const [semester, setSemester] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
-  const [sectionName, setSectionName] = useState("");
+  const [sectionName, setSectionName] = useState([]);
   const [data, setData] = useState({
-    Section: sectionName,
     Semester: "",
     YearLevel: "",
     PRG_Code: "",
@@ -58,10 +58,6 @@ export function CreateSection() {
     post("academiclevel", academiclevel, setAcademicLevel);
   }, [section, academiclevel]);
 
-  var testArray = [];
-  var temp = [];
-  var count = 0;
-
   function getAcademicLevel() {
     for (var k = 0; k < program.length; k++) {
       if (data.PRG_Code === program[k].PRG_Code) {
@@ -69,8 +65,15 @@ export function CreateSection() {
       }
     }
   }
-
+  var testArray = [];
+  var temp = [];
+  var count = 0;
+  var abbrev = "";
+  const anotherarray = [];
+  const [sectionlist, setSectionList] = useState([]);
   useEffect(() => {
+    setSectionList([]);
+
     for (var k = 0; k < program.length; k++) {
       for (var i = 0; i < yearlevel.length; i++) {
         if (
@@ -99,46 +102,73 @@ export function CreateSection() {
       }
     }
 
+    var asx = [];
     for (var k = 0; k < program.length; k++) {
-      for (var i = 0; i < yearlevel.length; i++) {
-        if (data.PRG_Code === program[k].PRG_Code) {
-          for (var l = 0; l < testArray.length; l++) {
+      if (program[k].PRG_Code === data.PRG_Code) {
+        abbrev = program[k].PRG_Abbreviation;
+        for (var l = 0; l < 8; l++) {
+          for (var f = 0; f < section.length; f++) {
             if (
-              testArray[l].includes(data.YearLevel, 1) &&
-              testArray[l].includes(data.Semester, 2)
+              section[f].PRG_Code === data.PRG_Code &&
+              section[f].YearLevel === testArray[l][1] &&
+              section[f].Semester === testArray[l][2]
             ) {
-              setSectionName(
-                program[k].PRG_Abbreviation +
-                  "" +
-                  testArray[l][0] +
-                  "0" +
-                  (temp.length + 1)
-              );
+              asx.push(section[f].Section);
             }
           }
+          anotherarray.push({
+            Section:
+              program[k].PRG_Abbreviation +
+              "" +
+              testArray[l][0] +
+              "0" +
+              (asx.length + 1),
+            YearLevel: testArray[l][1],
+            Semester: testArray[l][2],
+            Program: data.PRG_Code,
+          });
+          asx = [];
         }
+        setSectionList(anotherarray);
       }
     }
-  }, [data.PRG_Code, data.Semester, data.YearLevel]);
+  }, [data.PRG_Code]);
 
-  useEffect(() => {
-    setData((prev) => ({
-      ...prev,
-      Section: sectionName,
-    }));
-  }, [sectionName]);
+  function sleep(time) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time || 1000);
+    });
+  }
 
+  async function TestData(data) {
+    post("generate-new-section", data, setData);
+    sleep(2000);
+  }
+  const submit = (e) => {
+    e.preventDefault();
+
+    for (var i in sectionlist) {
+      TestData(sectionlist[i]);
+    }
+
+    // sectionlist.sort(function (a, b) {
+    //   return a - b;
+    // });
+    //sectionlist.map((item) => console.log(item));
+    // sectionlist.map((item, i) => {
+    //
+    // });
+    navigate(-1);
+  };
+
+  //console.log(sectionlist);
+
+  // console.log(tempSection[0]);
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        post("add-new-section", data, setData);
-        navigate(-1);
-      }}
-    >
+    <form onSubmit={submit}>
       <DataControllerTemplate
-        title={"Create A Section"}
-        description={"This module creates a section"}
+        title={"Create A Generate"}
+        description={"This module creates a generate"}
         control={
           <>
             <DefaultButton
@@ -185,84 +215,19 @@ export function CreateSection() {
                 </>
               }
             />
-
-            <SelectButton
-              label="Year Level"
-              id="YearLevel"
-              trigger={dataChange}
-              required={true}
-              option={
-                <>
-                  <SelectButtonItemSelected
-                    content={yearlevel.map((option, i) => (
-                      <>
-                        {option.YearLevel === data.YearLevel
-                          ? option.YearLevel
-                          : ""}
-                      </>
-                    ))}
-                  />
-                  {yearlevel.map((option, i) => (
-                    <>
-                      {data.YearLevel !== option.YearLevel &&
-                      getAcademicLevel() === option.AcademicLevel ? (
-                        <SelectButtonItem
-                          value={option.YearLevel}
-                          content={option.YearLevel}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
-                </>
-              }
-            />
-
-            <SelectButton
-              label="Semester"
-              id="Semester"
-              trigger={dataChange}
-              required={true}
-              option={
-                <>
-                  <SelectButtonItemSelected
-                    content={semester.map((option, i) => (
-                      <>
-                        {option.Semester === data.Semester
-                          ? option.Semester
-                          : ""}
-                      </>
-                    ))}
-                  />
-                  {semester.map((option, i) => (
-                    <>
-                      {data.Semester !== option.Semester ? (
-                        <SelectButtonItem
-                          value={option.Semester}
-                          content={option.Semester}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
-                </>
-              }
-            />
-
-            <FormInput
-              label="Section"
-              id="Section"
-              trigger={() =>
-                setSectionName(document.getElementById("Section").value)
-              }
-              value={sectionName}
-              required={true}
-            />
           </>
         }
-        additional={<>{console.log()}</>} //sectionName
+        additional={
+          <>
+            {section.map((section, i) =>
+              section.PRG_Code === data.PRG_Code ? (
+                <div>{section.Section}</div>
+              ) : (
+                ""
+              )
+            )}
+          </>
+        }
       />
     </form>
   );

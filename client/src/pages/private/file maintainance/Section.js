@@ -28,7 +28,13 @@ export function Section() {
     <FileMaintainanceTemplate
       control={
         <>
-          <DefaultButton class="btn-outline-primary" icon={<PiGearSixFill />} />
+          <Link to={"/institution/section/generate/0"}>
+            <DefaultButton
+              class="btn-outline-primary"
+              icon={<PiGearSixFill />}
+            />
+          </Link>
+
           <Link to={"/institution/section/create/0"}>
             <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />
           </Link>
@@ -39,7 +45,7 @@ export function Section() {
           <section className="col-2 p-0 m-0">
             <h6 className="p-0 m-0">{item.SCTID}</h6>
           </section>
-          <section className="col-7 p-0 m-0">
+          <section className="col-6 p-0 m-0">
             <h6 className="p-0 m-0">{item.Section}</h6>
             <small>
               <p className="p-0 m-0 text-secondary fst-italic">
@@ -47,7 +53,7 @@ export function Section() {
               </p>
             </small>
           </section>
-          <section className="col-2 p-0 m-0">
+          <section className="col-3 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
               <p className="p-0 m-0">{item.AcademicLevel}</p>
               <small>

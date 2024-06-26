@@ -23,6 +23,8 @@ import {
   DataController,
   DataForms,
 } from "./pages/private/forms/DataController";
+import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
+import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 
 function App() {
   const navigate = useNavigate();
@@ -134,10 +136,20 @@ function App() {
                         path={"/utilities/academicyear"}
                         element={<AcademicYear />}
                       ></Route>
-                      <Route
-                        path={"/utilities/schedule"}
-                        element={<Schedule />}
-                      ></Route>
+                      <Route path={"/utilities/schedule"}>
+                        <Route
+                          path={"/utilities/schedule/"}
+                          element={<Schedule />}
+                        ></Route>
+                        <Route
+                          path={"/utilities/schedule/room"}
+                          element={<RoomSchedule />}
+                        ></Route>
+                        <Route
+                          path={"/utilities/schedule/section"}
+                          element={<SectionSchedule />}
+                        ></Route>
+                      </Route>
                       <Route
                         path={"/utilities/locator"}
                         element={<Locator />}

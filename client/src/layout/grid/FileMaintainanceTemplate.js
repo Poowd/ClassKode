@@ -15,22 +15,18 @@ export class FileMaintainanceTemplate extends React.Component {
                 <NoDisplay />
               </main>
             </section>
-            <section className="col-lg-9 p-2">
-              <main className="h-100 position-relative">
+            <section className="col-lg-9 p-2 h-100">
+              <main className="h-100 position-relative overflow-y-auto">
                 <section className="sticky-top w-100 bg-white shadow-sm p-2 mb-2">
                   <div className="d-flex justify-content-end gap-2">
-                    <DefaultInput placeholder="Search" />
                     {this.props.control}
                   </div>
                 </section>
-                <section className="px-1">
-                  {this.props.list}
-                </section>
+                <section className="px-1">{this.props.list}</section>
               </main>
             </section>
           </main>
         </main>
-        {this.props.coachdetails}
       </main>
     );
   }

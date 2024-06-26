@@ -8,6 +8,7 @@ import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
+import { DefaultInput } from "../../../component/input/DefaultInput";
 
 export function Room() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export function Room() {
   return (
     <FileMaintainanceTemplate
       control={
-        <>
+        <><DefaultInput placeholder="Search" />
           <DefaultButton class="btn-outline-primary" icon={<PiGearSixFill />} />
           <Link to={"/institution/room/create/0"}>
             <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />

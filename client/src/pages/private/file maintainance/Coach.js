@@ -6,11 +6,13 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { GrView } from "react-icons/gr";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
+import { FaFilter } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
-import { FaFilter } from "react-icons/fa6";
+
 import useDatabase from "../../../hook/useDatabase";
+import { DefaultInput } from "../../../component/input/DefaultInput";
 
 export function Coach() {
   const navigate = useNavigate();
@@ -31,8 +33,9 @@ export function Coach() {
     <FileMaintainanceTemplate
       control={
         <>
+          <DefaultInput placeholder="Search" />
           <DefaultDropdown
-            class="border-0"
+            class="border p-2"
             reversed={true}
             icon={<FaFilter />}
             dropdownitems={

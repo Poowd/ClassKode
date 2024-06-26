@@ -8,6 +8,7 @@ import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
+import { DefaultInput } from "../../../component/input/DefaultInput";
 
 export function Course() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export function Course() {
     <FileMaintainanceTemplate
       control={
         <>
+          <DefaultInput placeholder="Search" />
           <DefaultButton class="btn-outline-primary" icon={<PiGearSixFill />} />
           <Link to={"/institution/course/create/0"}>
             <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />

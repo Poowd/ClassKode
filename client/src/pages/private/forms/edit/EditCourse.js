@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
 import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
@@ -18,7 +18,9 @@ import useValidation from "../../../../hook/useValidation";
 import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 
-export function CreateCourse() {
+export function EditCourse() {
+  const params = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [
@@ -38,9 +40,10 @@ export function CreateCourse() {
   const [program, setProgram] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
   const [data, setData] = useState({
-    CRS_Code: "",
-    Course: "",
-    PRG_Code: "",
+    CRSID: state.data[0].CRSID,
+    CRS_Code: state.data[0].CRS_Code,
+    Course: state.data[0].Course,
+    PRG_Code: state.data[0].PRG_Code,
   });
   const [validation, setValidation] = useState({
     CRS_Code: Base(data.CRS_Code),
@@ -65,7 +68,10 @@ export function CreateCourse() {
   function crs_dupe() {
     if (course.length > 0) {
       for (var i = 0; i < course.length; i++) {
-        if (course[i].CRS_Code === data.CRS_Code) {
+        if (
+          course[i].CRS_Code === data.CRS_Code &&
+          course[i].CRSID !== data.CRSID
+        ) {
           return false;
         }
       }
@@ -78,8 +84,8 @@ export function CreateCourse() {
       onSubmit={(e) => {
         e.preventDefault();
         if (validation.CRS_Code[0].Result && validation.Course[0].Result) {
-          post("add-new-course", data, setData);
-          navigate(-1);
+          post("update-existing-course", data, setData);
+          navigate("/institution/course");
         }
       }}
     >
@@ -104,7 +110,7 @@ export function CreateCourse() {
         content={
           <>
             <FormInput
-              label="Course Code"
+              label="Program Code"
               id="CRS_Code"
               alert={validation.CRS_Code[0].Message}
               class={validation.CRS_Code[0].State[0]}
@@ -135,7 +141,9 @@ export function CreateCourse() {
                   <SelectButtonItemSelected
                     content={program.map((option, i) => (
                       <>
-                        {option.PRG_Code === data.PRG_Code ? option.Program : ""}
+                        {option.PRG_Code === data.PRG_Code
+                          ? option.Program
+                          : ""}
                       </>
                     ))}
                   />

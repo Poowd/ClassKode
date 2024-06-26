@@ -150,6 +150,8 @@ import Room from "./routes/database/table/Room.js";
 import Section from "./routes/database/table/Section.js";
 import AcademicYear from "./routes/database/table/AcademicYear.js";
 import DropdownData from "./routes/database/table/DropdownData.js";
+import Curriculum from "./routes/database/table/Curriculum.js";
+app.use(Curriculum);
 app.use(DropdownData);
 app.use(AcademicYear);
 app.use(Section);

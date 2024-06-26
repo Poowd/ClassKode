@@ -47,13 +47,13 @@ export function EditCoach() {
     Facebook: state.data[0].Facebook,
   });
   const [validation, setValidation] = useState({
-    SCHLID: ValidateID(data.SCHLID),
-    FirstName: ValidateName(data.FirstName),
-    MiddleInitial: ValidateName(data.MiddleInitial),
-    LastName: ValidateName(data.LastName),
-    Email: ValidateEmail(data.Email),
-    Phone: ValidatePhone(data.Phone),
-    Facebook: ValidateLink(data.Facebook),
+    SCHLID: Base(data.SCHLID),
+    FirstName: Base(data.FirstName),
+    MiddleInitial: Base(data.MiddleInitial),
+    LastName: Base(data.LastName),
+    Email: Base(data.Email),
+    Phone: Base(data.Phone),
+    Facebook: Base(data.Facebook),
   });
 
   const [coach, setCoach, getCoach] = usePost();

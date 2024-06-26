@@ -12,7 +12,7 @@ export class FileMaintainanceTemplate extends React.Component {
           <main className="row h-100 m-0">
             <section className="col-lg-3 h-100 p-2">
               <main className="h-100 bg-white rounded shadow-sm p-2">
-                <NoDisplay />
+                {this.props.sidepanel}
               </main>
             </section>
             <section className="col-lg-9 p-2 h-100">

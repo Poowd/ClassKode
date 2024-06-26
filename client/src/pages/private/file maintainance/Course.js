@@ -9,6 +9,7 @@ import { PiGearSixFill } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
+import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 
 export function Course() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export function Course() {
 
   return (
     <FileMaintainanceTemplate
+      sidepanel={<NoDisplay />}
       control={
         <>
           <DefaultInput placeholder="Search" />
@@ -51,10 +53,10 @@ export function Course() {
           </section>
           <section className="col-2 p-0 m-0">
             <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <p className="p-0 m-0 text-end">{item.AcademicLevel}</p>
+              <p className="p-0 m-0 text-end">{item.PRG_Code}</p>
               <small>
                 <p className="p-0 m-0 text-secondary fst-italic">
-                  <span></span>
+                  <span>{item.AcademicLevel}</span>
                 </p>
               </small>
             </div>

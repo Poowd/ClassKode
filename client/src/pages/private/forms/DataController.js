@@ -21,6 +21,11 @@ import { CreateCourse } from "./create/CreateCourse";
 import { CreateSection } from "./create/CreateSection";
 import { CreateRoom } from "./create/CreateRoom";
 import { GenerateSection } from "./create/GenerateSection";
+import { EditCourse } from "./edit/EditCourse";
+import { EditDepartment } from "./edit/EditDepartment";
+import { EditProgram } from "./edit/EditProgram";
+import { EditRoom } from "./edit/EditRoom";
+import { EditSection } from "./edit/EditSection";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -56,7 +61,7 @@ export function DataController() {
             ) : params.form === "view" ? (
               <ViewCourse />
             ) : params.form === "edit" ? (
-              <EditCoach />
+              <EditCourse />
             ) : (
               () => navigate(-1)
             )
@@ -69,7 +74,7 @@ export function DataController() {
             ) : params.form === "view" ? (
               <ViewDepartment />
             ) : params.form === "edit" ? (
-              <EditCoach />
+              <EditDepartment />
             ) : (
               () => navigate(-1)
             )
@@ -82,7 +87,7 @@ export function DataController() {
             ) : params.form === "view" ? (
               <ViewProgram />
             ) : params.form === "edit" ? (
-              <h1>Edit</h1>
+              <EditProgram />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (
@@ -97,7 +102,7 @@ export function DataController() {
             ) : params.form === "view" ? (
               <ViewRoom />
             ) : params.form === "edit" ? (
-              <h1>Edit</h1>
+              <EditRoom />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : (
@@ -112,7 +117,7 @@ export function DataController() {
             ) : params.form === "view" ? (
               <ViewSection />
             ) : params.form === "edit" ? (
-              <h1>Edit</h1>
+              <EditSection />
             ) : params.form === "generate" ? (
               <GenerateSection />
             ) : params.form === "archive" ? (

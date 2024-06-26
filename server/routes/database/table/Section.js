@@ -49,6 +49,23 @@ app.post("/section-projection", (req, res) => {
   });
 });
 
+app.post("/generate-new-section", (req, res) => {
+  const sql = `
+      INSERT INTO section (Section, Semester, YearLevel, PRG_Code)
+        VALUES (?)
+  `;
+  const values = [
+    req.body.Section,
+    req.body.Semester,
+    req.body.YearLevel,
+    req.body.Program,
+  ];
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
 app.post("/add-new-section", (req, res) => {
   const sql = `
       INSERT INTO section (Section, Semester, YearLevel, PRG_Code) 
@@ -68,21 +85,24 @@ app.post("/add-new-section", (req, res) => {
   });
 });
 
-app.post("/generate-new-section", (req, res) => {
-  const sql = `
-      INSERT INTO section (Section, Semester, YearLevel, PRG_Code)
-        VALUES (?)
-  `;
-  const values = [
-    req.body.Section,
-    req.body.Semester,
-    req.body.YearLevel,
-    req.body.Program,
-  ];
-  db.query(sql, [values], (err, data) => {
-    if (err) return res.json({ Message: err });
-    return res.json(data);
-  });
+app.post("/update-existing-section", (req, res) => {
+  const sql =
+    "UPDATE section SET Section = ?, Semester = ?, YearLevel = ?, PRG_Code = ? WHERE SCTID = ? ";
+
+  db.query(
+    sql,
+    [
+      req.body.Section,
+      req.body.Semester,
+      req.body.YearLevel,
+      req.body.PRG_Code,
+      req.body.SCTID,
+    ],
+    (err, data) => {
+      if (err) return res.json({ Message: "Server Sided Error" });
+      return res.json(data);
+    }
+  );
 });
 
 app.post("/archive-existing-section", (req, res) => {

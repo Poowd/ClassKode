@@ -22,6 +22,9 @@ export function Schedule() {
       <Link to={"/utilities/schedule/room"}>
         <button className="btn btn-outline-primary">Room Schedule</button>
       </Link>
+      <Link to={"/utilities/schedule/room"}>
+        <button className="btn btn-outline-primary">Coach Schedule</button>
+      </Link>
       <Link to={"/utilities/schedule/section"}>
         <button className="btn btn-outline-primary">Section Schedule</button>
       </Link>

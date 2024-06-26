@@ -13,6 +13,7 @@ import { DefaultDropdownItem } from "../../../component/dropdown/default/Default
 
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
+import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 
 export function Coach() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export function Coach() {
 
   return (
     <FileMaintainanceTemplate
+      sidepanel={<NoDisplay />}
       control={
         <>
           <DefaultInput placeholder="Search" />

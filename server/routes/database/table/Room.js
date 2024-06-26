@@ -73,6 +73,27 @@ app.post("/add-new-room", (req, res) => {
   });
 });
 
+app.post("/update-existing-room", (req, res) => {
+  const sql =
+    "UPDATE room SET Room = ?, Capacity = ?, Facility = ?, Building = ?, Floor = ? WHERE ROMID = ? ";
+
+  db.query(
+    sql,
+    [
+      req.body.Room,
+      req.body.Capacity,
+      req.body.Facility,
+      req.body.Building,
+      req.body.Floor,
+      req.body.ROMID,
+    ],
+    (err, data) => {
+      if (err) return res.json({ Message: "Server Sided Error" });
+      return res.json(data);
+    }
+  );
+});
+
 app.post("/archive-existing-room", (req, res) => {
   const sql = "UPDATE room SET ROM_Status = 'ARCHIVE' WHERE ROMID = ? ";
 

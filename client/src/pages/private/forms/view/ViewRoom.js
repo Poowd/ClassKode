@@ -76,7 +76,7 @@ export function ViewRoom() {
             <LinkButton
               class="btn-warning px-2"
               icon={<LuFileEdit />}
-              to={"/institution/coach/edit/" + params.id}
+              to={"/institution/room/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />

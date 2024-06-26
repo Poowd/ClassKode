@@ -81,7 +81,7 @@ export function ViewSection() {
             <LinkButton
               class="btn-warning px-2"
               icon={<LuFileEdit />}
-              to={"/institution/coach/edit/" + params.id}
+              to={"/institution/section/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />

@@ -48,6 +48,28 @@ app.post("/add-new-program", (req, res) => {
   });
 });
 
+app.post("/update-existing-program", (req, res) => {
+  const sql =
+    "UPDATE program SET PRG_Code = ?, Program = ?, PRG_Abbreviation = ?, DPT_Code = ?, AcademicLevel = ?, PRG_Description = ? WHERE PRGID = ? ";
+
+  db.query(
+    sql,
+    [
+      req.body.PRG_Code,
+      req.body.Program,
+      req.body.PRG_Abbreviation,
+      req.body.DPT_Code,
+      req.body.AcademicLevel,
+      req.body.PRG_Description,
+      req.body.PRGID,
+    ],
+    (err, data) => {
+      if (err) return res.json({ Message: "Server Sided Error" });
+      return res.json(data);
+    }
+  );
+});
+
 app.post("/archive-existing-program", (req, res) => {
   const sql = "UPDATE program SET PRG_Status = 'ARCHIVE' WHERE PRGID = ? ";
 

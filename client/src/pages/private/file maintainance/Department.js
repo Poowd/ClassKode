@@ -9,6 +9,7 @@ import { PiGearSixFill } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
+import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 
 export function Department() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export function Department() {
 
   return (
     <FileMaintainanceTemplate
+    sidepanel={<NoDisplay />}
       control={
         <>
           <DefaultInput placeholder="Search" />

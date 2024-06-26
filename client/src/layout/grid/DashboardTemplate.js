@@ -30,10 +30,10 @@ export class DashboardTemplate extends React.Component {
             <section className="col-lg-4 p-2">
               <main className="h-100">
                 <main className="h-100 d-flex flex-column gap-2">
-                  <section className="h-50 border rounded">
+                  <section className="h-50 pt-2 border rounded">
                     {this.props.chart2}
                   </section>
-                  <section className="h-50 border rounded">
+                  <section className="h-50 pt-2 border rounded">
                     {this.props.chart3}
                   </section>
                 </main>

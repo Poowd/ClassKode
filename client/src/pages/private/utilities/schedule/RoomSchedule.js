@@ -38,7 +38,7 @@ export function RoomSchedule() {
         </small>
         <div className="d-flex gap-2">
           <DefaultButton
-            class="btn-outline-secondary"
+            class="btn-outline-secondary px-2"
             type="button"
             icon={<IoMdArrowRoundBack />}
             text="Back"
@@ -46,13 +46,18 @@ export function RoomSchedule() {
           />
           {floor.map((floor, i) => (
             <DefaultButton
-              class="btn-primary"
+              class="btn-primary px-2"
               type="button"
               icon={<SiLevelsdotfyi />}
               text={i + 1}
               function={() => setCurrentFloor(floor.Floor)}
             />
           ))}
+          <DefaultButton
+            class="btn-outline-primary"
+            icon={<PiGearSixFill />}
+            function={() => navigate(-1)}
+          />
         </div>
       </nav>
       {/* <section className="position-absolute d-flex flex-column bottom-0 z-3 bg-white m-1 p-2 rounded">

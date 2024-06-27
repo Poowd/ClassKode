@@ -49,12 +49,8 @@ export function DataController() {
               <ViewCoach />
             ) : params.form === "edit" ? (
               <EditCoach />
-            ) : (
-              () => navigate(-1)
-            )
-          ) : (
-            () => navigate(-1)
-          )}
+            ) : null
+          ) : null}
           {params.module === "course" ? (
             params.form === "create" ? (
               <CreateCourse />
@@ -62,12 +58,8 @@ export function DataController() {
               <ViewCourse />
             ) : params.form === "edit" ? (
               <EditCourse />
-            ) : (
-              () => navigate(-1)
-            )
-          ) : (
-            () => navigate(-1)
-          )}
+            ) : null
+          ) : null}
           {params.module === "department" ? (
             params.form === "create" ? (
               <CreateDepartment />
@@ -75,12 +67,8 @@ export function DataController() {
               <ViewDepartment />
             ) : params.form === "edit" ? (
               <EditDepartment />
-            ) : (
-              () => navigate(-1)
-            )
-          ) : (
-            () => navigate(-1)
-          )}
+            ) : null
+          ) : null}
           {params.module === "program" ? (
             params.form === "create" ? (
               <CreateProgram />
@@ -90,12 +78,8 @@ export function DataController() {
               <EditProgram />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
-            ) : (
-              () => navigate(-1)
-            )
-          ) : (
-            () => navigate(-1)
-          )}
+            ) : null
+          ) : null}
           {params.module === "room" ? (
             params.form === "create" ? (
               <CreateRoom />
@@ -105,12 +89,8 @@ export function DataController() {
               <EditRoom />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
-            ) : (
-              () => navigate(-1)
-            )
-          ) : (
-            () => navigate(-1)
-          )}
+            ) : null
+          ) : null}
           {params.module === "section" ? (
             params.form === "create" ? (
               <CreateSection />
@@ -122,12 +102,63 @@ export function DataController() {
               <GenerateSection />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
-            ) : (
-              () => navigate(-1)
-            )
-          ) : (
-            () => navigate(-1)
-          )}
+            ) : null
+          ) : null}
+          {params.module === "curriculum" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "academic-year" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "assignment" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "projection" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "setup" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
         </main>
       }
     />

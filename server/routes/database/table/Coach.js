@@ -48,6 +48,28 @@ app.post("/coach-assignment", (req, res) => {
   });
 });
 
+app.post("/assignment", (req, res) => {
+  const sql = `
+      SELECT *
+        FROM assignment
+          INNER JOIN coach_type
+            ON assignment.CoachType = coach_type.CoachType
+          INNER JOIN academicyear
+            ON assignment.ACY_Code = academicyear.ACY_Code
+          INNER JOIN coach
+            ON assignment.SCHLID = coach.SCHLID
+          
+          WHERE assignment.ASG_Status = 'ACTIVE'
+          
+          ORDER BY ACYID ASC
+    `;
+
+  db.query(sql, [req.body.SCHLID], (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
 app.post("/coach-specialization", (req, res) => {
   const sql = `
       SELECT * 

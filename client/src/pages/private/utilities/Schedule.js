@@ -14,20 +14,62 @@ import STIMap1 from "../../../media/images/STI MAP 1.drawio.png";
 import { Label } from "../../../component/map/Label";
 import useDatabase from "../../../hook/useDatabase";
 import { RoomSchedule } from "./schedule/RoomSchedule";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function Schedule() {
+  const navigate = useNavigate();
   return (
     <>
-      <Link to={"/utilities/schedule/room"}>
-        <button className="btn btn-outline-primary">Room Schedule</button>
-      </Link>
-      <Link to={"/utilities/schedule/room"}>
-        <button className="btn btn-outline-primary">Coach Schedule</button>
-      </Link>
-      <Link to={"/utilities/schedule/section"}>
-        <button className="btn btn-outline-primary">Section Schedule</button>
-      </Link>
+      <FileMaintainanceTemplate
+        sidepanel={<></>}
+        control={
+          <>
+            <div className="w-100">
+              <div className="w-100 d-flex gap-2 mb-2">
+                <DefaultButton
+                  class="btn-outline-primary"
+                  icon={<PiGearSixFill />}
+                  function={() => navigate(-1)}
+                />
+
+                <LinkButton
+                  class="btn-primary px-2"
+                  textclass="text-white"
+                  to={"/utilities/schedule/room"}
+                  text={"Room"}
+                />
+                <LinkButton
+                  class="btn-primary px-2"
+                  textclass="text-white"
+                  to={"/utilities/schedule/section"}
+                  text={"Coach"}
+                />
+                <LinkButton
+                  class="btn-primary px-2"
+                  textclass="text-white"
+                  to={"/utilities/schedule/section"}
+                  text={"Section"}
+                />
+              </div>
+              <div className="d-flex gap-2 justify-content-end">
+                <DefaultInput placeholder="Search" />
+                <DefaultButton
+                  class="btn-outline-primary"
+                  icon={<PiGearSixFill />}
+                />
+                <Link to={"/institution/curriculum/create/0"}>
+                  <DefaultButton
+                    class="btn-primary"
+                    icon={<RiStickyNoteAddLine />}
+                  />
+                </Link>
+              </div>
+            </div>
+          </>
+        }
+        list={<></>}
+      />
     </>
   );
 }

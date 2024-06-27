@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
+import { ListCard } from "../../../component/card/ListCard";
 
 export function Program() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export function Program() {
 
   return (
     <FileMaintainanceTemplate
-    sidepanel={<NoDisplay />}
+      sidepanel={<NoDisplay />}
       control={
         <>
           <DefaultInput placeholder="Search" />
@@ -39,39 +40,15 @@ export function Program() {
         </>
       }
       list={data.map((item, i) => (
-        <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
-          <section className="col-2 p-0 m-0">
-            <h6 className="p-0 m-0">{item.PRG_Code}</h6>
-          </section>
-          <section className="col-7 p-0 m-0">
-            <h6 className="p-0 m-0">{item.Program}</h6>
-            <small>
-              <p className="p-0 m-0 text-secondary fst-italic">
-                <span>{item.PRG_Created}</span>
-              </p>
-            </small>
-          </section>
-          <section className="col-2 p-0 m-0">
-            <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <p className="p-0 m-0">Available</p>
-              <small>
-                <p className="p-0 m-0 text-secondary fst-italic">
-                  <span>Last A.Y. </span>2024-2025
-                </p>
-              </small>
-            </div>
-          </section>
-          <section className="col-1 p-0 m-0">
-            <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <Link
-                to={"/institution/program/view/" + item.PRGID}
-                state={{ data: item }}
-              >
-                <DefaultButton class="btn-primary" icon={<GrView />} />
-              </Link>
-            </div>
-          </section>
-        </main>
+        <ListCard
+          slot1={item.PRG_Code}
+          slot2={item.Program}
+          slot3={item.PRG_Created}
+          slot4={"Available"}
+          slot5={"2024-2025"}
+          link={"/institution/program/view/" + item.PRGID}
+          state={{ data: item }}
+        />
       ))}
     />
   );

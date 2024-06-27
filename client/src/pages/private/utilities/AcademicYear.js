@@ -4,26 +4,33 @@ import { SelectButton } from "../../../component/dropdown/select/SelectButton";
 import { SelectButtonItem } from "../../../component/dropdown/select/SelectButtonItem";
 import useHandleChange from "../../../hook/useHandleChange";
 import { DefaultButton } from "../../../component/button/DefaultButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
 import { SelectButtonItemSelected } from "../../../component/dropdown/select/SelectButtonItemSelected";
+import { ViewCard } from "../../../component/card/ViewCard";
+import { ListCard } from "../../../component/card/ListCard";
+import { DefaultInput } from "../../../component/input/DefaultInput";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function AcademicYear() {
+  const navigate = useNavigate();
   const [get, post] = useDatabase();
 
   const [data, setData] = useState({
     Department: "",
     Program: "",
   });
-  const [aystate, setAYState] = useState("");
+  const [aystate, setAYState] = useState("Coach");
   const [department, setDepartment] = useState([]);
   const [program, setProgram] = useState([]);
   const [setup, setSetup] = useState([]);
   const [currentay, setCurrentAY] = useState([]);
   const [currentAcademicYear, setCurrentAcademicYear] = useState([]);
+  const [assignment, setAssignment] = useState([]);
+  const [projection, setProjection] = useState([]);
 
   const [dataChange] = useHandleChange(setData);
 
@@ -32,7 +39,9 @@ export function AcademicYear() {
     post("program", program, setProgram);
     post("course-setup", setup, setSetup);
     post("academicyear-current", currentay, setCurrentAY);
-  }, [department, program]);
+    post("assignment", assignment, setAssignment);
+    post("projection", projection, setProjection);
+  }, []);
 
   useEffect(() => {
     setData((prev) => ({ ...prev, Program: "" }));
@@ -45,14 +54,43 @@ export function AcademicYear() {
   return (
     <FileMaintainanceTemplate
       sidepanel={
-        <main className="h-100 p-2">
-          <h6>{currentAcademicYear.AcademicYear}</h6>
+        <main className="h-100">
+          <header className="d-flex justify-content-end align-items-center border-bottom pb-2 gap-2">
+            <LinkButton
+              class="btn-primary px-2"
+              textclass="text-white"
+              to={
+                "/institution/academic-year/view/" +
+                currentAcademicYear.ACY_Code
+              }
+              icon={<GrView />}
+            />
+            <LinkButton
+              class="btn-primary px-2"
+              textclass="text-white"
+              to={"/institution/academic-year/create/0"}
+              state={{
+                academicyear: currentAcademicYear,
+                aystate: aystate,
+              }}
+              icon={<RiStickyNoteAddLine />}
+            />
+          </header>
+          <main className="mt-2">
+            <p className="p-0 m-0 fw-semibold text-secondary">Academic Year</p>
+            <h5>{currentAcademicYear.AcademicYear}</h5>
+          </main>
         </main>
       }
       control={
         <>
-          <div className="w-100 d-flex justify-content-between">
-            <div className="d-flex gap-2 ">
+          <div className="w-100">
+            <div className="w-100 d-flex gap-2 mb-2">
+              <DefaultButton
+                class="btn-outline-primary"
+                icon={<PiGearSixFill />}
+                function={() => navigate(-1)}
+              />
               <DefaultButton
                 class="btn-primary px-2"
                 icon={<PiGearSixFill />}
@@ -66,13 +104,20 @@ export function AcademicYear() {
                 function={() => setAYState("Program")}
               />
             </div>
-            <div className="d-flex gap-2 ">
+            <div className="d-flex gap-2 justify-content-end">
+              <DefaultInput placeholder="Search" />
               <DefaultButton
                 class="btn-outline-primary"
                 icon={<PiGearSixFill />}
               />
               <Link
-                to={"/institution/curriculum/create/0"}
+                to={
+                  aystate === "Coach"
+                    ? "/institution/assignment/create/0"
+                    : aystate === "Program"
+                    ? "/institution/projection/create/0"
+                    : "/"
+                }
                 state={{
                   academicyear: currentAcademicYear,
                   aystate: aystate,
@@ -89,9 +134,49 @@ export function AcademicYear() {
       }
       list={
         aystate === "Coach"
-          ? "assignment"
+          ? assignment.length > 0
+            ? assignment.map((item, i) =>
+                item.ACY_Code === currentAcademicYear.ACY_Code ? (
+                  <ListCard
+                    slot1={item.CoachType}
+                    slot2={
+                      <>
+                        {item.FirstName + " "}
+                        {item.MiddleInitial !== (null || "")
+                          ? " " + item.MiddleInitial + ". "
+                          : " "}
+                        {item.LastName + " "}
+                      </>
+                    }
+                    slot3={item.ASG_Created}
+                    slot4={item.ACY_Code}
+                    slot5={
+                      <>
+                        {item.MinUnits} {" - "} {item.MaxUnits} {" units"}
+                      </>
+                    }
+                    link={"/institution/assignment/view/" + item.ASGID}
+                    state={"a"}
+                  />
+                ) : null
+              )
+            : null
           : aystate === "Program"
-          ? "projection"
+          ? projection.length > 0
+            ? projection.map((item, i) =>
+                item.ACY_Code === currentAcademicYear.ACY_Code ? (
+                  <ListCard
+                    slot1={item.Section}
+                    slot2={item.Section}
+                    slot3={item.PRJ_Created}
+                    slot4={item.ACY_Code}
+                    slot5={item.Section}
+                    link={"/institution/projection/view/" + item.PRJID}
+                    state={"a"}
+                  />
+                ) : null
+              )
+            : null
           : null
       }
     />

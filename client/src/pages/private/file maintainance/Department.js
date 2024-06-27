@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
+import { ListCard } from "../../../component/card/ListCard";
 
 export function Department() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export function Department() {
 
   return (
     <FileMaintainanceTemplate
-    sidepanel={<NoDisplay />}
+      sidepanel={<NoDisplay />}
       control={
         <>
           <DefaultInput placeholder="Search" />
@@ -39,39 +40,15 @@ export function Department() {
         </>
       }
       list={data.map((item, i) => (
-        <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
-          <section className="col-2 p-0 m-0">
-            <h6 className="p-0 m-0">{item.DPT_Code}</h6>
-          </section>
-          <section className="col-7 p-0 m-0">
-            <h6 className="p-0 m-0">{item.Department}</h6>
-            <small>
-              <p className="p-0 m-0 text-secondary fst-italic">
-                <span>{item.DPT_Created}</span>
-              </p>
-            </small>
-          </section>
-          <section className="col-2 p-0 m-0">
-            <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <p className="p-0 m-0 text-end">{item.DPT_Abbreviation}</p>
-              <small>
-                <p className="p-0 m-0 text-secondary fst-italic">
-                  <span></span>
-                </p>
-              </small>
-            </div>
-          </section>
-          <section className="col-1 p-0 m-0">
-            <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-              <Link
-                to={"/institution/department/view/" + item.DPTID}
-                state={{ data: item }}
-              >
-                <DefaultButton class="btn-primary" icon={<GrView />} />
-              </Link>
-            </div>
-          </section>
-        </main>
+        <ListCard
+          slot1={item.DPT_Code}
+          slot2={item.Department}
+          slot3={item.DPT_Created}
+          slot4={item.DPT_Abbreviation}
+          slot5={item.DPT_Abbreviation}
+          link={"/institution/department/view/" + item.DPTID}
+          state={{ data: item }}
+        />
       ))}
     />
   );

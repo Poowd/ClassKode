@@ -16,7 +16,7 @@ export class LinkButton extends React.Component {
         }
       >
         <button
-          className="btn btn-sm p-0"
+          className={"btn btn-sm p-0 " + this.props.textclass}
           type={this.props.type}
           disabled={this.props.disabled}
           onClick={this.props.function}
@@ -34,7 +34,9 @@ export class LinkButton extends React.Component {
             {this.props.icon}
             {this.props.text != null ? (
               <small>
-                <span className="fw-semibold">{this.props.text}</span>
+                <span className={"fw-semibold " + this.props.textclass}>
+                  {this.props.text}
+                </span>
               </small>
             ) : (
               ""

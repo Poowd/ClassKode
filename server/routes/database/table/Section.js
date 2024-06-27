@@ -49,6 +49,27 @@ app.post("/section-projection", (req, res) => {
   });
 });
 
+app.post("/projection", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM projection 
+          INNER JOIN section 
+            ON projection.Section = section.Section
+          INNER JOIN academicyear
+            ON projection.ACY_Code = academicyear.ACY_Code
+          
+          
+          WHERE projection.PRJ_Status = 'ACTIVE' 
+          
+          ORDER BY PRJID ASC 
+    `;
+
+  db.query(sql, [req.body.Section], (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
 app.post("/generate-new-section", (req, res) => {
   const sql = `
       INSERT INTO section (Section, Semester, YearLevel, PRG_Code)

@@ -67,10 +67,25 @@ export default function useValidate() {
       Course: ValidateTitle(item2, 5, 100),
     });
   }
+
   function ValidateRoom(item1, item2, dupe1, trigger) {
     trigger({
       CRS_Code: ValidateCodeID(item1, 3, 25, dupe1),
       Course: ValidateTitle(item2, 5, 100),
+    });
+  }
+
+  function ValidateCurriculum(item1, item2, dupe1, trigger) {
+    trigger({
+      CRR_Code: ValidateCodeID(item1, 3, 25, dupe1),
+      Curriculum: ValidateTitle(item2, 5, 100),
+    });
+  }
+
+  function ValidateAcademicYear(item1, item2, dupe1, trigger) {
+    trigger({
+      // CRR_Code: ValidateCodeID(item1, 3, 25, dupe1),
+      // Curriculum: ValidateTitle(item2, 5, 100),
     });
   }
 
@@ -80,5 +95,7 @@ export default function useValidate() {
     ValidateProgram,
     ValidateCourse,
     ValidateRoom,
+    ValidateCurriculum,
+    ValidateAcademicYear,
   ];
 }

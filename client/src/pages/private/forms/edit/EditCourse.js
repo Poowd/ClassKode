@@ -52,8 +52,15 @@ export function EditCourse() {
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
-    useValidate();
+  const [
+    ValidateCoach,
+    ValidateDepartment,
+    ValidateProgram,
+    ValidateCourse,
+    ValidateRoom,
+    ValidateCurriculum,
+    ValidateAcademicYear,
+  ] = useValidate();
 
   useEffect(() => {
     post("course", course, setCourse);

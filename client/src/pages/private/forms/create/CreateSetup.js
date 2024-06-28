@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
 import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
@@ -18,7 +18,9 @@ import useValidation from "../../../../hook/useValidation";
 import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 
-export function CreateCourse() {
+export function CreateSetup() {
+  const params = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [
@@ -35,63 +37,48 @@ export function CreateCourse() {
   ] = useValidation();
 
   const [course, setCourse] = useState([]);
+  const [component, setComponent] = useState([]);
   const [program, setProgram] = useState([]);
-  const [academiclevel, setAcademicLevel] = useState([]);
   const [data, setData] = useState({
+    PRG_Code: state.program,
+    DPT_Code: state.department,
+    CRR_Code: state.curriculum.CRR_Code,
     CRS_Code: "",
-    Course: "",
-    PRG_Code: "",
-  });
-  const [validation, setValidation] = useState({
-    CRS_Code: Base(data.CRS_Code),
-    Course: Base(data.Course),
-    PRG_Code: Base(data.PRG_Code),
+    Component: "",
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,] =
+  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
     useValidate();
 
   useEffect(() => {
     post("course", course, setCourse);
-    post("academiclevel", academiclevel, setAcademicLevel);
+    post("component", component, setComponent);
     post("program", program, setProgram);
-  }, [course]);
+  }, []);
 
   useEffect(() => {
-    ValidateCourse(data.CRS_Code, data.Course, crs_dupe(), setValidation);
+    // ValidateProgram(
+    //   data.Room,
+    //   data.Capacity,
+    //   prg_dupe(),
+    //   setValidation
+    // );
   }, [data]);
-
-  function crs_dupe() {
-    if (course.length > 0) {
-      for (var i = 0; i < course.length; i++) {
-        if (course[i].CRS_Code === data.CRS_Code) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (validation.CRS_Code[0].Result && validation.Course[0].Result) {
-          post("add-new-course", data, setData);
-          navigate(-1);
+        if (true) {
+          post("add-new-setup", data, setData);
+          navigate("/utilities/curriculum");
         }
       }}
     >
       <DataControllerTemplate
-        title={"Create A Course"}
-        description={"This module creates a course"}
+        title={"Create A Setup"}
+        description={"This module creates a setup"}
         control={
           <>
             <DefaultButton
@@ -109,48 +96,76 @@ export function CreateCourse() {
         }
         content={
           <>
-            <FormInput
-              label="Course Code"
-              id="CRS_Code"
-              alert={validation.CRS_Code[0].Message}
-              class={validation.CRS_Code[0].State[0]}
-              success={validation.CRS_Code[0].State[1]}
-              trigger={dataChange}
-              value={data.CRS_Code}
-              required={true}
-            />
-
-            <FormInput
-              label="Course"
-              id="Course"
-              alert={validation.Course[0].Message}
-              class={validation.Course[0].State[0]}
-              success={validation.Course[0].State[1]}
-              trigger={dataChange}
-              value={data.Course}
-              required={false}
-            />
-
+            <div className="w-100">
+              <label className="p-0 m-0">
+                <small>
+                  <span className="fw-semibold">Program</span>
+                </small>
+              </label>
+              <span className="border p-2 rounded w-100 mb-2 d-block">
+                {data.DPT_Code.concat(" - ", data.PRG_Code)}
+              </span>
+              <label className="p-0 m-0">
+                <small>
+                  <span className="fw-semibold">Curriculum</span>
+                </small>
+              </label>
+              <span className="border p-2 rounded w-100 mb-2 d-block">
+                {data.CRR_Code}
+              </span>
+            </div>
             <SelectButton
-              label="Program"
-              id="PRG_Code"
+              label="Course"
+              id="CRS_Code"
               trigger={dataChange}
               required={true}
               option={
                 <>
                   <SelectButtonItemSelected
-                    content={program.map((option, i) => (
+                    content={course.map((option, i) => (
                       <>
-                        {option.PRG_Code === data.PRG_Code ? option.Program : ""}
+                        {option.CRS_Code === data.CRS_Code ? option.Course : ""}
                       </>
                     ))}
                   />
-                  {program.map((option, i) => (
+                  {course.map((option, i) => (
                     <>
-                      {data.PRG_Code !== option.PRG_Code ? (
+                      {data.CRS_Code !== option.CRS_Code ? (
                         <SelectButtonItem
-                          value={option.PRG_Code}
-                          content={option.Program}
+                          value={option.CRS_Code}
+                          content={option.Course}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
+                </>
+              }
+            />
+
+            <SelectButton
+              label="Component"
+              id="Component"
+              trigger={dataChange}
+              required={true}
+              option={
+                <>
+                  <SelectButtonItemSelected
+                    content={component.map((option, i) => (
+                      <>
+                        {option.Component === data.Component
+                          ? option.Component
+                          : ""}
+                      </>
+                    ))}
+                  />
+                  {component.map((option, i) => (
+                    <>
+                      {data.Component !== option.Component ? (
+                        <SelectButtonItem
+                          value={option.Component}
+                          content={option.Component}
                         />
                       ) : (
                         ""

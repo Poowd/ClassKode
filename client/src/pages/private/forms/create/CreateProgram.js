@@ -58,7 +58,13 @@ export function CreateProgram() {
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
+  const [ValidateCoach,
+    ValidateDepartment,
+    ValidateProgram,
+    ValidateCourse,
+    ValidateRoom,
+    ValidateCurriculum,
+    ValidateAcademicYear,] =
     useValidate();
 
   useEffect(() => {

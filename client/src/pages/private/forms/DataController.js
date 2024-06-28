@@ -26,6 +26,11 @@ import { EditDepartment } from "./edit/EditDepartment";
 import { EditProgram } from "./edit/EditProgram";
 import { EditRoom } from "./edit/EditRoom";
 import { EditSection } from "./edit/EditSection";
+import { CreateCurriculum } from "./create/CreateCurriculum";
+import { ViewCurriculum } from "./view/ViewCurriculum";
+import { EditCurriculum } from "./edit/EditCurriculum";
+import { CreateSetup } from "./create/CreateSetup";
+import { ViewSetup } from "./view/ViewSetup";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -106,11 +111,11 @@ export function DataController() {
           ) : null}
           {params.module === "curriculum" ? (
             params.form === "create" ? (
-              <h1>temp create</h1>
+              <CreateCurriculum />
             ) : params.form === "view" ? (
-              <h1>temp view</h1>
+              <ViewCurriculum />
             ) : params.form === "edit" ? (
-              <h1>temp edit</h1>
+              <EditCurriculum />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : null
@@ -150,9 +155,9 @@ export function DataController() {
           ) : null}
           {params.module === "setup" ? (
             params.form === "create" ? (
-              <h1>temp create</h1>
+              <CreateSetup />
             ) : params.form === "view" ? (
-              <h1>temp view</h1>
+              <ViewSetup />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

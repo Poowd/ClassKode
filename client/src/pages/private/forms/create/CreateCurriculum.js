@@ -18,7 +18,7 @@ import useValidation from "../../../../hook/useValidation";
 import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 
-export function CreateCourse() {
+export function CreateCurriculum() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [
@@ -34,44 +34,39 @@ export function CreateCourse() {
     ValidateTitle,
   ] = useValidation();
 
-  const [course, setCourse] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [academiclevel, setAcademicLevel] = useState([]);
+  const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
-    CRS_Code: "",
-    Course: "",
-    PRG_Code: "",
+    CRR_Code: "",
+    Curriculum: "",
   });
   const [validation, setValidation] = useState({
-    CRS_Code: Base(data.CRS_Code),
-    Course: Base(data.Course),
-    PRG_Code: Base(data.PRG_Code),
+    CRR_Code: Base(data.CRR_Code),
+    Curriculum: Base(data.Curriculum),
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach,
+  const [
+    ValidateCoach,
     ValidateDepartment,
     ValidateProgram,
     ValidateCourse,
     ValidateRoom,
     ValidateCurriculum,
-    ValidateAcademicYear,] =
-    useValidate();
+    ValidateAcademicYear,
+  ] = useValidate();
 
   useEffect(() => {
-    post("course", course, setCourse);
-    post("academiclevel", academiclevel, setAcademicLevel);
-    post("program", program, setProgram);
-  }, [course]);
+    post("curriculum", curriculum, setCurriculum);
+  }, [curriculum]);
 
   useEffect(() => {
-    ValidateCourse(data.CRS_Code, data.Course, crs_dupe(), setValidation);
+    ValidateCurriculum(data.CRR_Code, data.Curriculum, crr_dupe(), setValidation);
   }, [data]);
 
-  function crs_dupe() {
-    if (course.length > 0) {
-      for (var i = 0; i < course.length; i++) {
-        if (course[i].CRS_Code === data.CRS_Code) {
+  function crr_dupe() {
+    if (curriculum.length > 0) {
+      for (var i = 0; i < curriculum.length; i++) {
+        if (curriculum[i].CRR_Code === data.CRR_Code) {
           return false;
         }
       }
@@ -83,15 +78,15 @@ export function CreateCourse() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (validation.CRS_Code[0].Result && validation.Course[0].Result) {
-          post("add-new-course", data, setData);
-          navigate(-1);
+        if (validation.CRR_Code[0].Result && validation.Curriculum[0].Result) {
+          post("add-new-curriculum", data, setData);
+          navigate("/utilities/curriculum");
         }
       }}
     >
       <DataControllerTemplate
-        title={"Create A Course"}
-        description={"This module creates a course"}
+        title={"Create A Curriculum"}
+        description={"This module creates a curriculum"}
         control={
           <>
             <DefaultButton
@@ -111,54 +106,24 @@ export function CreateCourse() {
           <>
             <FormInput
               label="Course Code"
-              id="CRS_Code"
-              alert={validation.CRS_Code[0].Message}
-              class={validation.CRS_Code[0].State[0]}
-              success={validation.CRS_Code[0].State[1]}
+              id="CRR_Code"
+              alert={validation.CRR_Code[0].Message}
+              class={validation.CRR_Code[0].State[0]}
+              success={validation.CRR_Code[0].State[1]}
               trigger={dataChange}
-              value={data.CRS_Code}
+              value={data.CRR_Code}
               required={true}
             />
 
             <FormInput
-              label="Course"
-              id="Course"
-              alert={validation.Course[0].Message}
-              class={validation.Course[0].State[0]}
-              success={validation.Course[0].State[1]}
+              label="Curriculum"
+              id="Curriculum"
+              alert={validation.Curriculum[0].Message}
+              class={validation.Curriculum[0].State[0]}
+              success={validation.Curriculum[0].State[1]}
               trigger={dataChange}
-              value={data.Course}
+              value={data.Curriculum}
               required={false}
-            />
-
-            <SelectButton
-              label="Program"
-              id="PRG_Code"
-              trigger={dataChange}
-              required={true}
-              option={
-                <>
-                  <SelectButtonItemSelected
-                    content={program.map((option, i) => (
-                      <>
-                        {option.PRG_Code === data.PRG_Code ? option.Program : ""}
-                      </>
-                    ))}
-                  />
-                  {program.map((option, i) => (
-                    <>
-                      {data.PRG_Code !== option.PRG_Code ? (
-                        <SelectButtonItem
-                          value={option.PRG_Code}
-                          content={option.Program}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
-                </>
-              }
             />
           </>
         }

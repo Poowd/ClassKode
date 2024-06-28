@@ -39,6 +39,22 @@ app.post("/yearlevel", (req, res) => {
   });
 });
 
+app.post("/component", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM course_component 
+
+          WHERE CCP_Status = 'ACTIVE'
+
+          ORDER BY CCPID ASC
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
 app.post("/semester", (req, res) => {
   const sql = `
       SELECT * 

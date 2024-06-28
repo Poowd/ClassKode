@@ -4,7 +4,7 @@ import { SelectButton } from "../../../component/dropdown/select/SelectButton";
 import { SelectButtonItem } from "../../../component/dropdown/select/SelectButtonItem";
 import useHandleChange from "../../../hook/useHandleChange";
 import { DefaultButton } from "../../../component/button/DefaultButton";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
@@ -15,6 +15,7 @@ import { LinkButton } from "../../../component/button/LinkButton";
 import { ListCard } from "../../../component/card/ListCard";
 
 export function Curriculum() {
+  const { state } = useLocation();
   const [get, post] = useDatabase();
 
   const [data, setData] = useState({
@@ -35,7 +36,7 @@ export function Curriculum() {
     post("program", program, setProgram);
     post("course-setup", setup, setSetup);
     post("curriculum-current", currentcrr, setCurrentCRR);
-  }, [department, program]);
+  }, []);
 
   useEffect(() => {
     setData((prev) => ({ ...prev, Program: "" }));
@@ -53,7 +54,10 @@ export function Curriculum() {
             <LinkButton
               class="btn-primary px-2"
               textclass="text-white"
-              to={"/institution/curriculum/view/" + currentCurriculum.CRR_Code}
+              to={"/institution/curriculum/view/" + currentCurriculum.CRRID}
+              state={{
+                data: currentCurriculum,
+              }}
               icon={<GrView />}
             />
             <LinkButton
@@ -141,11 +145,11 @@ export function Curriculum() {
                 icon={<PiGearSixFill />}
               />
               <Link
-                to={"/institution/setup/create/0"}
+                to={data.Program !== "" ? "/institution/setup/create/0" : ""}
                 state={{
                   program: data.Program,
                   department: data.Department,
-                  curriculum: currentcrr.map((crr, i) => crr.Curriculum),
+                  curriculum: currentCurriculum,
                 }}
               >
                 <DefaultButton
@@ -166,7 +170,7 @@ export function Curriculum() {
               slot3={item.STP_Created}
               slot4={item.Curriculum}
               slot5={item.Program}
-              link={"/institution/curriculum/view/" + item.STPID}
+              link={"/institution/setup/view/" + item.STPID}
               state={{ data: item }}
             />
           ) : null

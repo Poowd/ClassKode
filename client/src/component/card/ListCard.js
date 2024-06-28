@@ -10,7 +10,7 @@ export class ListCard extends React.Component {
         <section className="col-2 p-0 m-0">
           <h6 className="p-0 m-0">{this.props.slot1}</h6>
         </section>
-        <section className="col-7 p-0 m-0">
+        <section className="col-5 p-0 m-0">
           <h6 className="p-0 m-0">{this.props.slot2}</h6>
           <small>
             <p className="p-0 m-0 text-secondary fst-italic">
@@ -18,7 +18,7 @@ export class ListCard extends React.Component {
             </p>
           </small>
         </section>
-        <section className="col-2 p-0 m-0">
+        <section className="col-4 p-0 m-0">
           <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
             <p className="p-0 m-0">{this.props.slot4}</p>
             <small>

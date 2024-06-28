@@ -31,6 +31,9 @@ import { ViewCurriculum } from "./view/ViewCurriculum";
 import { EditCurriculum } from "./edit/EditCurriculum";
 import { CreateSetup } from "./create/CreateSetup";
 import { ViewSetup } from "./view/ViewSetup";
+import { ViewAcademicYear } from "./view/ViewAcademicYear";
+import { CreateAcademicYear } from "./create/CreateAcademicYear";
+import { GenerateSchedule } from "./create/GenerateSchedule";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -122,9 +125,9 @@ export function DataController() {
           ) : null}
           {params.module === "academic-year" ? (
             params.form === "create" ? (
-              <h1>temp create</h1>
+              <CreateAcademicYear />
             ) : params.form === "view" ? (
-              <h1>temp view</h1>
+              <ViewAcademicYear />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (
@@ -158,6 +161,19 @@ export function DataController() {
               <CreateSetup />
             ) : params.form === "view" ? (
               <ViewSetup />
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "schedule" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "generate" ? (
+              <GenerateSchedule />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

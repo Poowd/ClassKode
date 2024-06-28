@@ -61,7 +61,7 @@ export function RoomSchedule() {
         </div>
       </nav>
       {/* <section className="position-absolute d-flex flex-column bottom-0 z-3 bg-white m-1 p-2 rounded">
-        
+
       </section> */}
       <main className="h-100 overflow-none">
         <figure class="map h-100">

@@ -30,9 +30,11 @@ export class ListCard extends React.Component {
         </section>
         <section className="col-1 p-0 m-0">
           <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-            <Link to={this.props.link} state={this.props.state}>
-              <DefaultButton class="btn-primary" icon={<GrView />} />
-            </Link>
+            {this.props.link !== null ? (
+              <Link to={this.props.link} state={this.props.state}>
+                <DefaultButton class="btn-primary" icon={<GrView />} />
+              </Link>
+            ) : null}
           </div>
         </section>
       </main>

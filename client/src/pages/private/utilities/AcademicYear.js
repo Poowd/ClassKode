@@ -60,9 +60,9 @@ export function AcademicYear() {
               class="btn-primary px-2"
               textclass="text-white"
               to={
-                "/institution/academic-year/view/" +
-                currentAcademicYear.ACY_Code
+                "/institution/academic-year/view/" + currentAcademicYear.ACYID
               }
+              state={{ data: currentAcademicYear }}
               icon={<GrView />}
             />
             <LinkButton

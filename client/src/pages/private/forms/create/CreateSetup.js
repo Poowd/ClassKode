@@ -85,7 +85,7 @@ export function CreateSetup() {
               class="btn-outline-secondary"
               type="button"
               icon={<IoMdArrowRoundBack />}
-              function={() => navigate(-1)}
+              function={() => navigate(-1, { data: "COSC" })}
             />
             <DefaultButton
               class="btn-success px-2"

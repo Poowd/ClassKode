@@ -54,11 +54,14 @@ export function Schedule() {
               </div>
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultInput placeholder="Search" />
-                <DefaultButton
-                  class="btn-outline-primary"
-                  icon={<PiGearSixFill />}
-                />
-                <Link to={"/institution/curriculum/create/0"}>
+
+                <Link to={"/institution/schedule/generate/0"}>
+                  <DefaultButton
+                    class="btn-outline-primary"
+                    icon={<PiGearSixFill />}
+                  />
+                </Link>
+                <Link to={"/institution/schedule/create/0"}>
                   <DefaultButton
                     class="btn-primary"
                     icon={<RiStickyNoteAddLine />}

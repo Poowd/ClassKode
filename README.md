@@ -220,9 +220,14 @@
 9. PREPARATION FOR DIFFERENT NAVIGATION.
 10. CURRICULUM LAYOUT AND STRUCTURE ARE IMPLEMENTED.
    
-### LOG ENTRY 11 - 26/06/2024
+### LOG ENTRY 12 - 27/06/2024
 
 1. curriculum, academic year, schedule, database, ui, listcard, sidepanel, forms directory, setup, course_mapping
+
+   
+### LOG ENTRY 13 - 28/06/2024
+
+1. list card adjustment, academic year functionalities, generate schedule template, academic year view, academic year queries
 
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY

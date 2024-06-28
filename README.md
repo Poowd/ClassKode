@@ -222,7 +222,7 @@
    
 ### LOG ENTRY 11 - 26/06/2024
 
-1. curriculum, academic year, schedule, database, ui, listcard, sidepanel, forms directory, 
+1. curriculum, academic year, schedule, database, ui, listcard, sidepanel, forms directory, setup, course_mapping
 
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY

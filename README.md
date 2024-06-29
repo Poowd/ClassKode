@@ -224,10 +224,23 @@
 
 1. curriculum, academic year, schedule, database, ui, listcard, sidepanel, forms directory, setup, course_mapping
 
-   
 ### LOG ENTRY 13 - 28/06/2024
 
 1. list card adjustment, academic year functionalities, generate schedule template, academic year view, academic year queries
+
+### LOG ENTRY 14 - 27/06/2024
+
+1. multi select for assignment
+2. multi selection for projection
+3. persisting data for setup
+4. database adjustment
+5. create forms for the following:
+   - assignment
+   - projection
+   - setup
+6. adjustment for academic year ( assignment, projection )
+7. adjustment for curriculum ( now has curriculum list and setup is moved )
+
 
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY

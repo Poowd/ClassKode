@@ -237,11 +237,20 @@
 
 ### LOG ENTRY 14 - 29/06/2024
 
-1.
+1. multi select for assignment
+2. multi selection for projection
+3. persisting data for setup
+4. database adjustment
+5. create forms for the following:
+   - assignment
+   - projection
+   - setup
+6. adjustment for academic year ( assignment, projection )
+7. adjustment for curriculum ( now has curriculum list and setup is moved )
 
 ### LOG ENTRY 15 - 30/06/2024
 
-1. adjustments lang
+1. ladjustments lang
 
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY

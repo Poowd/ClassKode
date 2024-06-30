@@ -25,6 +25,9 @@ import {
 } from "./pages/private/forms/DataController";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
+import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAssignment";
+import { SectionProjection } from "./pages/private/utilities/academicyear/SectionProjection";
+import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
 
 function App() {
   const navigate = useNavigate();
@@ -128,14 +131,30 @@ function App() {
                       ></Route>
                     </Route>
                     <Route path={"/utilities"}>
-                      <Route
-                        path={"/utilities/curriculum"}
-                        element={<Curriculum />}
-                      ></Route>
-                      <Route
-                        path={"/utilities/academicyear"}
-                        element={<AcademicYear />}
-                      ></Route>
+                      <Route path={"/utilities/curriculum"}>
+                        <Route
+                          path={"/utilities/curriculum/"}
+                          element={<Curriculum />}
+                        ></Route>
+                        <Route
+                          path={"/utilities/curriculum/setup"}
+                          element={<CourseSetup />}
+                        ></Route>
+                      </Route>
+                      <Route path={"/utilities/academicyear"}>
+                        <Route
+                          path={"/utilities/academicyear/"}
+                          element={<AcademicYear />}
+                        ></Route>
+                        <Route
+                          path={"/utilities/academicyear/assigment"}
+                          element={<CoachAssignment />}
+                        ></Route>
+                        <Route
+                          path={"/utilities/academicyear/projection"}
+                          element={<SectionProjection />}
+                        ></Route>
+                      </Route>
                       <Route path={"/utilities/schedule"}>
                         <Route
                           path={"/utilities/schedule/"}

@@ -25,8 +25,8 @@ export default function useModal() {
     getModal(id).show();
   }
 
-  function hideModal(id) {
-    getModal(id).hide();
+  function hideModal() {
+    getModal().hide();
   }
 
   return [modalcontent, showModal, hideModal, getModal];

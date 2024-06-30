@@ -72,7 +72,7 @@ export function CreateSetup() {
         e.preventDefault();
         if (true) {
           post("add-new-setup", data, setData);
-          navigate("/utilities/curriculum");
+          navigate("/utilities/curriculum/setup");
         }
       }}
     >

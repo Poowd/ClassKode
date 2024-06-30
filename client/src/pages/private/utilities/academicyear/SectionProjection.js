@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import useDatabase from "../../../hook/useDatabase";
-import { SelectButton } from "../../../component/dropdown/select/SelectButton";
-import { SelectButtonItem } from "../../../component/dropdown/select/SelectButtonItem";
-import useHandleChange from "../../../hook/useHandleChange";
-import { DefaultButton } from "../../../component/button/DefaultButton";
+import useDatabase from "../../../../hook/useDatabase";
+import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
+import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
+import useHandleChange from "../../../../hook/useHandleChange";
+import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { Link, useNavigate } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
-import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
+import { FileMaintainanceTemplate } from "../../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
-import { SelectButtonItemSelected } from "../../../component/dropdown/select/SelectButtonItemSelected";
-import { ViewCard } from "../../../component/card/ViewCard";
-import { ListCard } from "../../../component/card/ListCard";
-import { DefaultInput } from "../../../component/input/DefaultInput";
-import { LinkButton } from "../../../component/button/LinkButton";
+import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
+import { ViewCard } from "../../../../component/card/ViewCard";
+import { ListCard } from "../../../../component/card/ListCard";
+import { DefaultInput } from "../../../../component/input/DefaultInput";
+import { LinkButton } from "../../../../component/button/LinkButton";
 
-export function AcademicYear() {
+export function SectionProjection() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
 
@@ -29,7 +29,8 @@ export function AcademicYear() {
   const [setup, setSetup] = useState([]);
   const [currentay, setCurrentAY] = useState([]);
   const [currentAcademicYear, setCurrentAcademicYear] = useState([]);
-  const [academicyear, setAcademicYear] = useState([]);
+  const [assignment, setAssignment] = useState([]);
+  const [projection, setProjection] = useState([]);
 
   const [dataChange] = useHandleChange(setData);
 
@@ -38,7 +39,8 @@ export function AcademicYear() {
     post("program", program, setProgram);
     post("course-setup", setup, setSetup);
     post("academicyear-current", currentay, setCurrentAY);
-    post("academicyear", academicyear, setAcademicYear);
+    post("assignment", assignment, setAssignment);
+    post("projection", projection, setProjection);
   }, []);
 
   useEffect(() => {
@@ -79,56 +81,41 @@ export function AcademicYear() {
                 icon={<PiGearSixFill />}
                 function={() => navigate(-1)}
               />
-              <DefaultButton
-                class="btn-primary px-2"
-                icon={<PiGearSixFill />}
-                text="Assignment"
-                function={() => navigate("/utilities/academicyear/assigment")}
-              />
-              <DefaultButton
-                class="btn-primary px-2"
-                icon={<PiGearSixFill />}
-                text="Projection"
-                function={() => navigate("/utilities/academicyear/projection")}
-              />
               <DefaultInput placeholder="Search" />
               <DefaultButton
                 class="btn-outline-primary"
                 icon={<PiGearSixFill />}
               />
-              <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
-                to={"/institution/academic-year/create/0"}
+              <Link
+                to={"/institution/projection/create/0"}
                 state={{
                   academicyear: currentAcademicYear,
-                  aystate: aystate,
                 }}
-                icon={<RiStickyNoteAddLine />}
-              />
+              >
+                <DefaultButton
+                  class="btn-primary"
+                  icon={<RiStickyNoteAddLine />}
+                />
+              </Link>
             </div>
           </div>
         </>
       }
       list={
-        academicyear.length > 0
-          ? academicyear.map((item, i) => (
-              <ListCard
-                slot1={item.ACY_Code}
-                slot2={item.AcademicYear}
-                slot3={item.ACY_Created}
-                slot4={item.CRR_Code}
-                slot5={
-                  <>
-                    {item.StartDate}
-                    {" - "}
-                    {item.EndDate}
-                  </>
-                }
-                link={null}
-                state={null}
-              />
-            ))
+        projection.length > 0
+          ? projection.map((item, i) =>
+              item.ACY_Code === currentAcademicYear.ACY_Code ? (
+                <ListCard
+                  slot1={item.Population}
+                  slot2={item.Section}
+                  slot3={item.PRJ_Created}
+                  slot4={item.ACY_Code}
+                  slot5={item.Section}
+                  link={"/institution/projection/view/" + item.PRJID}
+                  state={"a"}
+                />
+              ) : null
+            )
           : null
       }
     />

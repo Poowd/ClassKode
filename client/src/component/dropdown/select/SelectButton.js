@@ -4,11 +4,13 @@ export class SelectButton extends React.Component {
   render() {
     return (
       <div className={"my-2 " + this.props.width}>
-        <label for={this.props.id}>
-          <small>
-            <span className="fw-semibold">{this.props.label}</span>
-          </small>
-        </label>
+        {this.props.label !== null ? (
+          <label for={this.props.id}>
+            <small>
+              <span className="fw-semibold">{this.props.label}</span>
+            </small>
+          </label>
+        ) : null}
         <select
           className={"form-select " + this.props.class}
           aria-label="Default select example"

@@ -23,6 +23,20 @@ app.post("/academiclevel", (req, res) => {
   });
 });
 
+app.post("/coachtype", (req, res) => {
+  const sql = `
+      SELECT * 
+        FROM coach_type 
+
+          WHERE CTP_Status = 'ACTIVE'
+  `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
 app.post("/yearlevel", (req, res) => {
   const sql = `
       SELECT * 

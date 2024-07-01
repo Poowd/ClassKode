@@ -251,6 +251,10 @@
 ### LOG ENTRY 15 - 30/06/2024
 
 1. ladjustments lang
+   
+### LOG ENTRY 16 - 1/07/2024
+
+1. adding new entrys for : assignment and specilization
 
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY

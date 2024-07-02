@@ -36,6 +36,8 @@ import { CreateAcademicYear } from "./create/CreateAcademicYear";
 import { GenerateSchedule } from "./create/GenerateSchedule";
 import { CreateAssignment } from "./create/CreateAssignment";
 import { CreateProjection } from "./create/CreateProjection";
+import { ViewAssignment } from "./view/ViewAssignment";
+import { ViewProjection } from "./view/ViewProjection";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -140,7 +142,7 @@ export function DataController() {
             params.form === "create" ? (
               <CreateAssignment />
             ) : params.form === "view" ? (
-              <h1>temp view</h1>
+              <ViewAssignment />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (
@@ -151,7 +153,7 @@ export function DataController() {
             params.form === "create" ? (
               <CreateProjection />
             ) : params.form === "view" ? (
-              <h1>temp view</h1>
+              <ViewProjection />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

@@ -124,7 +124,7 @@ export function CoachAssignment() {
                     </>
                   }
                   link={"/institution/assignment/view/" + item.ASGID}
-                  state={"a"}
+                  state={{ data: item }}
                 />
               ) : null
             )

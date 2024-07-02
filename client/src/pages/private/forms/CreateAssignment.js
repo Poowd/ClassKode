@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
 import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
@@ -19,10 +19,12 @@ import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 
-export function CreateProjection() {
+export function CreateAssignment() {
   const navigate = useNavigate();
-  const { state } = useLocation();
   const [get, post] = useDatabase();
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedOption, setSelectedOption] = useState([]);
+  const coursecheckbox = document.querySelectorAll(".course-checkbox");
   const [
     Base,
     ValidateID,
@@ -36,163 +38,149 @@ export function CreateProjection() {
     ValidateTitle,
   ] = useValidation();
 
-  const [yearlevel, setYearLevel] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [section, setSection] = useState([]);
-  const [semester, setSemester] = useState([]);
+  const [coach, setCoach] = useState([]);
+  const [course, setCourse] = useState([]);
+  const [coachtype, setCoachType] = useState([]);
   const [data, setData] = useState({
-    ACY_Code: state.academicyear.ACY_Code,
+    CoachType0: "",
   });
-  const [selectedValues, setSelectedValues] = useState([]);
 
   const [dataChange] = useHandleChange(setData);
+  const [
+    ValidateCoach,
+    ValidateDepartment,
+    ValidateProgram,
+    ValidateCourse,
+    ValidateRoom,
+    ValidateCurriculum,
+    ValidateAcademicYear,
+  ] = useValidate();
 
   useEffect(() => {
-    post("program", program, setProgram);
-    post("section", section, setSection);
-    post("yearlevel", yearlevel, setYearLevel);
-    post("semester", semester, setSemester);
+    post("coach", coach, setCoach);
+    post("course", course, setCourse);
+    post("coachtype", coachtype, setCoachType);
   }, []);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     console.log(selectedValues);
-  }, [selectedValues, data]);
+    console.log(selectedOption);
+  }, [selectedValues]);
 
   const removeItem = (item) => {
     setSelectedValues((prevState) =>
       prevState.filter((prevItem) => {
-        return prevItem.Section !== item;
+        return prevItem.id !== item;
+      })
+    );
+  };
+
+  const removeOption = (item) => {
+    setSelectedOption((prevState) =>
+      prevState.filter((prevItem) => {
+        return prevItem.coach !== item;
       })
     );
   };
 
   return (
     <main>
-      <header>
-        <h3 className="m-0 p-0">Section Projection</h3>
-        <p className="m-0 p-0 text-secondary">Setup section projection</p>
-        <hr className="p-0 mx-0 my-2" />
-      </header>
-      <main className="">
-        <div className="d-flex gap-2 my-2">
-          <DefaultButton
-            class="btn-outline-secondary"
-            type="button"
-            icon={<IoMdArrowRoundBack />}
-            function={() => navigate(-1)}
-          />
-          <DefaultButton
-            class="btn-success px-2"
-            type="button"
-            text="Submit"
-            function={() => {
-              if (true) {
-                selectedValues.map((item, i) => {
-                  post("add-new-projection", item, setSelectedValues);
-                });
-                navigate(-1);
-              }
-            }}
-          />
-        </div>
-      </main>
-      {program.map((prg, i) => (
-        <div className="px-3 py-2 my-2 mx-1 rounded shadow-sm">
-          <label className="d-flex align-items-center  my-2 mx-0">
-            <div className="d-flex align-items-center justify-content-between w-100">
-              <span className="">{prg.Program}</span>
-              <div className="d-flex align-items-center gap-3">
-                <span className="">{prg.AcademicLevel}</span>
-              </div>
+      {coach.map((item, i) => (
+        <section className=" py-2 px-3 my-2 mx-1 shadow-sm rounded">
+          <div className="d-flex align-items-center justify-content-between w-100">
+            <span className="">
+              <span>{item.Gender === "Male" ? "Mr. " : "Ms. "}</span>
+              <span>{item.FirstName}</span>
+              <span>
+                {item.MiddleInitial !== (null || "")
+                  ? " " + item.MiddleInitial + ". "
+                  : " "}
+              </span>
+              <span>{item.LastName}</span>
+            </span>
+            <div className="d-flex align-items-center gap-3">
+              <span className="">{item.DPT_Abbreviation}</span>
+              <SelectButton
+                id={"CoachType" + i}
+                label={null}
+                width="w-100"
+                class="form-select-sm shadow-none"
+                trigger={dataChange}
+                option={
+                  <>
+                    <SelectButtonItemSelected
+                      content={coachtype.map((option, i) => (
+                        <>
+                          {option.CoachType === data.CoachType0
+                            ? option.CoachType
+                            : ""}
+                        </>
+                      ))}
+                    />
+                    {coachtype.map((option, i) =>
+                      option.CoachType !== data.CoachType0 ? (
+                        <SelectButtonItem
+                          value={option.CoachType}
+                          content={option.CoachType}
+                        />
+                      ) : null
+                    )}
+                  </>
+                }
+              />
             </div>
-          </label>
-          <hr />
-          <main>
-            {yearlevel.map((yrl, o) =>
-              yrl.AcademicLevel === prg.AcademicLevel ? (
-                <div className="d-block mb-2">
-                  <div>
-                    <span className="fw-semibold text-secondary">
-                      {yrl.YearLevel}
-                    </span>
-                  </div>
-                  <div>
-                    {semester.map((sms, k) => (
-                      <>
-                        <span className="mb-2 fst-italic text-secondary">
-                          {sms.Semester}
-                        </span>
-                        <div className="mb-3">
-                          {section.map((sct, j) =>
-                            yrl.YearLevel === sct.YearLevel ? (
-                              sms.Semester === sct.Semester ? (
-                                sct.PRG_Code === prg.PRG_Code ? (
-                                  <label
-                                    htmlFor={j}
-                                    className="d-flex flex-wrap gap-2 align-items-center justify-content-between py-2 px-5 rounded shadow-sm"
-                                  >
-                                    <div className="d-flex gap-2">
-                                      <span className="fw-semibold">
-                                        {sct.Section}
-                                      </span>
-                                    </div>
-                                    <div className="d-flex gap-2 align-items-center">
-                                      <form
-                                        className="d-flex gap-2 align-items-center"
-                                        onSubmit={(e) => {
-                                          e.preventDefault();
-                                          setSelectedValues((prev) => [
-                                            ...prev,
-                                            {
-                                              id: "SCT" + j,
-                                              Section: sct.Section,
-                                              Population:
-                                                document.getElementById(
-                                                  "SCT" + j
-                                                ).value,
-                                              ACY_Code: data.ACY_Code,
-                                            },
-                                          ]);
-                                        }}
-                                      >
-                                        <FormInput
-                                          label={null}
-                                          id={"SCT" + j}
-                                          class={"text-end form-control-sm"}
-                                          required={false}
-                                        />
-
-                                        <DefaultButton
-                                          class="btn-outline-success"
-                                          type="submit"
-                                          icon={<IoMdArrowRoundBack />}
-                                        />
-                                      </form>
-
-                                      <DefaultButton
-                                        class="btn-outline-danger"
-                                        type="button"
-                                        icon={<IoMdArrowRoundBack />}
-                                        function={() => {
-                                          removeItem(sct.Section);
-                                        }}
-                                      />
-                                    </div>
-                                  </label>
-                                ) : null
-                              ) : null
-                            ) : null
-                          )}
-                        </div>
-                      </>
-                    ))}
-                    <hr />
-                  </div>
+          </div>
+          <hr className="m-2" />
+          <div className="overflow-y-auto px-1" style={{ height: "25vh" }}>
+            {course.map((crs, j) =>
+              crs.DPT_Code === item.DPT_Code ? (
+                <div className={"form-check p-0"}>
+                  <label
+                    className="form-check-label px-5 py-2 w-100 rounded border border-dark-subtle"
+                    htmlFor={"sel" + i + "" + j}
+                  >
+                    {crs.Course}
+                    <input
+                      className="form-check-input course-checkbox"
+                      type="checkbox"
+                      id={"sel" + i + "" + j}
+                      onChange={(e) => {
+                        {
+                          if (e.target.checked) {
+                            setSelectedValues((prev) => [
+                              ...prev,
+                              {
+                                id: "sel" + i + "" + j,
+                                coach: item.LastName,
+                                course: crs.CRS_Code,
+                              },
+                            ]);
+                          } else {
+                            removeItem("sel" + i + "" + j);
+                          }
+                        }
+                      }}
+                    />
+                  </label>
                 </div>
-              ) : null
+              ) : // <label
+              //   htmlFor={"crs" + i + j}
+              //   className="d-flex gap-2 py-2 px-3 shadow-sm mb-2"
+              // >
+              //   <div className="d-flex gap-2">
+              //     <input type="checkbox" id={"crs" + i + j}></input>
+              //     <span className="d-block">{crs.Course}</span>
+              //   </div>
+              //   <div>
+              //     <span className="d-block">( {crs.PRG_Code} )</span>
+              //   </div>
+              // </label>
+              null
             )}
-          </main>
-        </div>
+          </div>
+        </section>
       ))}
     </main>
     // <form

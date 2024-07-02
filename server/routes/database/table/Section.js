@@ -106,6 +106,18 @@ app.post("/add-new-section", (req, res) => {
   });
 });
 
+app.post("/add-new-projection", (req, res) => {
+  const sql =
+    "INSERT INTO projection (`Section`, `Population`, `ACY_Code`) VALUES (?)";
+
+  const values = [req.body.Section, req.body.Population, req.body.ACY_Code];
+
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
 app.post("/update-existing-section", (req, res) => {
   const sql =
     "UPDATE section SET Section = ?, Semester = ?, YearLevel = ?, PRG_Code = ? WHERE SCTID = ? ";

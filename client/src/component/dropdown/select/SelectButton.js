@@ -12,7 +12,7 @@ export class SelectButton extends React.Component {
           </label>
         ) : null}
         <select
-          className={"form-select " + this.props.class}
+          className={"form-select shadow-none " + this.props.class}
           aria-label="Default select example"
           onChange={this.props.trigger}
           name={this.props.id}

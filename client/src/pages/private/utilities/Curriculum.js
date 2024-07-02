@@ -27,9 +27,6 @@ export function Curriculum() {
     Department: "",
     Program: "",
   });
-  const [department, setDepartment] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [setup, setSetup] = useState([]);
   const [currentcrr, setCurrentCRR] = useState([]);
   const [currentCurriculum, setCurrentCurriculum] = useState([]);
   const [curriculum, setCurriculum] = useState([]);
@@ -37,16 +34,9 @@ export function Curriculum() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("department", department, setDepartment);
-    post("program", program, setProgram);
-    post("course-setup", setup, setSetup);
     post("curriculum-current", currentcrr, setCurrentCRR);
     post("curriculum", curriculum, setCurriculum);
   }, []);
-
-  useEffect(() => {
-    setData((prev) => ({ ...prev, Program: "" }));
-  }, [data.Department]);
 
   useEffect(() => {
     currentcrr.map((crr, i) => setCurrentCurriculum(crr));
@@ -116,8 +106,8 @@ export function Curriculum() {
                   slot3={item.CRR_Created}
                   slot4={"n/a"}
                   slot5={"n/a"}
-                  link={"/institution/projection/view/" + item.PRJID}
-                  state={"a"}
+                  link={"/institution/curriculum/view/" + item.CRRID}
+                  state={{ data: item }}
                 />
               ))
             : null

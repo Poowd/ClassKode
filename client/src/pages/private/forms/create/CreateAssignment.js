@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
 import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
@@ -21,237 +21,220 @@ import { DefaultInput } from "../../../../component/input/DefaultInput";
 
 export function CreateAssignment() {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
+  const [selectedValues, setSelectedValues] = useState([]);
+  const coursecheckbox = document.querySelectorAll(".course-checkbox");
 
   const [coach, setCoach] = useState([]);
+  const [assignment, setAssignment] = useState([]);
   const [course, setCourse] = useState([]);
   const [coachtype, setCoachType] = useState([]);
   const [data, setData] = useState({
-    CoachType: "Fulltime",
+    SCHLID: "",
+    CoachType: "",
+    ACY_Code: state.academicyear.ACY_Code,
+    DPT_Code: "",
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [
-    ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,
-  ] = useValidate();
 
+  var test = [];
   useEffect(() => {
     post("coach", coach, setCoach);
     post("course", course, setCourse);
     post("coachtype", coachtype, setCoachType);
+    post("assignment", assignment, setAssignment);
   }, []);
 
+  useEffect(() => {
+    console.log(selectedValues);
+  }, [selectedValues, data]);
+
+  useEffect(() => {
+    setSelectedValues([]);
+    coursecheckbox.forEach((c) => {
+      c.checked = false;
+    });
+    coach.map((item, i) =>
+      item.SCHLID === data.SCHLID
+        ? setData((prev) => ({ ...prev, DPT_Code: item.DPT_Code }))
+        : null
+    );
+  }, [data.SCHLID]);
+
+  const removeItem = (item) => {
+    setSelectedValues((prevState) =>
+      prevState.filter((prevItem) => {
+        return prevItem.id !== item;
+      })
+    );
+  };
+
   return (
-    <main>
-      {coach.map((item, i) => (
-        <section className=" py-2 px-5 border my-2 mx-0">
-          <div className="d-flex align-items-center justify-content-between w-100">
-            <span className="">{item.FirstName}</span>
-            <div className="d-flex align-items-center gap-3">
-              <span className="">{item.DPT_Abbreviation}</span>
-            </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (true) {
+          post("add-new-assignment", data, setData);
+          selectedValues.map((item, i) => {
+            post("add-new-specialization", item, setSelectedValues);
+          });
+          navigate(-1);
+        }
+      }}
+    >
+      <main className="h-100 p-2">
+        <header>
+          <h3 className="m-0 p-0">Coach Assignment</h3>
+          <p className="m-0 p-0 text-secondary">
+            Assign a coach to a set of units and target course for this academic
+            year
+          </p>
+          <hr className="p-0 mx-0 my-2" />
+        </header>
+        <main className="">
+          <div className="d-flex gap-2 my-2">
+            <DefaultButton
+              class="btn-outline-secondary"
+              type="button"
+              icon={<IoMdArrowRoundBack />}
+              function={() => navigate(-1)}
+            />
+            <DefaultButton
+              class="btn-success px-2"
+              type="submit"
+              text="Submit"
+            />
           </div>
-          <hr className="mb-2" />
-          <SelectButton
-            id={"CoachType " + i}
-            label={null}
-            width="w-100 mb-3"
-            class="form-select-sm shadow-none"
-            trigger={dataChange}
-            option={
-              <>
-                <SelectButtonItemSelected
-                  content={coachtype.map((option, i) => (
+          <section className="">
+            <main className="row m-0">
+              <section className="col-6 p-0">
+                <label className="p-0 m-0">
+                  <small>
+                    <span className="fw-semibold">Academic Year</span>
+                  </small>
+                </label>
+                <span className="border p-2 rounded w-100 mb-2 d-block">
+                  {state.academicyear.AcademicYear}
+                </span>
+
+                <SelectButton
+                  label="SCHLID"
+                  id="SCHLID"
+                  trigger={dataChange}
+                  required={true}
+                  option={
                     <>
-                      {option.CoachType === data.CoachType
-                        ? option.CoachType
-                        : ""}
+                      <SelectButtonItemSelected
+                        content={coach.map((option, i) => (
+                          <>
+                            {option.SCHLID === data.SCHLID
+                              ? option.LastName
+                              : ""}
+                          </>
+                        ))}
+                      />
+                      {coach.map((option, i) => (
+                        <>
+                          {data.SCHLID !== option.SCHLID ? (
+                            <SelectButtonItem
+                              value={option.SCHLID}
+                              content={option.LastName}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      ))}
                     </>
-                  ))}
+                  }
                 />
-                {coachtype.map((option, i) =>
-                  option.CoachType !== data.CoachType ? (
-                    <SelectButtonItem
-                      value={option.CoachType}
-                      content={option.CoachType}
-                    />
-                  ) : null
-                )}
-              </>
-            }
-          />
-          {course.map((crs, j) =>
-            crs.DPT_Code === item.DPT_Code ? (
-              <label
-                htmlFor={"crs" + i + j}
-                className="d-flex gap-2 p-2 shadow-sm mb-2"
-              >
-                <input type="checkbox" id={"crs" + i + j}></input>
-                <span className="d-block">{crs.Course}</span>
-              </label>
-            ) : null
-          )}
-        </section>
-      ))}
-    </main>
-    // <form
-    //   onSubmit={(e) => {
-    //     e.preventDefault();
-    //     if (true) {
-    //       post("add-new-room", data, setData);
-    //       navigate(-1);
-    //     }
-    //   }}
-    // >
-    //   <DataControllerTemplate
-    //     title={"Create A Room"}
-    //     description={"This module creates a room"}
-    //     control={
-    //       <>
-    //         <DefaultButton
-    //           class="btn-outline-secondary"
-    //           type="button"
-    //           icon={<IoMdArrowRoundBack />}
-    //           function={() => navigate(-1)}
-    //         />
-    //         <DefaultButton
-    //           class="btn-success px-2"
-    //           type="submit"
-    //           text="Submit"
-    //         />
-    //       </>
-    //     }
-    //     content={
-    //       <>
-    //         <SelectButton
-    //           label="Building"
-    //           id="Building"
-    //           trigger={dataChange}
-    //           required={true}
-    //           option={
-    //             <>
-    //               <SelectButtonItemSelected
-    //                 content={building.map((option, i) => (
-    //                   <>
-    //                     {option.Building === data.Building
-    //                       ? option.Building
-    //                       : ""}
-    //                   </>
-    //                 ))}
-    //               />
-    //               {building.map((option, i) => (
-    //                 <>
-    //                   {data.Building !== option.Building ? (
-    //                     <SelectButtonItem
-    //                       value={option.Building}
-    //                       content={option.Building}
-    //                     />
-    //                   ) : (
-    //                     ""
-    //                   )}
-    //                 </>
-    //               ))}
-    //             </>
-    //           }
-    //         />
 
-    //         <SelectButton
-    //           label="Floor"
-    //           id="Floor"
-    //           trigger={dataChange}
-    //           required={true}
-    //           option={
-    //             <>
-    //               <SelectButtonItemSelected
-    //                 content={floor.map((option, i) => (
-    //                   <>{option.Floor === data.Floor ? option.Floor : ""}</>
-    //                 ))}
-    //               />
-    //               {floor.map((option, i) => (
-    //                 <>
-    //                   {data.Floor !== option.Floor ? (
-    //                     <SelectButtonItem
-    //                       value={option.Floor}
-    //                       content={option.Floor}
-    //                     />
-    //                   ) : (
-    //                     ""
-    //                   )}
-    //                 </>
-    //               ))}
-    //             </>
-    //           }
-    //         />
-
-    //         <SelectButton
-    //           label="Facility"
-    //           id="Facility"
-    //           trigger={dataChange}
-    //           required={true}
-    //           option={
-    //             <>
-    //               <SelectButtonItemSelected
-    //                 content={facility.map((option, i) => (
-    //                   <>
-    //                     {option.Facility === data.Facility
-    //                       ? option.Facility
-    //                       : ""}
-    //                   </>
-    //                 ))}
-    //               />
-    //               {facility.map((option, i) => (
-    //                 <>
-    //                   {data.Facility !== option.Facility ? (
-    //                     <SelectButtonItem
-    //                       value={option.Facility}
-    //                       content={option.Facility}
-    //                     />
-    //                   ) : (
-    //                     ""
-    //                   )}
-    //                 </>
-    //               ))}
-    //             </>
-    //           }
-    //         />
-
-    //         <FormInput
-    //           label="Capacity"
-    //           id="Capacity"
-    //           trigger={dataChange}
-    //           value={data.Capacity}
-    //           required={true}
-    //         />
-
-    //         <FormInput
-    //           label="Room"
-    //           id="Room"
-    //           trigger={dataChange}
-    //           value={data.Room}
-    //           required={false}
-    //         />
-    //       </>
-    //     }
-    //     additional={<></>}
-    //   />
-    // </form>
+                <SelectButton
+                  label="CoachType"
+                  id="CoachType"
+                  trigger={dataChange}
+                  required={true}
+                  option={
+                    <>
+                      <SelectButtonItemSelected
+                        content={coachtype.map((option, i) => (
+                          <>
+                            {option.CoachType === data.CoachType
+                              ? option.CoachType
+                              : ""}
+                          </>
+                        ))}
+                      />
+                      {coachtype.map((option, i) => (
+                        <>
+                          {data.CoachType !== option.CoachType ? (
+                            <SelectButtonItem
+                              value={option.CoachType}
+                              content={option.CoachType}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      ))}
+                    </>
+                  }
+                />
+              </section>
+              <section className="col-6 p-0 px-2">
+                <main className="">
+                  <small>
+                    <p className="p-0 m-0 fw-semibold mb-1">specialization</p>
+                  </small>
+                  <div
+                    className="overflow-y-auto px-1"
+                    style={{ height: "50vh" }}
+                  >
+                    {data.SCHLID !== ""
+                      ? course.map((crs, j) =>
+                          crs.DPT_Code === data.DPT_Code ? (
+                            <div className={"form-check p-0"}>
+                              <label
+                                className="form-check-label px-5 py-2 w-100 rounded shadow-sm mb-2"
+                                htmlFor={j}
+                              >
+                                {crs.Course}
+                                <input
+                                  className="form-check-input course-checkbox"
+                                  type="checkbox"
+                                  id={j}
+                                  onChange={(e) => {
+                                    {
+                                      if (e.target.checked) {
+                                        setSelectedValues((prev) => [
+                                          ...prev,
+                                          {
+                                            id: j,
+                                            SCHLID: data.SCHLID,
+                                            CRS_Code: crs.CRS_Code,
+                                            ACY_Code: data.ACY_Code,
+                                          },
+                                        ]);
+                                      } else {
+                                        removeItem(j);
+                                      }
+                                    }
+                                  }}
+                                />
+                              </label>
+                            </div>
+                          ) : null
+                        )
+                      : null}
+                  </div>
+                </main>
+              </section>
+            </main>
+          </section>
+        </main>
+      </main>
+    </form>
   );
 }

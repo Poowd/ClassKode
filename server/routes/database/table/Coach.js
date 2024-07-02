@@ -116,6 +116,30 @@ app.post("/add-new-coach", (req, res) => {
   });
 });
 
+app.post("/add-new-assignment", (req, res) => {
+  const sql =
+    "INSERT INTO assignment (`SCHLID`, `ACY_Code`, `CoachType`) VALUES (?)";
+
+  const values = [req.body.SCHLID, req.body.ACY_Code, req.body.CoachType];
+
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
+app.post("/add-new-specialization", (req, res) => {
+  const sql =
+    "INSERT INTO specialization (`SCHLID`, `CRS_Code`, `ACY_Code`) VALUES (?)";
+
+  const values = [req.body.SCHLID, req.body.CRS_Code, req.body.ACY_Code];
+
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
 app.post("/update-existing-coach", (req, res) => {
   const sql =
     "UPDATE coach SET SCHLID = ?, FirstName = ?, MiddleInitial = ?, LastName = ?, Gender = ?, DPT_Code = ?, Email = ?, Phone = ?, Facebook = ? WHERE CCHID = ? ";

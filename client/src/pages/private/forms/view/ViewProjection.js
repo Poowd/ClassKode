@@ -20,7 +20,7 @@ import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
 
-export function ViewCurriculum() {
+export function ViewProjection() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
@@ -52,19 +52,6 @@ export function ViewCurriculum() {
 
   const [dataChange] = useHandleChange(setConfirmCode);
 
-  const [currentcrr, setCurrentCRR] = useState([]);
-  const [currentCurriculum, setCurrentCurriculum] = useState([]);
-  const [curriculum, setCurriculum] = useState([]);
-
-  useEffect(() => {
-    post("curriculum-current", currentcrr, setCurrentCRR);
-    post("curriculum", curriculum, setCurriculum);
-  }, []);
-
-  useEffect(() => {
-    currentcrr.map((crr, i) => setCurrentCurriculum(crr));
-  }, [currentcrr]);
-
   useEffect(() => {
     get("random-code-generator", setCode);
   }, []);
@@ -91,15 +78,13 @@ export function ViewCurriculum() {
               icon={<IoMdArrowRoundBack />}
               function={() => navigate(-1)}
             />
-            {data[0].CRR_Code === currentCurriculum.CRR_Code ? (
-              <LinkButton
-                class="btn-warning px-2"
-                icon={<LuFileEdit />}
-                to={"/institution/curriculum/edit/" + params.id}
-                state={{ data: data }}
-                text={"Edit"}
-              />
-            ) : null}
+            <LinkButton
+              class="btn-warning px-2"
+              icon={<LuFileEdit />}
+              to={"/institution/curriculum/edit/" + params.id}
+              state={{ data: data }}
+              text={"Edit"}
+            />
             <DefaultButton
               class="btn-danger px-2"
               icon={<LuFolderArchive />}
@@ -112,7 +97,7 @@ export function ViewCurriculum() {
                     <span className="fw-bold text-black">{code}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">
-                      {data[0].Curriculum}
+                      {data[0].AcademicYear}
                     </span>
                   </>
                 )
@@ -127,7 +112,7 @@ export function ViewCurriculum() {
               <main key={i} className="px-0 py-3 m-0">
                 <header>
                   <h1>
-                    <span>{item.Curriculum}</span>
+                    <span>{item.Section}</span>
                   </h1>
                 </header>
 
@@ -135,12 +120,16 @@ export function ViewCurriculum() {
                   content={
                     <>
                       <DataControlViewItem
-                        label={"Course Code"}
-                        content={item.CRR_Code}
+                        label={"Academic Code"}
+                        content={item.ACY_Code}
+                      />
+                      <DataControlViewItem
+                        label={"Curriculum"}
+                        content={item.Population}
                       />
                       <DataControlViewItem
                         label={"Created"}
-                        content={item.CRR_Created}
+                        content={item.PRJ_Created}
                       />
                     </>
                   }
@@ -149,27 +138,7 @@ export function ViewCurriculum() {
             ))}
           </>
         }
-        additional={
-          <>
-            <ViewCard
-              height="20vh"
-              title="Academic Year"
-              content={
-                academicyear.length > 0
-                  ? academicyear.map((item, i) =>
-                      item.CRR_Code === data[0].CRR_Code ? (
-                        <li className="d-flex gap-2">
-                          <span className="fw-semibold">{item.ACY_Code}</span>
-                          <span className="">-</span>
-                          <span className="">{item.CRR_Code}</span>
-                        </li>
-                      ) : null
-                    )
-                  : "None"
-              }
-            />
-          </>
-        }
+        additional={<></>}
       />
       <PassiveModal
         id={"Modal"}
@@ -191,7 +160,7 @@ export function ViewCurriculum() {
         }
         trigger={() =>
           ArchiveEntry(
-            "archive-existing-curriculum",
+            "archive-existing-academicyear",
             post,
             code,
             confirmCode.Confirm,

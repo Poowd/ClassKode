@@ -231,6 +231,18 @@
 
 1. curriculum, academic year, schedule, database, ui, listcard, sidepanel, forms directory, setup, course_mapping
 
+1. IMPLEMENTATION OF THE CURRICULUM MODULE WHICH WILL HANDLE THE FOLLOWING DATA:
+   - CURRICULUM ( BASE )
+   - CURRICULUM SETUP ( HANDLES THE SET OF PROGRAM AND COURSES )
+2. IMPLEMENTATION OF THE ACADAEMIC YEAR MODULE THAT WILL HANDLE THE FOLLOWING DATA:
+   - ACADEMIC YEAR ( BASE )
+   - COACH ASSIGNMENT
+   - COACH SPECIALIZATION
+   - SECTION PROJECTION
+3. STARTING THE TEMPLATE FOR SCHEDULE AND GENERATE SCHEDULE MODULE
+4. WITH THE IMPLEMENTATION OF THE FOLLOWING MODULE DATABASE IS ALSO ADJUSTED TO SEE FIT.
+5. MINOR CHANGES IN USER INTERFACE INCLUDING THE STI MAP ( CHANGED AS AN HTML STRUCTURE FOR  )
+
 ### LOG ENTRY 13 - 28/06/2024
 
 1. list card adjustment, academic year functionalities, generate schedule template, academic year view, academic year queries
@@ -251,6 +263,19 @@
 ### LOG ENTRY 15 - 30/06/2024
 
 1. ladjustments lang
+   
+### LOG ENTRY 16 - 1/07/2024
+
+1. adding new entrys for : assignment and specilization
+
+### LOG ENTRY 16 - 1/07/2024
+
+1. minor adjustments for academic year
+2. added new views module for academic year:
+   - Assignment
+   - projection
+3. multi add for projection using some selection of values
+
 
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY

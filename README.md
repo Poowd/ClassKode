@@ -268,6 +268,15 @@
 
 1. adding new entrys for : assignment and specilization
 
+### LOG ENTRY 16 - 1/07/2024
+
+1. minor adjustments for academic year
+2. added new views module for academic year:
+   - Assignment
+   - projection
+3. multi add for projection using some selection of values
+
+
 > [!NOTE]
 > PLEASE FOLLOW EACH STEP CAREFULLY
 > MAKE SURE THAT YOU CORRECTLY INSTALL EACH REQUIRED TECHNOLOGIES

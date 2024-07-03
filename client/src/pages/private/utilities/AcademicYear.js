@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../../hook/useDatabase";
-import { SelectButton } from "../../../component/dropdown/select/SelectButton";
-import { SelectButtonItem } from "../../../component/dropdown/select/SelectButtonItem";
 import useHandleChange from "../../../hook/useHandleChange";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,11 +7,12 @@ import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
-import { SelectButtonItemSelected } from "../../../component/dropdown/select/SelectButtonItemSelected";
-import { ViewCard } from "../../../component/card/ViewCard";
 import { ListCard } from "../../../component/card/ListCard";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { LinkButton } from "../../../component/button/LinkButton";
+import { LuUsers2 } from "react-icons/lu";
+import { LuUser2 } from "react-icons/lu";
+import { MdArrowBackIosNew } from "react-icons/md";
 
 export function AcademicYear() {
   const navigate = useNavigate();
@@ -75,27 +74,11 @@ export function AcademicYear() {
           <div className="w-100">
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
-                class="btn-outline-primary"
-                icon={<PiGearSixFill />}
+                class=""
+                icon={<MdArrowBackIosNew />}
                 function={() => navigate(-1)}
               />
-              <DefaultButton
-                class="btn-primary px-2"
-                icon={<PiGearSixFill />}
-                text="Assignment"
-                function={() => navigate("/utilities/academicyear/assigment")}
-              />
-              <DefaultButton
-                class="btn-primary px-2"
-                icon={<PiGearSixFill />}
-                text="Projection"
-                function={() => navigate("/utilities/academicyear/projection")}
-              />
               <DefaultInput placeholder="Search" />
-              <DefaultButton
-                class="btn-outline-primary"
-                icon={<PiGearSixFill />}
-              />
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
@@ -127,6 +110,26 @@ export function AcademicYear() {
                 }
                 link={null}
                 state={null}
+                custom={
+                  item.ACY_Code === currentAcademicYear.ACY_Code ? (
+                    <>
+                      <DefaultButton
+                        class="btn-info px-2"
+                        icon={<LuUser2 />}
+                        function={() =>
+                          navigate("/utilities/academicyear/assigment")
+                        }
+                      />
+                      <DefaultButton
+                        class="btn-info px-2"
+                        icon={<LuUsers2 />}
+                        function={() =>
+                          navigate("/utilities/academicyear/projection")
+                        }
+                      />
+                    </>
+                  ) : null
+                }
               />
             ))
           : null

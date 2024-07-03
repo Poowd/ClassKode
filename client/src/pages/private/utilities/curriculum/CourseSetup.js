@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../../../hook/useDatabase";
-import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
-import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import useHandleChange from "../../../../hook/useHandleChange";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
-import { PiGearSixFill } from "react-icons/pi";
 import { FileMaintainanceTemplate } from "../../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
-import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 import { LinkButton } from "../../../../component/button/LinkButton";
 import { ListCard } from "../../../../component/card/ListCard";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { BiLayer } from "react-icons/bi";
+import { RiMindMap } from "react-icons/ri";
+import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
+import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
 
 export function CourseSetup() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const [get, post] = useDatabase();
 
@@ -86,15 +88,6 @@ export function CourseSetup() {
               }}
               icon={<GrView />}
             />
-            <LinkButton
-              class="btn-primary px-2"
-              textclass="text-white"
-              to={"/institution/curriculum/create/0"}
-              state={{
-                curriculum: currentCurriculum,
-              }}
-              icon={<RiStickyNoteAddLine />}
-            />
           </header>
           <main className="mt-2">
             <p className="p-0 m-0 fw-semibold text-secondary">Curriculum</p>
@@ -105,70 +98,73 @@ export function CourseSetup() {
       control={
         <>
           <div className="w-100">
-            <div className="w-100 d-flex gap-2">
-              <SelectButton
-                id="Department"
-                label="Department"
-                width="w-100"
-                class="form-select-sm"
-                trigger={dataChange}
-                option={
+            <div className="d-flex gap-2 justify-content-end">
+              <DefaultButton
+                class=""
+                icon={<MdArrowBackIosNew />}
+                function={() => navigate(-1)}
+              />
+              <DefaultInput placeholder="Search" />
+
+              <DefaultDropdown
+                class="border px-2 btn-primary"
+                reversed={true}
+                icon={<BiLayer />}
+                text={department.map((item, i) =>
+                  item.DPT_Code === data.Department
+                    ? item.DPT_Abbreviation
+                    : null
+                )}
+                dropdownitems={
                   <>
-                    <SelectButtonItemSelected
-                      content={department.map((option, i) => (
-                        <>
-                          {option.DPT_Code === data.Department
-                            ? option.Department
-                            : ""}
-                        </>
-                      ))}
-                    />
                     {department.map((option, i) =>
                       option.DPT_Code !== data.Department ? (
-                        <SelectButtonItem
-                          value={option.DPT_Code}
-                          content={option.Department}
+                        <DefaultDropdownItem
+                          title={option.Department}
+                          trigger={() =>
+                            setData((prev) => ({
+                              ...prev,
+                              Department: option.DPT_Code,
+                            }))
+                          }
                         />
                       ) : null
                     )}
                   </>
                 }
               />
-              <SelectButton
-                id="Program"
-                label="Program"
-                width="w-100"
-                class="form-select-sm"
-                trigger={dataChange}
-                option={
+              <DefaultDropdown
+                class="border px-2 btn-primary"
+                reversed={true}
+                icon={<BiLayer />}
+                text={program.map((item, i) =>
+                  item.PRG_Code === data.Program ? item.PRG_Abbreviation : null
+                )}
+                dropdownitems={
                   <>
-                    <SelectButtonItemSelected
-                      content={program.map((option, i) => (
-                        <>
-                          {option.PRG_Code === data.Program
-                            ? option.Program
-                            : ""}
-                        </>
-                      ))}
-                    />
                     {program.map((option, i) =>
                       option.DPT_Code === data.Department &&
                       option.PRG_Code !== data.Program ? (
-                        <SelectButtonItem
-                          value={option.PRG_Code}
-                          content={option.Program}
+                        <DefaultDropdownItem
+                          title={option.Program}
+                          trigger={() =>
+                            setData((prev) => ({
+                              ...prev,
+                              Program: option.PRG_Code,
+                            }))
+                          }
                         />
                       ) : null
                     )}
                   </>
                 }
               />
-            </div>
-            <div className="d-flex gap-2 justify-content-end">
-              <DefaultInput placeholder="Search" />
-              <DefaultButton
-                class="btn-outline-primary"
-                icon={<PiGearSixFill />}
+              <LinkButton
+                class="btn-primary px-2"
+                textclass="text-white"
+                to={""}
+                state={""}
+                icon={<RiMindMap />}
               />
               <Link
                 to={data.Program !== "" ? "/institution/setup/create/0" : ""}

@@ -10,7 +10,8 @@ const db = mysql.createConnection({
 });
 
 app.post("/academicyear", (req, res) => {
-  const sql = "SELECT * FROM academicyear WHERE ACY_Status = 'ACTIVE'";
+  const sql =
+    "SELECT * FROM academicyear WHERE ACY_Status = 'ACTIVE' ORDER BY ACYID DESC";
 
   db.query(sql, (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });

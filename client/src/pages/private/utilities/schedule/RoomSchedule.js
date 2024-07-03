@@ -12,7 +12,9 @@ import STIMap3 from "../../../../media/images/STI MAP 3.drawio.png";
 import { Label } from "../../../../component/map/Label";
 import useDatabase from "../../../../hook/useDatabase";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { MdArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
+import { TbStairs } from "react-icons/tb";
 import { SiLevelsdotfyi } from "react-icons/si";
 import { B1 } from "../map/B1";
 import { B2 } from "../map/B2";
@@ -62,59 +64,56 @@ export function RoomSchedule() {
       <section className="col-lg-4 p-0 ps-2 m-0">
         <main className="h-100 position-relative overflow-y-auto px-1">
           <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
-            <div className="d-flex justify-content-end gap-2">
-              <SelectButton
-                id="Floor"
-                label="Floor"
-                width="w-100"
-                class="form-select-sm"
-                trigger={(e) => setCurrentFloor(e.target.value)}
-                option={
-                  <>
-                    <SelectButtonItemSelected
-                      content={floor.map((option, i) => (
-                        <>{option.Floor === currfloor ? option.Floor : ""}</>
-                      ))}
-                    />
-                    {floor.map((option, i) =>
-                      option.Floor !== currfloor ? (
-                        <SelectButtonItem
-                          value={option.Floor}
-                          content={option.Floor}
-                        />
-                      ) : null
-                    )}
-                  </>
-                }
-              />
-              <SelectButton
-                id="Building"
-                label="Building"
-                width="w-100"
-                class="form-select-sm"
-                trigger={(e) => setCurrentBuilding(e.target.value)}
-                option={
-                  <>
-                    <SelectButtonItemSelected
-                      content={building.map((option, i) => (
-                        <>
-                          {option.Building === currbuilding
-                            ? option.Building
-                            : ""}
-                        </>
-                      ))}
-                    />
-                    {building.map((option, i) =>
-                      option.Building !== currbuilding ? (
-                        <SelectButtonItem
-                          value={option.Building}
-                          content={option.Building}
-                        />
-                      ) : null
-                    )}
-                  </>
-                }
-              />
+            <div className="d-flex justify-content-between gap-2">
+              <div>
+                <DefaultButton
+                  class=""
+                  icon={<MdArrowBackIosNew />}
+                  function={() => navigate(-1)}
+                />
+              </div>
+              <div className="d-flex gap-2">
+                <DefaultDropdown
+                  class="border px-2 btn-primary"
+                  reversed={true}
+                  icon={<TbStairs />}
+                  text={building.map((item, i) =>
+                    item.Building === currbuilding ? item.Building : null
+                  )}
+                  dropdownitems={
+                    <>
+                      {building.map((option, i) =>
+                        option.Building !== currbuilding ? (
+                          <DefaultDropdownItem
+                            title={option.Building}
+                            trigger={() => setCurrentBuilding(option.Building)}
+                          />
+                        ) : null
+                      )}
+                    </>
+                  }
+                />
+                <DefaultDropdown
+                  class="border px-2 btn-primary"
+                  reversed={true}
+                  icon={<TbStairs />}
+                  text={floor.map((item, i) =>
+                    item.Floor === currfloor ? item.Floor : null
+                  )}
+                  dropdownitems={
+                    <>
+                      {floor.map((option, i) =>
+                        option.Floor !== currfloor ? (
+                          <DefaultDropdownItem
+                            title={option.Floor}
+                            trigger={() => setCurrentFloor(option.Floor)}
+                          />
+                        ) : null
+                      )}
+                    </>
+                  }
+                />
+              </div>
             </div>
           </section>
           <section>test</section>

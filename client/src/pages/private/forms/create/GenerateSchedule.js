@@ -1,28 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FormInput } from "../../../../component/input/FormInput";
-import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
-import { RadioGroup } from "../../../../component/radiogroup/RadioGroup";
-import { RadioButton } from "../../../../component/radiogroup/RadioButton";
-import { MultipleFormInput } from "../../../../component/input/MultipleFormInput";
-import { MultipleFormInputItem } from "../../../../component/input/MultipleFormInputItem";
-import usePost from "../../../../hook/usePost";
-import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
-import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
-import useHandleChange from "../../../../hook/useHandleChange";
-import useValidation from "../../../../hook/useValidation";
-import useValidate from "../../../../hook/useValidate";
-import useDatabase from "../../../../hook/useDatabase";
-import useGetSection from "../../../../hook/useGetSection";
-import axios from "axios";
-import { ListCard } from "../../../../component/card/ListCard";
-import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
-import { DefaultInput } from "../../../../component/input/DefaultInput";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { ScheduleList } from "../../../../component/card/ScheduleList";
+import { TbListDetails } from "react-icons/tb";
+import { FaRegSave } from "react-icons/fa";
+import { FaFilter } from "react-icons/fa6";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();
@@ -34,45 +18,38 @@ export function GenerateSchedule() {
             <div className="w-100 d-flex justify-content-between">
               <div className="d-flex gap-2 ">
                 <DefaultButton
-                  class="btn-outline-primary px-2"
-                  icon={<PiGearSixFill />}
-                  text="Back"
-                />
-                <DefaultButton
-                  class="btn-outline-primary px-2"
-                  icon={<PiGearSixFill />}
-                  text="Details"
-                />
-                <DefaultButton
-                  class="btn-outline-primary px-2"
-                  icon={<PiGearSixFill />}
-                  text="Generate"
-                />
-                <DefaultButton
-                  class="btn-outline-primary px-2"
-                  icon={<PiGearSixFill />}
-                  text="Save"
+                  class=""
+                  icon={<MdArrowBackIosNew />}
+                  function={() => navigate(-1)}
                 />
               </div>
               <div className="d-flex gap-2 ">
                 <DefaultButton
-                  class="btn-outline-primary px-2"
+                  class="btn-primary px-2"
+                  icon={<TbListDetails />}
+                />
+                <DefaultButton class="btn-primary px-2" icon={<FaFilter />} />
+                <DefaultButton class="btn-primary px-2" icon={<FaRegSave />} />
+                <DefaultButton
+                  class="btn-primary px-2"
                   icon={<PiGearSixFill />}
-                  text="Filter"
+                  text="Generate"
                 />
               </div>
             </div>
           </div>
         </section>
         <section>
-          <ListCard
+          <ScheduleList
             slot1={"Section"}
-            slot2={"Code - Course "}
-            slot3={"Room ( Population / Capacity ) - Day - Time"}
-            slot4={"Coach"}
-            slot5={"Component"}
+            slot2={"Course Code - Course"}
+            slot3={"Day : Start Time - End Time"}
+            slot4={"Room : 0 / 5"}
+            slot5={"Coach"}
+            slot6={"Lecture Type"}
             link={null}
-            state={""}
+            state={null}
+            custom={null}
           />
         </section>
       </main>

@@ -16,6 +16,8 @@ import { ListCard } from "../../../component/card/ListCard";
 import { PassiveModal } from "../../../component/modal/PassiveModal";
 import useModal from "../../../hook/useModal";
 import { CurriculumSelector } from "./curriculum/CurriculumSelector";
+import { MdArrowBackIosNew } from "react-icons/md";
+import { LuPackageOpen } from "react-icons/lu";
 
 export function Curriculum() {
   const navigate = useNavigate();
@@ -69,21 +71,11 @@ export function Curriculum() {
             <div className="w-100">
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
-                  class="btn-outline-primary"
-                  icon={<PiGearSixFill />}
+                  class=""
+                  icon={<MdArrowBackIosNew />}
                   function={() => navigate(-1)}
                 />
-                <DefaultButton
-                  class="btn-primary px-2"
-                  icon={<PiGearSixFill />}
-                  function={() => navigate("/utilities/curriculum/setup")}
-                  text={"setup"}
-                />
                 <DefaultInput placeholder="Search" />
-                <DefaultButton
-                  class="btn-outline-primary"
-                  icon={<PiGearSixFill />}
-                />
                 <LinkButton
                   class="btn-primary px-2"
                   textclass="text-white"
@@ -106,8 +98,15 @@ export function Curriculum() {
                   slot3={item.CRR_Created}
                   slot4={"n/a"}
                   slot5={"n/a"}
-                  link={"/institution/curriculum/view/" + item.CRRID}
-                  state={{ data: item }}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-info px-2"
+                      icon={<LuPackageOpen />}
+                      function={() => navigate("/utilities/curriculum/setup")}
+                    />
+                  }
                 />
               ))
             : null

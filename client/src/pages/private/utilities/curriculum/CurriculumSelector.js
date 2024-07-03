@@ -3,17 +3,8 @@ import useDatabase from "../../../../hook/useDatabase";
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import useHandleChange from "../../../../hook/useHandleChange";
-import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { RiStickyNoteAddLine } from "react-icons/ri";
-import { PiGearSixFill } from "react-icons/pi";
-import { FileMaintainanceTemplate } from "../../../../layout/grid/FileMaintainanceTemplate";
-import { GrView } from "react-icons/gr";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
-import { DefaultInput } from "../../../../component/input/DefaultInput";
-import { LinkButton } from "../../../../component/button/LinkButton";
-import { ListCard } from "../../../../component/card/ListCard";
-import { PassiveModal } from "../../../../component/modal/PassiveModal";
 import useModal from "../../../../hook/useModal";
 
 export function CurriculumSelector() {

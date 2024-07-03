@@ -1,8 +1,9 @@
 import React from "react";
+import { PlotButton } from "../../../../component/button/PlotButton";
 
 export function B3() {
   return (
-    <div className="h-100 row m-0 p-0 border rounded rounded">
+    <div className="h-100 row m-0 p-0 border rounded p-1 rounded p-1">
       <div className="h-25 px-2 pt-2 m-0">
         <div className="h-100 row p-0 m-0">
           <div className="col-3 m-0 p-0"></div>
@@ -69,18 +70,39 @@ export function B3() {
             <div className="h-25 row m-0 p-0"></div>
             <div className="h-75 row m-0 p-0">
               <div className="col-2 m-0 p-0 pe-1">
-                <div className="h-100 border rounded"></div>
+                <div className="h-100 border rounded p-1"></div>
               </div>
               <div className="col-3 m-0 p-0 pe-1">
-                <div className="h-100 border rounded">avr3</div>
+                <div className="h-100 border rounded p-1">
+                  <PlotButton
+                    class="border"
+                    text="avr3"
+                    capacity="0"
+                    function={() => alert("Room")}
+                  />
+                </div>
               </div>
               <div className="col-3 m-0 p-0 pe-1">
-                <div className="h-100 border rounded">avr2</div>
+                <div className="h-100 border rounded p-1">
+                  <PlotButton
+                    class="border"
+                    text="avr2"
+                    capacity="0"
+                    function={() => alert("Room")}
+                  />
+                </div>
               </div>
               <div className="col-3 m-0 p-0 pe-1">
-                <div className="h-100 border rounded">avr1</div>
+                <div className="h-100 border rounded p-1">
+                  <PlotButton
+                    class="border"
+                    text="avr1"
+                    capacity="0"
+                    function={() => alert("Room")}
+                  />
+                </div>
               </div>
-              <div className="col-1 border rounded m-0 p-0"></div>
+              <div className="col-1 border rounded p-1 m-0 p-0"></div>
             </div>
           </div>
         </div>

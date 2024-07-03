@@ -6,7 +6,8 @@ export class PlotButton extends React.Component {
     return (
       <button
         className={
-          "btn btn-sm d-flex align-items-center justify-content-center w-100 h-100"
+          "btn btn-sm d-flex align-items-center justify-content-center w-100 h-100 " +
+          this.props.class
         }
         type={this.props.type}
         disabled={this.props.disabled}
@@ -25,7 +26,8 @@ export class PlotButton extends React.Component {
           {this.props.icon}
           {this.props.text != null ? (
             <small>
-              <span className="fw-semibold">{this.props.text}</span>
+              <h6 className="fw-semibold">{this.props.text}</h6>
+              <p className="p-0 m-0">( {this.props.capacity} )</p>
             </small>
           ) : (
             ""

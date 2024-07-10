@@ -36,6 +36,8 @@ export function CreateSetup() {
     ValidateTitle,
   ] = useValidation();
 
+  const [yearlevel, setYearLevel] = useState([]);
+  const [semester, setSemester] = useState([]);
   const [course, setCourse] = useState([]);
   const [component, setComponent] = useState([]);
   const [program, setProgram] = useState([]);
@@ -45,6 +47,8 @@ export function CreateSetup() {
     CRR_Code: state.curriculum.CRR_Code,
     CRS_Code: "",
     Component: "",
+    YearLevel: "",
+    Semester: "",
   });
 
   const [dataChange] = useHandleChange(setData);
@@ -55,6 +59,8 @@ export function CreateSetup() {
     post("course", course, setCourse);
     post("component", component, setComponent);
     post("program", program, setProgram);
+    post("semester", semester, setSemester);
+    post("yearlevel", yearlevel, setYearLevel);
   }, []);
 
   useEffect(() => {
@@ -166,6 +172,73 @@ export function CreateSetup() {
                         <SelectButtonItem
                           value={option.Component}
                           content={option.Component}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
+                </>
+              }
+            />
+
+            <SelectButton
+              label="YearLevel"
+              id="YearLevel"
+              trigger={dataChange}
+              required={true}
+              option={
+                <>
+                  <SelectButtonItemSelected
+                    content={yearlevel.map((option, i) => (
+                      <>
+                        {option.YearLevel === data.YearLevel
+                          ? option.YearLevel
+                          : ""}
+                      </>
+                    ))}
+                  />
+                  {yearlevel.map((option, i) => (
+                    <>
+                      {data.YearLevel !== option.YearLevel
+                        ? program.map((prg, k) =>
+                            prg.PRG_Code === data.PRG_Code &&
+                            prg.AcademicLevel === option.AcademicLevel ? (
+                              <SelectButtonItem
+                                value={option.YearLevel}
+                                content={option.YearLevel}
+                              />
+                            ) : null
+                          )
+                        : ""}
+                    </>
+                  ))}
+                </>
+              }
+            />
+
+            <SelectButton
+              label="Semester"
+              id="Semester"
+              trigger={dataChange}
+              required={true}
+              option={
+                <>
+                  <SelectButtonItemSelected
+                    content={semester.map((option, i) => (
+                      <>
+                        {option.Semester === data.Semester
+                          ? option.Semester
+                          : ""}
+                      </>
+                    ))}
+                  />
+                  {semester.map((option, i) => (
+                    <>
+                      {data.Semester !== option.Semester ? (
+                        <SelectButtonItem
+                          value={option.Semester}
+                          content={option.Semester}
                         />
                       ) : (
                         ""

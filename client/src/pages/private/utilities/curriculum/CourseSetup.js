@@ -110,11 +110,15 @@ export function CourseSetup() {
                 class="border px-2 btn-primary"
                 reversed={true}
                 icon={<BiLayer />}
-                text={department.map((item, i) =>
-                  item.DPT_Code === data.Department
-                    ? item.DPT_Abbreviation
-                    : null
-                )}
+                text={
+                  data.Department !== ""
+                    ? department.map((item, i) =>
+                        item.DPT_Code === data.Department
+                          ? item.DPT_Abbreviation
+                          : null
+                      )
+                    : "Department"
+                }
                 dropdownitems={
                   <>
                     {department.map((option, i) =>
@@ -137,9 +141,15 @@ export function CourseSetup() {
                 class="border px-2 btn-primary"
                 reversed={true}
                 icon={<BiLayer />}
-                text={program.map((item, i) =>
-                  item.PRG_Code === data.Program ? item.PRG_Abbreviation : null
-                )}
+                text={
+                  data.Program !== ""
+                    ? program.map((item, i) =>
+                        item.PRG_Code === data.Program
+                          ? item.PRG_Abbreviation
+                          : null
+                      )
+                    : "Program"
+                }
                 dropdownitems={
                   <>
                     {program.map((option, i) =>
@@ -159,13 +169,6 @@ export function CourseSetup() {
                   </>
                 }
               />
-              <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
-                to={""}
-                state={""}
-                icon={<RiMindMap />}
-              />
               <Link
                 to={data.Program !== "" ? "/institution/setup/create/0" : ""}
                 state={{
@@ -183,21 +186,25 @@ export function CourseSetup() {
           </div>
         </>
       }
-      list={setup.map((item, i) =>
-        item.PRG_Code === data.Program ? (
-          item.CRR_Code === currentCurriculum.CRR_Code ? (
-            <ListCard
-              slot1={item.Component}
-              slot2={item.Course}
-              slot3={item.STP_Created}
-              slot4={item.Curriculum}
-              slot5={item.Program}
-              link={"/institution/setup/view/" + item.STPID}
-              state={{ data: item }}
-            />
-          ) : null
-        ) : null
-      )}
+      list={
+        data.Program !== ""
+          ? setup.map((item, i) =>
+              item.PRG_Code === data.Program ? (
+                item.CRR_Code === currentCurriculum.CRR_Code ? (
+                  <ListCard
+                    slot1={item.Component}
+                    slot2={item.Course}
+                    slot3={item.STP_Created}
+                    slot4={item.Curriculum}
+                    slot5={item.Program}
+                    link={"/institution/setup/view/" + item.STPID}
+                    state={{ data: item }}
+                  />
+                ) : null
+              ) : null
+            )
+          : <p className="fw-semibold text-center p-3 text-secondary">= Select Department & Program =</p>
+      }
     />
   );
 }

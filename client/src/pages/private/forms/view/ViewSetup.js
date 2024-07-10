@@ -132,6 +132,14 @@ export function ViewSetup() {
                         content={item.CRR_Code}
                       />
                       <DataControlViewItem
+                        label={"Year Level"}
+                        content={item.YL}
+                      />
+                      <DataControlViewItem
+                        label={"Semester"}
+                        content={item.SMS}
+                      />
+                      <DataControlViewItem
                         label={"Created"}
                         content={item.STP_Created}
                       />

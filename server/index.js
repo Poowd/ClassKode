@@ -151,6 +151,8 @@ import Section from "./routes/database/table/Section.js";
 import AcademicYear from "./routes/database/table/AcademicYear.js";
 import DropdownData from "./routes/database/table/DropdownData.js";
 import Curriculum from "./routes/database/table/Curriculum.js";
+import preSchedule from "./routes/database/table/preSchedule.js";
+app.use(preSchedule);
 app.use(Curriculum);
 app.use(DropdownData);
 app.use(AcademicYear);

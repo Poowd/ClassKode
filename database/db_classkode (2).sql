@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2024 at 06:49 PM
+-- Generation Time: Jul 10, 2024 at 07:30 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -11,6 +11,75 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `SETID` varchar(25) NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `DayStart` int(4) NOT NULL,
+  `DayEnd` int(4) NOT NULL,
+  `SET_Created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `SET_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`SETID`, `Title`, `DayStart`, `DayEnd`, `SET_Created`, `SET_Status`) VALUES
+('0000000001', 'Default', 480, 1260, '2024-06-29 20:18:43', 'ACTIVE');
+
+--
+-- Triggers `settings`
+--
+DELIMITER $$
+CREATE TRIGGER `SETID` BEFORE INSERT ON `settings` FOR EACH ROW BEGIN
+	SET New.SETID = LPAD((SELECT COUNT(*) FROM settings) + 1, 10, "0");
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weeklyevent`
+--
+
+CREATE TABLE `weeklyevent` (
+  `WKEID` varchar(25) NOT NULL,
+  `WeeklyEvent` varchar(255) NOT NULL,
+  `Day` enum('Monday','Tuesday','Wednesday','Thursday','Friday') NOT NULL,
+  `StartTime` int(4) NOT NULL,
+  `EndTime` int(4) NOT NULL,
+  `WKE_Created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `WKE_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `weeklyevent`
+--
+
+INSERT INTO `weeklyevent` (`WKEID`, `WeeklyEvent`, `Day`, `StartTime`, `EndTime`, `WKE_Created`, `WKE_Status`) VALUES
+('0000000002', 'Flag Ceremony', 'Monday', 420, 480, '2024-06-29 20:29:26', 'ACTIVE'),
+('0000000001', 'Kamustahan', 'Wednesday', 780, 900, '2024-06-29 20:08:59', 'ACTIVE');
+
+--
+-- Triggers `weeklyevent`
+--
+DELIMITER $$
+CREATE TRIGGER `WKEID` BEFORE INSERT ON `weeklyevent` FOR EACH ROW BEGIN
+	SET New.WKEID = LPAD((SELECT COUNT(*) FROM weeklyevent) + 1, 10, "0");
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -74,9 +143,12 @@ CREATE TABLE `academicyear` (
 --
 
 INSERT INTO `academicyear` (`ACYID`, `ACY_Code`, `CRR_Code`, `AcademicYear`, `StartDate`, `EndDate`, `ACY_Created`, `ACY_Status`) VALUES
+('0000000004', 'asdsda', 'CRR2020', 'dasdasdas', '1234', '1234', '2024-06-29 10:02:55', 'ARCHIVE'),
 ('0000000001', 'AY-2425', 'CRR2020', 'Academic Year 2024-2025', '2024', '2025', '2024-06-20 15:15:09', 'ACTIVE'),
 ('0000000002', 'AY2526', 'CRR2020', 'Academic Year 2025-2026', '2025', '2026', '2024-06-21 10:26:10', 'ARCHIVE'),
-('0000000003', 'dasddas', 'CRR2020', 'asdasda', '1233', '2323', '2024-06-28 17:57:27', 'ARCHIVE');
+('0000000006', 'das', 'CRR2020', 'dasd', 'dsada', 'dsada', '2024-07-03 19:26:50', 'ARCHIVE'),
+('0000000003', 'dasddas', 'CRR2020', 'asdasda', '1233', '2323', '2024-06-28 17:57:27', 'ARCHIVE'),
+('0000000005', 'r34223re', 'CRR2020', 'rweqrwer', 'rwe', 'rewr', '2024-07-03 06:56:14', 'ARCHIVE');
 
 --
 -- Triggers `academicyear`
@@ -109,7 +181,8 @@ CREATE TABLE `assignment` (
 
 INSERT INTO `assignment` (`ASGID`, `SCHLID`, `ACY_Code`, `CoachType`, `ASG_Created`, `ASG_Status`) VALUES
 ('0000000001', '02000000001', 'AY-2425', 'Fulltime', '2024-06-21 07:14:50', 'ACTIVE'),
-('0000000002', '02000000002', 'AY-2425', 'Fulltime', '2024-06-27 06:03:26', 'ACTIVE');
+('0000000002', '02000000002', 'AY-2425', 'Fulltime', '2024-06-27 06:03:26', 'ACTIVE'),
+('0000000003', '02000000003', 'AY-2425', 'Parttime', '2024-07-01 10:36:38', 'ACTIVE');
 
 --
 -- Triggers `assignment`
@@ -149,7 +222,7 @@ CREATE TABLE `coach` (
 INSERT INTO `coach` (`CCHID`, `SCHLID`, `DPT_Code`, `FirstName`, `MiddleInitial`, `LastName`, `Gender`, `Email`, `Phone`, `Facebook`, `CCH_Created`, `CCH_Status`) VALUES
 ('0000000001', '02000000001', 'DPT_ICT', 'Joshua Rhey', 'N', 'Oliveros', 'Male', 'oliveros.000001@munoz.sti.edu.ph', '09123456789', 'https://www.facebook.com', '2024-06-20 16:41:22', 'ACTIVE'),
 ('0000000002', '02000000002', 'DPT_ICT', 'Cristelyn', 'Q', 'Esporsado', 'Female', 'esporsado.000002@munoz.sti.edu.ph', '09123123123', 'https://www.facebook.com/RinkashimeTakanoku', '2024-06-21 19:08:36', 'ACTIVE'),
-('0000000003', '02000000003', 'DPT_TRM', 'Mark', 'L', 'Lopez', 'Male', 'dasd', '09323232323', 'eq', '2024-06-21 19:41:01', 'ARCHIVE');
+('0000000003', '02000000003', 'DPT_ENG', 'Mark', 'L', 'Lopez', 'Male', 'dasd', '09323232323', 'eq', '2024-06-21 19:41:01', 'ACTIVE');
 
 --
 -- Triggers `coach`
@@ -215,10 +288,10 @@ CREATE TABLE `course` (
 
 INSERT INTO `course` (`CRSID`, `CRS_Code`, `PRG_Code`, `Course`, `CRS_Created`, `CRS_Status`) VALUES
 ('0000000001', 'COSC001', 'COSC', 'Methods of Research', '2024-06-21 09:57:53', 'ACTIVE'),
-('0000000002', 'dsa', 'COSC', 'dasdad', '2024-06-22 18:46:18', 'ARCHIVE'),
+('0000000002', 'ENGI001', 'COE', 'Computer Architecture', '2024-06-22 18:46:18', 'ACTIVE'),
 ('0000000003', 'COSC002', 'COSC', 'Thesis 1', '2024-06-22 18:51:09', 'ACTIVE'),
 ('0000000004', 'COSC003', 'COSC', 'Thesis 2', '2024-06-22 18:51:35', 'ACTIVE'),
-('0000000005', 'COSC004', 'COSC', 'Computer Programming 5', '2024-06-26 18:20:16', 'ACTIVE');
+('0000000005', 'COSC004', 'INTE', 'Computer Programming 5', '2024-06-26 18:20:16', 'ACTIVE');
 
 --
 -- Triggers `course`
@@ -319,7 +392,8 @@ CREATE TABLE `curriculum` (
 INSERT INTO `curriculum` (`CRRID`, `CRR_Code`, `Curriculum`, `CRR_Created`, `CRR_Status`) VALUES
 ('0000000001', 'CRR2020', 'Curriculum 2020', '2024-06-20 15:14:39', 'ACTIVE'),
 ('0000000003', 'CRR@#$@', 'eqweqeq', '2024-06-27 18:27:12', 'ARCHIVE'),
-('0000000002', 'dsada', 'dsadasda', '2024-06-27 17:24:04', 'ARCHIVE');
+('0000000002', 'dsada', 'dsadasda', '2024-06-27 17:24:04', 'ARCHIVE'),
+('0000000004', 'ewrfweff', 'efwfwfw', '2024-06-29 10:11:07', 'ARCHIVE');
 
 --
 -- Triggers `curriculum`
@@ -500,10 +574,17 @@ CREATE TABLE `projection` (
 --
 
 INSERT INTO `projection` (`PRJID`, `Section`, `ACY_Code`, `Population`, `PRJ_Created`, `PRJ_Status`) VALUES
-('0000000001', 'CS101', 'AY-2425', 35, '2024-06-23 20:00:31', 'ACTIVE'),
-('0000000002', 'CS102', 'AY2526', 43, '2024-06-25 09:26:18', 'ACTIVE'),
+('0000000001', 'COE101', 'AY-2425', 35, '2024-06-23 20:00:31', 'ACTIVE'),
+('0000000002', 'CS102', 'AY-2425', 25, '2024-06-25 09:26:18', 'ACTIVE'),
 ('0000000003', 'CS101', 'AY2526', 0, '2024-06-27 19:12:16', 'ACTIVE'),
-('0000000004', 'CS102', 'AY-2425', 0, '2024-06-27 19:12:37', 'ACTIVE');
+('0000000004', 'CS201', 'AY-2425', 0, '2024-06-27 19:12:37', 'ACTIVE'),
+('0000000005', 'CS103', 'AY-2425', 24, '2024-07-02 18:45:45', 'ACTIVE'),
+('0000000006', 'IT301', 'AY-2425', 25, '2024-07-02 18:46:03', 'ACTIVE'),
+('0000000007', 'IT401', 'AY-2425', 45, '2024-07-02 18:46:03', 'ACTIVE'),
+('0000000008', 'COE301', 'AY-2425', 42, '2024-07-02 19:07:32', 'ACTIVE'),
+('0000000009', 'CS101', 'r34223re', 24, '2024-07-03 06:56:25', 'ACTIVE'),
+('0000000010', 'CS102', 'r34223re', 25, '2024-07-03 06:56:25', 'ACTIVE'),
+('0000000011', 'CS103', 'r34223re', 23, '2024-07-03 06:56:25', 'ACTIVE');
 
 --
 -- Triggers `projection`
@@ -568,7 +649,7 @@ CREATE TABLE `rom_facility` (
 INSERT INTO `rom_facility` (`FLTID`, `Facility`, `FLT_Created`, `FLT_Status`) VALUES
 ('0000000003', 'Audio Visual Room', '2024-06-21 17:08:43', 'ACTIVE'),
 ('0000000002', 'Computer Laboratory', '2024-06-21 17:08:13', 'ACTIVE'),
-('0000000001', 'Lecture Room', '2024-06-21 17:08:13', 'ACTIVE');
+('0000000001', 'Lecture', '2024-06-21 17:08:13', 'ACTIVE');
 
 --
 -- Triggers `rom_facility`
@@ -634,14 +715,15 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`ROMID`, `Room`, `Capacity`, `Facility`, `Building`, `Floor`, `ROM_Created`, `ROM_Status`) VALUES
-('0000000005', '101Masda', 45, 'Lecture Room', 'Main', 'First Floor', '2024-06-25 05:30:24', 'ACTIVE'),
-('0000000006', '102Masda', 45, 'Computer Laboratory', 'Main', 'First Floor', '2024-06-25 05:30:46', 'ACTIVE'),
-('0000000007', '103M', 25, 'Lecture Room', 'Main', 'First Floor', '2024-06-26 09:17:58', 'ACTIVE'),
-('0000000001', '301M', 45, 'Lecture Room', 'Main', 'Third Floor', '2024-06-21 17:09:46', 'ACTIVE'),
-('0000000002', '302M', 45, 'Lecture Room', 'Main', 'Third Floor', '2024-06-23 19:08:23', 'ACTIVE'),
-('0000000003', '303M', 45, 'Lecture Room', 'Main', 'Third Floor', '2024-06-23 19:08:38', 'ACTIVE'),
-('0000000004', '304M', 45, 'Computer Laboratory', 'Main', 'Third Floor', '2024-06-23 19:08:58', 'ACTIVE'),
-('0000000008', 'Computer Laboratory Four', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 09:18:15', 'ACTIVE');
+('0000000005', '101M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-25 05:30:24', 'ACTIVE'),
+('0000000006', '102M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-25 05:30:46', 'ACTIVE'),
+('0000000007', '103M', 25, 'Lecture', 'Main', 'First Floor', '2024-06-26 09:17:58', 'ACTIVE'),
+('0000000001', '301M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-21 17:09:46', 'ACTIVE'),
+('0000000002', '302M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:23', 'ACTIVE'),
+('0000000003', '303M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:38', 'ACTIVE'),
+('0000000004', '304M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:58', 'ACTIVE'),
+('0000000009', 'ComLab3', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-07-10 15:58:56', 'ACTIVE'),
+('0000000008', 'ComLab4', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 09:18:15', 'ACTIVE');
 
 --
 -- Triggers `room`
@@ -674,9 +756,19 @@ CREATE TABLE `section` (
 --
 
 INSERT INTO `section` (`SCTID`, `Section`, `PRG_Code`, `Semester`, `YearLevel`, `SCT_Created`, `SCT_Status`) VALUES
+('0000000026', 'COE101', 'COE', 'First Semester', 'First Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000027', 'COE201', 'COE', 'Second Semester', 'First Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000028', 'COE301', 'COE', 'First Semester', 'Second Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000029', 'COE401', 'COE', 'Second Semester', 'Second Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000030', 'COE501', 'COE', 'First Semester', 'Third Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000031', 'COE601', 'COE', 'Second Semester', 'Third Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000032', 'COE701', 'COE', 'First Semester', 'Fourth Year', '2024-06-29 16:58:11', 'ACTIVE'),
+('0000000033', 'COE801', 'COE', 'Second Semester', 'Fourth Year', '2024-06-29 16:58:11', 'ACTIVE'),
 ('0000000001', 'CS101', 'COSC', 'First Semester', 'First Year', '2024-06-25 10:35:27', 'ACTIVE'),
 ('0000000017', 'CS102', 'COSC', 'First Semester', 'First Year', '2024-06-26 09:16:36', 'ACTIVE'),
 ('0000000018', 'CS103', 'COSC', 'First Semester', 'First Year', '2024-06-26 09:16:44', 'ACTIVE'),
+('0000000034', 'CS104', 'COSC', 'First Semester', 'First Year', '2024-06-30 17:42:12', 'ARCHIVE'),
+('0000000035', 'CS105', 'COSC', 'First Semester', 'First Year', '2024-06-30 17:42:18', 'ARCHIVE'),
 ('0000000002', 'CS201', 'COSC', 'Second Semester', 'First Year', '2024-06-25 10:35:27', 'ACTIVE'),
 ('0000000019', 'CS202', 'COSC', 'Second Semester', 'First Year', '2024-06-26 09:16:44', 'ACTIVE'),
 ('0000000003', 'CS301', 'COSC', 'First Semester', 'Second Year', '2024-06-25 10:35:27', 'ACTIVE'),
@@ -744,38 +836,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `settings`
---
-
-CREATE TABLE `settings` (
-  `SETID` varchar(25) NOT NULL,
-  `Title` varchar(255) NOT NULL,
-  `DayStart` int(4) NOT NULL,
-  `DayEnd` int(4) NOT NULL,
-  `SET_Created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `SET_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `settings`
---
-
-INSERT INTO `settings` (`SETID`, `Title`, `DayStart`, `DayEnd`, `SET_Created`, `SET_Status`) VALUES
-('0000000001', 'Default', 480, 1260, '2024-06-29 20:18:43', 'ACTIVE');
-
---
--- Triggers `settings`
---
-DELIMITER $$
-CREATE TRIGGER `SETID` BEFORE INSERT ON `settings` FOR EACH ROW BEGIN
-	SET New.SETID = LPAD((SELECT COUNT(*) FROM settings) + 1, 10, "0");
-END
-$$
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `setup`
 --
 
@@ -784,9 +844,9 @@ CREATE TABLE `setup` (
   `CRS_Code` varchar(25) NOT NULL,
   `CRR_Code` varchar(25) NOT NULL,
   `PRG_Code` varchar(25) NOT NULL,
-  `Component` varchar(255) NOT NULL,
-  `YL` varchar(255) NOT NULL,
   `SMS` varchar(255) NOT NULL,
+  `YL` varchar(255) NOT NULL,
+  `Component` varchar(255) NOT NULL,
   `STP_Created` timestamp NOT NULL DEFAULT current_timestamp(),
   `STP_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -795,12 +855,13 @@ CREATE TABLE `setup` (
 -- Dumping data for table `setup`
 --
 
-INSERT INTO `setup` (`STPID`, `CRS_Code`, `CRR_Code`, `PRG_Code`, `Component`, `YL`, `SMS`, `STP_Created`, `STP_Status`) VALUES
-('0000000001', 'COSC001', 'CRR2020', 'COSC', 'Major Lecture', 'First Year', 'First Semester', '2024-06-21 10:01:53', 'ACTIVE'),
-('0000000002', 'COSC002', 'CRR2020', 'COSC', 'Major Lecture', 'First Year', 'First Semester', '2024-06-22 19:08:28', 'ACTIVE'),
-('0000000003', 'COSC003', 'CRR2020', 'COSC', 'General Lecture', 'First Year', 'First Semester', '2024-06-27 17:57:21', 'ACTIVE'),
-('0000000004', 'COSC004', 'CRR2020', 'COSC', 'Computer Laboratory', 'First Year', 'Second Semester', '2024-06-27 18:18:27', 'ACTIVE'),
-('0000000005', 'COSC001', 'CRR2020', 'COE', 'Major Lecture', 'First Year', 'Second Semester', '2024-06-27 18:22:20', 'ACTIVE');
+INSERT INTO `setup` (`STPID`, `CRS_Code`, `CRR_Code`, `PRG_Code`, `SMS`, `YL`, `Component`, `STP_Created`, `STP_Status`) VALUES
+('0000000001', 'COSC001', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'Computer Laboratory', '2024-06-21 10:01:53', 'ACTIVE'),
+('0000000002', 'COSC002', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'Major Lecture', '2024-06-22 19:08:28', 'ACTIVE'),
+('0000000003', 'COSC003', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'General Lecture', '2024-06-27 17:57:21', 'ACTIVE'),
+('0000000004', 'COSC004', 'CRR2020', 'COSC', 'First Semester', 'Third Year', 'Computer Laboratory', '2024-06-27 18:18:27', 'ACTIVE'),
+('0000000005', 'COSC001', 'CRR2020', 'COE', 'First Semester', 'First Year', 'Major Lecture', '2024-06-27 18:22:20', 'ACTIVE'),
+('0000000006', 'COSC004', 'CRR2020', 'COE', 'First Semester', 'First Year', 'Major Lecture', '2024-07-01 07:53:14', 'ACTIVE');
 
 --
 -- Triggers `setup`
@@ -832,7 +893,11 @@ CREATE TABLE `specialization` (
 --
 
 INSERT INTO `specialization` (`SPLID`, `SCHLID`, `CRS_Code`, `ACY_Code`, `SPL_Created`, `SPL_Status`) VALUES
-('0000000001', '02000000002', 'COSC001', 'AY-2425', '2024-06-21 10:04:50', 'ACTIVE');
+('0000000001', '02000000002', 'COSC001', 'AY-2425', '2024-06-21 10:04:50', 'ACTIVE'),
+('0000000002', '02000000003', 'COSC001', 'AY-2425', '2024-07-01 10:38:01', 'ACTIVE'),
+('0000000003', '02000000003', 'ENGI001', 'AY-2425', '2024-07-01 10:38:01', 'ACTIVE'),
+('0000000004', '02000000003', 'COSC003', 'AY-2425', '2024-07-01 10:38:18', 'ACTIVE'),
+('0000000005', '02000000003', 'COSC002', 'AY-2425', '2024-07-01 10:38:18', 'ACTIVE');
 
 --
 -- Triggers `specialization`
@@ -847,46 +912,13 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `weeklyevent`
---
-
-CREATE TABLE `weeklyevent` (
-  `WKEID` varchar(25) NOT NULL,
-  `WeeklyEvent` varchar(255) NOT NULL,
-  `Day` enum('Monday','Tuesday','Wednesday','Thursday','Friday') NOT NULL,
-  `StartTime` int(4) NOT NULL,
-  `EndTime` int(4) NOT NULL,
-  `WKE_Created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `WKE_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `weeklyevent`
---
-
-INSERT INTO `weeklyevent` (`WKEID`, `WeeklyEvent`, `Day`, `StartTime`, `EndTime`, `WKE_Created`, `WKE_Status`) VALUES
-('0000000002', 'Flag Ceremony', 'Monday', 420, 480, '2024-06-29 20:29:26', 'ACTIVE'),
-('0000000001', 'Kamustahan', 'Wednesday', 780, 900, '2024-06-29 20:08:59', 'ACTIVE');
-
---
--- Triggers `weeklyevent`
---
-DELIMITER $$
-CREATE TRIGGER `WKEID` BEFORE INSERT ON `weeklyevent` FOR EACH ROW BEGIN
-	SET New.WKEID = LPAD((SELECT COUNT(*) FROM weeklyevent) + 1, 10, "0");
-END
-$$
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `yearlevel`
 --
 
 CREATE TABLE `yearlevel` (
   `YRLID` varchar(25) NOT NULL,
   `YearLevel` varchar(255) NOT NULL,
+  `AcademicLevel` varchar(255) NOT NULL,
   `YRL_Created` timestamp NOT NULL DEFAULT current_timestamp(),
   `YRL_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -895,13 +927,13 @@ CREATE TABLE `yearlevel` (
 -- Dumping data for table `yearlevel`
 --
 
-INSERT INTO `yearlevel` (`YRLID`, `YearLevel`, `YRL_Created`, `YRL_Status`) VALUES
-('0000000003', 'First Year', '2024-06-21 17:03:30', 'ACTIVE'),
-('0000000006', 'Fourth Year', '2024-06-21 17:03:41', 'ACTIVE'),
-('00000000001', 'Grade 11', '2024-06-21 17:03:55', 'ACTIVE'),
-('00000000002', 'Grade 12', '2024-06-21 17:03:55', 'ACTIVE'),
-('0000000004', 'Second Year', '2024-06-21 17:03:30', 'ACTIVE'),
-('0000000005', 'Third Year', '2024-06-21 17:03:41', 'ACTIVE');
+INSERT INTO `yearlevel` (`YRLID`, `YearLevel`, `AcademicLevel`, `YRL_Created`, `YRL_Status`) VALUES
+('0000000003', 'First Year', 'Tertiary', '2024-06-21 17:03:30', 'ACTIVE'),
+('0000000006', 'Fourth Year', 'Tertiary', '2024-06-21 17:03:41', 'ACTIVE'),
+('00000000001', 'Grade 11', 'Senior High School', '2024-06-21 17:03:55', 'ACTIVE'),
+('00000000002', 'Grade 12', 'Senior High School', '2024-06-21 17:03:55', 'ACTIVE'),
+('0000000004', 'Second Year', 'Tertiary', '2024-06-21 17:03:30', 'ACTIVE'),
+('0000000005', 'Third Year', 'Tertiary', '2024-06-21 17:03:41', 'ACTIVE');
 
 --
 -- Triggers `yearlevel`
@@ -1091,44 +1123,35 @@ ALTER TABLE `semester`
   ADD UNIQUE KEY `SMSID` (`SMSID`);
 
 --
--- Indexes for table `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`Title`),
-  ADD UNIQUE KEY `SETID` (`SETID`);
-
---
 -- Indexes for table `setup`
 --
 ALTER TABLE `setup`
   ADD PRIMARY KEY (`STPID`),
+  ADD UNIQUE KEY `CRS_Code_2` (`CRS_Code`,`CRR_Code`,`PRG_Code`,`Component`),
   ADD KEY `CRRID` (`CRR_Code`),
   ADD KEY `Component` (`Component`),
   ADD KEY `CRS_Code` (`CRS_Code`),
-  ADD KEY `PRG_Code` (`PRG_Code`);
+  ADD KEY `PRG_Code` (`PRG_Code`),
+  ADD KEY `YearLevel` (`YL`),
+  ADD KEY `Semester` (`SMS`);
 
 --
 -- Indexes for table `specialization`
 --
 ALTER TABLE `specialization`
   ADD PRIMARY KEY (`SPLID`),
+  ADD UNIQUE KEY `SCHLID` (`SCHLID`,`CRS_Code`,`ACY_Code`),
   ADD KEY `CCHID` (`SCHLID`),
   ADD KEY `CRSID` (`CRS_Code`),
   ADD KEY `ACY_Code` (`ACY_Code`);
-
---
--- Indexes for table `weeklyevent`
---
-ALTER TABLE `weeklyevent`
-  ADD PRIMARY KEY (`WeeklyEvent`),
-  ADD UNIQUE KEY `WKEID` (`WKEID`);
 
 --
 -- Indexes for table `yearlevel`
 --
 ALTER TABLE `yearlevel`
   ADD PRIMARY KEY (`YearLevel`),
-  ADD UNIQUE KEY `YRLID` (`YRLID`);
+  ADD UNIQUE KEY `YRLID` (`YRLID`),
+  ADD KEY `AcademicLevel` (`AcademicLevel`);
 
 --
 -- Constraints for dumped tables
@@ -1164,9 +1187,9 @@ ALTER TABLE `course`
 -- Constraints for table `course_mapping`
 --
 ALTER TABLE `course_mapping`
-  ADD CONSTRAINT `course_mapping_ibfk_1` FOREIGN KEY (`STPID`) REFERENCES `setup` (`STPID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `course_mapping_ibfk_3` FOREIGN KEY (`Semester`) REFERENCES `semester` (`Semester`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `course_mapping_ibfk_4` FOREIGN KEY (`YearLevel`) REFERENCES `yearlevel` (`YearLevel`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `course_mapping_ibfk_4` FOREIGN KEY (`YearLevel`) REFERENCES `yearlevel` (`YearLevel`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `course_mapping_ibfk_5` FOREIGN KEY (`STPID`) REFERENCES `setup` (`STPID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `placement`
@@ -1221,7 +1244,9 @@ ALTER TABLE `setup`
   ADD CONSTRAINT `setup_ibfk_1` FOREIGN KEY (`CRS_Code`) REFERENCES `course` (`CRS_Code`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `setup_ibfk_2` FOREIGN KEY (`CRR_Code`) REFERENCES `curriculum` (`CRR_Code`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `setup_ibfk_3` FOREIGN KEY (`Component`) REFERENCES `course_component` (`Component`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `setup_ibfk_4` FOREIGN KEY (`PRG_Code`) REFERENCES `program` (`PRG_Code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `setup_ibfk_4` FOREIGN KEY (`PRG_Code`) REFERENCES `program` (`PRG_Code`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `setup_ibfk_5` FOREIGN KEY (`SMS`) REFERENCES `semester` (`Semester`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `setup_ibfk_6` FOREIGN KEY (`YL`) REFERENCES `yearlevel` (`YearLevel`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `specialization`
@@ -1230,8 +1255,15 @@ ALTER TABLE `specialization`
   ADD CONSTRAINT `specialization_ibfk_4` FOREIGN KEY (`ACY_Code`) REFERENCES `academicyear` (`ACY_Code`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `specialization_ibfk_5` FOREIGN KEY (`SCHLID`) REFERENCES `coach` (`SCHLID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `specialization_ibfk_6` FOREIGN KEY (`CRS_Code`) REFERENCES `course` (`CRS_Code`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `yearlevel`
+--
+ALTER TABLE `yearlevel`
+  ADD CONSTRAINT `yearlevel_ibfk_1` FOREIGN KEY (`AcademicLevel`) REFERENCES `academiclevel` (`AcademicLevel`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -16,6 +16,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TbStairs } from "react-icons/tb";
 import { SiLevelsdotfyi } from "react-icons/si";
+<<<<<<< Updated upstream
 import { B1 } from "../map/B1";
 import { B2 } from "../map/B2";
 import { B3 } from "../map/B3";
@@ -25,6 +26,9 @@ import { A3 } from "../map/A3";
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
+=======
+import { M1 } from "./M1";
+>>>>>>> Stashed changes
 
 export function RoomSchedule() {
   const { state } = useLocation();
@@ -45,6 +49,7 @@ export function RoomSchedule() {
   }, [placement]);
 
   return (
+<<<<<<< Updated upstream
     <main className="h-100 row m-0 p-0">
       <section className="col-lg-8 p-0 m-0">
         {currfloor === "First Floor" && currbuilding === "Annex-B" ? (
@@ -119,6 +124,92 @@ export function RoomSchedule() {
           <section>test</section>
         </main>
       </section>
+=======
+    // <main className="h-100 row m-0 border p-2">
+    //   <section className="col-lg-8 p-0 border">
+    //     <M1 />
+    //   </section>
+    //   <section className="col-lg-4 p-0 border">a</section>
+    // </main>
+    <main className="h-100 position-relative">
+      <nav className="position-absolute d-flex flex-column gap-2 bottom-0 z-3 bg-white p-1">
+        <small>
+          <h6 className="p-0 m-0">STI College Muñoz-EDSA</h6>
+          <p className="p-0 m-0">{currfloor}</p>
+        </small>
+        <div className="d-flex gap-2">
+          <DefaultButton
+            class="btn-outline-secondary px-2"
+            type="button"
+            icon={<IoMdArrowRoundBack />}
+            text="Back"
+            function={() => navigate(-1)}
+          />
+          {floor.map((floor, i) => (
+            <DefaultButton
+              class="btn-primary px-2"
+              type="button"
+              icon={<SiLevelsdotfyi />}
+              text={i + 1}
+              function={() => setCurrentFloor(floor.Floor)}
+            />
+          ))}
+          <DefaultButton
+            class="btn-outline-primary"
+            icon={<PiGearSixFill />}
+            function={() => navigate(-1)}
+          />
+        </div>
+      </nav>
+      {/* <section className="position-absolute d-flex flex-column bottom-0 z-3 bg-white m-1 p-2 rounded">
+
+      </section> */}
+      <main className="h-100 overflow-none">
+        <figure class="map h-100">
+          {currfloor === "First Floor" ? (
+            <img class="blueprint" src={STIMap1} alt="..." />
+          ) : currfloor === "Second Floor" ? (
+            <img class="blueprint" src={STIMap2} alt="..." />
+          ) : currfloor === "Third Floor" ? (
+            <img class="blueprint" src={STIMap3} alt="..." />
+          ) : (
+            () => setFloorStatus(false)
+          )}
+
+          {floorstatus === true ? (
+            <main class="labels">
+              <ul class="labels-list">
+                {placement.length > 0
+                  ? placement.map((slot, i) =>
+                      slot.Floor === currfloor ? (
+                        <Label
+                          class={
+                            slot.Room === null
+                              ? "text-secondary " + slot.PLC_Code
+                              : " " + slot.PLC_Code
+                          }
+                          header={slot.Room === null ? "Empty" : slot.Room}
+                          content="Available"
+                          capacity={slot.Room === null ? "0" : slot.Capacity}
+                          trigger={() =>
+                            alert(
+                              slot.Building +
+                                " - " +
+                                slot.Floor +
+                                " - " +
+                                slot.Room
+                            )
+                          }
+                        />
+                      ) : null
+                    )
+                  : ""}
+              </ul>
+            </main>
+          ) : null}
+        </figure>
+      </main>
+>>>>>>> Stashed changes
     </main>
     // <main className="h-100 position-relative">
     //   <nav className="position-absolute d-flex flex-column gap-2 bottom-0 z-3 bg-white p-1">

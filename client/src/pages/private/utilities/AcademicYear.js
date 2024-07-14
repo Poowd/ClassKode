@@ -114,14 +114,14 @@ export function AcademicYear() {
                   item.ACY_Code === currentAcademicYear.ACY_Code ? (
                     <>
                       <DefaultButton
-                        class="btn-info px-2"
+                        class="custom-bg-primary-light px-2"
                         icon={<LuUser2 />}
                         function={() =>
                           navigate("/utilities/academicyear/assigment")
                         }
                       />
                       <DefaultButton
-                        class="btn-info px-2"
+                        class="custom-bg-primary-light px-2"
                         icon={<LuUsers2 />}
                         function={() =>
                           navigate("/utilities/academicyear/projection")

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
-import useGet from "../../../hook/useGet";
-import usePost from "../../../hook/usePost";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { GrView } from "react-icons/gr";
 import { RiStickyNoteAddLine } from "react-icons/ri";

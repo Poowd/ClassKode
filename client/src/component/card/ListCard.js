@@ -11,7 +11,7 @@ export class ListCard extends React.Component {
           <h6 className="p-0 m-0">{this.props.slot1}</h6>
         </section>
         <section className="col-5 p-0 m-0">
-          <h6 className="p-0 m-0">{this.props.slot2}</h6>
+          <h6 className="p-0 m-0 custom-text-gradient">{this.props.slot2}</h6>
           <small>
             <p className="p-0 m-0 text-secondary fst-italic">
               <span>{this.props.slot3}</span>
@@ -32,10 +32,15 @@ export class ListCard extends React.Component {
           <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
             {this.props.link !== null ? (
               <Link to={this.props.link} state={this.props.state}>
-                <DefaultButton class="btn-info" icon={<GrView />} />
+                <DefaultButton
+                  class="custom-bg-primary-light"
+                  icon={<GrView />}
+                />
               </Link>
             ) : null}
-            <div className="d-flex gap-2">{this.props.custom !== null ? this.props.custom : null}</div>
+            <div className="d-flex gap-2">
+              {this.props.custom !== null ? this.props.custom : null}
+            </div>
           </div>
         </section>
       </main>

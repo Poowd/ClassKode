@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2024 at 07:30 PM
+-- Generation Time: Jul 14, 2024 at 10:10 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -11,75 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
--- --------------------------------------------------------
-
---
--- Table structure for table `settings`
---
-
-CREATE TABLE `settings` (
-  `SETID` varchar(25) NOT NULL,
-  `Title` varchar(255) NOT NULL,
-  `DayStart` int(4) NOT NULL,
-  `DayEnd` int(4) NOT NULL,
-  `SET_Created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `SET_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `settings`
---
-
-INSERT INTO `settings` (`SETID`, `Title`, `DayStart`, `DayEnd`, `SET_Created`, `SET_Status`) VALUES
-('0000000001', 'Default', 480, 1260, '2024-06-29 20:18:43', 'ACTIVE');
-
---
--- Triggers `settings`
---
-DELIMITER $$
-CREATE TRIGGER `SETID` BEFORE INSERT ON `settings` FOR EACH ROW BEGIN
-	SET New.SETID = LPAD((SELECT COUNT(*) FROM settings) + 1, 10, "0");
-END
-$$
-DELIMITER ;
-
--- --------------------------------------------------------
-
--- --------------------------------------------------------
-
---
--- Table structure for table `weeklyevent`
---
-
-CREATE TABLE `weeklyevent` (
-  `WKEID` varchar(25) NOT NULL,
-  `WeeklyEvent` varchar(255) NOT NULL,
-  `Day` enum('Monday','Tuesday','Wednesday','Thursday','Friday') NOT NULL,
-  `StartTime` int(4) NOT NULL,
-  `EndTime` int(4) NOT NULL,
-  `WKE_Created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `WKE_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `weeklyevent`
---
-
-INSERT INTO `weeklyevent` (`WKEID`, `WeeklyEvent`, `Day`, `StartTime`, `EndTime`, `WKE_Created`, `WKE_Status`) VALUES
-('0000000002', 'Flag Ceremony', 'Monday', 420, 480, '2024-06-29 20:29:26', 'ACTIVE'),
-('0000000001', 'Kamustahan', 'Wednesday', 780, 900, '2024-06-29 20:08:59', 'ACTIVE');
-
---
--- Triggers `weeklyevent`
---
-DELIMITER $$
-CREATE TRIGGER `WKEID` BEFORE INSERT ON `weeklyevent` FOR EACH ROW BEGIN
-	SET New.WKEID = LPAD((SELECT COUNT(*) FROM weeklyevent) + 1, 10, "0");
-END
-$$
-DELIMITER ;
-
--- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -326,7 +257,8 @@ INSERT INTO `course_component` (`CCPID`, `Component`, `MaxUnits`, `CCP_Created`,
 ('0000000002', 'General Lecture', 1.5, '2024-06-21 08:48:20', 'ACTIVE'),
 ('0000000001', 'Major Lecture', 2, '2024-06-21 08:48:05', 'ACTIVE'),
 ('0000000005', 'NSTP', 3, '2024-06-21 08:49:29', 'ACTIVE'),
-('0000000004', 'PE ( Tertiary )', 2, '2024-06-21 08:49:13', 'ACTIVE');
+('0000000004', 'PE ( Tertiary )', 2, '2024-06-21 08:49:13', 'ACTIVE'),
+('0000000006', 'Weekly Event', 1.5, '2024-07-14 06:40:15', 'ACTIVE');
 
 --
 -- Triggers `course_component`
@@ -723,7 +655,8 @@ INSERT INTO `room` (`ROMID`, `Room`, `Capacity`, `Facility`, `Building`, `Floor`
 ('0000000003', '303M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:38', 'ACTIVE'),
 ('0000000004', '304M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:58', 'ACTIVE'),
 ('0000000009', 'ComLab3', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-07-10 15:58:56', 'ACTIVE'),
-('0000000008', 'ComLab4', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 09:18:15', 'ACTIVE');
+('0000000008', 'ComLab4', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 09:18:15', 'ACTIVE'),
+('0000000010', 'Court', 100, 'Lecture', 'Annex-B', 'First Floor', '2024-07-12 08:32:14', 'ACTIVE');
 
 --
 -- Triggers `room`
@@ -731,6 +664,54 @@ INSERT INTO `room` (`ROMID`, `Room`, `Capacity`, `Facility`, `Building`, `Floor`
 DELIMITER $$
 CREATE TRIGGER `ROM` BEFORE INSERT ON `room` FOR EACH ROW BEGIN
 	SET New.ROMID = LPAD((SELECT COUNT(*) FROM room) + 1, 10, "0");
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schedule`
+--
+
+CREATE TABLE `schedule` (
+  `SCDID` varchar(25) NOT NULL,
+  `Section` varchar(255) NOT NULL,
+  `CRS_Code` varchar(25) NOT NULL,
+  `Room` varchar(255) NOT NULL,
+  `Component` varchar(255) NOT NULL,
+  `Units` double NOT NULL,
+  `Day` varchar(255) NOT NULL,
+  `StartTime` int(11) NOT NULL,
+  `EndTime` int(11) NOT NULL,
+  `ACY_Code` varchar(25) NOT NULL,
+  `CRR_Code` varchar(25) NOT NULL,
+  `SCD_Created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `SCD_Status` enum('ACTIVE','ARCHIVED','PENDING') NOT NULL DEFAULT 'ACTIVE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`SCDID`, `Section`, `CRS_Code`, `Room`, `Component`, `Units`, `Day`, `StartTime`, `EndTime`, `ACY_Code`, `CRR_Code`, `SCD_Created`, `SCD_Status`) VALUES
+('0000000001', 'ABC000', 'Kamustahan', 'Court', 'Weekly Event', 0, 'Wednesday', 780, 870, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000002', 'CS102', 'COSC002', '301M', 'Major Lecture', 2, 'Monday', 810, 930, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000003', 'CS102', 'COSC001', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 480, 660, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000004', 'CS103', 'COSC001', 'ComLab4', 'Computer Laboratory', 3, 'Monday', 480, 660, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000005', 'CS103', 'COSC003', '301M', 'General Lecture', 1.5, 'Monday', 930, 1020, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000006', 'ABC001', 'Flag Ceremony', 'Court', 'Weekly Event', 0, 'Monday', 420, 480, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000007', 'CS103', 'COSC002', '301M', 'Major Lecture', 2, 'Monday', 1020, 1140, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000008', 'COE101', 'COSC001', '301M', 'Major Lecture', 2, 'Monday', 480, 600, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000009', 'COE101', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 600, 720, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
+('0000000010', 'CS102', 'COSC003', '301M', 'General Lecture', 1.5, 'Wednesday', 720, 810, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE');
+
+--
+-- Triggers `schedule`
+--
+DELIMITER $$
+CREATE TRIGGER `SCDID` BEFORE INSERT ON `schedule` FOR EACH ROW BEGIN
+	SET New.SCDID = LPAD((SELECT COUNT(*) FROM schedule) + 1, 10, "0");
 END
 $$
 DELIMITER ;
@@ -836,6 +817,38 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `SETID` varchar(25) NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `DayStart` int(4) NOT NULL,
+  `DayEnd` int(4) NOT NULL,
+  `SET_Created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `SET_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`SETID`, `Title`, `DayStart`, `DayEnd`, `SET_Created`, `SET_Status`) VALUES
+('0000000001', 'Default', 480, 1260, '2024-06-29 20:18:43', 'ACTIVE');
+
+--
+-- Triggers `settings`
+--
+DELIMITER $$
+CREATE TRIGGER `SETID` BEFORE INSERT ON `settings` FOR EACH ROW BEGIN
+	SET New.SETID = LPAD((SELECT COUNT(*) FROM settings) + 1, 10, "0");
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `setup`
 --
 
@@ -905,6 +918,40 @@ INSERT INTO `specialization` (`SPLID`, `SCHLID`, `CRS_Code`, `ACY_Code`, `SPL_Cr
 DELIMITER $$
 CREATE TRIGGER `SPLID` BEFORE INSERT ON `specialization` FOR EACH ROW BEGIN
 	SET New.SPLID = LPAD((SELECT COUNT(*) FROM specialization) + 1, 10, "0");
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weeklyevent`
+--
+
+CREATE TABLE `weeklyevent` (
+  `WKEID` varchar(25) NOT NULL,
+  `WeeklyEvent` varchar(255) NOT NULL,
+  `Day` enum('Monday','Tuesday','Wednesday','Thursday','Friday') NOT NULL,
+  `StartTime` int(4) NOT NULL,
+  `EndTime` int(4) NOT NULL,
+  `WKE_Created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `WKE_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `weeklyevent`
+--
+
+INSERT INTO `weeklyevent` (`WKEID`, `WeeklyEvent`, `Day`, `StartTime`, `EndTime`, `WKE_Created`, `WKE_Status`) VALUES
+('0000000001', 'Kamustahan', 'Wednesday', 780, 870, '2024-06-29 20:08:59', 'ACTIVE'),
+('0000000002', 'Flag Ceremony', 'Monday', 420, 480, '2024-06-29 20:29:26', 'ACTIVE');
+
+--
+-- Triggers `weeklyevent`
+--
+DELIMITER $$
+CREATE TRIGGER `WKEID` BEFORE INSERT ON `weeklyevent` FOR EACH ROW BEGIN
+	SET New.WKEID = LPAD((SELECT COUNT(*) FROM weeklyevent) + 1, 10, "0");
 END
 $$
 DELIMITER ;
@@ -1106,6 +1153,12 @@ ALTER TABLE `room`
   ADD KEY `FLRID` (`Floor`);
 
 --
+-- Indexes for table `schedule`
+--
+ALTER TABLE `schedule`
+  ADD PRIMARY KEY (`SCDID`);
+
+--
 -- Indexes for table `section`
 --
 ALTER TABLE `section`
@@ -1144,6 +1197,13 @@ ALTER TABLE `specialization`
   ADD KEY `CCHID` (`SCHLID`),
   ADD KEY `CRSID` (`CRS_Code`),
   ADD KEY `ACY_Code` (`ACY_Code`);
+
+--
+-- Indexes for table `weeklyevent`
+--
+ALTER TABLE `weeklyevent`
+  ADD PRIMARY KEY (`WKEID`),
+  ADD UNIQUE KEY `WeeklyEvent` (`WeeklyEvent`);
 
 --
 -- Indexes for table `yearlevel`
@@ -1266,4 +1326,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

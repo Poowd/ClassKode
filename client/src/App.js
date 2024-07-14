@@ -28,6 +28,7 @@ import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSched
 import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAssignment";
 import { SectionProjection } from "./pages/private/utilities/academicyear/SectionProjection";
 import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
+import { FullscreenLoader } from "./component/loader/FullscreenLoader";
 
 function App() {
   const navigate = useNavigate();
@@ -39,13 +40,13 @@ function App() {
     UserLevel: "Manager",
   });
 
-  // const [isLoading, setIsLoading] = useState(true);
-  // useEffect(() => {
-  //   // Simulate an API call
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 1000);
-  // }, []);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    // Simulate an API call
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
 
   //Get Authentication from the Server
   // useEffect(() => {
@@ -90,7 +91,7 @@ function App() {
   return (
     <main>
       {/* Loading Screen */}
-      {/* <header>{isLoading ? <FullscreenLoader /> : ""}</header> */}
+      <header>{isLoading ? <FullscreenLoader /> : ""}</header>
       <MainLayout
         content={
           <Routes>

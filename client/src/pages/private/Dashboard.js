@@ -9,8 +9,10 @@ import { MdOutlineEmojiEvents } from "react-icons/md";
 import { CChart } from "@coreui/react-chartjs";
 import useChart from "../../hook/chart/useChart";
 import useDatabase from "../../hook/useDatabase";
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
+  const navigate = useNavigate();
   const [get, post] = useDatabase();
 
   const [department, setDepartment] = useState([]);
@@ -91,21 +93,39 @@ export function Dashboard() {
       card1={
         <DashboardCardContent
           title={"Academic Year"}
-          button={<DefaultButton class="border" icon={<LuCalendarDays />} />}
+          button={
+            <DefaultButton
+              class="border text-light"
+              icon={<LuCalendarDays />}
+              function={() => navigate("/utilities/academicyear")}
+            />
+          }
           content={currentay.map((ay, i) => ay.ACY_Code)}
         />
       }
       card2={
         <DashboardCardContent
           title={"Curriculum"}
-          button={<DefaultButton class="border" icon={<TbWallpaper />} />}
+          button={
+            <DefaultButton
+              class="border text-light"
+              icon={<TbWallpaper />}
+              function={() => navigate("/utilities/curriculum")}
+            />
+          }
           content={currentcrr.map((ay, i) => ay.CRR_Code)}
         />
       }
       card3={
         <DashboardCardContent
           title={"Class Schedules"}
-          button={<DefaultButton class="border" icon={<LuCalendarClock />} />}
+          button={
+            <DefaultButton
+              class="border text-light"
+              icon={<LuCalendarClock />}
+              function={() => navigate("/utilities/schedule")}
+            />
+          }
           content={"0"}
         />
       }
@@ -113,7 +133,10 @@ export function Dashboard() {
         <DashboardCardContent
           title={"Events"}
           button={
-            <DefaultButton class="border" icon={<MdOutlineEmojiEvents />} />
+            <DefaultButton
+              class="border text-light"
+              icon={<MdOutlineEmojiEvents />}
+            />
           }
           content={"0"}
         />

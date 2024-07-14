@@ -1,0 +1,205 @@
+.loader {
+  width: 48px;
+  height: 40px;
+  margin-top: 30px;
+  display: inline-block;
+  position: relative;
+  background: #fff;
+  border-radius: 15% 15% 35% 35%;
+}
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 45px;
+  top: 8px;
+  border: 4px solid #fff;
+  width: 16px;
+  height: 20px;
+  border-radius: 0 4px 4px 0;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 10px;
+  color: #fff;
+  top: -15px;
+  left: 11px;
+  box-sizing: border-box;
+  animation: animloader 1s ease infinite;
+}
+
+@keyframes animloader {
+  0% {
+    box-shadow: 2px 0px rgba(255, 255, 255, 0),
+      12px 0px rgba(255, 255, 255, 0.3), 20px 0px rgba(255, 255, 255, 0);
+  }
+  50% {
+    box-shadow: 2px -5px rgba(255, 255, 255, 0.5),
+      12px -3px rgba(255, 255, 255, 0.5), 20px -2px rgba(255, 255, 255, 0.6);
+  }
+  100% {
+    box-shadow: 2px -8px rgba(255, 255, 255, 0),
+      12px -5px rgba(255, 255, 255, 0), 20px -5px rgba(255, 255, 255, 0);
+  }
+}
+
+/* Fade Out */
+.fade1 {
+  animation: Fade 1s ease;
+}
+.fade2 {
+  animation: Fade 2s ease;
+}
+
+@keyframes Fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.loaderclock {
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  position: relative;
+  background-color: #2c384a;
+  background: radial-gradient(
+    ellipse at center,
+    #0d6efd 0%,
+    #0d6efd 14%,
+    #2c384a 15%,
+    #2c384a 100%
+  );
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+.loaderclock::after,
+.loaderclock::before {
+  content: "";
+  position: absolute;
+  height: 16px;
+  width: 4px;
+  background: #0d6efd;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) rotate(0deg);
+  transform-origin: 25% 0;
+  box-sizing: border-box;
+  animation: rotation 10s linear infinite;
+}
+.loaderclock::before {
+  height: 22px;
+  width: 2px;
+  transform: translateX(-50%) rotate(0deg);
+  animation-duration: 1s;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* HTML: <div class="loader"></div> */
+.continuous {
+  width: 120px;
+  height: 22px;
+  border-radius: 40px;
+  color: #6cc0e5;
+  border: 2px solid;
+  position: relative;
+  overflow: hidden;
+}
+.continuous::before {
+  content: "";
+  position: absolute;
+  margin: 2px;
+  width: 14px;
+  top: 0;
+  bottom: 0;
+  left: -20px;
+  border-radius: inherit;
+  background: currentColor;
+  box-shadow: -10px 0 12px 3px currentColor;
+  clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 95%, -30px 50%);
+  animation: l14 1s infinite linear;
+}
+@keyframes l14 {
+  100% {
+    left: calc(100% + 20px);
+  }
+}
+
+.tada {
+  -webkit-animation-name: tada;
+  animation-name: tada;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+@-webkit-keyframes tada {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes tada {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}

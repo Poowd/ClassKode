@@ -9,16 +9,28 @@ export class DashboardTemplate extends React.Component {
         <header className="dashboard-cards overflow-y-auto">
           <main className="row h-100 m-0">
             <section className="col-lg-3 col-md-4 p-2">
-              <DefaultCard content={this.props.card1} />
+              <DefaultCard
+                content={this.props.card1}
+                class="custom-bg-gradient2"
+              />
             </section>
             <section className="col-lg-3 col-md-4 p-2">
-              <DefaultCard content={this.props.card2} />
+              <DefaultCard
+                content={this.props.card2}
+                class="custom-bg-gradient2"
+              />
             </section>
             <section className="col-lg-3 col-md-4 p-2">
-              <DefaultCard content={this.props.card3} />
+              <DefaultCard
+                content={this.props.card3}
+                class="custom-bg-gradient2"
+              />
             </section>
             <section className="col-lg-3 col-md-4 p-2">
-              <DefaultCard content={this.props.card4} />
+              <DefaultCard
+                content={this.props.card4}
+                class="custom-bg-gradient2"
+              />
             </section>
           </main>
         </header>

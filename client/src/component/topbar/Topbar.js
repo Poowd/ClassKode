@@ -37,23 +37,25 @@ export class Topbar extends React.Component {
     // }
 
     return (
-      <nav className="main-top-bar">
+      <nav className="main-top-bar custom-bg-gradient">
         <div className="d-flex">
           <DefaultButton
-            class=""
+            class="text-light"
             icon={<BiGridAlt />}
             toggle={"offcanvas"}
             target={"#sidebar"}
           />
-          <h5 className="p-0 m-0 d-flex align-items-center fw-bold">
-            Class Kode
+          <h5 className="p-0 m-0 d-flex align-items-center text-white">
+            <span className="fw-bold">Class</span>
+            <span> </span>
+            <span className="fw-light">Kode</span>
           </h5>
         </div>
         <div className="d-flex gap-2">
-          <DefaultButton class="" icon={<PiQuestionMarkBold />} />
-          <DefaultButton class="" icon={<FaUserSecret />} />
+          <DefaultButton class="text-light" icon={<PiQuestionMarkBold />} />
+          <DefaultButton class="text-light" icon={<FaUserSecret />} />
           <DefaultDropdown
-            class="border-0"
+            class="border-0 text-light"
             reversed={true}
             icon={<FiMoreVertical />}
             text={"User's Name"}

@@ -102,7 +102,7 @@ export function Curriculum() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-info px-2"
+                      class="custom-bg-primary-light px-2"
                       icon={<LuPackageOpen />}
                       function={() => navigate("/utilities/curriculum/setup")}
                     />

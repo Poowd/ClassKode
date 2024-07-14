@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import usePost from "./usePost";
 
 export default function useValidation() {
   const valid = ["is-valid", "text-success"];

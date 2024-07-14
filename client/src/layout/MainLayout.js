@@ -9,7 +9,7 @@ export class MainLayout extends React.Component {
         <header className="main-header">
           <Topbar />
         </header>
-        <main className="main-content">
+        <main className="main-content pt-2">
           <section className="h-100 shadow-sm bg-white rounded p-2">
             <main className="h-100 rounded overflow-y-auto">
               {this.props.content}

@@ -1,3 +1,55 @@
 :root {
   font-size: min(max(12px, 1vw), 18px);
 }
+
+.custom-bg-primary {
+  background-color: #0071bb;
+}
+
+.custom-bg-primary-light {
+  background-color: #2cadee;
+  color: whitesmoke;
+}
+
+.custom-bg-gradient {
+  background-image: linear-gradient(to bottom right, #0071bb, #1484b6);
+}
+
+.custom-bg-gradient2 {
+  background-image: linear-gradient(to bottom right, #44aff5, #0d7eb7);
+  color: white;
+}
+
+.custom-text-gradient {
+  background: linear-gradient(to right, #0a3a5b, #082e49, #062337);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-text-gradient2 {
+  background: linear-gradient(
+    to right,
+    #fff487,
+    #fdeb37,
+    #f9ac1b,
+    #dbf030,
+    #ffdc09
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-text-primary {
+  color: #062337;
+}
+
+/* 
+CUSTOM COLOR RAINBOW
+PROTOCOL UICPUX
+STYLE FOCUSED - GRADIENT
+  - SAFE : GREEN
+  - DANGER : RED
+  - WARNING : ORANGE
+  - IMPORTANT : YELLOW
+  - CREATE : BLUE
+*/

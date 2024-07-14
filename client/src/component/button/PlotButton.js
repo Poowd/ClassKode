@@ -9,6 +9,7 @@ export class PlotButton extends React.Component {
           "btn btn-sm d-flex align-items-center justify-content-center w-100 h-100 " +
           this.props.class
         }
+        
         type={this.props.type}
         disabled={this.props.disabled}
         onClick={this.props.function}

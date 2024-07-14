@@ -1,12 +1,7 @@
 import React, { useEffect } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
-import useGet from "../../../hook/useGet";
-import usePost from "../../../hook/usePost";
-import { DefaultButton } from "../../../component/button/DefaultButton";
-import { GrView } from "react-icons/gr";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
 import { useNavigate, useParams } from "react-router-dom";
-import { DefaultText } from "../../../component/input/DefaultInput";
 import { CreateCoach } from "./create/CreateCoach";
 import { ViewCoach } from "./view/ViewCoach";
 import { EditCoach } from "./edit/EditCoach";
@@ -42,13 +37,6 @@ import { ViewProjection } from "./view/ViewProjection";
 export function DataController() {
   const navigate = useNavigate();
   const params = useParams();
-  const [getdata, setGetData, getServer] = useGet();
-  const [postdata, setPostData, postServer] = usePost();
-
-  useEffect(() => {
-    postServer("coach");
-    getServer("random-code-generator");
-  }, [postdata]);
 
   return (
     <FormsTemplate

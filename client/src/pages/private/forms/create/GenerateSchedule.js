@@ -8,14 +8,20 @@ import { TbListDetails } from "react-icons/tb";
 import { FaRegSave } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../../hook/useDatabase";
+import useTimeFormat from "../../../../hook/useTimeFormat";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [convertMinutes] = useTimeFormat();
+
   var classes = [];
   var rooms = [];
   var sched = [];
+
   const [expected, setExpected] = useState([]);
+  const [ay, setAY] = useState([]);
+  const [weekly, setWeekly] = useState([]);
   const [room, setRoom] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [days, setDays] = useState([
@@ -29,8 +35,11 @@ export function GenerateSchedule() {
   useEffect(() => {
     post("expected-classes", expected, setExpected);
     post("room", room, setRoom);
+    post("weekly-event", weekly, setWeekly);
+    post("academicyear-current", ay, setAY);
     expected.map((item, i) => {
       classes.push({
+        CRS_Code: item.CRS_Code,
         Course: item.Course,
         Component: item.Component,
         Section: item.Section,
@@ -49,19 +58,52 @@ export function GenerateSchedule() {
         });
       });
     });
+    // console.log(classes);
+    // console.log(room);
   }, [expected, room]);
 
+  function x(section, day, units) {
+    for (var k = 0; k < sched.length; k++) {
+      if (
+        section === sched[k].Section &&
+        day === sched[k].Day &&
+        units < sched[k].EndTime
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   function test() {
+    weekly.map((evnt, e) => {
+      sched.push({
+        Section: "ABC00" + e,
+        Course: evnt.WeeklyEvent,
+        Component: "Weekly Event",
+        Room: "Court",
+        Facility: evnt.WeeklyEvent,
+        Units: 0,
+        Day: evnt.Day,
+        TimeStart: evnt.StartTime,
+        EndTime: evnt.EndTime,
+        Population: 0,
+        Capacity: 0,
+        AcademicYear: ay[0].ACY_Code,
+        Curriculum: ay[0].CRR_Code,
+      });
+    });
     for (var i = 0; i < classes.length; i++) {
       for (var j = 0; j < rooms.length; j++) {
         if (
           classes[i].Component.includes(rooms[j].Facility) &&
           rooms[j].Units + classes[i].Units <= 13 &&
-          classes[i].Population < rooms[j].Capacity
+          classes[i].Population < rooms[j].Capacity &&
+          x(classes[i].Section, rooms[j].Day, 480 + rooms[j].Units * 60)
         ) {
           sched.push({
             Section: classes[i].Section,
-            Course: classes[i].Course,
+            Course: classes[i].CRS_Code,
             Component: classes[i].Component,
             Room: rooms[j].Room,
             Facility: rooms[j].Facility,
@@ -71,6 +113,8 @@ export function GenerateSchedule() {
             EndTime: 480 + (rooms[j].Units * 60 + classes[i].Units * 60),
             Population: classes[i].Population,
             Capacity: rooms[j].Capacity,
+            AcademicYear: ay[0].ACY_Code,
+            Curriculum: ay[0].CRR_Code,
           });
           rooms[j].Units += classes[i].Units;
           break;
@@ -84,16 +128,6 @@ export function GenerateSchedule() {
         }
       }
     }
-  }
-
-  function convertMinutes(min) {
-    var Hour = Math.floor(min / 60); //convert minutes to hours
-    const Minute = min / 60 - Hour; //convert minutes to hours minus the hour to get the remainder
-    const Cycle = Hour >= 12 ? "PM" : "AM";
-    Hour = Hour % 12 || 12;
-    const tempMinute = Minute > 0 ? "30" : "00";
-    const Format = Hour + ":" + tempMinute.toString() + " " + Cycle;
-    return Format;
   }
   return (
     <main>
@@ -113,8 +147,20 @@ export function GenerateSchedule() {
                   class="btn-primary px-2"
                   icon={<TbListDetails />}
                 />
+
                 <DefaultButton class="btn-primary px-2" icon={<FaFilter />} />
-                <DefaultButton class="btn-primary px-2" icon={<FaRegSave />} />
+                <DefaultButton
+                  class="btn-primary px-2"
+                  icon={<FaRegSave />}
+                  function={() => {
+                    for (var i in schedule) {
+                      console.log(classes);
+                      post("save-presched", schedule[i], setSchedule);
+                    }
+
+                    navigate(-1);
+                  }}
+                />
                 <DefaultButton
                   class="btn-primary px-2"
                   icon={<PiGearSixFill />}
@@ -132,7 +178,7 @@ export function GenerateSchedule() {
           {schedule.map((sc, i) => (
             <ScheduleList
               key={i}
-              slot1={sc.Section + " ( " + sc.Population + " )"}
+              slot1={sc.Section}
               slot2={sc.Course}
               slot3={
                 sc.Day +
@@ -141,7 +187,7 @@ export function GenerateSchedule() {
                 " - " +
                 convertMinutes(sc.EndTime)
               }
-              slot4={sc.Room + " ( " + sc.Capacity + " )"}
+              slot4={sc.Room + " " + sc.Population + "/" + sc.Capacity}
               slot5={"Coach"}
               slot6={sc.Component + " ( " + sc.Units + " )"}
               link={null}

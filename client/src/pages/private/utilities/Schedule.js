@@ -12,9 +12,19 @@ import { LinkButton } from "../../../component/button/LinkButton";
 import { ScheduleList } from "../../../component/card/ScheduleList";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { LuCalendarClock } from "react-icons/lu";
+import useDatabase from "../../../hook/useDatabase";
+import useTimeFormat from "../../../hook/useTimeFormat";
 
 export function Schedule() {
   const navigate = useNavigate();
+  const [get, post] = useDatabase();
+
+  const [schedule, setSchedule] = useState([]);
+  const [convertMinutes] = useTimeFormat();
+
+  useEffect(() => {
+    post("schedules", schedule, setSchedule);
+  }, [schedule]);
   return (
     <>
       <FileMaintainanceTemplate
@@ -66,17 +76,30 @@ export function Schedule() {
         }
         list={
           <>
-            <ScheduleList
-              slot1={"Section"}
-              slot2={"Course Code - Course"}
-              slot3={"Day : Start Time - End Time"}
-              slot4={"Room : 0 / 5"}
-              slot5={"Coach"}
-              slot6={"Lecture Type"}
-              link={null}
-              state={null}
-              custom={null}
-            />
+            {schedule.map((sc, i) => (
+              <ScheduleList
+                key={i}
+                slot1={sc.Section === null ? "All Sections" : sc.Section}
+                slot2={sc.Section === null ? sc.CRS_Code : sc.Course}
+                slot3={
+                  sc.Day +
+                  " : " +
+                  convertMinutes(sc.StartTime) +
+                  " - " +
+                  convertMinutes(sc.EndTime)
+                }
+                slot4={
+                  sc.Room === null
+                    ? "Court"
+                    : sc.Room + " " + sc.Population + "/" + sc.Capacity
+                }
+                slot5={"Coach"}
+                slot6={sc.Component + " ( " + sc.Units + " )"}
+                link={null}
+                state={null}
+                custom={null}
+              />
+            ))}
           </>
         }
       />

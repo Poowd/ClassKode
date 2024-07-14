@@ -7,13 +7,11 @@ import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTe
 import { DataControlView } from "../../../../component/datacontrolview/DataControlView";
 import { DataControlViewItem } from "../../../../component/datacontrolview/DataControlViewItem";
 import { GrView } from "react-icons/gr";
-import usePost from "../../../../hook/usePost";
 import { LuFileEdit } from "react-icons/lu";
 import { LuFolderArchive } from "react-icons/lu";
 import { LinkButton } from "../../../../component/button/LinkButton";
 import useModal from "../../../../hook/useModal";
 import { PassiveModal } from "../../../../component/modal/PassiveModal";
-import useGet from "../../../../hook/useGet";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";

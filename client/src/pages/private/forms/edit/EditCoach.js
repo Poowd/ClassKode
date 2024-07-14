@@ -12,9 +12,9 @@ import { MultipleFormInputItem } from "../../../../component/input/MultipleFormI
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
-import usePost from "../../../../hook/usePost";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
+import useDatabase from "../../../../hook/useDatabase";
 
 export function EditCoach() {
   const params = useParams();
@@ -56,16 +56,16 @@ export function EditCoach() {
     Facebook: Base(data.Facebook),
   });
 
-  const [coach, setCoach, getCoach] = usePost();
-  const [coaches, setCoaches, getCoaches] = usePost();
-  const [postdata, setPostData, postServer] = usePost();
+  const [get, post] = useDatabase();
+  const [department, setDepartment] = useState();
+  const [coach, setCoach] = useState();
 
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    postServer("department");
-    getCoaches("coach");
-  }, [postdata]);
+    post("department", department, setDepartment);
+    post("coach", coach, setCoach);
+  }, [coach, department]);
 
   useEffect(() => {
     setValidation({
@@ -87,11 +87,8 @@ export function EditCoach() {
   }, [data]);
 
   function schl_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (
-        coaches[i].SCHLID === data.SCHLID &&
-        coaches[i].CCHID !== data.CCHID
-      ) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === data.SCHLID && coach[i].CCHID !== data.CCHID) {
         return false;
       }
     }
@@ -99,8 +96,8 @@ export function EditCoach() {
   }
 
   function email_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].Email === data.Email && coaches[i].CCHID !== data.CCHID) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Email === data.Email && coach[i].CCHID !== data.CCHID) {
         return false;
       }
     }
@@ -108,8 +105,8 @@ export function EditCoach() {
   }
 
   function phone_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].Phone === data.Phone && coaches[i].CCHID !== data.CCHID) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Phone === data.Phone && coach[i].CCHID !== data.CCHID) {
         return false;
       }
     }
@@ -117,10 +114,10 @@ export function EditCoach() {
   }
 
   function facebook_dupe() {
-    for (var i = 0; i < coaches.length; i++) {
+    for (var i = 0; i < coach.length; i++) {
       if (
-        coaches[i].Facebook === data.Facebook &&
-        coaches[i].CCHID !== data.CCHID
+        coach[i].Facebook === data.Facebook &&
+        coach[i].CCHID !== data.CCHID
       ) {
         return false;
       }
@@ -131,7 +128,7 @@ export function EditCoach() {
   return (
     <form
       onSubmit={() => {
-        getCoach("update-existing-coach", data);
+        post("update-existing-coach", data, setData);
         navigate("/institution/coach");
       }}
     >
@@ -245,13 +242,13 @@ export function EditCoach() {
               option={
                 <>
                   <SelectButtonItemSelected
-                    content={postdata.map((option, i) =>
+                    content={department.map((option, i) =>
                       data.Department === option.DPT_Code
                         ? option.Department
                         : ""
                     )}
                   />
-                  {postdata.map((option, i) => (
+                  {department.map((option, i) => (
                     <>
                       {data.Department !== option.DPT_Code ? (
                         <SelectButtonItem

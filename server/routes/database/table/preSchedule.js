@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 app.post("/schedules", (req, res) => {
   const sql =
     `
-      SELECT schedule.SCDID, section.Section, course.Course, schedule.CRS_Code, schedule.StartTime, schedule.EndTime, room.Room, projection.Population, room.Capacity, schedule.Day, schedule.Component, schedule.Units, room.Floor, room.Building, section.Semester
+      SELECT schedule.SCDID, section.Section, course.Course, schedule.CRS_Code, schedule.StartTime, schedule.EndTime, room.Room, projection.Population, room.Capacity, schedule.Day, schedule.Component, schedule.Units, room.Floor, room.Building, section.Semester, schedule.Coach
         FROM schedule
 
           LEFT JOIN projection
@@ -88,7 +88,7 @@ app.post("/weekly-event", (req, res) => {
 
 app.post("/save-presched", (req, res) => {
   const sql = `
-      INSERT INTO schedule (Section, CRS_Code, Room, Component, Units, Day, StartTime, EndTime, ACY_Code, CRR_Code) VALUES (?);
+      INSERT INTO schedule (Section, CRS_Code, Room, Component, Units, Day, StartTime, EndTime, Coach, ACY_Code, CRR_Code) VALUES (?);
   `;
 
   const values = [
@@ -100,12 +100,35 @@ app.post("/save-presched", (req, res) => {
     req.body.Day,
     req.body.TimeStart,
     req.body.EndTime,
+    req.body.Coach,
     req.body.AcademicYear,
     req.body.Curriculum,
   ];
 
   db.query(sql, [values], (err, data) => {
     if (err) return res.json({ Message: err });
+    return res.json(data);
+  });
+});
+
+app.post("/assignment", (req, res) => {
+  const sql = `
+      SELECT coach.SCHLID, coach.DPT_Code, coach.LastName, assignment.CoachType, coach_type.MaxUnits
+        FROM assignment
+          INNER JOIN coach_type
+            ON assignment.CoachType = coach_type.CoachType
+          INNER JOIN academicyear
+            ON assignment.ACY_Code = academicyear.ACY_Code
+          INNER JOIN coach
+            ON assignment.SCHLID = coach.SCHLID
+          
+          WHERE academicyear.ACY_Code = 'AY-2425'
+          
+          ORDER BY ACYID DESC
+    `;
+
+  db.query(sql, [req.body.SCHLID], (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
     return res.json(data);
   });
 });

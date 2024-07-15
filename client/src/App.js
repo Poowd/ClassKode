@@ -29,6 +29,7 @@ import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAss
 import { SectionProjection } from "./pages/private/utilities/academicyear/SectionProjection";
 import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
 import { FullscreenLoader } from "./component/loader/FullscreenLoader";
+import { BackgroundColours } from "./pages/components/BackgroundColours";
 
 function App() {
   const navigate = useNavigate();
@@ -97,6 +98,10 @@ function App() {
           <Routes>
             {userdetails.Auth ? (
               <>
+                <Route
+                  path="/testing/bgcolour"
+                  element={<BackgroundColours />}
+                ></Route>
                 {userdetails.UserLevel === "Manager" ? (
                   <Route path={"/"}>
                     <Route path={"/"} element={<Dashboard />}></Route>

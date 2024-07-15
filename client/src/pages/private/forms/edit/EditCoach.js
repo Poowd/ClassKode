@@ -65,7 +65,7 @@ export function EditCoach() {
   useEffect(() => {
     post("department", department, setDepartment);
     post("coach", coach, setCoach);
-  }, [coach, department]);
+  }, []);
 
   useEffect(() => {
     setValidation({

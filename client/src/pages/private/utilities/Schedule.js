@@ -93,7 +93,7 @@ export function Schedule() {
                     ? "Court"
                     : sc.Room + " " + sc.Population + "/" + sc.Capacity
                 }
-                slot5={"Coach"}
+                slot5={sc.Coach}
                 slot6={sc.Component + " ( " + sc.Units + " )"}
                 link={null}
                 state={null}

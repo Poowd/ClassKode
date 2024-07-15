@@ -1,0 +1,36 @@
+.gradient-bg-blue {
+  background-image: linear-gradient(
+    to bottom right,
+    #083d6d,
+    #0a4b84,
+    #0c589c,
+    #0e65b4,
+    #1073cb
+  );
+  color: white;
+}
+
+.gradient-bg-light-blue {
+  background-image: linear-gradient(to bottom right, #44aff5, #0d7eb7);
+  color: white;
+}
+
+.gradient-bg-yellow {
+  background-image: linear-gradient(
+    to bottom right,
+    #ffd300,
+    #fcd12a,
+    #ffc30b,
+    #ffbf00,
+    #f2bc34
+  );
+  color: #ffffed;
+}
+
+.custom-text-blue {
+  color: #0a3463;
+}
+
+.custom-text-yellow {
+  color: #ffd300;
+}

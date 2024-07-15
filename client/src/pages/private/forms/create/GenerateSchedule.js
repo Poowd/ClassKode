@@ -17,6 +17,7 @@ export function GenerateSchedule() {
 
   var classes = [];
   var rooms = [];
+  var coaches = [];
   var sched = [];
 
   const [expected, setExpected] = useState([]);
@@ -24,6 +25,8 @@ export function GenerateSchedule() {
   const [weekly, setWeekly] = useState([]);
   const [room, setRoom] = useState([]);
   const [schedule, setSchedule] = useState([]);
+  const [coachtype, setCoachType] = useState([]);
+  const [coach, setCoach] = useState([]);
   const [days, setDays] = useState([
     "Monday",
     "Tuesday",
@@ -35,6 +38,8 @@ export function GenerateSchedule() {
   useEffect(() => {
     post("expected-classes", expected, setExpected);
     post("room", room, setRoom);
+    post("assignment", coach, setCoach);
+    post("coachtype", coachtype, setCoachType);
     post("weekly-event", weekly, setWeekly);
     post("academicyear-current", ay, setAY);
     expected.map((item, i) => {
@@ -58,9 +63,20 @@ export function GenerateSchedule() {
         });
       });
     });
+    coach.map((item, i) => {
+      coaches.push({
+        SCHLID: item.SCHLID,
+        LastName: item.LastName,
+        Department: item.DPT_Code,
+        CoachType: item.CoachType,
+        MaxUnits: item.MaxUnits,
+        Units: 0,
+      });
+    });
     // console.log(classes);
     // console.log(room);
-  }, [expected, room]);
+    // console.log(coaches);
+  }, [expected, room, coaches]);
 
   function x(section, day, units) {
     for (var k = 0; k < sched.length; k++) {
@@ -73,6 +89,25 @@ export function GenerateSchedule() {
       }
     }
     return true;
+  }
+
+  function getcoach() {
+    for (var i = 0; i < coachtype.length; i++) {
+      for (var j = 0; j < coaches.length; j++) {
+        if (coachtype[i].CoachType === coaches[j].CoachType) {
+          if (coaches[j].Units < 10) {
+            return coaches[j].LastName;
+          }
+        }
+      }
+    }
+  }
+  function getcoachunits(selCoach) {
+    for (var i = 0; i < coaches.length; i++) {
+      if (coaches[i].LastName === selCoach) {
+        return coaches[i].Units;
+      }
+    }
   }
 
   function test() {
@@ -99,7 +134,8 @@ export function GenerateSchedule() {
           classes[i].Component.includes(rooms[j].Facility) &&
           rooms[j].Units + classes[i].Units <= 13 &&
           classes[i].Population < rooms[j].Capacity &&
-          x(classes[i].Section, rooms[j].Day, 480 + rooms[j].Units * 60)
+          x(classes[i].Section, rooms[j].Day, 480 + rooms[j].Units * 60) &&
+          getcoachunits(getcoach()) < 10
         ) {
           sched.push({
             Section: classes[i].Section,
@@ -115,8 +151,14 @@ export function GenerateSchedule() {
             Capacity: rooms[j].Capacity,
             AcademicYear: ay[0].ACY_Code,
             Curriculum: ay[0].CRR_Code,
+            Coach: getcoach(),
           });
           rooms[j].Units += classes[i].Units;
+          coaches.map((coach, i) =>
+            coach.LastName === getcoach()
+              ? console.log((coach.Units += classes[i].Units))
+              : null
+          );
           break;
         } else if (j === rooms.length - 1) {
           console.log(
@@ -188,7 +230,7 @@ export function GenerateSchedule() {
                 convertMinutes(sc.EndTime)
               }
               slot4={sc.Room + " " + sc.Population + "/" + sc.Capacity}
-              slot5={"Coach"}
+              slot5={sc.Coach}
               slot6={sc.Component + " ( " + sc.Units + " )"}
               link={null}
               state={null}

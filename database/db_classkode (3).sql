@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 14, 2024 at 10:10 PM
+-- Generation Time: Jul 15, 2024 at 12:18 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -153,7 +153,8 @@ CREATE TABLE `coach` (
 INSERT INTO `coach` (`CCHID`, `SCHLID`, `DPT_Code`, `FirstName`, `MiddleInitial`, `LastName`, `Gender`, `Email`, `Phone`, `Facebook`, `CCH_Created`, `CCH_Status`) VALUES
 ('0000000001', '02000000001', 'DPT_ICT', 'Joshua Rhey', 'N', 'Oliveros', 'Male', 'oliveros.000001@munoz.sti.edu.ph', '09123456789', 'https://www.facebook.com', '2024-06-20 16:41:22', 'ACTIVE'),
 ('0000000002', '02000000002', 'DPT_ICT', 'Cristelyn', 'Q', 'Esporsado', 'Female', 'esporsado.000002@munoz.sti.edu.ph', '09123123123', 'https://www.facebook.com/RinkashimeTakanoku', '2024-06-21 19:08:36', 'ACTIVE'),
-('0000000003', '02000000003', 'DPT_ENG', 'Mark', 'L', 'Lopez', 'Male', 'dasd', '09323232323', 'eq', '2024-06-21 19:41:01', 'ACTIVE');
+('0000000003', '02000000003', 'DPT_ENG', 'Mark', 'L', 'Lopez', 'Male', 'dasd', '09323232323', 'eq', '2024-06-21 19:41:01', 'ACTIVE'),
+('0000000004', '02000257907', 'DPT_ICT', 'Mark', 'L', 'Lape', 'Male', 'lape.257907@munoz.sti.edu.ph', '09682348413', 'Facebook', '2024-07-15 08:15:18', 'ACTIVE');
 
 --
 -- Triggers `coach`
@@ -684,6 +685,7 @@ CREATE TABLE `schedule` (
   `Day` varchar(255) NOT NULL,
   `StartTime` int(11) NOT NULL,
   `EndTime` int(11) NOT NULL,
+  `Coach` varchar(255) NOT NULL,
   `ACY_Code` varchar(25) NOT NULL,
   `CRR_Code` varchar(25) NOT NULL,
   `SCD_Created` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -694,17 +696,15 @@ CREATE TABLE `schedule` (
 -- Dumping data for table `schedule`
 --
 
-INSERT INTO `schedule` (`SCDID`, `Section`, `CRS_Code`, `Room`, `Component`, `Units`, `Day`, `StartTime`, `EndTime`, `ACY_Code`, `CRR_Code`, `SCD_Created`, `SCD_Status`) VALUES
-('0000000001', 'ABC000', 'Kamustahan', 'Court', 'Weekly Event', 0, 'Wednesday', 780, 870, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000002', 'CS102', 'COSC002', '301M', 'Major Lecture', 2, 'Monday', 810, 930, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000003', 'CS102', 'COSC001', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 480, 660, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000004', 'CS103', 'COSC001', 'ComLab4', 'Computer Laboratory', 3, 'Monday', 480, 660, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000005', 'CS103', 'COSC003', '301M', 'General Lecture', 1.5, 'Monday', 930, 1020, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000006', 'ABC001', 'Flag Ceremony', 'Court', 'Weekly Event', 0, 'Monday', 420, 480, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000007', 'CS103', 'COSC002', '301M', 'Major Lecture', 2, 'Monday', 1020, 1140, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000008', 'COE101', 'COSC001', '301M', 'Major Lecture', 2, 'Monday', 480, 600, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000009', 'COE101', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 600, 720, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE'),
-('0000000010', 'CS102', 'COSC003', '301M', 'General Lecture', 1.5, 'Wednesday', 720, 810, 'AY-2425', 'CRR2020', '2024-07-14 06:43:35', 'ACTIVE');
+INSERT INTO `schedule` (`SCDID`, `Section`, `CRS_Code`, `Room`, `Component`, `Units`, `Day`, `StartTime`, `EndTime`, `Coach`, `ACY_Code`, `CRR_Code`, `SCD_Created`, `SCD_Status`) VALUES
+('0000000001', 'CS103', 'COSC002', '301M', 'Major Lecture', 2, 'Monday', 1020, 1140, 'Esporsado', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000002', 'CS103', 'COSC002', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 660, 840, 'Esporsado', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000003', 'COE101', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 480, 600, 'Oliveros', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000004', 'COE101', 'COSC001', '301M', 'Major Lecture', 2, 'Monday', 600, 720, 'Oliveros', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000005', 'CS102', 'COSC003', '301M', 'General Lecture', 1.5, 'Monday', 720, 810, 'Oliveros', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000006', 'CS102', 'COSC002', '301M', 'Major Lecture', 2, 'Monday', 810, 930, 'Oliveros', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000007', 'CS102', 'COSC001', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 480, 660, 'Oliveros', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE'),
+('0000000008', 'CS103', 'COSC003', '301M', 'General Lecture', 1.5, 'Monday', 930, 1020, 'Esporsado', 'AY-2425', 'CRR2020', '2024-07-15 09:56:26', 'ACTIVE');
 
 --
 -- Triggers `schedule`

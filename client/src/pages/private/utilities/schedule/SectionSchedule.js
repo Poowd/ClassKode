@@ -153,8 +153,8 @@ export function SectionSchedule() {
                                       }
                                       className={
                                         schedule.Component.includes("General")
-                                          ? "border border-white bg-success rounded align-middle text-center"
-                                          : "border border-white custom-bg-gradient2 rounded align-middle text-center"
+                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded align-middle text-center"
+                                          : "border border-white gradient-bg-light-blue rounded align-middle text-center"
                                       }
                                     >
                                       <small>
@@ -171,6 +171,9 @@ export function SectionSchedule() {
                                               )}{" "}
                                               -{" "}
                                               {convertMinutes(schedule.EndTime)}
+                                            </p>
+                                            <p className="m-0 p-0">
+                                              {schedule.Coach}
                                             </p>
                                           </main>
                                         </main>

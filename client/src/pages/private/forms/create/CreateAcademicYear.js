@@ -15,19 +15,6 @@ import useDatabase from "../../../../hook/useDatabase";
 export function CreateAcademicYear() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
-
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
     ACY_Code: "",
@@ -36,48 +23,11 @@ export function CreateAcademicYear() {
     StartDate: "",
     EndDate: "",
   });
-  const [validation, setValidation] = useState({
-    ACY_Code: Base(data.ACY_Code),
-    AcademicYear: Base(data.AcademicYear),
-    CRR_Code: Base(data.CRR_Code),
-    StartDate: Base(data.StartDate),
-    EndDate: Base(data.EndDate),
-  });
-
   const [dataChange] = useHandleChange(setData);
-  const [
-    ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,
-  ] = useValidate();
 
   useEffect(() => {
     post("curriculum", curriculum, setCurriculum);
   }, [curriculum]);
-
-  // useEffect(() => {
-  //   ValidateCurriculum(
-  //     data.CRR_Code,
-  //     data.Curriculum,
-  //     crr_dupe(),
-  //     setValidation
-  //   );
-  // }, [data]);
-
-  // function crr_dupe() {
-  //   if (curriculum.length > 0) {
-  //     for (var i = 0; i < curriculum.length; i++) {
-  //       if (curriculum[i].CRR_Code === data.CRR_Code) {
-  //         return false;
-  //       }
-  //     }
-  //   }
-  //   return true;
-  // }
 
   return (
     <form

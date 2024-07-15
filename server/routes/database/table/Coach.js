@@ -35,6 +35,8 @@ app.post("/coach-assignment", (req, res) => {
             ON assignment.CoachType = coach_type.CoachType
           INNER JOIN academicyear
             ON assignment.ACY_Code = academicyear.ACY_Code
+          INNER JOIN coach
+            ON assignment.SCHLID = coach.SCHLID
           
           WHERE assignment.ASG_Status = 'ACTIVE' 
             AND assignment.SCHLID = ?

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { BiGridAlt } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
@@ -37,7 +37,7 @@ export class Topbar extends React.Component {
     // }
 
     return (
-      <nav className="main-top-bar custom-bg-gradient">
+      <nav className="main-top-bar gradient-bg-blue">
         <div className="d-flex">
           <DefaultButton
             class="text-light"

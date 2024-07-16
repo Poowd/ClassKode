@@ -30,6 +30,7 @@ import { SectionProjection } from "./pages/private/utilities/academicyear/Sectio
 import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
 import { FullscreenLoader } from "./component/loader/FullscreenLoader";
 import { BackgroundColours } from "./pages/components/BackgroundColours";
+import { GeneratingSchedules } from "./pages/components/Generating Schedules";
 
 function App() {
   const navigate = useNavigate();
@@ -101,6 +102,10 @@ function App() {
                 <Route
                   path="/testing/bgcolour"
                   element={<BackgroundColours />}
+                ></Route>
+                <Route
+                  path="/testing/gensched"
+                  element={<GeneratingSchedules />}
                 ></Route>
                 {userdetails.UserLevel === "Manager" ? (
                   <Route path={"/"}>

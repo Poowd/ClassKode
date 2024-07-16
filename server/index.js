@@ -152,6 +152,7 @@ import AcademicYear from "./routes/database/table/AcademicYear.js";
 import DropdownData from "./routes/database/table/DropdownData.js";
 import Curriculum from "./routes/database/table/Curriculum.js";
 import preSchedule from "./routes/database/table/preSchedule.js";
+import Specialization from "./routes/retrieve_data_no_joins/Specialization.js";
 app.use(preSchedule);
 app.use(Curriculum);
 app.use(DropdownData);
@@ -163,6 +164,7 @@ app.use(Schedule);
 app.use(Coach);
 app.use(Department);
 app.use(Course);
+app.use(Specialization);
 app.use(Program);
 
 /* ==============================================

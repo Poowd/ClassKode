@@ -45,7 +45,7 @@ app.post("/schedules", (req, res) => {
 
 app.post("/expected-classes", (req, res) => {
   const sql = `
-      SELECT course.CRS_Code, course.Course, section.Section, setup.Component, projection.Population, course_component.MaxUnits
+      SELECT course.CRS_Code, course.Course, section.Section, setup.Component, projection.Population, course_component.MaxUnits, section.Semester
         FROM section
 
           INNER JOIN projection

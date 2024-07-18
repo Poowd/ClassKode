@@ -2247,6 +2247,7 @@ app.get("/genetic-algorithm", (req, res) => {
   return res.json({ data: bestSchedule.genes, Status: "Success" });
 });
 // return res.json(output: "output");
+
 app.post("/get-scheduable-courses", (req, res) => {
   const sql = `SELECT *
       FROM 

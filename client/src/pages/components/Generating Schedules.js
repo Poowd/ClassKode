@@ -54,14 +54,15 @@ export function GeneratingSchedules() {
         Units: item.MaxUnits,
       });
     });
-    days.map((day, d) => {
+    days.map((day, o) => {
       room.map((item, i) => {
         rooms.push({
           Room: item.Room,
+          Day: day,
           Facility: item.Facility,
           Capacity: item.Capacity,
           Units: 0,
-          Day: day,
+          Classes: [],
         });
       });
     });
@@ -83,90 +84,262 @@ export function GeneratingSchedules() {
 
   MGRT_DATA();
 
-  function PROC_GEN_SCHED() {
+  useEffect(() => {}, []);
+
+  function PROC_GEN_SCHED(target_semester) {
     var expected_class = classes;
+    var lecture_classes = [];
+    var lab_classes = [];
     var available_room = rooms;
     var assigned_coach = coaches;
     var out_schedule = [];
-
-    //MAIN FUNCTION
-    weekly.map((evnt, e) => {
-      out_schedule.push({
-        SCT: "All Sections",
-        CRS: evnt.WeeklyEvent,
-        CCH: "None",
-        CPT: "Weekly Event",
-        UNT: 1.5,
-        SMS: "All Semesters",
-        CCH_UNT: 0,
-        HAS_LAB: false,
-        IS_LAB: false,
-      });
-    });
+    var rooms_with_schedules = [];
+    var start_of_the_day = 480;
+    var schedules = [];
 
     for (var i = 0; i < expected_class.length; i++) {
       if (!IS_LAB(expected_class[i].Component)) {
-        var temp_coach = ADD_COACH(expected_class[i].Course);
-        switch (
+        lecture_classes.push(expected_class[i]);
+      } else {
+        lab_classes.push(expected_class[i]);
+      }
+    }
+
+    // RUN FUNCTIONS
+    PHS_1(); // Phase 1: Add the weekly events that occurs on both semester
+    PHS_2(); // Phase 2: Add assign coaches to each of the classes
+    PHS_3(); // Phase 3: Assign each classes unto a room
+    PHS_3_1();
+    PHS_4(); // Phase 4: Add the room, day, time based from room slot
+    return schedules;
+
+    // MAIN FUNCTION
+    function PHS_1() {
+      // Step 1: Set the events fill up any missing information
+      weekly.map((evnt, e) => {
+        schedules.push({
+          SCT: "All Sections",
+          CRS: evnt.WeeklyEvent,
+          CCH: "None",
+          CPT: "Weekly Event",
+          UNT: 1.5,
+          SMS: "All Semesters",
+          ROM: "Court",
+          CCH_UNT: 0,
+          HAS_LAB: false,
+          IS_LAB: false,
+        });
+      });
+    }
+
+    function PHS_2() {
+      for (var i = 0; i < lecture_classes.length; i++) {
+        // if (lecture_classes[i].Semester === target_semester) {
+        //Step 1: Check if the class is a laboratory or lecture type
+        out_schedule.push({
+          SCT: lecture_classes[i].Section,
+          CRS: lecture_classes[i].Course,
+          CCH: ADD_COACH(lecture_classes[i].Course).LastName,
+          CPT: lecture_classes[i].Component,
+          UNT: lecture_classes[i].Units,
+          SMS: lecture_classes[i].Semester,
+          ROM: "None",
+          DAY: "None",
+          STR_TME: "None",
+          END_TME: "None",
+          CPC: "None",
+          ROM_UNT: "None",
+          PPL: lecture_classes[i].Population,
+          CCH_UNT:
+            ADD_COACH(lecture_classes[i].Course).Units +
+            lecture_classes[i].Units,
+          HAS_LAB: HAS_LAB(
+            lecture_classes[i].Section,
+            lecture_classes[i].Course,
+            lecture_classes[i].Component
+          ),
+          IS_LAB: IS_LAB(lecture_classes[i].Component),
+        });
+        ADD_UNITS_TO_COACH(
+          ADD_COACH(lecture_classes[i].Course).LastName,
+          lecture_classes[i].Units
+        );
+        // Step 2: Check whether the class has a laboratory
+        if (
           HAS_LAB(
-            expected_class[i].Section,
-            expected_class[i].Course,
-            expected_class[i].Component
+            lecture_classes[i].Section,
+            lecture_classes[i].Course,
+            lecture_classes[i].Component
           )
         ) {
-          case true:
-            for (var j = 0; j < expected_class.length; j++) {
-              if (IS_LAB(expected_class[j].Component)) {
-                if (expected_class[j].Section === expected_class[i].Section) {
-                  if (expected_class[j].Course === expected_class[i].Course) {
-                    out_schedule.push({
-                      SCT: expected_class[j].Section,
-                      CRS: expected_class[j].Course,
-                      CCH: temp_coach,
-                      CPT: expected_class[j].Component,
-                      UNT: expected_class[j].Units,
-                      SMS: expected_class[j].Semester,
-                      CCH_UNT: COACH_UNITS(temp_coach, expected_class[j].Units),
-                      HAS_LAB: HAS_LAB(
-                        expected_class[j].Section,
-                        expected_class[j].Course,
-                        expected_class[j].Component
-                      ),
-                      IS_LAB: IS_LAB(expected_class[j].Component),
-                    });
-                    ADD_UNITS_TO_COACH(temp_coach, expected_class[j].Units);
-                  }
+          // Step 3: Find the laboratory of the current class
+          for (var j = 0; j < lab_classes.length; j++) {
+            if (IS_LAB(lab_classes[j].Component)) {
+              if (lab_classes[j].Section === lab_classes[i].Section) {
+                if (lab_classes[j].Course === lab_classes[i].Course) {
+                  out_schedule.push({
+                    SCT: lab_classes[j].Section,
+                    CRS: lab_classes[j].Course,
+                    CCH: ADD_COACH(lab_classes[i].Course).LastName,
+                    CPT: lab_classes[j].Component,
+                    UNT: lab_classes[j].Units,
+                    SMS: lab_classes[j].Semester,
+                    ROM: "None",
+                    DAY: "None",
+                    STR_TME: "None",
+                    END_TME: "None",
+                    CPC: "None",
+                    ROM_UNT: "None",
+                    PPL: lab_classes[j].Population,
+                    CCH_UNT:
+                      ADD_COACH(lab_classes[j].Course).Units +
+                      lab_classes[j].Units,
+                    HAS_LAB: HAS_LAB(
+                      lab_classes[j].Section,
+                      lab_classes[j].Course,
+                      lab_classes[j].Component
+                    ),
+                    IS_LAB: IS_LAB(lab_classes[j].Component),
+                  });
+                  ADD_UNITS_TO_COACH(
+                    ADD_COACH(lab_classes[i].Course).LastName,
+                    lab_classes[j].Units
+                  );
                 }
               }
             }
-          default:
-            out_schedule.push({
-              SCT: expected_class[i].Section,
-              CRS: expected_class[i].Course,
-              CCH: temp_coach,
-              CPT: expected_class[i].Component,
-              UNT: expected_class[i].Units,
-              SMS: expected_class[i].Semester,
-              CCH_UNT: COACH_UNITS(temp_coach, expected_class[i].Units),
-              HAS_LAB: HAS_LAB(
-                expected_class[i].Section,
-                expected_class[i].Course,
-                expected_class[i].Component
-              ),
-              IS_LAB: IS_LAB(expected_class[i].Component),
-            });
-            ADD_UNITS_TO_COACH(temp_coach, expected_class[i].Units);
+          }
+        }
+        // }
+      }
+    }
+
+    function PHS_3() {
+      // Step 1: Assign each class unto a room
+      for (var i = 0; i < out_schedule.length; i++) {
+        for (var j = 0; j < available_room.length; j++) {
+          if (out_schedule[i].CPT.includes(available_room[j].Facility)) {
+            if (available_room[j].Units + out_schedule[i].UNT <= 13) {
+              if (out_schedule[i].PPL < available_room[j].Capacity) {
+                available_room[j].Classes.push(out_schedule[i]);
+                available_room[j].Units += out_schedule[i].UNT;
+                break;
+              }
+            }
+          }
+        }
+      }
+      // Step 2: Migrate rooms that has classes
+      for (var i = 0; i < available_room.length; i++) {
+        if (available_room[i].Classes.length > 0) {
+          rooms_with_schedules.push(available_room[i]);
+        }
+      }
+    }
+
+    function PHS_3_1() {
+      rooms_with_schedules.map((m1, a) => {
+        RE_ARNG_ARR(m1.Classes);
+      });
+    }
+
+    function PHS_4() {
+      // Step 1: Retrieve all rooms that have classes
+      for (var i = 0; i < rooms_with_schedules.length; i++) {
+        // Step 2: Reset units to 0 to remove previous checking
+        rooms_with_schedules[i].Units = 0;
+
+        // Step 3: Pull out the data per class and use the parent to get room, day, and time
+        for (var j = 0; j < rooms_with_schedules[i].Classes.length; j++) {
+          // Calculate start and end times for the current class
+          var classStart =
+            start_of_the_day +
+            CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Units);
+          var classEnd =
+            classStart +
+            CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Classes[j].UNT);
+
+          // Check for overlaps with existing schedules
+          var overlapDetected = schedules.some(function (existingSchedule) {
+            return (
+              existingSchedule.SCT === rooms_with_schedules[i].Classes[j].SCT &&
+              existingSchedule.DAY === rooms_with_schedules[i].Day &&
+              doTimeIntervalsOverlap(
+                existingSchedule.STR_TME,
+                existingSchedule.END_TME,
+                classStart,
+                classEnd
+              )
+            );
+          });
+
+          if (overlapDetected) {
+            // Handle the overlap scenario (e.g., adjust times, skip conflicting class)
+            console.log(
+              `Overlap detected for SCT ${rooms_with_schedules[i].Classes[j].SCT} on DAY ${rooms_with_schedules[i].Day}`
+            );
+            // Adjust the class time or skip it based on your business logic
+            continue; // Skip adding this class to schedules array
+          }
+
+          // If no overlap, add the class to schedules array
+          schedules.push({
+            SCT: rooms_with_schedules[i].Classes[j].SCT,
+            CRS: rooms_with_schedules[i].Classes[j].CRS,
+            CCH: rooms_with_schedules[i].Classes[j].CCH,
+            CPT: rooms_with_schedules[i].Classes[j].CPT,
+            UNT: rooms_with_schedules[i].Classes[j].UNT,
+            SMS: rooms_with_schedules[i].Classes[j].SMS,
+            ROM: rooms_with_schedules[i].Room,
+            DAY: rooms_with_schedules[i].Day,
+            STR_TME: classStart,
+            END_TME: classEnd,
+            CPC: rooms_with_schedules[i].Capacity,
+            ROM_UNT:
+              rooms_with_schedules[i].Units +
+              rooms_with_schedules[i].Classes[j].UNT,
+            PPL: rooms_with_schedules[i].Classes[j].PPL,
+            CCH_UNT: rooms_with_schedules[i].Classes[j].CCH_UNT,
+            HAS_LAB: rooms_with_schedules[i].Classes[j].HAS_LAB,
+            IS_LAB: rooms_with_schedules[i].Classes[j].IS_LAB,
+          });
+
+          // Update room units and capacity
+          ADD_UNITS_TO_ROOM(
+            rooms_with_schedules[i].Room,
+            rooms_with_schedules[i].Classes[j].UNT
+          );
         }
       }
     }
 
     //UTILITY FUNCTIONS
-    function COACH_UNITS(target_coach, target_units) {
-      for (var i = 0; i < assigned_coach.length; i++) {
-        if (assigned_coach[i].LastName === target_coach) {
-          return assigned_coach[i].Units + target_units;
+    function doTimeIntervalsOverlap(start1, end1, start2, end2) {
+      return !(end1 <= start2 || start1 >= end2);
+    }
+
+    function RE_ARNG_ARR(target_array) {
+      for (let i = target_array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [target_array[i], target_array[j]] = [target_array[j], target_array[i]];
+      }
+      return target_array;
+    }
+
+    function ADD_UNITS_TO_ROOM(target_room, target_units) {
+      for (var i = 0; i < rooms_with_schedules.length; i++) {
+        if (rooms_with_schedules[i].Room === target_room) {
+          rooms_with_schedules[i].Units += target_units;
         }
       }
+    }
+
+    function CNVRT_MNTS_TO_UNITS(target_minutes) {
+      return target_minutes / 60;
+    }
+
+    function CNVRT_UNITS_TO_MNTS(target_units) {
+      return target_units * 60;
     }
 
     function ADD_UNITS_TO_COACH(target_coach, course_units) {
@@ -183,7 +356,7 @@ export function GeneratingSchedules() {
           if (IS_SPECIALIZED(coaches[j].LastName, target_course)) {
             if (coachtype[i].CoachType === coaches[j].CoachType) {
               if (coaches[j].Units < coachtype[i].MaxUnits - 3) {
-                return coaches[j].LastName;
+                return coaches[j];
               }
             }
           }
@@ -223,103 +396,7 @@ export function GeneratingSchedules() {
       }
       return false;
     }
-
-    return out_schedule;
   }
-
-  // function x(section, day, units) {
-  //   for (var k = 0; k < sched.length; k++) {
-  //     if (
-  //       section === sched[k].Section &&
-  //       day === sched[k].Day &&
-  //       units < sched[k].EndTime
-  //     ) {
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // }
-
-  // function getcoach() {
-  //   for (var i = 0; i < coachtype.length; i++) {
-  //     for (var j = 0; j < coaches.length; j++) {
-  //       if (coachtype[i].CoachType === coaches[j].CoachType) {
-  //         if (coaches[j].Units < 10) {
-  //           return coaches[j].LastName;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-  // function getcoachunits(selCoach) {
-  //   for (var i = 0; i < coaches.length; i++) {
-  //     if (coaches[i].LastName === selCoach) {
-  //       return coaches[i].Units;
-  //     }
-  //   }
-  // }
-
-  // function test() {
-  //   weekly.map((evnt, e) => {
-  //     sched.push({
-  //       Section: "ABC00" + e,
-  //       Course: evnt.WeeklyEvent,
-  //       Component: "Weekly Event",
-  //       Room: "Court",
-  //       Facility: evnt.WeeklyEvent,
-  //       Units: 0,
-  //       Day: evnt.Day,
-  //       TimeStart: evnt.StartTime,
-  //       EndTime: evnt.EndTime,
-  //       Population: 0,
-  //       Capacity: 0,
-  //       AcademicYear: ay[0].ACY_Code,
-  //       Curriculum: ay[0].CRR_Code,
-  //     });
-  //   });
-  //   for (var i = 0; i < classes.length; i++) {
-  //     for (var j = 0; j < rooms.length; j++) {
-  //       if (
-  //         classes[i].Component.includes(rooms[j].Facility) &&
-  //         rooms[j].Units + classes[i].Units <= 13 &&
-  //         classes[i].Population < rooms[j].Capacity &&
-  //         x(classes[i].Section, rooms[j].Day, 480 + rooms[j].Units * 60) &&
-  //         getcoachunits(getcoach()) < 10
-  //       ) {
-  //         sched.push({
-  //           Section: classes[i].Section,
-  //           Course: classes[i].CRS_Code,
-  //           Component: classes[i].Component,
-  //           Room: rooms[j].Room,
-  //           Facility: rooms[j].Facility,
-  //           Units: classes[i].Units,
-  //           Day: rooms[j].Day,
-  //           TimeStart: 480 + rooms[j].Units * 60,
-  //           EndTime: 480 + (rooms[j].Units * 60 + classes[i].Units * 60),
-  //           Population: classes[i].Population,
-  //           Capacity: rooms[j].Capacity,
-  //           AcademicYear: ay[0].ACY_Code,
-  //           Curriculum: ay[0].CRR_Code,
-  //           Coach: getcoach(),
-  //         });
-  //         rooms[j].Units += classes[i].Units;
-  //         coaches.map((coach, i) =>
-  //           coach.LastName === getcoach()
-  //             ? console.log((coach.Units += classes[i].Units))
-  //             : null
-  //         );
-  //         break;
-  //       } else if (j === rooms.length - 1) {
-  //         console.log(
-  //           classes[i].Section +
-  //             " " +
-  //             classes[i].Course +
-  //             " is not scheduled! No Rooms Available."
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
 
   return (
     <main>
@@ -329,39 +406,41 @@ export function GeneratingSchedules() {
           className="btn btn-primary btn-sm"
           onClick={() => {
             setSchedule(PROC_GEN_SCHED());
-            console.log(PROC_GEN_SCHED());
+            console.log(schedule);
           }}
         >
           Generate
         </button>
+        <main className="w-100 p-3">
+          <section>
+            Schedule Length <span>{schedule.length}</span>
+          </section>
+        </main>
         <main className="p-3 border rounded m-2">
           {schedule.length > 0
             ? schedule.map((schedule, i) => (
                 <main className="row p-2 my-2 m-0 border rounded text-center">
-                  <section className="col-1 p-0 m-0">{schedule.SCT}</section>
-                  <section className="col-4 p-0 m-0">
+                  <section className="col p-0 m-0">{schedule.SCT}</section>
+                  <section className="col p-0 m-0">
                     {schedule.CRS} ( {schedule.CPT} )
                   </section>
-                  <section className="col-2 p-0 m-0">
-                    {schedule.CCH} ( {schedule.CCH_UNT} )
+                  <section className="col p-0 m-0">
+                    <span className="pe-2">( {schedule.CCH_UNT} )</span>
+                    {schedule.CCH}
                   </section>
-                  <section className="col-3 p-0 m-0">
-                    <p className="p-0 m-0 d-flex gap-2 justify-content-center">
-                      <span>
-                        isLab:{" "}
-                        <span className="border px-2">
-                          {schedule.IS_LAB ? "/" : "X"}
-                        </span>
-                      </span>
-                      <span>
-                        hasLab:{" "}
-                        <span className="border px-2">
-                          {schedule.HAS_LAB ? "/" : "X"}
-                        </span>
-                      </span>
-                    </p>
+                  <section className="col p-0 m-0">
+                    <span>( {schedule.ROM_UNT} )</span> {schedule.ROM}
                   </section>
-                  <section className="col-2 p-0 m-0">{schedule.SMS}</section>
+                  <section className="col p-0 m-0">{schedule.DAY}</section>
+                  <section className="col p-0 m-0">
+                    {convertMinutes(schedule.STR_TME)}
+                    {" - "}
+                    {convertMinutes(schedule.END_TME)}
+                  </section>
+                  <section className="col p-0 m-0">
+                    {schedule.PPL} / {schedule.CPC}
+                  </section>
+                  <section className="col p-0 m-0">{schedule.SMS}</section>
                 </main>
               ))
             : null}

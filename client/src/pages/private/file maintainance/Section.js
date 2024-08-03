@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { DefaultButton } from "../../../component/button/DefaultButton";
-import { GrView } from "react-icons/gr";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { PiGearSixFill } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,38 +8,42 @@ import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
+import { LinkButton } from "../../../component/button/LinkButton";
+import { MdArrowBackIosNew } from "react-icons/md";
 
 export function Section() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
 
   const [data, setData] = useState([]);
-  const [code, setCode] = useState("");
 
   useEffect(() => {
-    post("section", data, setData);
+    post("sel-sect", data, setData);
   }, [data]);
-
-  useEffect(() => {
-    get("random-code-generator", setCode);
-  }, []);
 
   return (
     <FileMaintainanceTemplate
       sidepanel={<NoDisplay />}
       control={
         <>
+          <DefaultButton
+            class=""
+            icon={<MdArrowBackIosNew />}
+            function={() => navigate(-1)}
+          />
           <DefaultInput placeholder="Search" />
-          <Link to={"/institution/section/generate/0"}>
-            <DefaultButton
-              class="btn-outline-primary"
-              icon={<PiGearSixFill />}
-            />
-          </Link>
-
-          <Link to={"/institution/section/create/0"}>
-            <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />
-          </Link>
+          <LinkButton
+            class="btn-outline-primary"
+            textclass="text-primary"
+            to={"/institution/section/generate/0"}
+            icon={<PiGearSixFill />}
+          />
+          <LinkButton
+            class="btn-primary"
+            textclass="text-white"
+            to={"/institution/section/create/0"}
+            icon={<RiStickyNoteAddLine />}
+          />
         </>
       }
       list={data.map((item, i) => (
@@ -49,12 +52,8 @@ export function Section() {
           slot2={item.Section}
           slot3={item.SCT_Created}
           slot4={item.AcademicLevel}
-          slot5={
-            <span>
-              {item.YearLevel} - {item.Semester}
-            </span>
-          }
-          link={"/institution/section/view/" + item.SCTID}
+          slot5={`${item.YearLevel} - ${item.Semester}`}
+          link={`/institution/section/view/${item.SCTID}`}
           state={{ data: item }}
         />
       ))}

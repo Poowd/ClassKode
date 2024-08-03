@@ -9,24 +9,31 @@ import { FaRegSave } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../../hook/useDatabase";
 import useTimeFormat from "../../../../hook/useTimeFormat";
+import { GrSchedules } from "react-icons/gr";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [convertMinutes] = useTimeFormat();
 
+  const [sched, setSched] = useState([]);
+
+  useEffect(() => {
+    post("sel-sched", sched, setSched);
+  }, [sched]);
+
   var classes = [];
-  var rooms = [];
-  var coaches = [];
-  var sched = [];
 
   const [expected, setExpected] = useState([]);
-  const [ay, setAY] = useState([]);
-  const [weekly, setWeekly] = useState([]);
   const [room, setRoom] = useState([]);
-  const [schedule, setSchedule] = useState([]);
-  const [coachtype, setCoachType] = useState([]);
   const [coach, setCoach] = useState([]);
+  const [section, setSection] = useState([]);
+
+  const [weekly, setWeekly] = useState([]);
+  const [coachtype, setCoachType] = useState([]);
+  const [schedule, setSchedule] = useState([]);
+  const [specialize, setSpecialize] = useState([]);
+  const [ay, setAY] = useState([]);
   const [days, setDays] = useState([
     "Monday",
     "Tuesday",
@@ -38,139 +45,48 @@ export function GenerateSchedule() {
   useEffect(() => {
     post("expected-classes", expected, setExpected);
     post("room", room, setRoom);
+    post("projection", section, setSection);
     post("assignment", coach, setCoach);
     post("coachtype", coachtype, setCoachType);
     post("weekly-event", weekly, setWeekly);
     post("academicyear-current", ay, setAY);
-    expected.map((item, i) => {
-      classes.push({
-        CRS_Code: item.CRS_Code,
-        Course: item.Course,
-        Component: item.Component,
-        Section: item.Section,
-        Population: item.Population,
-        Units: item.MaxUnits,
-      });
-    });
-    days.map((day, d) => {
-      room.map((item, i) => {
-        rooms.push({
-          Room: item.Room,
-          Facility: item.Facility,
-          Capacity: item.Capacity,
-          Units: 0,
-          Day: day,
-        });
-      });
-    });
-    coach.map((item, i) => {
-      coaches.push({
-        SCHLID: item.SCHLID,
-        LastName: item.LastName,
-        Department: item.DPT_Code,
-        CoachType: item.CoachType,
-        MaxUnits: item.MaxUnits,
-        Units: 0,
-      });
-    });
-    // console.log(classes);
-    // console.log(room);
-    // console.log(coaches);
-  }, [expected, room, coaches]);
+    post("SPCL_CRS", specialize, setSpecialize);
+  }, []);
 
-  function x(section, day, units) {
-    for (var k = 0; k < sched.length; k++) {
+  useEffect(() => {
+    //schedule.splice(0, 1);
+    console.log(schedule);
+  }, [schedule]);
+
+  function conflictChecker() {
+    var st1 = 660;
+    var et1 = 780;
+
+    var test = [
+      {
+        st: 480,
+        et: 660,
+      },
+      {
+        st: 780,
+        et: 840,
+      },
+    ];
+
+    for (var i = 0; i < test.length; i++) {
       if (
-        section === sched[k].Section &&
-        day === sched[k].Day &&
-        units < sched[k].EndTime
+        !(
+          (st1 < test[i].st && et1 <= test[i].st) ||
+          (st1 > test[i].st && et1 >= test[i].st && test[i].et <= st1)
+        )
       ) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function getcoach() {
-    for (var i = 0; i < coachtype.length; i++) {
-      for (var j = 0; j < coaches.length; j++) {
-        if (coachtype[i].CoachType === coaches[j].CoachType) {
-          if (coaches[j].Units < 10) {
-            return coaches[j].LastName;
-          }
-        }
-      }
-    }
-  }
-  function getcoachunits(selCoach) {
-    for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].LastName === selCoach) {
-        return coaches[i].Units;
+        console.log("no conflict");
+      } else {
+        console.log("conflict");
       }
     }
   }
 
-  function test() {
-    weekly.map((evnt, e) => {
-      sched.push({
-        Section: "ABC00" + e,
-        Course: evnt.WeeklyEvent,
-        Component: "Weekly Event",
-        Room: "Court",
-        Facility: evnt.WeeklyEvent,
-        Units: 0,
-        Day: evnt.Day,
-        TimeStart: evnt.StartTime,
-        EndTime: evnt.EndTime,
-        Population: 0,
-        Capacity: 0,
-        AcademicYear: ay[0].ACY_Code,
-        Curriculum: ay[0].CRR_Code,
-      });
-    });
-    for (var i = 0; i < classes.length; i++) {
-      for (var j = 0; j < rooms.length; j++) {
-        if (
-          classes[i].Component.includes(rooms[j].Facility) &&
-          rooms[j].Units + classes[i].Units <= 13 &&
-          classes[i].Population < rooms[j].Capacity &&
-          x(classes[i].Section, rooms[j].Day, 480 + rooms[j].Units * 60) &&
-          getcoachunits(getcoach()) < 10
-        ) {
-          sched.push({
-            Section: classes[i].Section,
-            Course: classes[i].CRS_Code,
-            Component: classes[i].Component,
-            Room: rooms[j].Room,
-            Facility: rooms[j].Facility,
-            Units: classes[i].Units,
-            Day: rooms[j].Day,
-            TimeStart: 480 + rooms[j].Units * 60,
-            EndTime: 480 + (rooms[j].Units * 60 + classes[i].Units * 60),
-            Population: classes[i].Population,
-            Capacity: rooms[j].Capacity,
-            AcademicYear: ay[0].ACY_Code,
-            Curriculum: ay[0].CRR_Code,
-            Coach: getcoach(),
-          });
-          rooms[j].Units += classes[i].Units;
-          coaches.map((coach, i) =>
-            coach.LastName === getcoach()
-              ? console.log((coach.Units += classes[i].Units))
-              : null
-          );
-          break;
-        } else if (j === rooms.length - 1) {
-          console.log(
-            classes[i].Section +
-              " " +
-              classes[i].Course +
-              " is not scheduled! No Rooms Available."
-          );
-        }
-      }
-    }
-  }
   return (
     <main>
       <main className="h-100 position-relative overflow-y-auto px-1">
@@ -188,6 +104,7 @@ export function GenerateSchedule() {
                 <DefaultButton
                   class="btn-primary px-2"
                   icon={<TbListDetails />}
+                  function={() => conflictChecker()}
                 />
 
                 <DefaultButton class="btn-primary px-2" icon={<FaFilter />} />
@@ -195,11 +112,10 @@ export function GenerateSchedule() {
                   class="btn-primary px-2"
                   icon={<FaRegSave />}
                   function={() => {
-                    for (var i in schedule) {
-                      console.log(classes);
+                    for (var i = 0; i < schedule.length; i++) {
+                      console.log(schedule[i]);
                       post("save-presched", schedule[i], setSchedule);
                     }
-
                     navigate(-1);
                   }}
                 />
@@ -208,35 +124,51 @@ export function GenerateSchedule() {
                   icon={<PiGearSixFill />}
                   text="Generate"
                   function={() => {
-                    test();
-                    setSchedule(sched);
+                    //setSchedule(expected);
+                    post(
+                      "generate-classes",
+                      {
+                        classes: expected,
+                        rooms: room,
+                        coaches: coach,
+                        sections: section,
+                        coachtype: coachtype,
+                        specialize: specialize,
+                      },
+                      setSchedule
+                    );
+                    console.log(schedule);
                   }}
+                  disabled={sched.length > 0 ? true : false}
                 />
               </div>
             </div>
           </div>
         </section>
         <section>
-          {schedule.map((sc, i) => (
-            <ScheduleList
-              key={i}
-              slot1={sc.Section}
-              slot2={sc.Course}
-              slot3={
-                sc.Day +
-                " : " +
-                convertMinutes(sc.TimeStart) +
-                " - " +
-                convertMinutes(sc.EndTime)
-              }
-              slot4={sc.Room + " " + sc.Population + "/" + sc.Capacity}
-              slot5={sc.Coach}
-              slot6={sc.Component + " ( " + sc.Units + " )"}
-              link={null}
-              state={null}
-              custom={null}
-            />
-          ))}
+          {schedule.length > 0
+            ? schedule.map((sc, i) => (
+                <ScheduleList
+                  class={sc.CONFLICT === true ? "bg-warning" : "bg-white"}
+                  key={i}
+                  slot1={sc.SCT}
+                  slot2={sc.CRS}
+                  slot3={
+                    sc.DAY +
+                    " : " +
+                    convertMinutes(sc.STR_TME) +
+                    " - " +
+                    convertMinutes(sc.END_TME)
+                  }
+                  slot4={sc.ROM + " " + sc.PPL + "/" + sc.CPC}
+                  slot5={sc.CCH}
+                  slot6={sc.CPT + " ( " + sc.UNT + " )"}
+                  link={null}
+                  state={null}
+                  custom={null}
+                />
+              ))
+            : "none"}
         </section>
       </main>
     </main>

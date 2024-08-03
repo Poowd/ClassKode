@@ -31,6 +31,8 @@ import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
 import { FullscreenLoader } from "./component/loader/FullscreenLoader";
 import { BackgroundColours } from "./pages/components/BackgroundColours";
 import { GeneratingSchedules } from "./pages/components/Generating Schedules";
+import { TimeProblem } from "./pages/components/TimeProblem";
+import { ImagetoDB } from "./pages/components/ImagetoDB";
 
 function App() {
   const navigate = useNavigate();
@@ -103,6 +105,8 @@ function App() {
                   path="/testing/bgcolour"
                   element={<BackgroundColours />}
                 ></Route>
+                <Route path="/testing/imgtodb" element={<ImagetoDB />}></Route>
+                <Route path="/testing/time" element={<TimeProblem />}></Route>
                 <Route
                   path="/testing/gensched"
                   element={<GeneratingSchedules />}

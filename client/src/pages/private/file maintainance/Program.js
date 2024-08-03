@@ -9,29 +9,28 @@ import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
+import { MdArrowBackIosNew } from "react-icons/md";
 
 export function Program() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
 
   const [data, setData] = useState([]);
-  const [code, setCode] = useState("");
-
   useEffect(() => {
-    post("program", data, setData);
+    post("sel-prg", data, setData);
   }, [data]);
-
-  useEffect(() => {
-    get("random-code-generator", setCode);
-  }, []);
 
   return (
     <FileMaintainanceTemplate
       sidepanel={<NoDisplay />}
       control={
         <>
+          <DefaultButton
+            class=""
+            icon={<MdArrowBackIosNew />}
+            function={() => navigate(-1)}
+          />
           <DefaultInput placeholder="Search" />
-          <DefaultButton class="btn-outline-primary" icon={<PiGearSixFill />} />
           <Link to={"/institution/program/create/0"}>
             <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />
           </Link>
@@ -44,7 +43,7 @@ export function Program() {
           slot3={item.PRG_Created}
           slot4={"Available"}
           slot5={"2024-2025"}
-          link={"/institution/program/view/" + item.PRGID}
+          link={`/institution/program/view/${item.PRGID}`}
           state={{ data: item }}
         />
       ))}

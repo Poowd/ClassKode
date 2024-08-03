@@ -20,35 +20,36 @@ export function CourseSetup() {
   const { state } = useLocation();
   const [get, post] = useDatabase();
 
+  const LocalStorage = [JSON.parse(localStorage.getItem("data"))];
+
+  const [curr, setCurr] = useState([]);
+  const [curcurr, setCurCurr] = useState([]);
+  const [current, setCurrent] = useState([]);
+  const [dept, setDept] = useState([]);
+  const [prg, setPrg] = useState([]);
+  const [setup, setSetup] = useState([]);
   const [data, setData] = useState({
     Curriculum: "",
     Department: "",
     Program: "",
   });
-  const [department, setDepartment] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [setup, setSetup] = useState([]);
-  const [currentcrr, setCurrentCRR] = useState([]);
-  const [currentCurriculum, setCurrentCurriculum] = useState([]);
-
-  const [dataChange] = useHandleChange(setData);
-
-  const xxx = [JSON.parse(localStorage.getItem("data"))];
 
   useEffect(() => {
-    post("department", department, setDepartment);
-    post("program", program, setProgram);
-    post("course-setup", setup, setSetup);
-    post("curriculum-current", currentcrr, setCurrentCRR);
+    post("sel-curr", curr, setCurr);
+    post("sel-cur-curr", curcurr, setCurCurr);
+    post("sel-dept", dept, setDept);
+    post("sel-prg", prg, setPrg);
+    post("sel-setup", setup, setSetup);
   }, []);
 
   useEffect(() => {
-    if (data.Department !== xxx[0].Department) {
-      setData((prev) => ({ ...prev, Program: "" }));
-    }
-  }, [data]);
+    curcurr.map((curr, i) => setCurrent(curr));
+  }, [curcurr]);
 
   useEffect(() => {
+    if (data.Department !== LocalStorage[0].Department) {
+      setData((prev) => ({ ...prev, Program: "" }));
+    }
     if (
       data.Curriculum === "" &&
       data.Department === "" &&
@@ -61,18 +62,14 @@ export function CourseSetup() {
 
   useEffect(() => {
     if (
-      xxx[0].Curriculum === "" &&
-      xxx[0].Department === "" &&
-      xxx[0].Program === ""
+      LocalStorage[0].Curriculum === "" &&
+      LocalStorage[0].Department === "" &&
+      LocalStorage[0].Program === ""
     ) {
     } else {
-      setData(xxx[0]);
+      setData(LocalStorage[0]);
     }
   }, []);
-
-  useEffect(() => {
-    currentcrr.map((crr, i) => setCurrentCurriculum(crr));
-  }, [currentcrr]);
 
   return (
     <FileMaintainanceTemplate
@@ -82,16 +79,16 @@ export function CourseSetup() {
             <LinkButton
               class="btn-primary px-2"
               textclass="text-white"
-              to={"/institution/curriculum/view/" + currentCurriculum.CRRID}
+              to={`/institution/curriculum/view/${current.CRRID}`}
               state={{
-                data: currentCurriculum,
+                data: current,
               }}
               icon={<GrView />}
             />
           </header>
           <main className="mt-2">
             <p className="p-0 m-0 fw-semibold text-secondary">Curriculum</p>
-            <h5>{currentCurriculum.Curriculum}</h5>
+            <h5>{current.Curriculum}</h5>
           </main>
         </main>
       }
@@ -105,37 +102,32 @@ export function CourseSetup() {
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
-
               <DefaultDropdown
                 class="border px-2 btn-primary"
                 reversed={true}
                 icon={<BiLayer />}
                 text={
                   data.Department !== ""
-                    ? department.map((item, i) =>
+                    ? dept.map((item, i) =>
                         item.DPT_Code === data.Department
                           ? item.DPT_Abbreviation
                           : null
                       )
                     : "Department"
                 }
-                dropdownitems={
-                  <>
-                    {department.map((option, i) =>
-                      option.DPT_Code !== data.Department ? (
-                        <DefaultDropdownItem
-                          title={option.Department}
-                          trigger={() =>
-                            setData((prev) => ({
-                              ...prev,
-                              Department: option.DPT_Code,
-                            }))
-                          }
-                        />
-                      ) : null
-                    )}
-                  </>
-                }
+                dropdownitems={dept.map((option, i) =>
+                  option.DPT_Code !== data.Department ? (
+                    <DefaultDropdownItem
+                      title={option.Department}
+                      trigger={() =>
+                        setData((prev) => ({
+                          ...prev,
+                          Department: option.DPT_Code,
+                        }))
+                      }
+                    />
+                  ) : null
+                )}
               />
               <DefaultDropdown
                 class="border px-2 btn-primary"
@@ -143,67 +135,64 @@ export function CourseSetup() {
                 icon={<BiLayer />}
                 text={
                   data.Program !== ""
-                    ? program.map((item, i) =>
+                    ? prg.map((item, i) =>
                         item.PRG_Code === data.Program
                           ? item.PRG_Abbreviation
                           : null
                       )
                     : "Program"
                 }
-                dropdownitems={
-                  <>
-                    {program.map((option, i) =>
-                      option.DPT_Code === data.Department &&
-                      option.PRG_Code !== data.Program ? (
-                        <DefaultDropdownItem
-                          title={option.Program}
-                          trigger={() =>
-                            setData((prev) => ({
-                              ...prev,
-                              Program: option.PRG_Code,
-                            }))
-                          }
-                        />
-                      ) : null
-                    )}
-                  </>
-                }
+                dropdownitems={prg.map((option, i) =>
+                  option.DPT_Code === data.Department &&
+                  option.PRG_Code !== data.Program ? (
+                    <DefaultDropdownItem
+                      title={option.Program}
+                      trigger={() =>
+                        setData((prev) => ({
+                          ...prev,
+                          Program: option.PRG_Code,
+                        }))
+                      }
+                    />
+                  ) : null
+                )}
               />
-              <Link
+              <LinkButton
+                class="btn-primary px-2"
+                textclass="text-white"
                 to={data.Program !== "" ? "/institution/setup/create/0" : ""}
                 state={{
                   program: data.Program,
                   department: data.Department,
-                  curriculum: currentCurriculum,
+                  curriculum: current,
                 }}
-              >
-                <DefaultButton
-                  class="btn-primary"
-                  icon={<RiStickyNoteAddLine />}
-                />
-              </Link>
+                icon={<RiStickyNoteAddLine />}
+              />
             </div>
           </div>
         </>
       }
       list={
-        data.Program !== ""
-          ? setup.map((item, i) =>
-              item.PRG_Code === data.Program ? (
-                item.CRR_Code === currentCurriculum.CRR_Code ? (
-                  <ListCard
-                    slot1={item.Component}
-                    slot2={item.Course}
-                    slot3={item.STP_Created}
-                    slot4={item.Curriculum}
-                    slot5={item.Program}
-                    link={"/institution/setup/view/" + item.STPID}
-                    state={{ data: item }}
-                  />
-                ) : null
-              ) : null
-            )
-          : <p className="fw-semibold text-center p-3 text-secondary">= Select Department & Program =</p>
+        data.Program !== "" ? (
+          setup.map((item, i) =>
+            item.PRG_Code === data.Program &&
+            item.CRR_Code === current.CRR_Code ? (
+              <ListCard
+                slot1={item.Component}
+                slot2={item.Course}
+                slot3={item.STP_Created}
+                slot4={item.Curriculum}
+                slot5={item.Program}
+                link={`/institution/setup/view/${item.STPID}`}
+                state={{ data: item }}
+              />
+            ) : null
+          )
+        ) : (
+          <p className="fw-semibold text-center p-3 text-secondary">
+            Select Department & Program
+          </p>
+        )
       }
     />
   );

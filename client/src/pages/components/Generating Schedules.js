@@ -84,8 +84,6 @@ export function GeneratingSchedules() {
 
   MGRT_DATA();
 
-  useEffect(() => {}, []);
-
   function PROC_GEN_SCHED(target_semester) {
     var expected_class = classes;
     var lecture_classes = [];
@@ -125,6 +123,9 @@ export function GeneratingSchedules() {
           UNT: 1.5,
           SMS: "All Semesters",
           ROM: "Court",
+          DAY: "None",
+          STR_TME: evnt.StartTime,
+          END_TME: evnt.EndTime,
           CCH_UNT: 0,
           HAS_LAB: false,
           IS_LAB: false,
@@ -244,46 +245,15 @@ export function GeneratingSchedules() {
     }
 
     function PHS_4() {
+      var counter = 0;
       // Step 1: Retrieve all rooms that have classes
       for (var i = 0; i < rooms_with_schedules.length; i++) {
         // Step 2: Reset units to 0 to remove previous checking
         rooms_with_schedules[i].Units = 0;
-
         // Step 3: Pull out the data per class and use the parent to get room, day, and time
         for (var j = 0; j < rooms_with_schedules[i].Classes.length; j++) {
-          // Calculate start and end times for the current class
-          var classStart =
-            start_of_the_day +
-            CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Units);
-          var classEnd =
-            classStart +
-            CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Classes[j].UNT);
-
-          // Check for overlaps with existing schedules
-          var overlapDetected = schedules.some(function (existingSchedule) {
-            return (
-              existingSchedule.SCT === rooms_with_schedules[i].Classes[j].SCT &&
-              existingSchedule.DAY === rooms_with_schedules[i].Day &&
-              doTimeIntervalsOverlap(
-                existingSchedule.STR_TME,
-                existingSchedule.END_TME,
-                classStart,
-                classEnd
-              )
-            );
-          });
-
-          if (overlapDetected) {
-            // Handle the overlap scenario (e.g., adjust times, skip conflicting class)
-            console.log(
-              `Overlap detected for SCT ${rooms_with_schedules[i].Classes[j].SCT} on DAY ${rooms_with_schedules[i].Day}`
-            );
-            // Adjust the class time or skip it based on your business logic
-            continue; // Skip adding this class to schedules array
-          }
-
-          // If no overlap, add the class to schedules array
           schedules.push({
+            NUM: counter,
             SCT: rooms_with_schedules[i].Classes[j].SCT,
             CRS: rooms_with_schedules[i].Classes[j].CRS,
             CCH: rooms_with_schedules[i].Classes[j].CCH,
@@ -292,8 +262,13 @@ export function GeneratingSchedules() {
             SMS: rooms_with_schedules[i].Classes[j].SMS,
             ROM: rooms_with_schedules[i].Room,
             DAY: rooms_with_schedules[i].Day,
-            STR_TME: classStart,
-            END_TME: classEnd,
+            STR_TME:
+              start_of_the_day +
+              CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Units),
+            END_TME:
+              start_of_the_day +
+              CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Units) +
+              CNVRT_UNITS_TO_MNTS(rooms_with_schedules[i].Classes[j].UNT),
             CPC: rooms_with_schedules[i].Capacity,
             ROM_UNT:
               rooms_with_schedules[i].Units +
@@ -303,7 +278,7 @@ export function GeneratingSchedules() {
             HAS_LAB: rooms_with_schedules[i].Classes[j].HAS_LAB,
             IS_LAB: rooms_with_schedules[i].Classes[j].IS_LAB,
           });
-
+          counter++;
           // Update room units and capacity
           ADD_UNITS_TO_ROOM(
             rooms_with_schedules[i].Room,
@@ -398,6 +373,78 @@ export function GeneratingSchedules() {
     }
   }
 
+  function generateclasses() {
+    var schedule = PROC_GEN_SCHED();
+
+    return schedule;
+
+    function CHK_CNFLT(classes) {
+      for (var i = 0; i < classes.length; i++) {
+        for (var j = 0; j < classes.length; j++) {
+          if (i > 1 && j > 1) {
+            if (classes[i].DAY === classes[j].DAY) {
+              if (classes[i].SCT === classes[j].SCT) {
+                if (
+                  classes[i].END_TME >= classes[j].STR_TME ||
+                  classes[i].STR_TME <= classes[j].END_TME
+                ) {
+                  return false;
+                }
+              }
+            }
+          }
+        }
+      }
+      return true;
+    }
+  }
+
+  function checkForConflicts(ST1, ET1, ST2, ET2) {
+    // Convert start and end times to minutes past midnight
+    const convertToMinutes = (time) => {
+      return time * 60;
+    };
+
+    // Extract start and end times for comparison
+    const startTimeA = convertToMinutes(ST1);
+    const endTimeA = convertToMinutes(ET1);
+    const startTimeB = convertToMinutes(ST2);
+    const endTimeB = convertToMinutes(ET2);
+
+    // Check for conflicts
+    if (
+      (startTimeA < endTimeB && startTimeB < endTimeA) ||
+      (startTimeA > endTimeB && startTimeB > endTimeA) ||
+      (startTimeA === startTimeB && endTimeA === endTimeB)
+    ) {
+      return console.log("conflict"); // Overlap exists
+    }
+
+    return console.log("no conflict"); // No overlap
+  }
+
+  var conflict = [];
+
+  function temporary(skid) {
+    skid.map((sc, i) =>
+      skid.map((cp, p) =>
+        sc.DAY === cp.DAY
+          ? sc.SCT === cp.SCT
+            ? checkForConflicts(sc.STR_TME, sc.END_TME, cp.STR_TME, cp.END_TME)
+              ? sc.CRS === cp.CRS && sc.CPT === cp.CPT
+                ? null
+                : conflict.push(sc.NUM) /*console.log(
+                  `${i} - ${sc.SCT} is conflicted with ${cp.SCT} with time ${sc.STR_TME}:${sc.END_TME} - ${cp.STR_TME}:${cp.END_TME}`
+                )*/
+              : null /*console.log(
+                `${i} - ${sc.SCT} is not conflicted with ${cp.SCT} with time ${sc.STR_TME}:${sc.END_TME} - ${cp.STR_TME}:${cp.END_TME}`
+              )*/
+            : null
+          : null
+      )
+    );
+  }
+
   return (
     <main>
       <h1>Schedules</h1>
@@ -405,7 +452,17 @@ export function GeneratingSchedules() {
         <button
           className="btn btn-primary btn-sm"
           onClick={() => {
-            setSchedule(PROC_GEN_SCHED());
+            temporary();
+          }}
+        >
+          Generate
+        </button>
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={() => {
+            setSchedule(generateclasses());
+            temporary(generateclasses());
+            console.log(conflict);
             console.log(schedule);
           }}
         >
@@ -418,29 +475,52 @@ export function GeneratingSchedules() {
         </main>
         <main className="p-3 border rounded m-2">
           {schedule.length > 0
-            ? schedule.map((schedule, i) => (
-                <main className="row p-2 my-2 m-0 border rounded text-center">
-                  <section className="col p-0 m-0">{schedule.SCT}</section>
+            ? schedule.map((sc, i) => (
+                <main
+                  className={
+                    conflict.includes(sc.NUM)
+                      ? "row p-2 my-2 m-0 border rounded text-center text-danger"
+                      : "row p-2 my-2 m-0 border rounded text-center"
+                  }
+
+                  //   schedule.map((cp, p) =>
+                  //   sc.DAY === cp.DAY
+                  //     ? sc.SCT === cp.SCT
+                  //       ? checkForConflicts(
+                  //           sc.STR_TME,
+                  //           sc.END_TME,
+                  //           cp.STR_TME,
+                  //           cp.END_TME
+                  //         )
+                  //         ? sc.CRS === cp.CRS && sc.CPT === cp.CPT
+                  //           ? "row p-2 my-2 m-0 border rounded text-center"
+                  //           : "row p-2 my-2 m-0 border rounded text-center text-danger"
+                  //         : "row p-2 my-2 m-0 border rounded text-center"
+                  //       : "row p-2 my-2 m-0 border rounded text-center"
+                  //     : "row p-2 my-2 m-0 border rounded text-center"
+                  // )}
+                >
+                  <section className="col p-0 m-0">{sc.SCT}</section>
                   <section className="col p-0 m-0">
-                    {schedule.CRS} ( {schedule.CPT} )
+                    {sc.CRS} ( {sc.CPT} )
                   </section>
                   <section className="col p-0 m-0">
-                    <span className="pe-2">( {schedule.CCH_UNT} )</span>
-                    {schedule.CCH}
+                    <span className="pe-2">( {sc.CCH_UNT} )</span>
+                    {sc.CCH}
                   </section>
                   <section className="col p-0 m-0">
-                    <span>( {schedule.ROM_UNT} )</span> {schedule.ROM}
+                    <span>( {sc.ROM_UNT} )</span> {sc.ROM}
                   </section>
-                  <section className="col p-0 m-0">{schedule.DAY}</section>
+                  <section className="col p-0 m-0">{sc.DAY}</section>
                   <section className="col p-0 m-0">
-                    {convertMinutes(schedule.STR_TME)}
+                    {sc.STR_TME}
                     {" - "}
-                    {convertMinutes(schedule.END_TME)}
+                    {sc.END_TME}
                   </section>
                   <section className="col p-0 m-0">
-                    {schedule.PPL} / {schedule.CPC}
+                    {sc.PPL} / {sc.CPC}
                   </section>
-                  <section className="col p-0 m-0">{schedule.SMS}</section>
+                  <section className="col p-0 m-0">{sc.SMS}</section>
                 </main>
               ))
             : null}

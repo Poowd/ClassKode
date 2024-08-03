@@ -8,6 +8,7 @@ import { Sidebar } from "../sidebar/Sidebar";
 import { SidebarItemList } from "../sidebar/SidebarItemList";
 import { DefaultDropdown } from "../dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../dropdown/default/DefaultDropdownItem";
+import Logo from "../../assets/logo/ClassKode Logo (1).png";
 
 export class Topbar extends React.Component {
   render() {
@@ -38,18 +39,21 @@ export class Topbar extends React.Component {
 
     return (
       <nav className="main-top-bar gradient-bg-blue">
-        <div className="d-flex">
+        <div className="h-100 d-flex">
           <DefaultButton
             class="text-light"
             icon={<BiGridAlt />}
             toggle={"offcanvas"}
             target={"#sidebar"}
           />
-          <h5 className="p-0 m-0 d-flex align-items-center text-white">
-            <span className="fw-bold">Class</span>
-            <span> </span>
-            <span className="fw-light">Kode</span>
-          </h5>
+          <div className="h-100 d-flex gap-1">
+            <img src={Logo} alt="..." className="h-100 img-fluid" />
+            <h5 className="p-0 m-0 d-flex align-items-center text-white">
+              <span className="fw-bold">Class</span>
+              <span> </span>
+              <span className="fw-light">Kode</span>
+            </h5>
+          </div>
         </div>
         <div className="d-flex gap-2">
           <DefaultButton class="text-light" icon={<PiQuestionMarkBold />} />

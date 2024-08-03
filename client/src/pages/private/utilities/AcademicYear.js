@@ -1,52 +1,33 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
-import useHandleChange from "../../../hook/useHandleChange";
-import { DefaultButton } from "../../../component/button/DefaultButton";
-import { Link, useNavigate } from "react-router-dom";
-import { RiStickyNoteAddLine } from "react-icons/ri";
-import { PiGearSixFill } from "react-icons/pi";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
-import { GrView } from "react-icons/gr";
+import { DefaultButton } from "../../../component/button/DefaultButton";
 import { ListCard } from "../../../component/card/ListCard";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { LinkButton } from "../../../component/button/LinkButton";
 import { LuUsers2 } from "react-icons/lu";
 import { LuUser2 } from "react-icons/lu";
 import { MdArrowBackIosNew } from "react-icons/md";
+import { RiStickyNoteAddLine } from "react-icons/ri";
+import { GrView } from "react-icons/gr";
 
 export function AcademicYear() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
 
-  const [data, setData] = useState({
-    Department: "",
-    Program: "",
-  });
-  const [aystate, setAYState] = useState("Coach");
-  const [department, setDepartment] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [setup, setSetup] = useState([]);
-  const [currentay, setCurrentAY] = useState([]);
-  const [currentAcademicYear, setCurrentAcademicYear] = useState([]);
-  const [academicyear, setAcademicYear] = useState([]);
-
-  const [dataChange] = useHandleChange(setData);
+  const [ay, setAY] = useState([]);
+  const [curray, setCurrAY] = useState([]);
+  const [current, setCurrent] = useState([]);
 
   useEffect(() => {
-    post("department", department, setDepartment);
-    post("program", program, setProgram);
-    post("course-setup", setup, setSetup);
-    post("academicyear-current", currentay, setCurrentAY);
-    post("academicyear", academicyear, setAcademicYear);
+    post("sel-ay", ay, setAY);
+    post("sel-cur-ay", curray, setCurrAY);
   }, []);
 
   useEffect(() => {
-    setData((prev) => ({ ...prev, Program: "" }));
-  }, [data.Department]);
-
-  useEffect(() => {
-    currentay.map((ay, i) => setCurrentAcademicYear(ay));
-  }, [currentay]);
+    curray.map((ay, i) => setCurrent(ay));
+  }, [curray]);
 
   return (
     <FileMaintainanceTemplate
@@ -56,16 +37,14 @@ export function AcademicYear() {
             <LinkButton
               class="btn-primary px-2"
               textclass="text-white"
-              to={
-                "/institution/academic-year/view/" + currentAcademicYear.ACYID
-              }
-              state={{ data: currentAcademicYear }}
+              to={`/institution/academic-year/view/${current.ACYID}`}
+              state={{ data: current }}
               icon={<GrView />}
             />
           </header>
           <main className="mt-2">
             <p className="p-0 m-0 fw-semibold text-secondary">Academic Year</p>
-            <h5>{currentAcademicYear.AcademicYear}</h5>
+            <h5>{current.AcademicYear}</h5>
           </main>
         </main>
       }
@@ -83,10 +62,6 @@ export function AcademicYear() {
                 class="btn-primary px-2"
                 textclass="text-white"
                 to={"/institution/academic-year/create/0"}
-                state={{
-                  academicyear: currentAcademicYear,
-                  aystate: aystate,
-                }}
                 icon={<RiStickyNoteAddLine />}
               />
             </div>
@@ -94,24 +69,18 @@ export function AcademicYear() {
         </>
       }
       list={
-        academicyear.length > 0
-          ? academicyear.map((item, i) => (
+        ay.length > 0
+          ? ay.map((item, i) => (
               <ListCard
                 slot1={item.ACY_Code}
                 slot2={item.AcademicYear}
                 slot3={item.ACY_Created}
                 slot4={item.CRR_Code}
-                slot5={
-                  <>
-                    {item.StartDate}
-                    {" - "}
-                    {item.EndDate}
-                  </>
-                }
+                slot5={`${item.StartDate} : ${item.EndDate}`}
                 link={null}
                 state={null}
                 custom={
-                  item.ACY_Code === currentAcademicYear.ACY_Code ? (
+                  item.ACY_Code === current.ACY_Code ? (
                     <>
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
@@ -132,7 +101,7 @@ export function AcademicYear() {
                 }
               />
             ))
-          : null
+          : "none"
       }
     />
   );

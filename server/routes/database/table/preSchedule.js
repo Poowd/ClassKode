@@ -26,7 +26,6 @@ app.post("/schedules", (req, res) => {
         
         WHERE projection.ACY_Code = 'AY-2425'
           OR  SUBSTRING(schedule.Section, 1, 3) = 'ABC'
-          AND schedule.CRR_Code = 'CRR2020'
 
         AND schedule.Section LIKE '%` +
     req.body.Search +
@@ -88,21 +87,20 @@ app.post("/weekly-event", (req, res) => {
 
 app.post("/save-presched", (req, res) => {
   const sql = `
-      INSERT INTO schedule (Section, CRS_Code, Room, Component, Units, Day, StartTime, EndTime, Coach, ACY_Code, CRR_Code) VALUES (?);
+      INSERT INTO schedule (Section, CRS_Code, Room, Component, Units, Day, StartTime, EndTime, SCHLID, ACY_Code ) VALUES (?);
   `;
 
   const values = [
-    req.body.Section,
-    req.body.Course,
-    req.body.Room,
-    req.body.Component,
-    req.body.Units,
-    req.body.Day,
-    req.body.TimeStart,
-    req.body.EndTime,
-    req.body.Coach,
-    req.body.AcademicYear,
-    req.body.Curriculum,
+    req.body.SCT,
+    req.body.CRS_CODE,
+    req.body.ROM,
+    req.body.CPT,
+    req.body.UNT,
+    req.body.DAY,
+    req.body.STR_TME,
+    req.body.END_TME,
+    req.body.SCHLID,
+    req.body.ACY,
   ];
 
   db.query(sql, [values], (err, data) => {

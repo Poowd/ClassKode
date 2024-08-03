@@ -98,7 +98,7 @@ app.post("/coach-specialization", (req, res) => {
 
 app.post("/add-new-coach", (req, res) => {
   const sql =
-    "INSERT INTO coach (`SCHLID`, `FirstName`, `MiddleInitial`, `LastName`, `Gender`, `DPT_Code`, `Email`, `Phone`, `Facebook`) VALUES (?)";
+    "INSERT INTO coach (`SCHLID`, `FirstName`, `MiddleInitial`, `LastName`, `Gender`, `DPT_Code`, `Email`, `Phone`, `Facebook`, `Photo`) VALUES (?)";
 
   const values = [
     req.body.SCHLID,
@@ -110,6 +110,7 @@ app.post("/add-new-coach", (req, res) => {
     req.body.Email,
     req.body.Phone,
     req.body.Facebook,
+    req.body.Picture,
   ];
 
   db.query(sql, [values], (err, data) => {

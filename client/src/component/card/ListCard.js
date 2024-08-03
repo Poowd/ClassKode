@@ -20,7 +20,7 @@ export class ListCard extends React.Component {
         </section>
         <section className="col-4 p-0 m-0">
           <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end border-end px-3">
-            <p className="p-0 m-0">{this.props.slot4}</p>
+            <p className="p-0 m-0 text-end">{this.props.slot4}</p>
             <small>
               <p className="p-0 m-0 text-secondary fst-italic">
                 <span>{this.props.slot5}</span>

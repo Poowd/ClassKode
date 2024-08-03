@@ -14,21 +14,22 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { LuCalendarClock } from "react-icons/lu";
 import useDatabase from "../../../hook/useDatabase";
 import useTimeFormat from "../../../hook/useTimeFormat";
+import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 
 export function Schedule() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
 
-  const [schedule, setSchedule] = useState([]);
+  const [sched, setSched] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
-    post("schedules", schedule, setSchedule);
-  }, [schedule]);
+    post("sel-sched", sched, setSched);
+  }, [sched]);
   return (
     <>
       <FileMaintainanceTemplate
-        sidepanel={<></>}
+        sidepanel={<NoDisplay />}
         control={
           <>
             <div className="w-100">
@@ -76,30 +77,32 @@ export function Schedule() {
         }
         list={
           <>
-            {schedule.map((sc, i) => (
-              <ScheduleList
-                key={i}
-                slot1={sc.Section === null ? "All Sections" : sc.Section}
-                slot2={sc.Section === null ? sc.CRS_Code : sc.Course}
-                slot3={
-                  sc.Day +
-                  " : " +
-                  convertMinutes(sc.StartTime) +
-                  " - " +
-                  convertMinutes(sc.EndTime)
-                }
-                slot4={
-                  sc.Room === null
-                    ? "Court"
-                    : sc.Room + " " + sc.Population + "/" + sc.Capacity
-                }
-                slot5={sc.Coach}
-                slot6={sc.Component + " ( " + sc.Units + " )"}
-                link={null}
-                state={null}
-                custom={null}
-              />
-            ))}
+            {sched.length > 0
+              ? sched.map((sc, i) => (
+                  <ScheduleList
+                    key={i}
+                    slot1={sc.Section}
+                    slot2={sc.Course}
+                    slot3={
+                      sc.Day +
+                      " : " +
+                      convertMinutes(sc.StartTime) +
+                      " - " +
+                      convertMinutes(sc.EndTime)
+                    }
+                    slot4={
+                      sc.Room === null
+                        ? "Court"
+                        : sc.Room + " " + sc.Population + "/" + sc.Capacity
+                    }
+                    slot5={sc.LastName}
+                    slot6={sc.Component + " ( " + sc.Units + " )"}
+                    link={null}
+                    state={null}
+                    custom={null}
+                  />
+                ))
+              : "none"}
           </>
         }
       />

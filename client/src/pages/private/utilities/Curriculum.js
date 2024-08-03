@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../../hook/useDatabase";
-import { SelectButton } from "../../../component/dropdown/select/SelectButton";
-import { SelectButtonItem } from "../../../component/dropdown/select/SelectButtonItem";
-import useHandleChange from "../../../hook/useHandleChange";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
-import { PiGearSixFill } from "react-icons/pi";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
-import { SelectButtonItemSelected } from "../../../component/dropdown/select/SelectButtonItemSelected";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { LinkButton } from "../../../component/button/LinkButton";
 import { ListCard } from "../../../component/card/ListCard";
-import { PassiveModal } from "../../../component/modal/PassiveModal";
-import useModal from "../../../hook/useModal";
-import { CurriculumSelector } from "./curriculum/CurriculumSelector";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { LuPackageOpen } from "react-icons/lu";
 
@@ -24,25 +16,18 @@ export function Curriculum() {
   const { state } = useLocation();
   const [get, post] = useDatabase();
 
-  const [data, setData] = useState({
-    Curriculum: "",
-    Department: "",
-    Program: "",
-  });
-  const [currentcrr, setCurrentCRR] = useState([]);
-  const [currentCurriculum, setCurrentCurriculum] = useState([]);
-  const [curriculum, setCurriculum] = useState([]);
-
-  const [dataChange] = useHandleChange(setData);
+  const [curr, setCurr] = useState([]);
+  const [curcurr, setCurCurr] = useState([]);
+  const [current, setCurrent] = useState([]);
 
   useEffect(() => {
-    post("curriculum-current", currentcrr, setCurrentCRR);
-    post("curriculum", curriculum, setCurriculum);
+    post("sel-curr", curr, setCurr);
+    post("sel-cur-curr", curcurr, setCurCurr);
   }, []);
 
   useEffect(() => {
-    currentcrr.map((crr, i) => setCurrentCurriculum(crr));
-  }, [currentcrr]);
+    curcurr.map((curr, i) => setCurrent(curr));
+  }, [curcurr]);
 
   return (
     <>
@@ -53,16 +38,16 @@ export function Curriculum() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={"/institution/curriculum/view/" + currentCurriculum.CRRID}
+                to={`/institution/curriculum/view/${current.CRRID}`}
                 state={{
-                  data: currentCurriculum,
+                  data: current,
                 }}
                 icon={<GrView />}
               />
             </header>
             <main className="mt-2">
               <p className="p-0 m-0 fw-semibold text-secondary">Curriculum</p>
-              <h5>{currentCurriculum.Curriculum}</h5>
+              <h5>{current.Curriculum}</h5>
             </main>
           </main>
         }
@@ -81,7 +66,7 @@ export function Curriculum() {
                   textclass="text-white"
                   to={"/institution/curriculum/create/0"}
                   state={{
-                    curriculum: currentCurriculum,
+                    curriculum: current,
                   }}
                   icon={<RiStickyNoteAddLine />}
                 />
@@ -90,8 +75,8 @@ export function Curriculum() {
           </>
         }
         list={
-          curriculum.length > 0
-            ? curriculum.map((item, i) => (
+          curr.length > 0
+            ? curr.map((item, i) => (
                 <ListCard
                   slot1={item.CRR_Code}
                   slot2={item.Curriculum}
@@ -109,7 +94,7 @@ export function Curriculum() {
                   }
                 />
               ))
-            : null
+            : "none"
         }
       />
     </>

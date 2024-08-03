@@ -23,7 +23,6 @@ export default function useDatabase() {
       .then((res) => {
         try {
           trigger(res.data);
-          console.log(res.data.Message);
         } catch (err) {
           console.log(err);
         }

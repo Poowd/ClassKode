@@ -33,6 +33,8 @@ export function CreateCoach() {
     Phone: "",
     Facebook: "",
   });
+  const [file, setFile] = useState([]);
+  const [retrieve, setRetrieved] = useState([]);
 
   const [dataChange] = useHandleChange(setData);
 
@@ -46,7 +48,25 @@ export function CreateCoach() {
       onSubmit={(e) => {
         e.preventDefault();
         if (true) {
-          post("add-new-coach", data, setData);
+          const formdata = new FormData();
+          formdata.append("image", file);
+          post("upload", formdata, setRetrieved);
+          post(
+            "add-new-coach",
+            {
+              SCHLID: data.SCHLID,
+              FirstName: data.FirstName,
+              MiddleInitial: data.MiddleInitial,
+              LastName: data.LastName,
+              Gender: data.Gender,
+              Department: data.Department,
+              Email: data.Email,
+              Phone: data.Phone,
+              Facebook: data.Facebook,
+              Picture: retrieve,
+            },
+            setRetrieved
+          );
           navigate("/institution/coach");
         }
       }}
@@ -190,6 +210,13 @@ export function CreateCoach() {
               trigger={dataChange}
               value={data.Facebook}
               required={true}
+            />
+
+            <input
+              type="file"
+              id="what"
+              onChange={(e) => setFile(e.target.files[0])}
+              accept="image/png, image/jpeg"
             />
           </>
         }

@@ -20,69 +20,29 @@ import useDatabase from "../../../../hook/useDatabase";
 export function CreateCurriculum() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
     CRR_Code: "",
     Curriculum: "",
   });
-  const [validation, setValidation] = useState({
-    CRR_Code: Base(data.CRR_Code),
-    Curriculum: Base(data.Curriculum),
-  });
 
   const [dataChange] = useHandleChange(setData);
-  const [
-    ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,
-  ] = useValidate();
 
   useEffect(() => {
-    post("curriculum", curriculum, setCurriculum);
+    post("sel-curr", curriculum, setCurriculum);
   }, [curriculum]);
 
-  useEffect(() => {
-    ValidateCurriculum(data.CRR_Code, data.Curriculum, crr_dupe(), setValidation);
-  }, [data]);
-
-  function crr_dupe() {
-    if (curriculum.length > 0) {
-      for (var i = 0; i < curriculum.length; i++) {
-        if (curriculum[i].CRR_Code === data.CRR_Code) {
-          return false;
-        }
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("ins-curr", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (validation.CRR_Code[0].Result && validation.Curriculum[0].Result) {
-          post("add-new-curriculum", data, setData);
-          navigate("/utilities/curriculum");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Curriculum"}
         description={"This module creates a curriculum"}
@@ -101,14 +61,11 @@ export function CreateCurriculum() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
-              label="Course Code"
+              label="Curriculum Code"
               id="CRR_Code"
-              alert={validation.CRR_Code[0].Message}
-              class={validation.CRR_Code[0].State[0]}
-              success={validation.CRR_Code[0].State[1]}
               trigger={dataChange}
               value={data.CRR_Code}
               required={true}
@@ -117,16 +74,12 @@ export function CreateCurriculum() {
             <FormInput
               label="Curriculum"
               id="Curriculum"
-              alert={validation.Curriculum[0].Message}
-              class={validation.Curriculum[0].State[0]}
-              success={validation.Curriculum[0].State[1]}
               trigger={dataChange}
               value={data.Curriculum}
               required={false}
             />
           </>
         }
-        additional={<></>}
       />
     </form>
   );

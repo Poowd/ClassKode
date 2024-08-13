@@ -17,6 +17,8 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
 
 export function ViewSection() {
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ export function ViewSection() {
   ] = useValidation();
 
   const [projection, setProjection] = useState([]);
+  const [program, setProgram] = useState([]);
   const [data, setData] = useState([state.data]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
@@ -51,7 +54,8 @@ export function ViewSection() {
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    post("section-projection", { Section: data[0].Section }, setProjection);
+    post("sel-prg", program, setProgram);
+    post("sel-sect-proj", { Section: data[0].Section }, setProjection);
   }, [data]);
 
   useEffect(() => {
@@ -66,7 +70,7 @@ export function ViewSection() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Section"}
         description={"This module views a section"}
         control={
@@ -109,76 +113,88 @@ export function ViewSection() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Section}</span>
+                  <h6>{item.Section}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.Section}
                   </h1>
+                  <hr />
+                  <ul className="m-0 p-0 d-flex gap-2">
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">
+                        {program.map((prog, i) =>
+                          prog.PRG_Code === item.PRG_Code
+                            ? prog.Department
+                            : null
+                        )}
+                      </p>
+                    </li>
+                  </ul>
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Program"}
-                        content={item.Program}
-                      />
-                      <DataControlViewItem
-                        label={"Level"}
-                        content={item.AcademicLevel}
-                      />
-                      <DataControlViewItem
-                        label={"Year Level"}
-                        content={item.YearLevel}
-                      />
-                      <DataControlViewItem
-                        label={"Semester"}
-                        content={item.Semester}
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.SCT_Created}
-                      />
-                      <DataControlViewItem
-                        label={"Status"}
-                        content={
-                          projection.length > 0
-                            ? projection.map((proj, i) =>
-                                item.Section === proj.Section &&
-                                proj.ACY_Code === "AY-2425"
-                                  ? item.Section +
-                                    " ( " +
-                                    proj.Population +
-                                    " Students ) "
-                                  : null
-                              )
-                            : "None"
-                        }
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <CollapseButton
+                      id="details"
+                      title="Section Details"
+                      content={
+                        <DataControlView
+                          content={
+                            <>
+                              <DataControlViewItem
+                                label={"Academic Level"}
+                                content={item.AcademicLevel}
+                              />
+                              <DataControlViewItem
+                                label={"Level"}
+                                content={
+                                  <ul className="p-0 m-0">
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"Semester:"}
+                                        content={item.Semester}
+                                      />
+                                    </li>
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"Year Level:"}
+                                        content={item.YearLevel}
+                                      />
+                                    </li>
+                                  </ul>
+                                }
+                              />
+                            </>
+                          }
+                        />
+                      }
+                    />
+                    <CollapseButton
+                      id="projection"
+                      title="Projection History"
+                      content={
+                        projection.length > 0
+                          ? projection.map((item, i) => (
+                              <li className="d-flex gap-2">
+                                <span className="fw-semibold">
+                                  {item.ACY_Code}
+                                </span>
+                                <span className="">-</span>
+                                <span className="">
+                                  {item.Section} ( {item.Population} Students )
+                                </span>
+                              </li>
+                            ))
+                          : "None"
+                      }
+                    />
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.SCT_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
               </main>
             ))}
-          </>
-        }
-        additional={
-          <>
-            <ViewCard
-              height="20vh"
-              title="Projection"
-              content={
-                projection.length > 0
-                  ? projection.map((item, i) => (
-                      <li className="d-flex gap-2">
-                        <span className="fw-semibold">{item.ACY_Code}</span>
-                        <span className="">-</span>
-                        <span className="">
-                          {item.Section} ( {item.Population} Students )
-                        </span>
-                      </li>
-                    ))
-                  : "None"
-              }
-            />
           </>
         }
       />

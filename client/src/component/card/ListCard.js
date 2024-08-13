@@ -11,7 +11,9 @@ export class ListCard extends React.Component {
           <h6 className="p-0 m-0">{this.props.slot1}</h6>
         </section>
         <section className="col-5 p-0 m-0">
-          <h6 className="p-0 m-0">{this.props.slot2}</h6>
+          <h5 className="p-0 m-0 custom-text-gradient fw-bold">
+            {this.props.slot2}
+          </h5>
           <small>
             <p className="p-0 m-0 text-secondary fst-italic">
               <span>{this.props.slot3}</span>

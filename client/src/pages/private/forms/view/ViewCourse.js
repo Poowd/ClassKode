@@ -17,6 +17,8 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
 
 export function ViewCourse() {
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ export function ViewCourse() {
   ] = useValidation();
 
   const [prerequisite, setPreRequisite] = useState([]);
+  const [program, setProgram] = useState([]);
   const [academicyear, setAcademicYear] = useState([]);
   const [data, setData] = useState([state.data]);
   const [code, setCode] = useState("");
@@ -52,16 +55,13 @@ export function ViewCourse() {
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
+    post("sel-prg", program, setProgram);
     get("random-code-generator", setCode);
   }, []);
 
   useEffect(() => {
-    post(
-      "course-prerequisite",
-      { CRS_Code: data[0].CRS_Code },
-      setPreRequisite
-    );
-    post("academicyear-current", academicyear, setAcademicYear);
+    post("sel-crs-preq", { CRS_Code: data[0].CRS_Code }, setPreRequisite);
+    post("sel-cur-ay", academicyear, setAcademicYear);
   }, [prerequisite, academicyear]);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export function ViewCourse() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Course"}
         description={"This module views a course"}
         control={
@@ -113,64 +113,52 @@ export function ViewCourse() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Course}</span>
+                  <h6>{item.CRS_Code}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.Course}
                   </h1>
+                  <hr />
+                  <ul className="m-0 p-0 d-flex gap-2">
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">{item.AcademicLevel}</p>
+                    </li>
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">
+                        {program.map((prog, i) =>
+                          item.PRG_Code === prog.PRG_Code ? prog.Program : null
+                        )}
+                      </p>
+                    </li>
+                  </ul>
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Course Code"}
-                        content={item.CRS_Code}
-                      />
-                      <DataControlViewItem
-                        label={"Level"}
-                        content={item.AcademicLevel}
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.CRS_Created}
-                      />
-                      <DataControlViewItem
-                        label={"Pre-Requisite/s"}
-                        content={
-                          prerequisite.length > 0
-                            ? prerequisite.map((item, i) =>
-                                item.CRR_Code === academicyear[0].CRR_Code ? (
-                                  <span className="d-block">{item.Course}</span>
-                                ) : (
-                                  "None"
-                                )
-                              )
-                            : "None"
-                        }
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <CollapseButton
+                      id="prerequisites"
+                      title="Prerequisites"
+                      content={
+                        prerequisite.length > 0
+                          ? prerequisite.map((item, i) => (
+                              <li className="d-flex gap-2">
+                                <span className="fw-semibold">
+                                  {item.CRR_Code}
+                                </span>
+                                <span className="">-</span>
+                                <span className="">{item.Course}</span>
+                              </li>
+                            ))
+                          : "None"
+                      }
+                    />
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.CRS_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
               </main>
             ))}
-          </>
-        }
-        additional={
-          <>
-            <ViewCard
-              height="20vh"
-              title="Pre-Requisite"
-              content={
-                prerequisite.length > 0
-                  ? prerequisite.map((item, i) => (
-                      <li className="d-flex gap-2">
-                        <span className="fw-semibold">{item.CRR_Code}</span>
-                        <span className="">-</span>
-                        <span className="">{item.Course}</span>
-                      </li>
-                    ))
-                  : "None"
-              }
-            />
           </>
         }
       />

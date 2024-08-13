@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
-import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
@@ -13,9 +12,7 @@ import { SelectButtonItemSelected } from "../../../../component/dropdown/select/
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
-import useValidation from "../../../../hook/useValidation";
 import useDatabase from "../../../../hook/useDatabase";
-import useValidate from "../../../../hook/useValidate";
 
 export function CreateCoach() {
   const navigate = useNavigate();
@@ -39,38 +36,41 @@ export function CreateCoach() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("department", department, setDepartment);
-    post("coach", coach, setCoach);
+    post("sel-dept", department, setDepartment);
+    post("sel-coach", coach, setCoach);
   }, [coach, department]);
 
+  useEffect(() => {
+    const formdata = new FormData();
+    formdata.append("image", file);
+    post("upload", formdata, setRetrieved);
+  }, [file]);
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post(
+        "ins-coach",
+        {
+          SCHLID: data.SCHLID,
+          FirstName: data.FirstName,
+          MiddleInitial: data.MiddleInitial,
+          LastName: data.LastName,
+          Gender: data.Gender,
+          Department: data.Department,
+          Email: data.Email,
+          Phone: data.Phone,
+          Facebook: data.Facebook,
+          Picture: retrieve,
+        },
+        setData
+      );
+      navigate(-1);
+    }
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (true) {
-          const formdata = new FormData();
-          formdata.append("image", file);
-          post("upload", formdata, setRetrieved);
-          post(
-            "add-new-coach",
-            {
-              SCHLID: data.SCHLID,
-              FirstName: data.FirstName,
-              MiddleInitial: data.MiddleInitial,
-              LastName: data.LastName,
-              Gender: data.Gender,
-              Department: data.Department,
-              Email: data.Email,
-              Phone: data.Phone,
-              Facebook: data.Facebook,
-              Picture: retrieve,
-            },
-            setRetrieved
-          );
-          navigate("/institution/coach");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Coach"}
         description={"This module creates a coach"}
@@ -89,10 +89,11 @@ export function CreateCoach() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
               label="School ID"
+              placeholder="School ID"
               id="SCHLID"
               trigger={dataChange}
               value={data.SCHLID}
@@ -126,7 +127,6 @@ export function CreateCoach() {
                 </>
               }
             />
-
             <RadioGroup
               label="Gender"
               selection={
@@ -181,7 +181,6 @@ export function CreateCoach() {
                 </>
               }
             />
-
             <MultipleFormInput
               label="Email & Phone"
               item={
@@ -203,24 +202,85 @@ export function CreateCoach() {
                 </>
               }
             />
-
             <FormInput
               label="Facebook"
+              placeholder="Facebook Link"
               id="Facebook"
               trigger={dataChange}
               value={data.Facebook}
               required={true}
             />
 
+            <label htmlFor="what">
+              <small>
+                <span className="fw-semibold">Image</span>
+              </small>
+            </label>
             <input
               type="file"
+              className="form-control"
               id="what"
               onChange={(e) => setFile(e.target.files[0])}
               accept="image/png, image/jpeg"
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <header>
+                <h6>{data.SCHLID.length > 0 ? data.SCHLID : "Code"}</h6>
+                <h3>
+                  <span>
+                    {data.FirstName.length > 0 ? data.FirstName : "FirstName"}
+                  </span>{" "}
+                  <span>
+                    {data.MiddleInitial.length > 0
+                      ? data.MiddleInitial
+                      : "MiddleInitial"}
+                  </span>{" "}
+                  <span>
+                    {data.LastName.length > 0 ? data.LastName : "LastName"}
+                  </span>
+                </h3>
+                <hr />
+                <ul className="m-0 p-0 d-flex gap-2">
+                  <li className="border m-0 p-2 rounded">
+                    <p className="m-0 p-0">{data.Gender}</p>
+                  </li>
+                  <li className="border m-0 p-2 rounded">
+                    <p className="m-0 p-0">
+                      {department.map((dept, i) =>
+                        dept.DPT_Code === data.Department
+                          ? dept.Department
+                          : null
+                      )}
+                    </p>
+                  </li>
+                </ul>
+              </header>
+              <main className="row m-0 p-0 mt-3 mb-2">
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Phone: {data.Phone.length > 0 ? data.Phone : "Phone"}
+                  </p>
+                </section>
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Email: {data.Email.length > 0 ? data.Email : "Email"}
+                  </p>
+                </section>
+              </main>
+              <main>
+                <section>
+                  <Link to={data.Facebook} target="_blank">
+                    {data.Facebook.length > 0 ? data.Facebook : "Facebook"}
+                  </Link>
+                </section>
+              </main>
+            </section>
+          </main>
+        }
       />
     </form>
   );

@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
-import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
-import { RadioGroup } from "../../../../component/radiogroup/RadioGroup";
-import { RadioButton } from "../../../../component/radiogroup/RadioButton";
-import { MultipleFormInput } from "../../../../component/input/MultipleFormInput";
-import { MultipleFormInputItem } from "../../../../component/input/MultipleFormInputItem";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
@@ -44,59 +39,27 @@ export function EditCourse() {
     Course: state.data[0].Course,
     PRG_Code: state.data[0].PRG_Code,
   });
-  const [validation, setValidation] = useState({
-    CRS_Code: Base(data.CRS_Code),
-    Course: Base(data.Course),
-    PRG_Code: Base(data.PRG_Code),
-  });
 
   const [dataChange] = useHandleChange(setData);
-  const [
-    ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,
-  ] = useValidate();
 
   useEffect(() => {
-    post("course", course, setCourse);
-    post("academiclevel", academiclevel, setAcademicLevel);
-    post("program", program, setProgram);
+    post("sel-crs", course, setCourse);
+    post("sel-acyl", academiclevel, setAcademicLevel);
+    post("sel-prg", program, setProgram);
   }, [course]);
 
-  useEffect(() => {
-    ValidateCourse(data.CRS_Code, data.Course, crs_dupe(), setValidation);
-  }, [data]);
-
-  function crs_dupe() {
-    if (course.length > 0) {
-      for (var i = 0; i < course.length; i++) {
-        if (
-          course[i].CRS_Code === data.CRS_Code &&
-          course[i].CRSID !== data.CRSID
-        ) {
-          return false;
-        }
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-crs", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (validation.CRS_Code[0].Result && validation.Course[0].Result) {
-          post("update-existing-course", data, setData);
-          navigate("/institution/course");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Course"}
+        title={"Edit A Course"}
         description={"This module creates a course"}
         control={
           <>
@@ -113,30 +76,22 @@ export function EditCourse() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
-              label="Program Code"
+              label="Code"
               id="CRS_Code"
-              alert={validation.CRS_Code[0].Message}
-              class={validation.CRS_Code[0].State[0]}
-              success={validation.CRS_Code[0].State[1]}
               trigger={dataChange}
               value={data.CRS_Code}
               required={true}
             />
-
             <FormInput
               label="Course"
               id="Course"
-              alert={validation.Course[0].Message}
-              class={validation.Course[0].State[0]}
-              success={validation.Course[0].State[1]}
               trigger={dataChange}
               value={data.Course}
               required={false}
             />
-
             <SelectButton
               label="Program"
               id="PRG_Code"
@@ -170,7 +125,20 @@ export function EditCourse() {
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <h6>{data.CRS_Code.length > 0 ? data.CRS_Code : "Code"}</h6>
+              <h3>{data.Course.length > 0 ? data.Course : "Course"}</h3>
+              <hr />
+              <p className="fst-italic text-secondary m-0 p-0">
+                {program.map((prog, i) =>
+                  data.PRG_Code === prog.PRG_Code ? prog.Program : null
+                )}
+              </p>
+            </section>
+          </main>
+        }
       />
     </form>
   );

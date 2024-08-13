@@ -23,16 +23,18 @@ export function Dashboard() {
   const [coach, setCoach] = useState([]);
   const [currentay, setCurrentAY] = useState([]);
   const [currentcrr, setCurrentCRR] = useState([]);
+  const [currsched, setCurrentSched] = useState([]);
 
   useEffect(() => {
-    post("department", department, setDepartment);
-    post("program", program, setProgram);
-    post("section", section, setSection);
-    post("course", course, setCourse);
-    post("room", room, setRoom);
-    post("coach", coach, setCoach);
-    post("academicyear-current", currentay, setCurrentAY);
-    post("curriculum-current", currentcrr, setCurrentCRR);
+    post("sel-dept", department, setDepartment);
+    post("sel-prg", program, setProgram);
+    post("sel-sect", section, setSection);
+    post("sel-crs", course, setCourse);
+    post("sel-rom", room, setRoom);
+    post("sel-coach", coach, setCoach);
+    post("sel-cur-ay", currentay, setCurrentAY);
+    post("sel-cur-curr", currentcrr, setCurrentCRR);
+    post("sel-sched", currsched, setCurrentSched);
   }, []);
 
   const [chart1] = useChart(
@@ -126,7 +128,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/schedule")}
             />
           }
-          content={"0"}
+          content={currsched.length}
         />
       }
       card4={

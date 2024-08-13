@@ -53,11 +53,11 @@ export function EditSection() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("section", section, setSection);
-    post("program", program, setProgram);
-    post("yearlevel", yearlevel, setYearLevel);
-    post("semester", semester, setSemester);
-    post("academiclevel", academiclevel, setAcademicLevel);
+    post("sel-sect", section, setSection);
+    post("sel-prg", program, setProgram);
+    post("sel-yrlvl", yearlevel, setYearLevel);
+    post("sel-sem", semester, setSemester);
+    post("sel-acyl", academiclevel, setAcademicLevel);
   }, [section, academiclevel]);
 
   var testArray = [];
@@ -123,21 +123,16 @@ export function EditSection() {
     }
   }, [data.PRG_Code, data.Semester, data.YearLevel]);
 
-  // useEffect(() => {
-  //   setData((prev) => ({
-  //     ...prev,
-  //     Section: sectionName,
-  //   }));
-  // }, [sectionName]);
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-sct", data, setData);
+      navigate(-1);
+    }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        post("update-existing-section", data, setData);
-        navigate("/institution/section");
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Section"}
         description={"This module creates a section"}
@@ -156,7 +151,7 @@ export function EditSection() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <SelectButton
               label="Program"
@@ -189,7 +184,6 @@ export function EditSection() {
                 </>
               }
             />
-
             <SelectButton
               label="Year Level"
               id="YearLevel"
@@ -222,7 +216,6 @@ export function EditSection() {
                 </>
               }
             />
-
             <SelectButton
               label="Semester"
               id="Semester"
@@ -254,7 +247,6 @@ export function EditSection() {
                 </>
               }
             />
-
             <FormInput
               label="Section"
               id="Section"
@@ -264,7 +256,38 @@ export function EditSection() {
             />
           </>
         }
-        additional={<>{console.log()}</>} //sectionName
+        entry={
+          <main className="p-3">
+            <section>
+              <h6>{data.Section.length > 0 ? data.Section : "Section"}</h6>
+              <h3>{data.Section.length > 0 ? data.Section : "Section"} </h3>
+              <hr />
+              <ul className="m-0 p-0 d-flex gap-2 mb-3">
+                <li className="border m-0 p-2 rounded">
+                  <p className="m-0 p-0">
+                    {program.map((prog, i) =>
+                      prog.PRG_Code === data.PRG_Code ? prog.Program : null
+                    )}
+                  </p>
+                </li>
+              </ul>
+              <main className="row m-0 p-0 mt-3 mb-2">
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Floor:{" "}
+                    {data.YearLevel.length > 0 ? data.YearLevel : "YearLevel"}
+                  </p>
+                </section>
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Building:{" "}
+                    {data.Semester.length > 0 ? data.Semester : "Semester"}
+                  </p>
+                </section>
+              </main>
+            </section>
+          </main>
+        }
       />
     </form>
   );

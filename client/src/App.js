@@ -1,7 +1,7 @@
 import "./App.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate, Form } from "react-router-dom";
+import { Routes, Route, useNavigate, Form, Link } from "react-router-dom";
 import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
 import { Error404 } from "./component/placeholder/Error404";
@@ -19,10 +19,7 @@ import { Setup } from "./pages/private/miscellaneous/Setup";
 import { User } from "./pages/private/miscellaneous/User";
 import { Logs } from "./pages/private/miscellaneous/Logs";
 import { Archives } from "./pages/private/miscellaneous/Archives";
-import {
-  DataController,
-  DataForms,
-} from "./pages/private/forms/DataController";
+import { DataController } from "./pages/private/forms/DataController";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAssignment";
@@ -33,198 +30,278 @@ import { BackgroundColours } from "./pages/components/BackgroundColours";
 import { GeneratingSchedules } from "./pages/components/Generating Schedules";
 import { TimeProblem } from "./pages/components/TimeProblem";
 import { ImagetoDB } from "./pages/components/ImagetoDB";
+import { Login } from "./pages/public/Login";
 
 function App() {
   const navigate = useNavigate();
-  //Initialize States / Variables
-  const [userdetails, setUserDetails] = useState({
-    Auth: true,
-    ID: "01",
-    User: "Powd_",
-    UserLevel: "Manager",
-  });
-
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Simulate an API call
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
-  //Get Authentication from the Server
-  // useEffect(() => {
-  //   axios.get("http://localhost:8081").then((res) => {
-  //     if (res.data.Status === "Success") {
-  //       setUserDetails({
-  //         Auth: true,
-  //         UUID: res.data.UUID,
-  //         Name: res.data.Name,
-  //         UserType: res.data.UserType,
-  //       });
-  //     } else {
-  //       setUserDetails({
-  //         Auth: false,
-  //         UUID: "",
-  //         Name: "",
-  //       });
-  //     }
-  //   });
-  // }, [userdetails.Message]);
-
-  //Remove your Token / Cookies -- Logging Out an Account
-  // const handleLogout = () => {
-  //   axios
-  //     .post("http://localhost:8081/logout")
-  //     .then((res) => {
-  //       if (res.data.Status === "Success") {
-  //         window.location.reload(true);
-  //       } else {
-  //         alert("Error");
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
-  //Detect wether the Tab is Closing
-  // window.addEventListener("beforeunload", function (e) {
-  //   e.preventDefault();
-  //   e.returnValue = "";
-  // });
+  const status = JSON.parse(sessionStorage.getItem("loggedin"));
+  const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
   return (
-    <main>
+    <main className="overflow-hidden">
       {/* Loading Screen */}
-      <header>{isLoading ? <FullscreenLoader /> : ""}</header>
-      <MainLayout
-        content={
-          <Routes>
-            {userdetails.Auth ? (
-              <>
+      <header>
+        {isLoading ? <FullscreenLoader class="position-absolute z-3" /> : ""}
+      </header>
+      <Routes>
+        {status === true ? (
+          <>
+            <Route
+              path="/testing/bgcolour"
+              element={<BackgroundColours />}
+            ></Route>
+            <Route path="/testing/imgtodb" element={<ImagetoDB />}></Route>
+            <Route path="/testing/time" element={<TimeProblem />}></Route>
+            <Route
+              path="/testing/gensched"
+              element={<GeneratingSchedules />}
+            ></Route>
+
+            {loggeduser[0].UserType === "Manager" ? (
+              <Route path={"/"}>
                 <Route
-                  path="/testing/bgcolour"
-                  element={<BackgroundColours />}
+                  path={"/"}
+                  element={
+                    <MainLayout
+                      user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                      content={<Dashboard />}
+                    />
+                  }
                 ></Route>
-                <Route path="/testing/imgtodb" element={<ImagetoDB />}></Route>
-                <Route path="/testing/time" element={<TimeProblem />}></Route>
-                <Route
-                  path="/testing/gensched"
-                  element={<GeneratingSchedules />}
-                ></Route>
-                {userdetails.UserLevel === "Manager" ? (
-                  <Route path={"/"}>
-                    <Route path={"/"} element={<Dashboard />}></Route>
-                    <Route path={"/institution"}>
-                      <Route
-                        path={"/institution/department"}
-                        element={<Department />}
-                      ></Route>
-                      <Route
-                        path={"/institution/program"}
-                        element={<Program />}
-                      ></Route>
-                      <Route
-                        path={"/institution/course"}
-                        element={<Course />}
-                      ></Route>
-                      <Route
-                        path={"/institution/section"}
-                        element={<Section />}
-                      ></Route>
-                      <Route
-                        path={"/institution/room"}
-                        element={<Room />}
-                      ></Route>
-                      <Route
-                        path={"/institution/coach"}
-                        element={<Coach />}
-                      ></Route>
-                      {/* a */}
-                      <Route
-                        path={"/institution/:module/:form/:id"}
-                        element={<DataController />}
-                      ></Route>
-                    </Route>
-                    <Route path={"/utilities"}>
-                      <Route path={"/utilities/curriculum"}>
-                        <Route
-                          path={"/utilities/curriculum/"}
-                          element={<Curriculum />}
-                        ></Route>
-                        <Route
-                          path={"/utilities/curriculum/setup"}
-                          element={<CourseSetup />}
-                        ></Route>
-                      </Route>
-                      <Route path={"/utilities/academicyear"}>
-                        <Route
-                          path={"/utilities/academicyear/"}
-                          element={<AcademicYear />}
-                        ></Route>
-                        <Route
-                          path={"/utilities/academicyear/assigment"}
-                          element={<CoachAssignment />}
-                        ></Route>
-                        <Route
-                          path={"/utilities/academicyear/projection"}
-                          element={<SectionProjection />}
-                        ></Route>
-                      </Route>
-                      <Route path={"/utilities/schedule"}>
-                        <Route
-                          path={"/utilities/schedule/"}
-                          element={<Schedule />}
-                        ></Route>
-                        <Route
-                          path={"/utilities/schedule/room"}
-                          element={<RoomSchedule />}
-                        ></Route>
-                        <Route
-                          path={"/utilities/schedule/section"}
-                          element={<SectionSchedule />}
-                        ></Route>
-                      </Route>
-                      <Route
-                        path={"/utilities/locator"}
-                        element={<Locator />}
-                      ></Route>
-                    </Route>
-                    <Route path={"/miscellaneous"}>
-                      <Route
-                        path={"/miscellaneous/archive"}
-                        element={<Archives />}
-                      ></Route>
-                      <Route
-                        path={"/miscellaneous/log"}
-                        element={<Logs />}
-                      ></Route>
-                      <Route
-                        path={"/miscellaneous/user"}
-                        element={<User />}
-                      ></Route>
-                      <Route
-                        path={"/miscellaneous/setup"}
-                        element={<Setup />}
-                      ></Route>
-                    </Route>
-                    <Route path={"/*"} element={<Error404 />}></Route>
+                <Route path={"/institution"}>
+                  <Route
+                    path={"/institution/department"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Department />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/institution/program"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Program />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/institution/course"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Course />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/institution/section"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Section />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/institution/room"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Room />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/institution/coach"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Coach />}
+                      />
+                    }
+                  ></Route>
+                  {/* a */}
+                  <Route
+                    path={"/institution/:module/:form/:id"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<DataController />}
+                      />
+                    }
+                  ></Route>
+                </Route>
+                <Route path={"/utilities"}>
+                  <Route path={"/utilities/curriculum"}>
+                    <Route
+                      path={"/utilities/curriculum/"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<Curriculum />}
+                        />
+                      }
+                    ></Route>
+                    <Route
+                      path={"/utilities/curriculum/setup"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<CourseSetup />}
+                        />
+                      }
+                    ></Route>
                   </Route>
-                ) : userdetails.UserLevel === "Admin" ? (
-                  <Route path={"/admin"}></Route>
-                ) : userdetails.UserLevel === "User" ? (
-                  <Route path={"/user"}></Route>
-                ) : (
-                  ""
-                )}
-              </>
+                  <Route path={"/utilities/academicyear"}>
+                    <Route
+                      path={"/utilities/academicyear/"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<AcademicYear />}
+                        />
+                      }
+                    ></Route>
+                    <Route
+                      path={"/utilities/academicyear/assigment"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<CoachAssignment />}
+                        />
+                      }
+                    ></Route>
+                    <Route
+                      path={"/utilities/academicyear/projection"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<SectionProjection />}
+                        />
+                      }
+                    ></Route>
+                  </Route>
+                  <Route path={"/utilities/schedule"}>
+                    <Route
+                      path={"/utilities/schedule/"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<Schedule />}
+                        />
+                      }
+                    ></Route>
+                    <Route
+                      path={"/utilities/schedule/room"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<RoomSchedule />}
+                        />
+                      }
+                    ></Route>
+                    <Route
+                      path={"/utilities/schedule/section"}
+                      element={
+                        <MainLayout
+                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                          content={<SectionSchedule />}
+                        />
+                      }
+                    ></Route>
+                  </Route>
+                  <Route
+                    path={"/utilities/locator"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Locator />}
+                      />
+                    }
+                  ></Route>
+                </Route>
+                <Route path={"/miscellaneous"}>
+                  <Route
+                    path={"/miscellaneous/archive"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Archives />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/miscellaneous/log"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Logs />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/miscellaneous/user"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<User />}
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path={"/miscellaneous/setup"}
+                    element={
+                      <MainLayout
+                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                        content={<Setup />}
+                      />
+                    }
+                  ></Route>
+                </Route>
+                <Route path={"/*"} element={<Error404 />}></Route>
+              </Route>
+            ) : loggeduser[0].UserType === "Admin" ? (
+              <Route path={"/"}>
+                <Route path={"/"} element={"hi"}></Route>
+                <Route path={"/*"} element={<Error404 />}></Route>
+              </Route>
+            ) : loggeduser[0].UserType === "User" ? (
+              <Route path={"/"}>
+                <Route path={"/*"} element={<Error404 />}></Route>
+              </Route>
             ) : (
-              <>
-                <Route path={"/"} element={"not authenticated"}></Route>
-              </>
+              ""
             )}
-          </Routes>
-        }
-      />
+          </>
+        ) : (
+          <>
+            <Route
+              path={"/"}
+              element={
+                <main>
+                  <h1>Not Authenticated</h1>
+                  <Link to={"/login"} className="btn btn-primary">
+                    Login
+                  </Link>
+                </main>
+              }
+            ></Route>
+            <Route path={"/login"} element={<Login />}></Route>
+            <Route path={"/*"} element={<Error404 />}></Route>
+          </>
+        )}
+      </Routes>
     </main>
   );
 }

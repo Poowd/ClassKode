@@ -20,18 +20,6 @@ import useDatabase from "../../../../hook/useDatabase";
 export function CreateCourse() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [course, setCourse] = useState([]);
   const [program, setProgram] = useState([]);
@@ -41,53 +29,25 @@ export function CreateCourse() {
     Course: "",
     PRG_Code: "",
   });
-  const [validation, setValidation] = useState({
-    CRS_Code: Base(data.CRS_Code),
-    Course: Base(data.Course),
-    PRG_Code: Base(data.PRG_Code),
-  });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,] =
-    useValidate();
 
   useEffect(() => {
-    post("course", course, setCourse);
-    post("academiclevel", academiclevel, setAcademicLevel);
-    post("program", program, setProgram);
+    post("sel-crs", course, setCourse);
+    post("sel-acyl", academiclevel, setAcademicLevel);
+    post("sel-prg", program, setProgram);
   }, [course]);
 
-  useEffect(() => {
-    ValidateCourse(data.CRS_Code, data.Course, crs_dupe(), setValidation);
-  }, [data]);
-
-  function crs_dupe() {
-    if (course.length > 0) {
-      for (var i = 0; i < course.length; i++) {
-        if (course[i].CRS_Code === data.CRS_Code) {
-          return false;
-        }
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("ins-crs", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (validation.CRS_Code[0].Result && validation.Course[0].Result) {
-          post("add-new-course", data, setData);
-          navigate(-1);
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Course"}
         description={"This module creates a course"}
@@ -106,14 +66,11 @@ export function CreateCourse() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
               label="Course Code"
               id="CRS_Code"
-              alert={validation.CRS_Code[0].Message}
-              class={validation.CRS_Code[0].State[0]}
-              success={validation.CRS_Code[0].State[1]}
               trigger={dataChange}
               value={data.CRS_Code}
               required={true}
@@ -122,9 +79,6 @@ export function CreateCourse() {
             <FormInput
               label="Course"
               id="Course"
-              alert={validation.Course[0].Message}
-              class={validation.Course[0].State[0]}
-              success={validation.Course[0].State[1]}
               trigger={dataChange}
               value={data.Course}
               required={false}
@@ -140,7 +94,9 @@ export function CreateCourse() {
                   <SelectButtonItemSelected
                     content={program.map((option, i) => (
                       <>
-                        {option.PRG_Code === data.PRG_Code ? option.Program : ""}
+                        {option.PRG_Code === data.PRG_Code
+                          ? option.Program
+                          : ""}
                       </>
                     ))}
                   />
@@ -161,7 +117,24 @@ export function CreateCourse() {
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <h6>{data.CRS_Code.length > 0 ? data.CRS_Code : "Code"}</h6>
+              <h3>{data.Course.length > 0 ? data.Course : "Course"}</h3>
+              <hr />
+              <ul className="m-0 p-0 d-flex gap-2 mb-3">
+                <li className="border m-0 p-2 rounded">
+                  <p className="fst-italic text-secondary m-0 p-0">
+                    {program.map((prog, i) =>
+                      data.PRG_Code === prog.PRG_Code ? prog.Program : null
+                    )}
+                  </p>
+                </li>
+              </ul>
+            </section>
+          </main>
+        }
       />
     </form>
   );

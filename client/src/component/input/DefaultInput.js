@@ -4,8 +4,12 @@ export class DefaultInput extends React.Component {
   render() {
     return (
       <input
-        className={"form-control form-control-sm shadow-none"}
-        type="text"
+        className={`form-control form-control-sm shadow-none ${this.props.class}`}
+        type={
+          this.props.type === null || this.props.type === ""
+            ? "text"
+            : this.props.type
+        }
         name={this.props.name}
         onChange={this.props.trigger}
         placeholder={this.props.placeholder}

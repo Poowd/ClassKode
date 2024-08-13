@@ -27,10 +27,32 @@
   color: #ffffed;
 }
 
+.custom-text-gradient {
+  background: linear-gradient(
+    to right,
+    #005483,
+    #007a9a,
+    #008da1,
+    #00a1a4,
+    #00ca9a
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .custom-text-blue {
   color: #0a3463;
 }
 
+.custom-text-cyan {
+  color: #44aff5;
+}
+
 .custom-text-yellow {
   color: #ffd300;
+}
+
+.custom-text-cyan:hover,
+.custom-text-cyan:focus {
+  color: #fff;
 }

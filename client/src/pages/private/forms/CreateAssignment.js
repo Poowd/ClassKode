@@ -57,9 +57,9 @@ export function CreateAssignment() {
   ] = useValidate();
 
   useEffect(() => {
-    post("coach", coach, setCoach);
-    post("course", course, setCourse);
-    post("coachtype", coachtype, setCoachType);
+    post("sel-coach", coach, setCoach);
+    post("sel-crs", course, setCourse);
+    post("sel-coach-type", coachtype, setCoachType);
   }, []);
 
   useEffect(() => {}, []);

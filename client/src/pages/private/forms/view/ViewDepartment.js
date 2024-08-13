@@ -16,6 +16,8 @@ import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
 
 export function ViewDepartment() {
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ export function ViewDepartment() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Department"}
         description={"This module views a department"}
         control={
@@ -103,41 +105,27 @@ export function ViewDepartment() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Department}</span>
+                  <h6>{item.DPT_Code}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.Department} <span>({item.DPT_Abbreviation})</span>
                   </h1>
+                  <hr />
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Code"}
-                        content={item.DPT_Code}
-                      />
-                      <DataControlViewItem
-                        label={"Abbreviation"}
-                        content={item.DPT_Abbreviation}
-                      />
-                      <DataControlViewItem
-                        label={"Description"}
-                        content={
-                          <>
-                            <span className="d-block">
-                              {item.DPT_Description !== ""
-                                ? item.DPT_Description
-                                : "None"}
-                            </span>
-                          </>
-                        }
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.DPT_Created}
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <p>
+                      {item.DPT_Description !== ""
+                        ? item.DPT_Description
+                        : "None"}
+                    </p>
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.DPT_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
+                {/* <CollapseButton id="aasdasdas" title="hello" content="bye" /> */}
               </main>
             ))}
           </>

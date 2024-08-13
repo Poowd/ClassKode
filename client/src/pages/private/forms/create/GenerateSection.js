@@ -22,25 +22,12 @@ import axios from "axios";
 export function GenerateSection() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [section, setSection] = useState([]);
   const [program, setProgram] = useState([]);
   const [yearlevel, setYearLevel] = useState([]);
   const [semester, setSemester] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
-  const [sectionName, setSectionName] = useState([]);
   const [data, setData] = useState({
     Semester: "",
     YearLevel: "",
@@ -50,11 +37,11 @@ export function GenerateSection() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("section", section, setSection);
-    post("program", program, setProgram);
-    post("yearlevel", yearlevel, setYearLevel);
-    post("semester", semester, setSemester);
-    post("academiclevel", academiclevel, setAcademicLevel);
+    post("sel-sect", section, setSection);
+    post("sel-prg", program, setProgram);
+    post("sel-yrlvl", yearlevel, setYearLevel);
+    post("sel-sem", semester, setSemester);
+    post("sel-acyl", academiclevel, setAcademicLevel);
   }, [section, academiclevel]);
 
   function getAcademicLevel() {
@@ -140,31 +127,20 @@ export function GenerateSection() {
   }
 
   async function TestData(data) {
-    post("generate-new-section", data, setData);
+    post("gen-section", data, setData);
     sleep(2000);
   }
+  
   const submit = (e) => {
     e.preventDefault();
-
     for (var i in sectionlist) {
       TestData(sectionlist[i]);
     }
-
-    // sectionlist.sort(function (a, b) {
-    //   return a - b;
-    // });
-    //sectionlist.map((item) => console.log(item));
-    // sectionlist.map((item, i) => {
-    //
-    // });
     navigate(-1);
   };
 
-  //console.log(sectionlist);
-
-  // console.log(tempSection[0]);
   return (
-    <form onSubmit={submit}>
+    <form className="h-100" onSubmit={submit}>
       <DataControllerTemplate
         title={"Create A Generate"}
         description={"This module creates a generate"}
@@ -183,7 +159,7 @@ export function GenerateSection() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <SelectButton
               label="Program"
@@ -216,17 +192,22 @@ export function GenerateSection() {
             />
           </>
         }
-        additional={
-          <>
-            {section.map((section, i) =>
-              section.PRG_Code === data.PRG_Code ? (
-                <div>{section.Section}</div>
-              ) : (
-                ""
-              )
-            )}
-          </>
+        entry={
+          <main className="p-3">
+            <section className="row m-0 p-0">
+              {section.map((section, i) =>
+                section.PRG_Code === data.PRG_Code ? (
+                  <div className="col-2 p-1 m-0">
+                    <div className="border rounded p-2">{section.Section}</div>
+                  </div>
+                ) : (
+                  ""
+                )
+              )}
+            </section>
+          </main>
         }
+        additional={<></>}
       />
     </form>
   );

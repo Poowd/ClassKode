@@ -183,7 +183,7 @@ export function CourseSetup() {
                 slot3={item.STP_Created}
                 slot4={item.Curriculum}
                 slot5={item.Program}
-                link={`/institution/setup/view/${item.STPID}`}
+                link={`/institution/course/view/${item.CRSID}`}
                 state={{ data: item }}
               />
             ) : null

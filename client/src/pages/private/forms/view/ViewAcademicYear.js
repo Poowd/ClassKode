@@ -17,6 +17,8 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
 
 export function ViewAcademicYear() {
   const navigate = useNavigate();
@@ -55,7 +57,7 @@ export function ViewAcademicYear() {
   }, []);
 
   useEffect(() => {
-    post("academicyear-current", academicyear, setAcademicYear);
+    post("sel-cur-ay", academicyear, setAcademicYear);
   }, [academicyear]);
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export function ViewAcademicYear() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Curriculum"}
         description={"This module views a curriculum"}
         control={
@@ -109,44 +111,57 @@ export function ViewAcademicYear() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.AcademicYear}</span>
+                  <h6>{item.ACY_Code}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.AcademicYear}
                   </h1>
+                  <hr />
+                  <ul className="m-0 p-0 d-flex gap-2">
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">{item.CRR_Code}</p>
+                    </li>
+                  </ul>
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Academic Code"}
-                        content={item.ACY_Code}
-                      />
-                      <DataControlViewItem
-                        label={"Curriculum"}
-                        content={item.CRR_Code}
-                      />
-                      <DataControlViewItem
-                        label={"Date"}
-                        content={
-                          <>
-                            {item.StartDate}
-                            {" - "}
-                            {item.EndDate}
-                          </>
-                        }
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.ACY_Created}
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <CollapseButton
+                      id="AcademicYearDetails"
+                      title="Academic Year Details"
+                      content={
+                        <DataControlView
+                          content={
+                            <>
+                              <DataControlViewItem
+                                label={"Year Date"}
+                                content={
+                                  <>
+                                    <DataControlViewItem
+                                      label={"Start Year"}
+                                      content={item.StartDate}
+                                    />
+                                    <DataControlViewItem
+                                      label={"End Year"}
+                                      content={item.EndDate}
+                                    />
+                                  </>
+                                }
+                              />
+                            </>
+                          }
+                        />
+                      }
+                    />
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.ACY_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
               </main>
             ))}
           </>
         }
-        additional={<></>}
       />
       <PassiveModal
         id={"Modal"}

@@ -39,8 +39,8 @@ export function SectionSchedule() {
   ]);
 
   useEffect(() => {
-    post("schedules", search, setSchedule);
-    post("section", section, setSection);
+    post("sel-sched", search, setSchedule);
+    post("sel-proj", section, setSection);
     if (search.Search === "") {
       for (var i = 0; i < section.length; i++) {
         setCurrentSection(section[0].Section);

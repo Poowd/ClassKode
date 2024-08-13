@@ -25,9 +25,9 @@ export function CurriculumSelector() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("department", department, setDepartment);
-    post("program", program, setProgram);
-    post("curriculum-current", currentcrr, setCurrentCRR);
+    post("sel-dept", department, setDepartment);
+    post("sel-prg", program, setProgram);
+    post("sel-cur-curr", currentcrr, setCurrentCRR);
   }, []);
 
   useEffect(() => {

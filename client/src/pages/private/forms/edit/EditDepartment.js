@@ -22,18 +22,6 @@ export function EditDepartment() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [department, setDepartment] = useState([]);
   const [data, setData] = useState({
@@ -43,62 +31,25 @@ export function EditDepartment() {
     DPT_Abbreviation: state.data[0].DPT_Abbreviation,
     DPT_Description: state.data[0].DPT_Description,
   });
-  const [validation, setValidation] = useState({
-    DPT_Code: Base(data.DPT_Code),
-    Department: Base(data.Department),
-    DPT_Abbreviation: Base(data.DPT_Abbreviation),
-    DPT_Description: Base(data.DPT_Description),
-  });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
-    useValidate();
 
   useEffect(() => {
-    post("department", department, setDepartment);
+    post("sel-dept", department, setDepartment);
   }, [department]);
 
-  useEffect(() => {
-    ValidateDepartment(
-      data.DPT_Code,
-      data.Department,
-      data.DPT_Abbreviation,
-      data.DPT_Description,
-      dpt_dupe(),
-      setValidation
-    );
-  }, [data]);
-
-  function dpt_dupe() {
-    if (department.length > 0) {
-      for (var i = 0; i < department.length; i++) {
-        if (
-          department[i].DPT_Code === data.DPT_Code &&
-          department[i].DPTID !== data.DPTID
-        ) {
-          return false;
-        }
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-dept", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (
-          validation.DPT_Code[0].Result &&
-          validation.Department[0].Result &&
-          validation.DPT_Abbreviation[0].Result
-        ) {
-          post("update-existing-department", data, setData);
-          navigate("/institution/department");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Department"}
+        title={"Edit A Department"}
         description={"This module creates a department"}
         control={
           <>
@@ -115,44 +66,23 @@ export function EditDepartment() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
-              label="Department Code"
+              label="Code"
               id="DPT_Code"
-              alert={validation.DPT_Code[0].Message}
-              class={validation.DPT_Code[0].State[0]}
-              success={validation.DPT_Code[0].State[1]}
               trigger={dataChange}
               value={data.DPT_Code}
               required={true}
             />
 
             <MultipleFormInput
-              label="Department"
-              alert={
-                <>
-                  <span
-                    className={"col p-0 " + validation.Department[0].State[1]}
-                  >
-                    {validation.Department[0].Message}
-                  </span>
-                  <span
-                    className={
-                      "col p-0 " + validation.DPT_Abbreviation[0].State[1]
-                    }
-                  >
-                    {validation.DPT_Abbreviation[0].Message}
-                  </span>
-                </>
-              }
+              label="Department Details"
               item={
                 <>
                   <MultipleFormInputItem
                     id="Department"
                     placeholder="Department"
-                    class={validation.Department[0].State[0]}
-                    success={validation.Department[0].State[1]}
                     trigger={dataChange}
                     value={data.Department}
                     required={true}
@@ -160,8 +90,6 @@ export function EditDepartment() {
                   <MultipleFormInputItem
                     id="DPT_Abbreviation"
                     placeholder="DPT_Abbreviation"
-                    class={validation.DPT_Abbreviation[0].State[0]}
-                    success={validation.DPT_Abbreviation[0].State[1]}
                     trigger={dataChange}
                     value={data.DPT_Abbreviation}
                     required={true}
@@ -171,25 +99,36 @@ export function EditDepartment() {
             />
 
             <FormInput
-              label={
-                <>
-                  Description{" "}
-                  <span className="text-secondary fw-regular">
-                    ( Optional )
-                  </span>
-                </>
-              }
+              label="Description"
+              labelextension="( Optional )"
               id="DPT_Description"
-              alert={validation.DPT_Description[0].Message}
-              class={validation.DPT_Description[0].State[0]}
-              success={validation.DPT_Description[0].State[1]}
               trigger={dataChange}
               value={data.DPT_Description}
               required={false}
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <h6>{data.DPT_Code.length > 0 ? data.DPT_Code : "Code"}</h6>
+              <h3>
+                {data.Department.length > 0 ? data.Department : "Department"}
+                <span>
+                  {data.DPT_Abbreviation.length > 0
+                    ? ` (${data.DPT_Abbreviation})`
+                    : " Abbrev"}
+                </span>
+              </h3>
+              <hr />
+              <p className="fst-italic text-secondary m-0 p-0">
+                {data.DPT_Description.length > 0
+                  ? data.DPT_Description
+                  : "Description"}
+              </p>
+            </section>
+          </main>
+        }
       />
     </form>
   );

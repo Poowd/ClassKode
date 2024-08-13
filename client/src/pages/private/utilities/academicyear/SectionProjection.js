@@ -82,7 +82,7 @@ export function SectionProjection() {
                   slot3={item.PRJ_Created}
                   slot4={item.ACY_Code}
                   slot5={item.AcademicYear}
-                  link={`/institution/projection/view/${item.PRJID}`}
+                  link={`/institution/section/view/${item.SCTID}`}
                   state={{ data: item }}
                 />
               ) : null

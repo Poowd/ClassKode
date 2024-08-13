@@ -26,19 +26,19 @@ export function CreateAcademicYear() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("curriculum", curriculum, setCurriculum);
+    post("sel-curr", curriculum, setCurriculum);
   }, [curriculum]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("ins-ay", data, setData);
+      navigate(-1);
+    }
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (true) {
-          post("add-new-academicyear", data, setData);
-          navigate("/utilities/academicyear");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={handleSubmit}>
       <DataControllerTemplate
         title={"Create A Academic Year"}
         description={"This module creates a academic year"}
@@ -57,7 +57,7 @@ export function CreateAcademicYear() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
               label="Academic Year Code"

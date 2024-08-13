@@ -9,7 +9,12 @@ export class FormInput extends React.Component {
           className={this.props.hidden ? "d-none" : "d-block"}
         >
           <small>
-            <span className="fw-semibold">{this.props.label}</span>
+            <span className="fw-semibold">
+              {this.props.label}{" "}
+              <span className="text-secondary fw-normal">
+                {this.props.labelextension}
+              </span>
+            </span>
           </small>
         </label>
         <input

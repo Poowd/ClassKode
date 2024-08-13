@@ -141,7 +141,7 @@ export function Locator() {
                     <h6 className="p-0 m-0">{coach.DPT_Abbreviation}</h6>
                   </section>
                   <section className="col-5 p-0 m-0">
-                    <h6 className="p-0 m-0">{`${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`}</h6>
+                    <h5 className="p-0 m-0 custom-text-gradient fw-bold">{`${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`}</h5>
                     <small>
                       <p className="p-0 m-0 text-secondary fst-italic">
                         <span>{coach.Email}</span>

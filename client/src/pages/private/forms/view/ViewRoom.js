@@ -17,6 +17,9 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
+import { NoDisplay } from "../../../../component/placeholder/NoDisplay";
 
 export function ViewRoom() {
   const navigate = useNavigate();
@@ -61,9 +64,10 @@ export function ViewRoom() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Room"}
         description={"This module views a room"}
+        extradata={<NoDisplay />}
         control={
           <>
             <DefaultButton
@@ -102,42 +106,67 @@ export function ViewRoom() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Room}</span>
+                  <h6>{item.Facility}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.Room}
                   </h1>
+                  <hr />
                 </header>
+                <main className="p-3">
+                  <section>
+                    <CollapseButton
+                      id="details"
+                      title="Room Details"
+                      content={
+                        <DataControlView
+                          content={
+                            <>
+                              <DataControlViewItem
+                                label={"Capacity"}
+                                content={`${item.Capacity} Students`}
+                              />
+                              <DataControlViewItem
+                                label={"Usage"}
+                                content={item.Facility}
+                              />
+                              <DataControlViewItem
+                                label={"Location"}
+                                content={
+                                  <ul className="p-0 m-0">
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"Building:"}
+                                        content={item.Building}
+                                      />
+                                    </li>
 
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Capacity"}
-                        content={item.Capacity}
-                      />
-                      <DataControlViewItem
-                        label={"Facility"}
-                        content={item.Facility}
-                      />
-                      <DataControlViewItem
-                        label={"Building"}
-                        content={item.Building}
-                      />
-                      <DataControlViewItem
-                        label={"Floor"}
-                        content={item.Floor}
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.ROM_Created}
-                      />
-                    </>
-                  }
-                />
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"Floor:"}
+                                        content={item.Floor}
+                                      />
+                                    </li>
+                                  </ul>
+                                }
+                              />
+                            </>
+                          }
+                        />
+                      }
+                    />
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.ROM_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
+
+                {/* <CollapseButton id="aasdasdas" title="hello" content="bye" /> */}
               </main>
             ))}
           </>
         }
-        additional={<></>}
       />
       <PassiveModal
         id={"Modal"}

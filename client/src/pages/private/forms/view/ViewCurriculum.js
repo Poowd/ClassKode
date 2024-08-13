@@ -17,6 +17,8 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
 
 export function ViewCurriculum() {
   const navigate = useNavigate();
@@ -68,7 +70,7 @@ export function ViewCurriculum() {
   }, []);
 
   useEffect(() => {
-    post("academicyear-current", academicyear, setAcademicYear);
+    post("sel-cur-ay", academicyear, setAcademicYear);
   }, [academicyear]);
 
   useEffect(() => {
@@ -79,7 +81,7 @@ export function ViewCurriculum() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Curriculum"}
         description={"This module views a curriculum"}
         control={
@@ -124,48 +126,42 @@ export function ViewCurriculum() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Curriculum}</span>
+                  <h6>{item.CRR_Code}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.Curriculum}
                   </h1>
+                  <hr />
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Course Code"}
-                        content={item.CRR_Code}
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.CRR_Created}
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <CollapseButton
+                      id="CurriculumHistory"
+                      title="Curriculum History"
+                      content={
+                        academicyear.length > 0
+                          ? academicyear.map((item, i) =>
+                              item.CRR_Code === data[0].CRR_Code ? (
+                                <li className="d-flex gap-2">
+                                  <span className="fw-semibold">
+                                    {item.ACY_Code}
+                                  </span>
+                                  <span className="">-</span>
+                                  <span className="">{item.CRR_Code}</span>
+                                </li>
+                              ) : null
+                            )
+                          : "none"
+                      }
+                    />
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.CRR_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
               </main>
             ))}
-          </>
-        }
-        additional={
-          <>
-            <ViewCard
-              height="20vh"
-              title="Academic Year"
-              content={
-                academicyear.length > 0
-                  ? academicyear.map((item, i) =>
-                      item.CRR_Code === data[0].CRR_Code ? (
-                        <li className="d-flex gap-2">
-                          <span className="fw-semibold">{item.ACY_Code}</span>
-                          <span className="">-</span>
-                          <span className="">{item.CRR_Code}</span>
-                        </li>
-                      ) : null
-                    )
-                  : "None"
-              }
-            />
           </>
         }
       />

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { BiGridAlt } from "react-icons/bi";
@@ -9,33 +10,16 @@ import { SidebarItemList } from "../sidebar/SidebarItemList";
 import { DefaultDropdown } from "../dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../dropdown/default/DefaultDropdownItem";
 import Logo from "../../assets/logo/ClassKode Logo (1).png";
+import { ViewModal } from "../modal/ViewModal";
+import { useNavigate } from "react-router-dom";
 
 export class Topbar extends React.Component {
   render() {
-    // const bootstrap = require("bootstrap");
-
-    // const handleLogout = () => {
-    //   axios
-    //     .post("http://localhost:8081/logout")
-    //     .then((res) => {
-    //       if (res.data.Status === "Success") {
-    //         window.location.reload(true);
-    //       } else {
-    //         alert("Error");
-    //       }
-    //     })
-    //     .catch((err) => console.log(err));
-    // };
-
-    // let Confirmation = null;
-    // function getConfirmation() {
-    //   if (!Confirmation) {
-    //     Confirmation = new bootstrap.Modal(
-    //       document.getElementById("Confirmation")
-    //     );
-    //   }
-    //   return Confirmation;
-    // }
+    const handleLogout = () => {
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("loggedin");
+      window.location.reload(true);
+    };
 
     return (
       <nav className="main-top-bar gradient-bg-blue">
@@ -47,7 +31,7 @@ export class Topbar extends React.Component {
             target={"#sidebar"}
           />
           <div className="h-100 d-flex gap-1">
-            <img src={Logo} alt="..." className="h-100 img-fluid" />
+            <img src={Logo} alt="..." className="h-100 img-fluid p-1" />
             <h5 className="p-0 m-0 d-flex align-items-center text-white">
               <span className="fw-bold">Class</span>
               <span> </span>
@@ -57,110 +41,34 @@ export class Topbar extends React.Component {
         </div>
         <div className="d-flex gap-2">
           <DefaultButton class="text-light" icon={<PiQuestionMarkBold />} />
-          <DefaultButton class="text-light" icon={<FaUserSecret />} />
-          <DefaultDropdown
-            class="border-0 text-light"
+          <DefaultButton
+            class="text-light px-2"
             reversed={true}
-            icon={<FiMoreVertical />}
-            text={"User's Name"}
-            dropdownitems={
-              <>
-                <DefaultDropdownItem title={"Profile"} />
-                <DefaultDropdownItem title={"Contact"} />
-                <DefaultDropdownItem title={"Visit us"} />
-                <hr />
-                <DefaultDropdownItem title={"Logout"} />
-              </>
-            }
+            icon={<FaUserSecret />}
+            text={this.props.user}
+            function={() => {}}
+            toggle="modal"
+            target="#MenuModal"
           />
         </div>
         <Sidebar id={"sidebar"} content={<SidebarItemList />} />
-      </nav>
-      // <main>
-      //   <nav
-      //     className="navbar navbar-expand-lg px-3"
-      //     style={{
-      //       backgroundColor: "#01579b",
-      //     }}
-      //   >
-      //     <main className="w-100 d-lg-flex">
-      //       <div className="w-100 d-flex justify-content-between">
-      //         <div className="d-flex align-items-center gap-1">
-      //           <IconButton
-      //             class={"btn shadow-sm"}
-      //             type={"button"}
-      //             onClick={() => {}}
-      //             databstoggle={"offcanvas"}
-      //             databstarget={"#SideBarOffCanvas"}
-      //             aria-controls={"SideBarOffCanvas"}
-      //             image={dashboard}
-      //             opacity={"1"}
-      //             filter={"invert(100)"}
-      //           />
-      //           <img
-      //             src={logo}
-      //             alt="..."
-      //             className="ratio ratio-1x1"
-      //             style={{ height: "2.5em" }}
-      //           ></img>
-      //           <span className="navbar-brand fw-bold m-0 p-0 text-white">
-      //             Class Kode
-      //           </span>
-      //         </div>
-      //         <button
-      //           className="navbar-toggler"
-      //           type="button"
-      //           data-bs-toggle="collapse"
-      //           data-bs-target="#navbar"
-      //         >
-      //           <span className="navbar-toggler-icon text-white"></span>
-      //         </button>
-      //       </div>
-      //       <div className="d-flex gap-2 mt-2 mt-lg-0">
-      //         <div className="collapse navbar-collapse" id="navbar">
-      //           <ul className="navbar-nav w-100 me-auto mb-lg-0 p-1 rounded shadow-sm">
-      //             <li className="nav-item dropdown d-flex flex-row-reverse gap-1">
-      //               <IconTextButton
-      //                 class={"btn-link text-black shadow-sm text-white"}
-      //                 type={"button"}
-      //                 onClick={() => {}}
-      //                 databstoggle={"dropdown"}
-      //                 reverse={"flex-row-reverse"}
-      //                 text={this.props.username}
-      //                 image={user}
-      //                 opacity={"1"}
-      //                 filter={"invert(100)"}
-      //               />
 
-      //               <ul className="dropdown-menu  dropdown-menu-end">
-      //                 <li>
-      //                   <Link to={"/"} className="dropdown-item">
-      //                     <li>Action</li>
-      //                   </Link>
-      //                 </li>
-      //                 <li>
-      //                   <hr className="dropdown-divider" />
-      //                 </li>
-      //                 <li>
-      //                   <a className="dropdown-item" onClick={handleLogout}>
-      //                     Logout
-      //                   </a>
-      //                 </li>
-      //               </ul>
-      //             </li>
-      //           </ul>
-      //         </div>
-      //       </div>
-      //     </main>
-      //   </nav>
-      //   <OffCanvas
-      //     class="sidebar-panel"
-      //     id={"SideBarOffCanvas"}
-      //     content={
-      //       <SideNavigationBar superadminlevel={this.props.superadminlevel} />
-      //     }
-      //   />
-      // </main>
+        <ViewModal
+          id={"MenuModal"}
+          title={<h6 className="text-center text-black">What to Do?</h6>}
+          content={
+            <>
+              <DefaultButton
+                class="w-100 btn-danger"
+                reversed={true}
+                icon={<PiQuestionMarkBold />}
+                text="Logout"
+                function={handleLogout}
+              />
+            </>
+          }
+        />
+      </nav>
     );
   }
 }

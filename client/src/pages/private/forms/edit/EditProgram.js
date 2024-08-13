@@ -22,18 +22,6 @@ export function EditProgram() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [department, setDepartment] = useState([]);
   const [section, setSection] = useState([]);
@@ -50,67 +38,28 @@ export function EditProgram() {
     AcademicLevel: state.data[0].AcademicLevel,
     PRG_Description: state.data[0].PRG_Description,
   });
-  const [validation, setValidation] = useState({
-    PRG_Code: Base(data.PRG_Code),
-    Program: Base(data.Program),
-    PRG_Abbreviation: Base(data.PRG_Abbreviation),
-    DPT_Code: Base(data.DPT_Code),
-    AcademicLevel: Base(data.AcademicLevel),
-    PRG_Description: Base(data.PRG_Description),
-  });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
-    useValidate();
 
   useEffect(() => {
-    post("department", department, setDepartment);
+    post("sel-dept", department, setDepartment);
     post("section", section, setSection);
-    post("program", program, setProgram);
+    post("sel-prg", program, setProgram);
     post("yearlevel", yearlevel, setYearLevel);
     post("semester", semester, setSemester);
     post("academiclevel", academiclevel, setAcademicLevel);
   }, [department, academiclevel, yearlevel, semester]);
 
-  useEffect(() => {
-    ValidateProgram(
-      data.PRG_Code,
-      data.Program,
-      data.PRG_Abbreviation,
-      data.PRG_Description,
-      prg_dupe(),
-      setValidation
-    );
-  }, [data]);
-
-  function prg_dupe() {
-    if (program.length > 0) {
-      for (var i = 0; i < program.length; i++) {
-        if (
-          program[i].PRG_Code === data.PRG_Code &&
-          program[i].PRGID !== data.PRGID
-        ) {
-          return false;
-        }
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-prg", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (
-          validation.PRG_Code[0].Result &&
-          validation.Program[0].Result &&
-          validation.PRG_Abbreviation[0].Result
-        ) {
-          post("update-existing-program", data, setData);
-          navigate("/institution/program");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Program"}
         description={"This module creates a program"}
@@ -129,42 +78,22 @@ export function EditProgram() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
               label="Program Code"
               id="PRG_Code"
-              alert={validation.PRG_Code[0].Message}
-              class={validation.PRG_Code[0].State[0]}
-              success={validation.PRG_Code[0].State[1]}
               trigger={dataChange}
               value={data.PRG_Code}
               required={true}
             />
-
             <MultipleFormInput
               label="Program"
-              alert={
-                <>
-                  <span className={"col p-0 " + validation.Program[0].State[1]}>
-                    {validation.Program[0].Message}
-                  </span>
-                  <span
-                    className={
-                      "col p-0 " + validation.PRG_Abbreviation[0].State[1]
-                    }
-                  >
-                    {validation.PRG_Abbreviation[0].Message}
-                  </span>
-                </>
-              }
               item={
                 <>
                   <MultipleFormInputItem
                     id="Program"
                     placeholder="Program"
-                    class={validation.Program[0].State[0]}
-                    success={validation.Program[0].State[1]}
                     trigger={dataChange}
                     value={data.Program}
                     required={true}
@@ -172,8 +101,6 @@ export function EditProgram() {
                   <MultipleFormInputItem
                     id="PRG_Abbreviation"
                     placeholder="PRG_Abbreviation"
-                    class={validation.PRG_Abbreviation[0].State[0]}
-                    success={validation.PRG_Abbreviation[0].State[1]}
                     trigger={dataChange}
                     value={data.PRG_Abbreviation}
                     required={true}
@@ -181,39 +108,6 @@ export function EditProgram() {
                 </>
               }
             />
-
-            <SelectButton
-              label="Department"
-              id="DPT_Code"
-              trigger={dataChange}
-              required={true}
-              option={
-                <>
-                  <SelectButtonItemSelected
-                    content={department.map((option, i) => (
-                      <>
-                        {option.DPT_Code === data.DPT_Code
-                          ? option.Department
-                          : ""}
-                      </>
-                    ))}
-                  />
-                  {department.map((option, i) => (
-                    <>
-                      {data.Department !== option.DPT_Code ? (
-                        <SelectButtonItem
-                          value={option.DPT_Code}
-                          content={option.Department}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
-                </>
-              }
-            />
-
             <SelectButton
               label="Academic Level"
               id="AcademicLevel"
@@ -245,27 +139,80 @@ export function EditProgram() {
                 </>
               }
             />
-
-            <FormInput
-              label={
+            <SelectButton
+              label="Department"
+              id="DPT_Code"
+              trigger={dataChange}
+              required={true}
+              option={
                 <>
-                  Description{" "}
-                  <span className="text-secondary fw-regular">
-                    ( Optional )
-                  </span>
+                  <SelectButtonItemSelected
+                    content={department.map((option, i) => (
+                      <>
+                        {option.DPT_Code === data.DPT_Code
+                          ? option.Department
+                          : ""}
+                      </>
+                    ))}
+                  />
+                  {department.map((option, i) => (
+                    <>
+                      {data.Department !== option.DPT_Code ? (
+                        <SelectButtonItem
+                          value={option.DPT_Code}
+                          content={option.Department}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
                 </>
               }
+            />
+            <FormInput
+              label="Description"
+              labelextension="( Optional )"
               id="PRG_Description"
-              alert={validation.PRG_Description[0].Message}
-              class={validation.PRG_Description[0].State[0]}
-              success={validation.PRG_Description[0].State[1]}
               trigger={dataChange}
               value={data.PRG_Description}
               required={false}
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <h6>{data.PRG_Code.length > 0 ? data.PRG_Code : "Code"}</h6>
+              <h3>
+                {data.Program.length > 0 ? data.Program : "Department"}
+                <span>
+                  {data.PRG_Abbreviation.length > 0
+                    ? ` (${data.PRG_Abbreviation})`
+                    : " Abbrev"}
+                </span>
+              </h3>
+              <hr />
+              <ul className="m-0 p-0 d-flex gap-2 mb-3">
+                <li className="border m-0 p-2 rounded">
+                  <p className="m-0 p-0">{data.AcademicLevel}</p>
+                </li>
+                <li className="border m-0 p-2 rounded">
+                  <p className="m-0 p-0">
+                    {department.map((dept, i) =>
+                      data.DPT_Code === dept.DPT_Code ? dept.Department : null
+                    )}
+                  </p>
+                </li>
+              </ul>
+              <p className="fst-italic text-secondary m-0 p-0">
+                {data.PRG_Description.length > 0
+                  ? data.PRG_Description
+                  : "Description"}
+              </p>
+            </section>
+          </main>
+        }
       />
     </form>
   );

@@ -55,11 +55,11 @@ export function CreateSetup() {
     useValidate();
 
   useEffect(() => {
-    post("course", course, setCourse);
-    post("component", component, setComponent);
-    post("program", program, setProgram);
-    post("semester", semester, setSemester);
-    post("yearlevel", yearlevel, setYearLevel);
+    post("sel-crs", course, setCourse);
+    post("sel-compt", component, setComponent);
+    post("sel-prg", program, setProgram);
+    post("sel-sem", semester, setSemester);
+    post("sel-yrlvl", yearlevel, setYearLevel);
   }, []);
 
   useEffect(() => {
@@ -71,16 +71,16 @@ export function CreateSetup() {
     // );
   }, [data]);
 
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("ins-setup", data, setData);
+      navigate(-1);
+    }
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (true) {
-          post("add-new-setup", data, setData);
-          navigate("/utilities/curriculum/setup");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Setup"}
         description={"This module creates a setup"}
@@ -99,7 +99,7 @@ export function CreateSetup() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <div className="w-100">
               <label className="p-0 m-0">

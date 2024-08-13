@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
-import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
@@ -13,27 +12,16 @@ import { SelectButton } from "../../../../component/dropdown/select/SelectButton
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import useHandleChange from "../../../../hook/useHandleChange";
-import useValidation from "../../../../hook/useValidation";
 import useDatabase from "../../../../hook/useDatabase";
 
 export function EditCoach() {
   const params = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [get, post] = useDatabase();
 
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
-
+  const [department, setDepartment] = useState([]);
+  const [coach, setCoach] = useState();
   const [data, setData] = useState({
     CCHID: state.data[0].CCHID,
     SCHLID: state.data[0].SCHLID,
@@ -45,93 +33,26 @@ export function EditCoach() {
     Email: state.data[0].Email,
     Phone: state.data[0].Phone,
     Facebook: state.data[0].Facebook,
-  });
-  const [validation, setValidation] = useState({
-    SCHLID: Base(data.SCHLID),
-    FirstName: Base(data.FirstName),
-    MiddleInitial: Base(data.MiddleInitial),
-    LastName: Base(data.LastName),
-    Email: Base(data.Email),
-    Phone: Base(data.Phone),
-    Facebook: Base(data.Facebook),
+    Photo: state.data[0].Photo,
   });
 
-  const [get, post] = useDatabase();
-  const [department, setDepartment] = useState();
-  const [coach, setCoach] = useState();
+  useEffect(() => {
+    post("sel-dept", department, setDepartment);
+    post("sel-coach", coach, setCoach);
+  }, [department, coach]);
 
   const [dataChange] = useHandleChange(setData);
 
-  useEffect(() => {
-    post("department", department, setDepartment);
-    post("coach", coach, setCoach);
-  }, []);
-
-  useEffect(() => {
-    setValidation({
-      SCHLID: ValidateID(
-        data.SCHLID,
-        11,
-        11,
-        2000000000,
-        3000000000,
-        schl_dupe()
-      ),
-      FirstName: ValidateName(data.FirstName, 2, 100),
-      MiddleInitial: ValidateName(data.MiddleInitial, 1, 100),
-      LastName: ValidateName(data.LastName, 2, 100),
-      Email: ValidateEmail(data.Email, 2, 100, email_dupe()),
-      Phone: ValidatePhone(data.Phone, 11, 11, phone_dupe()),
-      Facebook: ValidateLink(data.Facebook, 2, 100, facebook_dupe()),
-    });
-  }, [data]);
-
-  function schl_dupe() {
-    for (var i = 0; i < coach.length; i++) {
-      if (coach[i].SCHLID === data.SCHLID && coach[i].CCHID !== data.CCHID) {
-        return false;
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-coach", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
-
-  function email_dupe() {
-    for (var i = 0; i < coach.length; i++) {
-      if (coach[i].Email === data.Email && coach[i].CCHID !== data.CCHID) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function phone_dupe() {
-    for (var i = 0; i < coach.length; i++) {
-      if (coach[i].Phone === data.Phone && coach[i].CCHID !== data.CCHID) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function facebook_dupe() {
-    for (var i = 0; i < coach.length; i++) {
-      if (
-        coach[i].Facebook === data.Facebook &&
-        coach[i].CCHID !== data.CCHID
-      ) {
-        return false;
-      }
-    }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={() => {
-        post("update-existing-coach", data, setData);
-        navigate("/institution/coach");
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Edit A Coach"}
         description={"This module edits a coach"}
@@ -150,63 +71,33 @@ export function EditCoach() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <FormInput
               label="School ID"
               id="SCHLID"
-              alert={validation.SCHLID[0].Message}
-              class={validation.SCHLID[0].State[0]}
-              success={validation.SCHLID[0].State[1]}
               trigger={dataChange}
               value={data.SCHLID}
             />
             <MultipleFormInput
               label="First Name, Middle Initial, & Last Name"
-              alert={
-                <>
-                  <span
-                    className={"col p-0 " + validation.FirstName[0].State[1]}
-                  >
-                    {validation.FirstName[0].Message}
-                  </span>
-                  <span
-                    className={
-                      "col p-0 " + validation.MiddleInitial[0].State[1]
-                    }
-                  >
-                    {validation.MiddleInitial[0].Message}
-                  </span>
-                  <span
-                    className={"col p-0 " + validation.LastName[0].State[1]}
-                  >
-                    {validation.LastName[0].Message}
-                  </span>
-                </>
-              }
               item={
                 <>
                   <MultipleFormInputItem
                     id="FirstName"
                     placeholder="First Name"
-                    class={validation.FirstName[0].State[0]}
-                    success={validation.FirstName[0].State[1]}
                     trigger={dataChange}
                     value={data.FirstName}
                   />
                   <MultipleFormInputItem
                     id="MiddleInitial"
                     placeholder="Middle Initial"
-                    class={validation.MiddleInitial[0].State[0]}
-                    success={validation.MiddleInitial[0].State[1]}
                     trigger={dataChange}
                     value={data.MiddleInitial}
                   />
                   <MultipleFormInputItem
                     id="LastName"
                     placeholder="Last Name"
-                    class={validation.LastName[0].State[0]}
-                    success={validation.LastName[0].State[1]}
                     trigger={dataChange}
                     value={data.LastName}
                   />
@@ -243,53 +134,35 @@ export function EditCoach() {
                 <>
                   <SelectButtonItemSelected
                     content={department.map((option, i) =>
-                      data.Department === option.DPT_Code
+                      option.DPT_Code === data.Department
                         ? option.Department
-                        : ""
+                        : null
                     )}
                   />
-                  {department.map((option, i) => (
-                    <>
-                      {data.Department !== option.DPT_Code ? (
-                        <SelectButtonItem
-                          value={option.DPT_Code}
-                          content={option.Department}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
+                  {department.map((option, i) =>
+                    data.Department !== option.DPT_Code ? (
+                      <SelectButtonItem
+                        value={option.DPT_Code}
+                        content={option.Department}
+                      />
+                    ) : null
+                  )}
                 </>
               }
             />
             <MultipleFormInput
               label="Email & Phone"
-              alert={
-                <>
-                  <span className={"col p-0 " + validation.Email[0].State[1]}>
-                    {validation.Email[0].Message}
-                  </span>
-                  <span className={"col p-0 " + validation.Phone[0].State[1]}>
-                    {validation.Phone[0].Message}
-                  </span>
-                </>
-              }
               item={
                 <>
                   <MultipleFormInputItem
                     id="Email"
                     placeholder="Email"
-                    class={validation.Email[0].State[0]}
-                    success={validation.Email[0].State[1]}
                     trigger={dataChange}
                     value={data.Email}
                   />
                   <MultipleFormInputItem
                     id="Phone"
                     placeholder="Phone"
-                    class={validation.Phone[0].State[0]}
-                    success={validation.Phone[0].State[1]}
                     trigger={dataChange}
                     value={data.Phone}
                   />
@@ -299,15 +172,67 @@ export function EditCoach() {
             <FormInput
               label="Facebook"
               id="Facebook"
-              alert={validation.Facebook[0].Message}
-              class={validation.Facebook[0].State[0]}
-              success={validation.Facebook[0].State[1]}
               trigger={dataChange}
               value={data.Facebook}
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <header>
+                <h6>{data.SCHLID.length > 0 ? data.SCHLID : "Code"}</h6>
+                <h3>
+                  <span>
+                    {data.FirstName.length > 0 ? data.FirstName : "FirstName"}
+                  </span>{" "}
+                  <span>
+                    {data.MiddleInitial.length > 0
+                      ? data.MiddleInitial
+                      : "MiddleInitial"}
+                  </span>{" "}
+                  <span>
+                    {data.LastName.length > 0 ? data.LastName : "LastName"}
+                  </span>
+                </h3>
+                <hr />
+                <ul className="m-0 p-0 d-flex gap-2">
+                  <li className="border m-0 p-2 rounded">
+                    <p className="m-0 p-0">{data.Gender}</p>
+                  </li>
+                  <li className="border m-0 p-2 rounded">
+                    <p className="m-0 p-0">
+                      {department.map((dept, i) =>
+                        dept.DPT_Code === data.Department
+                          ? dept.Department
+                          : null
+                      )}
+                    </p>
+                  </li>
+                </ul>
+              </header>
+              <main className="row m-0 p-0 mt-3 mb-2">
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Phone: {data.Phone.length > 0 ? data.Phone : "Phone"}
+                  </p>
+                </section>
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Email: {data.Email.length > 0 ? data.Email : "Email"}
+                  </p>
+                </section>
+              </main>
+              <main>
+                <section>
+                  <Link to={data.Facebook} target="_blank">
+                    {data.Facebook.length > 0 ? data.Facebook : "Facebook"}
+                  </Link>
+                </section>
+              </main>
+            </section>
+          </main>
+        }
       />
     </form>
   );

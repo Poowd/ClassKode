@@ -22,18 +22,6 @@ export function EditRoom() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [room, setRoom] = useState([]);
   const [facility, setFacility] = useState([]);
@@ -49,47 +37,15 @@ export function EditRoom() {
     Building: state.data[0].Building,
     Floor: state.data[0].Floor,
   });
-  const [validation, setValidation] = useState({
-    Room: Base(data.Room),
-    Capacity: Base(data.Capacity),
-    Facility: Base(data.Facility),
-    Building: Base(data.Building),
-    Floor: Base(data.Floor),
-  });
 
   const [dataChange] = useHandleChange(setData);
-  const [ValidateCoach, ValidateDepartment, ValidateProgram, ValidateCourse] =
-    useValidate();
 
   useEffect(() => {
-    post("facility", facility, setFacility);
-    post("building", building, setBuilding);
-    post("room", room, setRoom);
-    post("floor", floor, setFloor);
+    post("sel-fac", facility, setFacility);
+    post("sel-buil", building, setBuilding);
+    post("sel-flor", floor, setFloor);
+    post("sel-rom", room, setRoom);
   }, []);
-
-  useEffect(() => {
-    // ValidateProgram(
-    //   data.Room,
-    //   data.Capacity,
-    //   prg_dupe(),
-    //   setValidation
-    // );
-  }, [data]);
-
-  function rom_dupe() {
-    if (program.length > 0) {
-      for (var i = 0; i < program.length; i++) {
-        if (
-          program[i].PRG_Code === data.PRG_Code &&
-          program[i].ROMID !== data.ROMID
-        ) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
 
   var temp = [];
   var roomList = [];
@@ -124,16 +80,16 @@ export function EditRoom() {
   //   }));
   // }, [roomName]);
 
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-room", data, setData);
+      navigate(-1);
+    }
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (true) {
-          post("update-existing-room", data, setData);
-          navigate("/institution/room");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Create A Room"}
         description={"This module creates a room"}
@@ -152,7 +108,7 @@ export function EditRoom() {
             />
           </>
         }
-        content={
+        entryform={
           <>
             <SelectButton
               label="Building"
@@ -263,7 +219,37 @@ export function EditRoom() {
             />
           </>
         }
-        additional={<></>}
+        entry={
+          <main className="p-3">
+            <section>
+              <h6>{data.Facility.length > 0 ? data.Facility : "Facility"}</h6>
+              <h3>
+                {data.Room.length > 0 ? data.Room : "Room"}{" "}
+                <span>
+                  (
+                  {data.Capacity.length > 0
+                    ? `${data.Capacity} Students`
+                    : "0 Students"}
+                  )
+                </span>
+              </h3>
+              <hr />
+              <main className="row m-0 p-0 mt-3 mb-2">
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Building:{" "}
+                    {data.Building.length > 0 ? data.Building : "Building"}
+                  </p>
+                </section>
+                <section className="col m-0 p-0">
+                  <p className="m-0 p-0">
+                    Floor: {data.Floor.length > 0 ? data.Floor : "Floor"}
+                  </p>
+                </section>
+              </main>
+            </section>
+          </main>
+        }
       />
     </form>
   );

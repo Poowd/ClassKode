@@ -22,18 +22,6 @@ export function EditCurriculum() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
 
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
@@ -41,59 +29,22 @@ export function EditCurriculum() {
     CRR_Code: state.data[0].CRR_Code,
     Curriculum: state.data[0].Curriculum,
   });
-  const [validation, setValidation] = useState({
-    CRR_Code: Base(data.CRR_Code),
-    Curriculum: Base(data.Curriculum),
-  });
-
   const [dataChange] = useHandleChange(setData);
-  const [
-    ValidateCoach,
-    ValidateDepartment,
-    ValidateProgram,
-    ValidateCourse,
-    ValidateRoom,
-    ValidateCurriculum,
-    ValidateAcademicYear,
-  ] = useValidate();
 
   useEffect(() => {
-    post("curriculum", curriculum, setCurriculum);
+    post("sel-curr", curriculum, setCurriculum);
   }, [curriculum]);
 
-  useEffect(() => {
-    ValidateCurriculum(
-      data.CRR_Code,
-      data.Curriculum,
-      crr_dupe(),
-      setValidation
-    );
-  }, [data]);
-
-  function crr_dupe() {
-    if (curriculum.length > 0) {
-      for (var i = 0; i < curriculum.length; i++) {
-        if (
-          curriculum[i].CRR_Code === data.CRR_Code &&
-          curriculum[i].CRRID !== data.CRRID
-        ) {
-          return false;
-        }
-      }
+  const submitForm = (e) => {
+    e.preventDefault();
+    if (true) {
+      post("upd-curr", data, setData);
+      navigate(-1);
     }
-    return true;
-  }
+  };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (validation.CRR_Code[0].Result && validation.Curriculum[0].Result) {
-          post("update-existing-curriculum", data, setData);
-          navigate("/utilities/curriculum");
-        }
-      }}
-    >
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
         title={"Edit A Curriculum"}
         description={"This module edit a curriculum"}
@@ -117,9 +68,6 @@ export function EditCurriculum() {
             <FormInput
               label="Course Code"
               id="CRR_Code"
-              alert={validation.CRR_Code[0].Message}
-              class={validation.CRR_Code[0].State[0]}
-              success={validation.CRR_Code[0].State[1]}
               trigger={dataChange}
               value={data.CRR_Code}
               required={true}
@@ -128,9 +76,6 @@ export function EditCurriculum() {
             <FormInput
               label="Curriculum"
               id="Curriculum"
-              alert={validation.Curriculum[0].Message}
-              class={validation.Curriculum[0].State[0]}
-              success={validation.Curriculum[0].State[1]}
               trigger={dataChange}
               value={data.Curriculum}
               required={false}

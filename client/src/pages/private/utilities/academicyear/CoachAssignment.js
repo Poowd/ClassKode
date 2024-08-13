@@ -84,7 +84,7 @@ export function CoachAssignment() {
                   slot3={item.ASG_Created}
                   slot4={item.ACY_Code}
                   slot5={`${item.MinUnits} units - ${item.MaxUnits} units`}
-                  link={"/institution/assignment/view/" + item.ASGID}
+                  link={`/institution/coach/view/${item.CCHID}`}
                   state={{ data: item }}
                 />
               ) : null

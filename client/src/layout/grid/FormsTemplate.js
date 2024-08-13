@@ -12,18 +12,7 @@ export class FormsTemplate extends React.Component {
     return (
       <main className="h-100 overflow-y-auto">
         <main className="h-100">
-          <main className="row h-100 m-0">
-            <section className="col-lg-3 h-100 p-2">
-              <main className="h-100 bg-white rounded shadow-sm p-2">
-                <NoDisplay />
-              </main>
-            </section>
-            <section className="col-lg-9 p-2 h-100">
-              <main className="h-100 position-relative overflow-y-auto">
-                <section className="">{this.props.content}</section>
-              </main>
-            </section>
-          </main>
+          <section className="h-100">{this.props.content}</section>
         </main>
       </main>
     );

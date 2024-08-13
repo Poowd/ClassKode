@@ -55,7 +55,7 @@ export function ViewAssignment() {
   }, []);
 
   useEffect(() => {
-    post("academicyear-current", academicyear, setAcademicYear);
+    post("sel-cur-ay", academicyear, setAcademicYear);
   }, [academicyear]);
 
   useEffect(() => {

@@ -43,14 +43,14 @@ export function GenerateSchedule() {
   ]);
 
   useEffect(() => {
-    post("expected-classes", expected, setExpected);
-    post("room", room, setRoom);
-    post("projection", section, setSection);
-    post("assignment", coach, setCoach);
-    post("coachtype", coachtype, setCoachType);
-    post("weekly-event", weekly, setWeekly);
-    post("academicyear-current", ay, setAY);
-    post("SPCL_CRS", specialize, setSpecialize);
+    post("sel-exp-class", expected, setExpected);
+    post("sel-rom", room, setRoom);
+    post("sel-proj", section, setSection);
+    post("sel-asgn", coach, setCoach);
+    post("sel-coach-type", coachtype, setCoachType);
+    post("sel-wke-evt", weekly, setWeekly);
+    post("sel-cur-ay", ay, setAY);
+    post("sel-spl-crs", specialize, setSpecialize);
   }, []);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export function GenerateSchedule() {
                   function={() => {
                     for (var i = 0; i < schedule.length; i++) {
                       console.log(schedule[i]);
-                      post("save-presched", schedule[i], setSchedule);
+                      post("ins-pre-sched", schedule[i], setSchedule);
                     }
                     navigate(-1);
                   }}
@@ -126,7 +126,7 @@ export function GenerateSchedule() {
                   function={() => {
                     //setSchedule(expected);
                     post(
-                      "generate-classes",
+                      "gen-class",
                       {
                         classes: expected,
                         rooms: room,

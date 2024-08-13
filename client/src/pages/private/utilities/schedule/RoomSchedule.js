@@ -2,31 +2,21 @@ import React, { useEffect, useState } from "react";
 import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { RiStickyNoteAddLine } from "react-icons/ri";
-import { PiGearSixFill } from "react-icons/pi";
-import { FaFilter } from "react-icons/fa6";
 import "../Map.css";
-import STIMap1 from "../../../../media/images/STI MAP 1.drawio.png";
-import STIMap2 from "../../../../media/images/STI MAP 2.drawio.png";
-import STIMap3 from "../../../../media/images/STI MAP 3.drawio.png";
-import { Label } from "../../../../component/map/Label";
 import useDatabase from "../../../../hook/useDatabase";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TbStairs } from "react-icons/tb";
-import { SiLevelsdotfyi } from "react-icons/si";
 import { B1 } from "../map/B1";
 import { B2 } from "../map/B2";
 import { B3 } from "../map/B3";
 import { A1 } from "../map/A1";
 import { A2 } from "../map/A2";
 import { A3 } from "../map/A3";
-import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
-import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
-import { ScheduleList } from "../../../../component/card/ScheduleList";
 import useTimeFormat from "../../../../hook/useTimeFormat";
+import { Mn1 } from "../map/Mn1";
+import { Mn2 } from "../map/Mn2";
+import { Mn3 } from "../map/Mn3";
 
 export function RoomSchedule() {
   const { state } = useLocation();
@@ -41,9 +31,9 @@ export function RoomSchedule() {
   const [building, setBuilding] = useState([]);
   const [floorstatus, setFloorStatus] = useState(true);
   const [location, setLocation] = useState([
-    { Floor: "First Floor", Building: "Main", Map: <B1 /> },
-    { Floor: "Second Floor", Building: "Main", Map: <B1 /> },
-    { Floor: "Third Floor", Building: "Main", Map: <B1 /> },
+    { Floor: "First Floor", Building: "Main", Map: <Mn1 /> },
+    { Floor: "Second Floor", Building: "Main", Map: <Mn2 /> },
+    { Floor: "Third Floor", Building: "Main", Map: <Mn3 /> },
     { Floor: "First Floor", Building: "Annex-A", Map: <A1 /> },
     { Floor: "Second Floor", Building: "Annex-A", Map: <A2 /> },
     { Floor: "Third Floor", Building: "Annex-A", Map: <A3 /> },
@@ -55,13 +45,13 @@ export function RoomSchedule() {
   const [currfloor, setCurrentFloor] = useState(location[0].Floor);
   const [currbuilding, setCurrentBuilding] = useState(location[0].Building);
   useEffect(() => {
-    post("placement", placement, setPlacement);
-    post("floor", floor, setFloor);
-    post("building", building, setBuilding);
+    post("sel-place", placement, setPlacement);
+    post("sel-flor", floor, setFloor);
+    post("sel-buil", building, setBuilding);
   }, []);
 
   useEffect(() => {
-    post("schedules", schedule, setSchedule);
+    post("sel-sched", schedule, setSchedule);
   }, []);
 
   function previousLocation() {

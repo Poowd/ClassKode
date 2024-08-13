@@ -17,6 +17,7 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
 
 export function ViewProgram() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ export function ViewProgram() {
   ] = useValidation();
 
   const [data, setData] = useState([state.data]);
+  const [department, setDepartment] = useState([]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
@@ -50,6 +52,7 @@ export function ViewProgram() {
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
+    post("sel-dept", department, setDepartment);
     get("random-code-generator", setCode);
   }, [data]);
 
@@ -61,7 +64,7 @@ export function ViewProgram() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Program"}
         description={"This module views a program"}
         control={
@@ -104,37 +107,41 @@ export function ViewProgram() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Program}</span>
+                  <h6>{item.PRG_Code}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {item.Program} <span>({item.PRG_Abbreviation})</span>
                   </h1>
+                  <hr />
+                  <ul className="m-0 p-0 d-flex gap-2">
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">{item.AcademicLevel}</p>
+                    </li>
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">
+                        {department.map((dept, i) =>
+                          dept.DPT_Code === item.DPT_Code
+                            ? dept.Department
+                            : null
+                        )}
+                      </p>
+                    </li>
+                  </ul>
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"Program Code"}
-                        content={item.PRG_Code}
-                      />
-                      <DataControlViewItem
-                        label={"Department"}
-                        content={item.Department}
-                      />
-                      <DataControlViewItem
-                        label={"Abbreviation"}
-                        content={item.PRG_Abbreviation}
-                      />
-                      <DataControlViewItem
-                        label={"Description"}
-                        content={item.PRG_Description}
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.PRG_Created}
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <p>
+                      {item.PRG_Description !== ""
+                        ? item.PRG_Description
+                        : "None"}
+                    </p>
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.PRG_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
+                {/* <CollapseButton id="aasdasdas" title="hello" content="bye" /> */}
               </main>
             ))}
           </>

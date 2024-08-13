@@ -17,6 +17,8 @@ import useValidation from "../../../../hook/useValidation";
 import { ViewCard } from "../../../../component/card/ViewCard";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
+import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import { CollapseButton } from "../../../../component/button/CollapsButton";
 
 export function ViewCoach() {
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ export function ViewCoach() {
   const [specialization, setSpecialization] = useState([]);
   const [academicyear, setAcademicYear] = useState([]);
   const [code, setCode] = useState("");
+  const [image, setImage] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
@@ -58,13 +61,9 @@ export function ViewCoach() {
 
   useEffect(() => {
     try {
-      post("academicyear-current", academicyear, setAcademicYear);
-      post("coach-assignment", { SCHLID: data[0].SCHLID }, setAssignment);
-      post(
-        "coach-specialization",
-        { SCHLID: data[0].SCHLID },
-        setSpecialization
-      );
+      post("sel-cur-ay", academicyear, setAcademicYear);
+      post("sel-coach-asgn", { SCHLID: data[0].SCHLID }, setAssignment);
+      post("sel-coach-spl", { SCHLID: data[0].SCHLID }, setSpecialization);
     } catch (err) {
       navigate(-1);
     }
@@ -78,7 +77,7 @@ export function ViewCoach() {
 
   return (
     <>
-      <DataControllerTemplate
+      <DataViewerTemplate
         title={"View A Coach"}
         description={"This module views a coach"}
         control={
@@ -121,112 +120,130 @@ export function ViewCoach() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h1>
-                    <span>{item.Gender === "Male" ? "Mr. " : "Ms. "}</span>
-                    <span>{item.FirstName}</span>
-                    <span>
-                      {item.MiddleInitial !== (null || "")
+                  <h6>{item.SCHLID}</h6>
+                  <h1 className="fw-bold custom-text-gradient pb-2">
+                    {`${item.FirstName} ${
+                      item.MiddleInitial !== (null || "")
                         ? " " + item.MiddleInitial + ". "
-                        : " "}
-                    </span>
-                    <span>{item.LastName}</span>
+                        : " "
+                    } ${item.LastName}`}
                   </h1>
+                  <hr />
                 </header>
-
-                <DataControlView
-                  content={
-                    <>
-                      <DataControlViewItem
-                        label={"School ID"}
-                        content={item.SCHLID}
-                      />
-                      <DataControlViewItem
-                        label={"Department"}
-                        content={item.Department}
-                      />
-                      <DataControlViewItem
-                        label={"Contacts"}
-                        content={
-                          <>
-                            <span className="d-block">{item.Phone}</span>
-                            <span className="d-block">{item.Email}</span>
-                            <span className="d-block">
-                              <a href={item.Facebook} target="_blank">
-                                {item.Facebook}
-                              </a>
-                            </span>
-                          </>
-                        }
-                      />
-                      <DataControlViewItem
-                        label={"Created"}
-                        content={item.CCH_Created}
-                      />
-                      <DataControlViewItem
-                        label={"Status"}
-                        content={
-                          assigment.length > 0
-                            ? assigment.map((item, i) =>
-                                item.ACY_Code === academicyear[0].ACY_Code
-                                  ? item.CoachType
-                                  : "Not Available"
-                              )
-                            : "Not Available"
-                        }
-                      />
-                      <DataControlViewItem
-                        label={"Specialized Courses"}
-                        content={
-                          specialization.length > 0
-                            ? specialization.map((item, i) =>
-                                item.ACY_Code === academicyear[0].ACY_Code ? (
-                                  <span className="d-block">{item.Course}</span>
-                                ) : (
-                                  "None"
-                                )
-                              )
-                            : "None"
-                        }
-                      />
-                    </>
-                  }
-                />
+                <main className="p-3">
+                  <section>
+                    <CollapseButton
+                      id="details"
+                      title="Coach's Details"
+                      content={
+                        <DataControlView
+                          content={
+                            <>
+                              <DataControlViewItem
+                                label={"Department"}
+                                content={item.Department}
+                              />
+                              <DataControlViewItem
+                                label={"Contacts"}
+                                content={
+                                  <ul className="p-0 m-0">
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"Phone Number:"}
+                                        content={item.Phone}
+                                      />
+                                    </li>
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"School Email:"}
+                                        content={item.Email}
+                                      />
+                                    </li>
+                                    <li className="p-0 m-0">
+                                      <DataControlViewItem
+                                        label={"Facebook Acc:"}
+                                        content={
+                                          <Link
+                                            to={item.Facebook}
+                                            target="_blank"
+                                          >
+                                            {item.Facebook}
+                                          </Link>
+                                        }
+                                      />
+                                    </li>
+                                  </ul>
+                                }
+                              />
+                              <DataControlViewItem
+                                label={"Availability"}
+                                content={
+                                  assigment.length > 0
+                                    ? assigment.map((item, i) =>
+                                        item.ACY_Code ===
+                                        academicyear[0].ACY_Code
+                                          ? item.CoachType
+                                          : "Not Available"
+                                      )
+                                    : "Not Available"
+                                }
+                              />
+                            </>
+                          }
+                        />
+                      }
+                    />
+                    <CollapseButton
+                      id="history"
+                      title="Coach's History"
+                      content={
+                        assigment.length > 0
+                          ? assigment.map((item, i) => (
+                              <li className="d-flex gap-2">
+                                <span className="fw-semibold">
+                                  {item.ACY_Code}
+                                </span>
+                                <span className="">-</span>
+                                <span className="">{item.CoachType}</span>
+                              </li>
+                            ))
+                          : "None"
+                      }
+                    />
+                    <CollapseButton
+                      id="specialized"
+                      title="Coach's Specialization"
+                      content={
+                        specialization.length > 0
+                          ? specialization.map((item, i) => (
+                              <li className="d-flex gap-2">
+                                <span className="fw-semibold">
+                                  {item.ACY_Code}
+                                </span>
+                                <span className="">-</span>
+                                <span className="">{item.Course}</span>
+                              </li>
+                            ))
+                          : "None"
+                      }
+                    />
+                    <small>
+                      <p className="text-secondary">
+                        Date Created: {item.CCH_Created}
+                      </p>
+                    </small>
+                  </section>
+                </main>
               </main>
             ))}
           </>
         }
-        additional={
+        extradata={
           <>
-            <ViewCard
-              height="20vh"
-              title="Assignments"
-              content={
-                assigment.length > 0
-                  ? assigment.map((item, i) => (
-                      <li className="d-flex gap-2">
-                        <span className="fw-semibold">{item.ACY_Code}</span>
-                        <span className="">-</span>
-                        <span className="">{item.CoachType}</span>
-                      </li>
-                    ))
-                  : "None"
-              }
-            />
-            <ViewCard
-              height="20vh"
-              title="Specialized Courses"
-              content={
-                specialization.length > 0
-                  ? specialization.map((item, i) => (
-                      <li className="d-flex gap-2">
-                        <span className="fw-semibold">{item.ACY_Code}</span>
-                        <span className="">-</span>
-                        <span className="">{item.Course}</span>
-                      </li>
-                    ))
-                  : "None"
-              }
-            />
+            <img
+              className="h-100 w-100 rounded object-fit-cover"
+              src={`http://localhost:8081/images/${data[0].Photo}`}
+            ></img>
           </>
         }
       />

@@ -6,14 +6,15 @@ import { DefaultButton } from "../../component/button/DefaultButton";
 import { TbWallpaper } from "react-icons/tb";
 import { LuCalendarClock } from "react-icons/lu";
 import { MdOutlineEmojiEvents } from "react-icons/md";
-import { CChart } from "@coreui/react-chartjs";
 import useChart from "../../hook/chart/useChart";
 import useDatabase from "../../hook/useDatabase";
 import { useNavigate } from "react-router-dom";
+import useConfiguration from "../../hook/useConfiguration";
 
 export function Dashboard() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
   const [department, setDepartment] = useState([]);
   const [program, setProgram] = useState([]);
@@ -37,58 +38,9 @@ export function Dashboard() {
     post("sel-sched", currsched, setCurrentSched);
   }, []);
 
-  const [chart1] = useChart(
-    ["a", "a", "a", "a", "a", "a", "a"],
-    "My Chart",
-    [65, 59, 80, 81, 56, 55, 40],
-    "line",
-    "x",
-    "auto",
-    "100%"
-  );
-  const [chart2] = useChart(
-    [
-      "Department",
-      "Program",
-      "Section",
-      "Course",
-      "Room",
-      "Coach",
-      "Curriculum",
-      "Academic Year",
-    ],
-    "My Chart",
-    [
-      department.length,
-      program.length,
-      section.length,
-      course.length,
-      room.length,
-      coach.length,
-      5,
-      5,
-    ],
-    "bar",
-    "y",
-    "100%"
-  );
-  const [chart3] = useChart(
-    [
-      "Department",
-      "Program",
-      "Section",
-      "Course",
-      "Room",
-      "Coach",
-      "Curriculum",
-      "Academic Year",
-    ],
-    "My Chart",
-    [5, 5, 5, 5, 5, 5, 5, 5],
-    "bar",
-    "y",
-    "100%"
-  );
+  const [chart1] = "";
+  const [chart2] = "";
+  const [chart3] = "";
 
   return (
     <DashboardTemplate
@@ -98,7 +50,7 @@ export function Dashboard() {
           button={
             <DefaultButton
               class="border text-light"
-              icon={<LuCalendarDays />}
+              icon={info.icons.calendar}
               function={() => navigate("/utilities/academicyear")}
             />
           }
@@ -111,7 +63,7 @@ export function Dashboard() {
           button={
             <DefaultButton
               class="border text-light"
-              icon={<TbWallpaper />}
+              icon={info.icons.curriculum}
               function={() => navigate("/utilities/curriculum")}
             />
           }
@@ -124,7 +76,7 @@ export function Dashboard() {
           button={
             <DefaultButton
               class="border text-light"
-              icon={<LuCalendarClock />}
+              icon={info.icons.schedule}
               function={() => navigate("/utilities/schedule")}
             />
           }
@@ -135,17 +87,63 @@ export function Dashboard() {
         <DashboardCardContent
           title={"Events"}
           button={
-            <DefaultButton
-              class="border text-light"
-              icon={<MdOutlineEmojiEvents />}
-            />
+            <DefaultButton class="border text-light" icon={info.icons.events} />
           }
           content={"0"}
         />
       }
-      chart1={chart1}
-      chart2={chart2}
-      chart3={chart3}
+      chart1={useChart(
+        ["a", "a", "a", "a", "a", "a", "a"],
+        "My Chart",
+        [65, 59, 80, 81, 56, 55, 40],
+        "line",
+        "x",
+        "auto",
+        "100%"
+      )}
+      chart2={useChart(
+        [
+          "Department",
+          "Program",
+          "Section",
+          "Course",
+          "Room",
+          "Coach",
+          "Curriculum",
+          "Academic Year",
+        ],
+        "My Chart",
+        [
+          department.length,
+          program.length,
+          section.length,
+          course.length,
+          room.length,
+          coach.length,
+          5,
+          5,
+        ],
+        "bar",
+        "y",
+        "100%"
+      )}
+      chart3={useChart(
+        [
+          "Department",
+          "Program",
+          "Section",
+          "Course",
+          "Room",
+          "Coach",
+          "Curriculum",
+          "Academic Year",
+        ],
+        "My Chart",
+        [5, 5, 5, 5, 5, 5, 5, 5],
+        "bar",
+        "y",
+        "100%"
+      )}
     />
   );
 }

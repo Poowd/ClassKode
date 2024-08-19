@@ -6,13 +6,8 @@ export default function useGetSection(x, y, z) {
   const YearList = [y];
   const SemList = [z];
 
-
-
   function getSection(program, year, sem) {
-    
-
-
-
+  
   }
 
   return [getSection];

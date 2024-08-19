@@ -36,7 +36,7 @@ export class ListCard extends React.Component {
               <Link to={this.props.link} state={this.props.state}>
                 <DefaultButton
                   class="custom-bg-primary-light"
-                  icon={<GrView />}
+                  icon={this.props.view}
                 />
               </Link>
             ) : null}

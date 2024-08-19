@@ -15,9 +15,11 @@ import { LuCalendarClock } from "react-icons/lu";
 import useDatabase from "../../../hook/useDatabase";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
+import useConfiguration from "../../../hook/useConfiguration";
 
 export function Schedule() {
   const navigate = useNavigate();
+  const [info] = useConfiguration();
   const [get, post] = useDatabase();
 
   const [sched, setSched] = useState([]);
@@ -36,14 +38,14 @@ export function Schedule() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={<MdArrowBackIosNew />}
+                  icon={info.icons.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
                 <DefaultDropdown
                   class="border px-2 btn-primary"
                   reversed={true}
-                  icon={<LuCalendarClock />}
+                  icon={info.icons.schedule}
                   text={"Load"}
                   dropdownitems={
                     <>
@@ -63,13 +65,13 @@ export function Schedule() {
                   }
                 />
                 <Link to={"/institution/schedule/generate/0"}>
-                  <DefaultButton class="btn-primary" icon={<PiGearSixFill />} />
-                </Link>
-                <Link to={"/institution/schedule/create/0"}>
                   <DefaultButton
                     class="btn-primary"
-                    icon={<RiStickyNoteAddLine />}
+                    icon={info.icons.generate}
                   />
+                </Link>
+                <Link to={"/institution/schedule/create/0"}>
+                  <DefaultButton class="btn-primary" icon={info.icons.add} />
                 </Link>
               </div>
             </div>

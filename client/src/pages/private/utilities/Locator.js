@@ -7,9 +7,11 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat";
+import useConfiguration from "../../../hook/useConfiguration";
 
 export function Locator() {
   const [convertMinutes] = useTimeFormat();
+  const [info] = useConfiguration();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const d = new Date();
@@ -125,7 +127,7 @@ export function Locator() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={<MdArrowBackIosNew />}
+                  icon={info.icons.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
@@ -156,8 +158,8 @@ export function Locator() {
                   <section className="col-1 p-0 m-0">
                     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
                       <DefaultButton
-                        class="btn-info"
-                        icon={<MdOutlineAlarmOn />}
+                        class="btn-info text-white"
+                        icon={info.icons.schedule}
                         function={() => {
                           setCurrCoach(coach.SCHLID);
                         }}

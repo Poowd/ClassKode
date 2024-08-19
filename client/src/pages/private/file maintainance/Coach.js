@@ -11,10 +11,13 @@ import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
 import { MdArrowBackIosNew } from "react-icons/md";
+import useConfiguration from "../../../hook/useConfiguration";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function Coach() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
   const [data, setData] = useState([]);
 
@@ -29,14 +32,14 @@ export function Coach() {
         <>
           <DefaultButton
             class=""
-            icon={<MdArrowBackIosNew />}
+            icon={info.icons.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={<FaFilter />}
+            icon={info.icons.filter}
             dropdownitems={
               <>
                 <DefaultDropdownItem title={"Profile"} />
@@ -45,12 +48,11 @@ export function Coach() {
               </>
             }
           />
-          <DefaultButton
+          <LinkButton
+            to={"/institution/coach/create/0"}
             class="btn-primary"
-            icon={<RiStickyNoteAddLine />}
-            function={() => {
-              navigate("/institution/coach/create/0");
-            }}
+            textclass="text-white"
+            icon={info.icons.add}
           />
         </>
       }
@@ -63,6 +65,7 @@ export function Coach() {
           slot3={item.CCH_Created}
           slot4={item.Department}
           slot5={item.Email}
+          view={info.icons.view}
           link={`/institution/coach/view/${item.CCHID}`}
           state={{ data: item }}
         />

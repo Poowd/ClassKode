@@ -9,6 +9,18 @@ const db = mysql.createConnection({
   database: "db_classkode",
 });
 
+// USERS =>
+app.post("/sel-users", (req, res) => {
+  const sql = `
+        SELECT * FROM _users
+      `;
+
+  db.query(sql, (err, data) => {
+    if (err) return res.json({ Message: "Server Sided Error" });
+    return res.json(data);
+  });
+});
+
 // SCHEDULES =>
 app.post("/sel-sched", (req, res) => {
   const sql = `

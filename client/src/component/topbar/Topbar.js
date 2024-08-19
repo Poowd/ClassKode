@@ -15,18 +15,12 @@ import { useNavigate } from "react-router-dom";
 
 export class Topbar extends React.Component {
   render() {
-    const handleLogout = () => {
-      sessionStorage.removeItem("user");
-      sessionStorage.removeItem("loggedin");
-      window.location.reload(true);
-    };
-
     return (
       <nav className="main-top-bar gradient-bg-blue">
         <div className="h-100 d-flex">
           <DefaultButton
-            class="text-light"
-            icon={<BiGridAlt />}
+            class="text-light border-0 px-2 fs-6"
+            icon={this.props.menuicon}
             toggle={"offcanvas"}
             target={"#sidebar"}
           />
@@ -40,11 +34,11 @@ export class Topbar extends React.Component {
           </div>
         </div>
         <div className="d-flex gap-2">
-          <DefaultButton class="text-light" icon={<PiQuestionMarkBold />} />
+          <DefaultButton class="text-light" icon={this.props.helpicon} />
           <DefaultButton
             class="text-light px-2"
             reversed={true}
-            icon={<FaUserSecret />}
+            icon={this.props.usericon}
             text={this.props.user}
             function={() => {}}
             toggle="modal"
@@ -63,7 +57,7 @@ export class Topbar extends React.Component {
                 reversed={true}
                 icon={<PiQuestionMarkBold />}
                 text="Logout"
-                function={handleLogout}
+                function={this.props.logout}
               />
             </>
           }

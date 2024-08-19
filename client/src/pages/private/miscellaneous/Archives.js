@@ -133,8 +133,6 @@ export function Archives() {
                     />
                   </section>
                 </main>
-                <hr />
-                <DefaultDropdownItem title={"Logout"} />
               </>
             }
           />

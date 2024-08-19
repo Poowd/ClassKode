@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { DefaultButton } from "../../../component/button/DefaultButton";
-import { GrView } from "react-icons/gr";
 import { RiStickyNoteAddLine } from "react-icons/ri";
-import { PiGearSixFill } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
 import { MdArrowBackIosNew } from "react-icons/md";
+import useConfiguration from "../../../hook/useConfiguration";
+import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
+import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function Program() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -27,13 +30,28 @@ export function Program() {
         <>
           <DefaultButton
             class=""
-            icon={<MdArrowBackIosNew />}
+            icon={info.icons.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" />
-          <Link to={"/institution/program/create/0"}>
-            <DefaultButton class="btn-primary" icon={<RiStickyNoteAddLine />} />
-          </Link>
+          <DefaultDropdown
+            class="border p-2"
+            reversed={true}
+            icon={info.icons.filter}
+            dropdownitems={
+              <>
+                <DefaultDropdownItem title={"Profile"} />
+                <hr />
+                <DefaultDropdownItem title={"Logout"} />
+              </>
+            }
+          />
+          <LinkButton
+            to={"/institution/program/create/0"}
+            class="btn-primary"
+            textclass="text-white"
+            icon={info.icons.add}
+          />
         </>
       }
       list={data.map((item, i) => (
@@ -43,6 +61,7 @@ export function Program() {
           slot3={item.PRG_Created}
           slot4={"Available"}
           slot5={"2024-2025"}
+          view={info.icons.view}
           link={`/institution/program/view/${item.PRGID}`}
           state={{ data: item }}
         />

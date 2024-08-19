@@ -10,10 +10,12 @@ import { LinkButton } from "../../../component/button/LinkButton";
 import { ListCard } from "../../../component/card/ListCard";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { LuPackageOpen } from "react-icons/lu";
+import useConfiguration from "../../../hook/useConfiguration";
 
 export function Curriculum() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const [info] = useConfiguration();
   const [get, post] = useDatabase();
 
   const [curr, setCurr] = useState([]);
@@ -42,7 +44,8 @@ export function Curriculum() {
                 state={{
                   data: current,
                 }}
-                icon={<GrView />}
+                text={`Details`}
+                icon={info.icons.view}
               />
             </header>
             <main className="mt-2">
@@ -57,7 +60,7 @@ export function Curriculum() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={<MdArrowBackIosNew />}
+                  icon={info.icons.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
@@ -68,7 +71,7 @@ export function Curriculum() {
                   state={{
                     curriculum: current,
                   }}
-                  icon={<RiStickyNoteAddLine />}
+                  icon={info.icons.add}
                 />
               </div>
             </div>
@@ -83,15 +86,9 @@ export function Curriculum() {
                   slot3={item.CRR_Created}
                   slot4={"n/a"}
                   slot5={"n/a"}
-                  link={null}
+                  view={info.icons.package}
+                  link={"/utilities/curriculum/setup"}
                   state={null}
-                  custom={
-                    <DefaultButton
-                      class="custom-bg-primary-light px-2"
-                      icon={<LuPackageOpen />}
-                      function={() => navigate("/utilities/curriculum/setup")}
-                    />
-                  }
                 />
               ))
             : "none"

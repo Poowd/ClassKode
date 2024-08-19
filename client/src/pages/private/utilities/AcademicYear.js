@@ -11,9 +11,11 @@ import { LuUser2 } from "react-icons/lu";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { GrView } from "react-icons/gr";
+import useConfiguration from "../../../hook/useConfiguration";
 
 export function AcademicYear() {
   const navigate = useNavigate();
+  const [info] = useConfiguration();
   const [get, post] = useDatabase();
 
   const [ay, setAY] = useState([]);
@@ -39,7 +41,8 @@ export function AcademicYear() {
               textclass="text-white"
               to={`/institution/academic-year/view/${current.ACYID}`}
               state={{ data: current }}
-              icon={<GrView />}
+              text={`Details`}
+              icon={info.icons.view}
             />
           </header>
           <main className="mt-2">
@@ -54,7 +57,7 @@ export function AcademicYear() {
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
                 class=""
-                icon={<MdArrowBackIosNew />}
+                icon={info.icons.back}
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -62,7 +65,7 @@ export function AcademicYear() {
                 class="btn-primary px-2"
                 textclass="text-white"
                 to={"/institution/academic-year/create/0"}
-                icon={<RiStickyNoteAddLine />}
+                icon={info.icons.add}
               />
             </div>
           </div>
@@ -84,14 +87,14 @@ export function AcademicYear() {
                     <>
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
-                        icon={<LuUser2 />}
+                        icon={info.icons.user}
                         function={() =>
                           navigate("/utilities/academicyear/assigment")
                         }
                       />
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
-                        icon={<LuUsers2 />}
+                        icon={info.icons.users}
                         function={() =>
                           navigate("/utilities/academicyear/projection")
                         }

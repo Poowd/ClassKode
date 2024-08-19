@@ -31,9 +31,13 @@ import { GeneratingSchedules } from "./pages/components/Generating Schedules";
 import { TimeProblem } from "./pages/components/TimeProblem";
 import { ImagetoDB } from "./pages/components/ImagetoDB";
 import { Login } from "./pages/public/Login";
+import { Homepage } from "./pages/public/Homepage";
+import useConfiguration from "./hook/useConfiguration";
 
 function App() {
   const navigate = useNavigate();
+  const [info] = useConfiguration();
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // Simulate an API call
@@ -45,6 +49,13 @@ function App() {
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
+  const handleLogout = () => {
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("loggedin");
+    navigate("/");
+    window.location.reload(true);
+  };
+
   return (
     <main className="overflow-hidden">
       {/* Loading Screen */}
@@ -54,23 +65,17 @@ function App() {
       <Routes>
         {status === true ? (
           <>
-            <Route
-              path="/testing/bgcolour"
-              element={<BackgroundColours />}
-            ></Route>
-            <Route path="/testing/imgtodb" element={<ImagetoDB />}></Route>
-            <Route path="/testing/time" element={<TimeProblem />}></Route>
-            <Route
-              path="/testing/gensched"
-              element={<GeneratingSchedules />}
-            ></Route>
-
-            {loggeduser[0].UserType === "Manager" ? (
+            {loggeduser[0].UserType === "Manager" ||
+            loggeduser[0].UserType === "Developer" ? (
               <Route path={"/"}>
                 <Route
                   path={"/"}
                   element={
                     <MainLayout
+                      usericon={info.icons.hiddenuser}
+                      helpicon={info.icons.help}
+                      menuicon={info.icons.menu}
+                      logout={handleLogout}
                       user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                       content={<Dashboard />}
                     />
@@ -81,6 +86,10 @@ function App() {
                     path={"/institution/department"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Department />}
                       />
@@ -90,6 +99,10 @@ function App() {
                     path={"/institution/program"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Program />}
                       />
@@ -99,6 +112,10 @@ function App() {
                     path={"/institution/course"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Course />}
                       />
@@ -108,6 +125,10 @@ function App() {
                     path={"/institution/section"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Section />}
                       />
@@ -117,6 +138,10 @@ function App() {
                     path={"/institution/room"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Room />}
                       />
@@ -126,6 +151,10 @@ function App() {
                     path={"/institution/coach"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Coach />}
                       />
@@ -136,6 +165,10 @@ function App() {
                     path={"/institution/:module/:form/:id"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<DataController />}
                       />
@@ -148,6 +181,8 @@ function App() {
                       path={"/utilities/curriculum/"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<Curriculum />}
                         />
@@ -157,6 +192,8 @@ function App() {
                       path={"/utilities/curriculum/setup"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<CourseSetup />}
                         />
@@ -168,6 +205,8 @@ function App() {
                       path={"/utilities/academicyear/"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<AcademicYear />}
                         />
@@ -177,6 +216,8 @@ function App() {
                       path={"/utilities/academicyear/assigment"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<CoachAssignment />}
                         />
@@ -186,6 +227,8 @@ function App() {
                       path={"/utilities/academicyear/projection"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<SectionProjection />}
                         />
@@ -197,6 +240,8 @@ function App() {
                       path={"/utilities/schedule/"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<Schedule />}
                         />
@@ -206,6 +251,8 @@ function App() {
                       path={"/utilities/schedule/room"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<RoomSchedule />}
                         />
@@ -215,6 +262,8 @@ function App() {
                       path={"/utilities/schedule/section"}
                       element={
                         <MainLayout
+                          menuicon={info.icons.menu}
+                          logout={handleLogout}
                           user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                           content={<SectionSchedule />}
                         />
@@ -225,6 +274,10 @@ function App() {
                     path={"/utilities/locator"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Locator />}
                       />
@@ -236,6 +289,10 @@ function App() {
                     path={"/miscellaneous/archive"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Archives />}
                       />
@@ -245,6 +302,10 @@ function App() {
                     path={"/miscellaneous/log"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Logs />}
                       />
@@ -254,6 +315,10 @@ function App() {
                     path={"/miscellaneous/user"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<User />}
                       />
@@ -263,6 +328,10 @@ function App() {
                     path={"/miscellaneous/setup"}
                     element={
                       <MainLayout
+                        usericon={info.icons.hiddenuser}
+                        helpicon={info.icons.help}
+                        menuicon={info.icons.menu}
+                        logout={handleLogout}
                         user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                         content={<Setup />}
                       />
@@ -280,23 +349,26 @@ function App() {
               <Route path={"/"}>
                 <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
+            ) : loggeduser[0].UserType === "Developer" ? (
+              <Route path={"/testing"}>
+                <Route
+                  path="/testing/bgcolour"
+                  element={<BackgroundColours />}
+                ></Route>
+                <Route path="/testing/imgtodb" element={<ImagetoDB />}></Route>
+                <Route path="/testing/time" element={<TimeProblem />}></Route>
+                <Route
+                  path="/testing/gensched"
+                  element={<GeneratingSchedules />}
+                ></Route>
+              </Route>
             ) : (
               ""
             )}
           </>
         ) : (
           <>
-            <Route
-              path={"/"}
-              element={
-                <main>
-                  <h1>Not Authenticated</h1>
-                  <Link to={"/login"} className="btn btn-primary">
-                    Login
-                  </Link>
-                </main>
-              }
-            ></Route>
+            <Route path={"/"} element={<Homepage />}></Route>
             <Route path={"/login"} element={<Login />}></Route>
             <Route path={"/*"} element={<Error404 />}></Route>
           </>

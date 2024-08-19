@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export class Error404 extends React.Component {
+export class NotAuthenticated extends React.Component {
   render() {
     return (
       <main
@@ -9,10 +9,10 @@ export class Error404 extends React.Component {
         style={{ height: "100vh" }}
       >
         <main>
-          <h1>Error 404</h1>
-          <p>The page you are trying to access does not existing.</p>
-          <Link to={-1} className="btn btn-primary">
-            Back
+          <h1>Not Authenticated</h1>
+          <p>You are not authenticated</p>
+          <Link to={"/login"} className="btn btn-primary">
+            Login
           </Link>
         </main>
       </main>

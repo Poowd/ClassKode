@@ -14,9 +14,9 @@ export function CurriculumSelector() {
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [data, setData] = useState({
-    Curriculum: "",
-    Department: "",
-    Program: "",
+    Curriculum: "a",
+    Department: "a",
+    Program: "a",
   });
   const [department, setDepartment] = useState([]);
   const [program, setProgram] = useState([]);

@@ -26,10 +26,10 @@ import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAss
 import { SectionProjection } from "./pages/private/utilities/academicyear/SectionProjection";
 import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
 import { FullscreenLoader } from "./component/loader/FullscreenLoader";
-import { BackgroundColours } from "./pages/components/BackgroundColours";
-import { GeneratingSchedules } from "./pages/components/Generating Schedules";
-import { TimeProblem } from "./pages/components/TimeProblem";
-import { ImagetoDB } from "./pages/components/ImagetoDB";
+import { BackgroundColours } from "./pages/testing/BackgroundColours";
+import { GeneratingSchedules } from "./pages/testing/Generating Schedules";
+import { TimeProblem } from "./pages/testing/TimeProblem";
+import { ImagetoDB } from "./pages/testing/ImagetoDB";
 import { Login } from "./pages/public/Login";
 import { Homepage } from "./pages/public/Homepage";
 import useConfiguration from "./hook/useConfiguration";
@@ -67,277 +67,114 @@ function App() {
           <>
             {loggeduser[0].UserType === "Manager" ||
             loggeduser[0].UserType === "Developer" ? (
-              <Route path={"/"}>
-                <Route
-                  path={"/"}
-                  element={
-                    <MainLayout
-                      usericon={info.icons.hiddenuser}
-                      helpicon={info.icons.help}
-                      menuicon={info.icons.menu}
-                      logout={handleLogout}
-                      user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                      content={<Dashboard />}
-                    />
-                  }
-                ></Route>
-                <Route path={"/institution"}>
-                  <Route
-                    path={"/institution/department"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Department />}
-                      />
+              <Route
+                path={"/"}
+                element={
+                  <MainLayout
+                    usericon={info.icons.hiddenuser}
+                    helpicon={info.icons.help}
+                    menuicon={info.icons.menu}
+                    logout={handleLogout}
+                    user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                    content={
+                      <Routes>
+                        <Route path={"/"} element={<Dashboard />}></Route>
+                        <Route path={"/institution"}>
+                          <Route
+                            path={"/institution/department"}
+                            element={<Department />}
+                          ></Route>
+                          <Route
+                            path={"/institution/program"}
+                            element={<Program />}
+                          ></Route>
+                          <Route
+                            path={"/institution/course"}
+                            element={<Course />}
+                          ></Route>
+                          <Route
+                            path={"/institution/section"}
+                            element={<Section />}
+                          ></Route>
+                          <Route
+                            path={"/institution/room"}
+                            element={<Room />}
+                          ></Route>
+                          <Route
+                            path={"/institution/coach"}
+                            element={<Coach />}
+                          ></Route>
+                          <Route
+                            path={"/institution/:module/:form/:id"}
+                            element={<DataController />}
+                          ></Route>
+                        </Route>
+                        <Route path={"/utilities"}>
+                          <Route path={"/utilities/curriculum"}>
+                            <Route
+                              path={"/utilities/curriculum/"}
+                              element={<Curriculum />}
+                            ></Route>
+                            <Route
+                              path={"/utilities/curriculum/setup"}
+                              element={<CourseSetup />}
+                            ></Route>
+                          </Route>
+
+                          <Route path={"/utilities/academicyear"}>
+                            <Route
+                              path={"/utilities/academicyear/"}
+                              element={<AcademicYear />}
+                            ></Route>
+                            <Route
+                              path={"/utilities/academicyear/assigment"}
+                              element={<CoachAssignment />}
+                            ></Route>
+                            <Route
+                              path={"/utilities/academicyear/projection"}
+                              element={<SectionProjection />}
+                            ></Route>
+                          </Route>
+
+                          <Route path={"/utilities/schedule"}>
+                            <Route
+                              path={"/utilities/schedule/"}
+                              element={<Schedule />}
+                            ></Route>
+                            <Route
+                              path={"/utilities/schedule/room"}
+                              element={<Room />}
+                            ></Route>
+                            <Route
+                              path={"/utilities/schedule/section"}
+                              element={<SectionProjection />}
+                            ></Route>
+                          </Route>
+
+                          <Route path={"/utilities"}>
+                            <Route
+                              path={"/utilities/locator/"}
+                              element={<Locator />}
+                            ></Route>
+                          </Route>
+                        </Route>
+
+                        <Route path={"/miscellaneous/"}>
+                          <Route
+                            path={"/miscellaneous/archive"}
+                            element={<Archives />}
+                          ></Route>
+                          <Route
+                            path={"/miscellaneous/log"}
+                            element={<Logs />}
+                          ></Route>
+                          <Route path={"/log/log"} element={<Logs />}></Route>
+                        </Route>
+                      </Routes>
                     }
-                  ></Route>
-                  <Route
-                    path={"/institution/program"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Program />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/institution/course"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Course />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/institution/section"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Section />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/institution/room"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Room />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/institution/coach"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Coach />}
-                      />
-                    }
-                  ></Route>
-                  {/* a */}
-                  <Route
-                    path={"/institution/:module/:form/:id"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<DataController />}
-                      />
-                    }
-                  ></Route>
-                </Route>
-                <Route path={"/utilities"}>
-                  <Route path={"/utilities/curriculum"}>
-                    <Route
-                      path={"/utilities/curriculum/"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<Curriculum />}
-                        />
-                      }
-                    ></Route>
-                    <Route
-                      path={"/utilities/curriculum/setup"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<CourseSetup />}
-                        />
-                      }
-                    ></Route>
-                  </Route>
-                  <Route path={"/utilities/academicyear"}>
-                    <Route
-                      path={"/utilities/academicyear/"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<AcademicYear />}
-                        />
-                      }
-                    ></Route>
-                    <Route
-                      path={"/utilities/academicyear/assigment"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<CoachAssignment />}
-                        />
-                      }
-                    ></Route>
-                    <Route
-                      path={"/utilities/academicyear/projection"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<SectionProjection />}
-                        />
-                      }
-                    ></Route>
-                  </Route>
-                  <Route path={"/utilities/schedule"}>
-                    <Route
-                      path={"/utilities/schedule/"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<Schedule />}
-                        />
-                      }
-                    ></Route>
-                    <Route
-                      path={"/utilities/schedule/room"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<RoomSchedule />}
-                        />
-                      }
-                    ></Route>
-                    <Route
-                      path={"/utilities/schedule/section"}
-                      element={
-                        <MainLayout
-                          menuicon={info.icons.menu}
-                          logout={handleLogout}
-                          user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                          content={<SectionSchedule />}
-                        />
-                      }
-                    ></Route>
-                  </Route>
-                  <Route
-                    path={"/utilities/locator"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Locator />}
-                      />
-                    }
-                  ></Route>
-                </Route>
-                <Route path={"/miscellaneous"}>
-                  <Route
-                    path={"/miscellaneous/archive"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Archives />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/miscellaneous/log"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Logs />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/miscellaneous/user"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<User />}
-                      />
-                    }
-                  ></Route>
-                  <Route
-                    path={"/miscellaneous/setup"}
-                    element={
-                      <MainLayout
-                        usericon={info.icons.hiddenuser}
-                        helpicon={info.icons.help}
-                        menuicon={info.icons.menu}
-                        logout={handleLogout}
-                        user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
-                        content={<Setup />}
-                      />
-                    }
-                  ></Route>
-                </Route>
+                  />
+                }
+              >
                 <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
             ) : loggeduser[0].UserType === "Admin" ? (

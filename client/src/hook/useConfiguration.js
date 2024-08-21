@@ -22,6 +22,7 @@ import { VscSettingsGear } from "react-icons/vsc";
 import { BsMenuButtonWideFill } from "react-icons/bs";
 import { FaUserSecret } from "react-icons/fa6";
 import { LuHelpCircle } from "react-icons/lu";
+import { MdRestore } from "react-icons/md";
 
 export default function useConfiguration() {
   const [info, setInfo] = useState({
@@ -47,6 +48,7 @@ export default function useConfiguration() {
       back: <IoArrowBackOutline />,
       hiddenuser: <FaUserSecret />,
       help: <LuHelpCircle />,
+      restore: <MdRestore />,
     },
   });
 

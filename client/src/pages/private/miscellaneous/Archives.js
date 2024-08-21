@@ -12,13 +12,14 @@ import { useNavigate } from "react-router-dom";
 import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../hook/useDatabase";
 import { ListCard } from "../../../component/card/ListCard";
-import { MdRestore } from "react-icons/md";
+import useConfiguration from "../../../hook/useConfiguration";
 
 export function Archives() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
-  const LocalStorage = [JSON.parse(localStorage.getItem("selection"))];
+  const LocalStorage = [JSON.parse(localStorage.getItem("archive_selection"))];
 
   const [selection, setSelection] = useState("");
   const [department, setDepartment] = useState([]);
@@ -60,12 +61,12 @@ export function Archives() {
     // }
     if (selection === "") {
     } else {
-      localStorage.setItem("selection", JSON.stringify(selection));
+      localStorage.setItem("archive_selection", JSON.stringify(selection));
     }
   }, [selection]);
 
   useEffect(() => {
-    if (LocalStorage[0].selection === "") {
+    if (LocalStorage[0] === null) {
     } else {
       setSelection(LocalStorage[0]);
     }
@@ -152,7 +153,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-dept", { DPTID: dept.DPTID }, setData);
                     }}
@@ -173,7 +174,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-prg", { PRGID: prog.PRGID }, setData);
                     }}
@@ -194,7 +195,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-crs", { CRSID: cors.CRSID }, setData);
                     }}
@@ -219,7 +220,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-coach", { CCHID: coach.CCHID }, setData);
                     }}
@@ -240,7 +241,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-sect", { SCTID: sect.SCTID }, setData);
                     }}
@@ -261,7 +262,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-rom", { ROMID: rom.ROMID }, setData);
                     }}
@@ -282,7 +283,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-curr", { CRRID: crr.CRRID }, setData);
                     }}
@@ -303,7 +304,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-acy", { ACYID: acy.ACYID }, setData);
                     }}
@@ -324,7 +325,7 @@ export function Archives() {
                 custom={
                   <DefaultButton
                     class="btn-warning"
-                    icon={<MdRestore />}
+                    icon={info.icons.restore}
                     function={() => {
                       post("res-sched", { SCDID: sched.SCDID }, setData);
                     }}

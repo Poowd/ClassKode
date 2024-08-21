@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../../../hook/useDatabase";
-import useHandleChange from "../../../../hook/useHandleChange";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
@@ -11,16 +10,19 @@ import { LinkButton } from "../../../../component/button/LinkButton";
 import { ListCard } from "../../../../component/card/ListCard";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { BiLayer } from "react-icons/bi";
-import { RiMindMap } from "react-icons/ri";
 import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
+import useConfiguration from "../../../../hook/useConfiguration";
 
 export function CourseSetup() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
-  const LocalStorage = [JSON.parse(localStorage.getItem("data"))];
+  const LocalStorage = [
+    JSON.parse(localStorage.getItem("department_program_selection")),
+  ];
 
   const [curr, setCurr] = useState([]);
   const [curcurr, setCurCurr] = useState([]);
@@ -40,32 +42,33 @@ export function CourseSetup() {
     post("sel-dept", dept, setDept);
     post("sel-prg", prg, setPrg);
     post("sel-setup", setup, setSetup);
-  }, []);
+  }, [curr, curcurr, dept, prg, setup]);
 
   useEffect(() => {
     curcurr.map((curr, i) => setCurrent(curr));
   }, [curcurr]);
 
   useEffect(() => {
-    if (data.Department !== LocalStorage[0].Department) {
-      setData((prev) => ({ ...prev, Program: "" }));
-    }
+    // if (LocalStorage[0].Department !== null) {
+    //   if (data.Department !== LocalStorage[0].Department) {
+    //     setData((prev) => ({ ...prev, Program: "" }));
+    //   }
+    // }
     if (
       data.Curriculum === "" &&
       data.Department === "" &&
       data.Program === ""
     ) {
     } else {
-      localStorage.setItem("data", JSON.stringify(data));
+      localStorage.setItem(
+        "department_program_selection",
+        JSON.stringify(data)
+      );
     }
   }, [data]);
 
   useEffect(() => {
-    if (
-      LocalStorage[0].Curriculum === "" &&
-      LocalStorage[0].Department === "" &&
-      LocalStorage[0].Program === ""
-    ) {
+    if (LocalStorage[0] === null) {
     } else {
       setData(LocalStorage[0]);
     }
@@ -83,7 +86,7 @@ export function CourseSetup() {
               state={{
                 data: current,
               }}
-              icon={<GrView />}
+              icon={info.icons.view}
             />
           </header>
           <main className="mt-2">
@@ -98,14 +101,14 @@ export function CourseSetup() {
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
                 class=""
-                icon={<MdArrowBackIosNew />}
+                icon={info.icons.back}
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
               <DefaultDropdown
                 class="border px-2 btn-primary"
                 reversed={true}
-                icon={<BiLayer />}
+                icon={info.icons.view}
                 text={
                   data.Department !== ""
                     ? dept.map((item, i) =>
@@ -132,7 +135,7 @@ export function CourseSetup() {
               <DefaultDropdown
                 class="border px-2 btn-primary"
                 reversed={true}
-                icon={<BiLayer />}
+                icon={info.icons.view}
                 text={
                   data.Program !== ""
                     ? prg.map((item, i) =>
@@ -166,7 +169,7 @@ export function CourseSetup() {
                   department: data.Department,
                   curriculum: current,
                 }}
-                icon={<RiStickyNoteAddLine />}
+                icon={info.icons.add}
               />
             </div>
           </div>
@@ -183,6 +186,7 @@ export function CourseSetup() {
                 slot3={item.STP_Created}
                 slot4={item.Curriculum}
                 slot5={item.Program}
+                view={info.icons.view}
                 link={`/institution/course/view/${item.CRSID}`}
                 state={{ data: item }}
               />

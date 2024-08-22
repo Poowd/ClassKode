@@ -30,6 +30,7 @@ import { Homepage } from "./pages/public/Homepage";
 import useConfiguration from "./hook/useConfiguration";
 import { DefaultInput } from "./component/input/DefaultInput";
 import useHandleChange from "./hook/useHandleChange";
+import { DefaultButton } from "./component/button/DefaultButton";
 
 function App() {
   const navigate = useNavigate();
@@ -93,12 +94,12 @@ function App() {
                             name="First"
                             trigger={dataChange}
                           />
-                          <button
-                            className="btn-danger py-2"
-                            onClick={quicknav}
-                          >
-                            Enter
-                          </button>
+                          <DefaultButton
+                            class="btn-danger py-2"
+                            reversed={true}
+                            text="Enter"
+                            function={quicknav}
+                          />
                         </section>
                       </main>
                     }

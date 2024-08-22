@@ -3,6 +3,8 @@ const app = express();
 
 app.post("/gen-class", (req, res) => {
   try {
+    var semester = req.body.semester;
+
     var classes = [];
     var rooms = [];
     var coaches = [];
@@ -24,6 +26,7 @@ app.post("/gen-class", (req, res) => {
         Population: data.Population,
         Semester: data.Semester,
         Units: data.MaxUnits,
+        YearLevel: data.YearLevel,
       });
     });
     req.body.coachtype.map((data, i) => {
@@ -67,57 +70,63 @@ app.post("/gen-class", (req, res) => {
       Phases: {
         coach: function () {
           for (var i = 0; i < classes.length; i++) {
-            // if (classes[i].Semester === target_semester) {
-            if (!IS_LAB(classes[i].Component)) {
-              var coach = ADD_COACH(classes[i].Course);
-              schedules.push({
-                ACY: "AY-2425",
-                SCT: classes[i].Section,
-                CRS_CODE: classes[i].CRS_Code,
-                CRS: classes[i].Course,
-                SCHLID: coach.SCHLID,
-                CCH: coach.LastName,
-                CPT: classes[i].Component,
-                UNT: classes[i].Units,
-                SMS: classes[i].Semester,
-                ROM: "None",
-                DAY: "None",
-                STR_TME: "None",
-                END_TME: "None",
-                CPC: "None",
-                ROM_UNT: "None",
-                PPL: classes[i].Population,
-                CCH_UNT: ADD_COACH(classes[i].Course).Units + classes[i].Units,
-              });
-              ADD_UNITS_TO_COACH(coach, classes[i].Units);
-              for (var j = 0; j < classes.length; j++) {
-                // if (classes[i].Semester === target_semester) {
-                if (IS_LAB(classes[j].Component)) {
-                  if (
-                    classes[j].Section === classes[i].Section &&
-                    classes[j].Course === classes[i].Course
-                  ) {
-                    schedules.push({
-                      ACY: "AY-2425",
-                      SCT: classes[j].Section,
-                      CRS_CODE: classes[j].CRS_Code,
-                      CRS: classes[j].Course,
-                      SCHLID: coach.SCHLID,
-                      CCH: coach.LastName,
-                      CPT: classes[j].Component,
-                      UNT: classes[j].Units,
-                      SMS: classes[j].Semester,
-                      ROM: "None",
-                      DAY: "None",
-                      STR_TME: "None",
-                      END_TME: "None",
-                      CPC: "None",
-                      ROM_UNT: "None",
-                      PPL: classes[j].Population,
-                      CCH_UNT:
-                        ADD_COACH(classes[j].Course).Units + classes[j].Units,
-                    });
-                    ADD_UNITS_TO_COACH(coach, classes[j].Units);
+            if (classes[i].Semester === semester) {
+              if (!IS_LAB(classes[i].Component)) {
+                var coach = ADD_COACH(classes[i].Course);
+                schedules.push({
+                  ACY: "AY-2425",
+                  SCT: classes[i].Section,
+                  CRS_CODE: classes[i].CRS_Code,
+                  CRS: classes[i].Course,
+                  SCHLID: coach.SCHLID,
+                  CCH: coach.LastName,
+                  CPT: classes[i].Component,
+                  UNT: classes[i].Units,
+                  SMS: classes[i].Semester,
+                  YRLVL: classes[i].YearLevel,
+                  ROM: "None",
+                  DAY: "None",
+                  STR_TME: "None",
+                  END_TME: "None",
+                  CPC: "None",
+                  ROM_UNT: "None",
+                  PPL: classes[i].Population,
+                  CCH_UNT:
+                    ADD_COACH(classes[i].Course).Units + classes[i].Units,
+                });
+                ADD_UNITS_TO_COACH(coach, classes[i].Units);
+                for (var j = 0; j < classes.length; j++) {
+                  if (classes[i].Semester === semester) {
+                    if (IS_LAB(classes[j].Component)) {
+                      if (
+                        classes[j].Section === classes[i].Section &&
+                        classes[j].Course === classes[i].Course
+                      ) {
+                        schedules.push({
+                          ACY: "AY-2425",
+                          SCT: classes[j].Section,
+                          CRS_CODE: classes[j].CRS_Code,
+                          CRS: classes[j].Course,
+                          SCHLID: coach.SCHLID,
+                          CCH: coach.LastName,
+                          CPT: classes[j].Component,
+                          UNT: classes[j].Units,
+                          SMS: classes[j].Semester,
+                          YRLVL: classes[j].YearLevel,
+                          ROM: "None",
+                          DAY: "None",
+                          STR_TME: "None",
+                          END_TME: "None",
+                          CPC: "None",
+                          ROM_UNT: "None",
+                          PPL: classes[j].Population,
+                          CCH_UNT:
+                            ADD_COACH(classes[j].Course).Units +
+                            classes[j].Units,
+                        });
+                        ADD_UNITS_TO_COACH(coach, classes[j].Units);
+                      }
+                    }
                   }
                 }
               }
@@ -152,6 +161,7 @@ app.post("/gen-class", (req, res) => {
                       CPT: schedules[k].CPT,
                       UNT: schedules[k].UNT,
                       SMS: schedules[k].SMS,
+                      YRLVL: schedules[k].YRLVL,
                       ROM: rooms[j].Room,
                       DAY: days[i],
                       STR_TME: rooms[j].Units * 60 + 480,

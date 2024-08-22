@@ -15,6 +15,7 @@ import { AcademicYear } from "./pages/private/utilities/AcademicYear";
 import { Schedule } from "./pages/private/utilities/Schedule";
 import { Locator } from "./pages/private/utilities/Locator";
 import { Logs } from "./pages/private/miscellaneous/Logs";
+import { User } from "./pages/private/miscellaneous/User";
 import { Archives } from "./pages/private/miscellaneous/Archives";
 import { DataController } from "./pages/private/forms/DataController";
 import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAssignment";
@@ -199,8 +200,8 @@ function App() {
                             element={<Logs />}
                           ></Route>
                           <Route
-                            path={"/miscellaneous/logs"}
-                            element={<Logs />}
+                            path={"/miscellaneous/user"}
+                            element={<User />}
                           ></Route>
                         </Route>
                       </Routes>

@@ -8,11 +8,13 @@ import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { useNavigate } from "react-router-dom";
 import { ListCard } from "../../../component/card/ListCard";
+import useConfiguration from "../../../hook/useConfiguration";
 
 export function User() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [users, setUsers] = useState([]);
+  const [info] = useConfiguration();
 
   useEffect(() => {
     post("sel-users", users, setUsers);
@@ -23,12 +25,16 @@ export function User() {
       sidepanel={<NoDisplay />}
       control={
         <>
-          <DefaultButton class="" icon={``} function={() => navigate(-1)} />
+          <DefaultButton
+            class=""
+            icon={info.icons.back}
+            function={() => navigate(-1)}
+          />
           <DefaultInput placeholder="Search" />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={``}
+            icon={info.icons.filter}
             dropdownitems={
               <>
                 <DefaultDropdownItem title={"Profile"} />
@@ -39,7 +45,14 @@ export function User() {
           />
           <DefaultButton
             class="btn-primary"
-            icon={``}
+            icon={info.icons.generate}
+            function={() => {
+              navigate("");
+            }}
+          />
+          <DefaultButton
+            class="btn-primary"
+            icon={info.icons.add}
             function={() => {
               navigate("/institution/coach/create/0");
             }}
@@ -53,6 +66,7 @@ export function User() {
           slot3={item.UUID_Created}
           slot4={item.UserType}
           slot5={item.UUID_Status}
+          view={info.icons.details}
           link={null}
           state={null}
         />

@@ -51,8 +51,10 @@ app.post("/sel-sched", (req, res) => {
 
 app.post("/sel-exp-class", (req, res) => {
   const sql = `
-      SELECT course.CRS_Code, course.Course, section.Section, setup.Component, projection.Population, course_component.MaxUnits, section.Semester
+      SELECT course.CRS_Code, course.Course, section.Section, setup.Component, projection.Population, course_component.MaxUnits, section.Semester, yearlevel.YearLevel
       FROM section
+      INNER JOIN yearlevel
+        ON yearlevel.YearLevel = section.YearLevel
       INNER JOIN projection
         ON projection.Section = section.Section
       INNER JOIN setup

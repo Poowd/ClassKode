@@ -41,8 +41,29 @@ export function AcademicYear() {
             />
           </header>
           <main className="mt-2">
-            <p className="p-0 m-0 fw-semibold text-secondary">Academic Year</p>
-            <h5>{current.AcademicYear}</h5>
+            <section>
+              <p className="p-0 m-0 fw-semibold text-secondary">
+                Academic Year
+              </p>
+              <h5>{current.AcademicYear}</h5>
+            </section>
+            <main className="mt-2">
+              <section className="px-2 m-0 d-flex flex-column">
+                <span>{`[ 0 ] Total Coachs`}</span>
+                <section className="px-5 d-flex flex-column">
+                  <span>{`[ 0 ] Fulltime`}</span>
+                  <span>{`[ 0 ] Parttime`}</span>
+                </section>
+                <span>{`[ 0 ] Total Sections`}</span>
+                <span>{`[ 0 ] Total Population`}</span>
+                <section className="px-5 d-flex flex-column">
+                  <span>{`[ 0 ] First Year`}</span>
+                  <span>{`[ 0 ] Second Year`}</span>
+                  <span>{`[ 0 ] Third Year`}</span>
+                  <span>{`[ 0 ] Fourth Year`}</span>
+                </section>
+              </section>
+            </main>
           </main>
         </main>
       }

@@ -45,8 +45,19 @@ export function Curriculum() {
               />
             </header>
             <main className="mt-2">
-              <p className="p-0 m-0 fw-semibold text-secondary">Curriculum</p>
-              <h5>{current.Curriculum}</h5>
+              <section>
+                <p className="p-0 m-0 fw-semibold text-secondary">Curriculum</p>
+                <h5>{current.Curriculum}</h5>
+              </section>
+              <section className="px-2 m-0 d-flex flex-column">
+                <span>{`[ 0 ] Total Departments`}</span>
+                <span>{`[ 0 ] Total Programs`}</span>
+                <span>{`[ 0 ] Total Courses`}</span>
+                <section className="px-5 d-flex flex-column">
+                  <span>{`[ 0 ] Lectures`}</span>
+                  <span>{`[ 0 ] Laboratories`}</span>
+                </section>
+              </section>
             </main>
           </main>
         }

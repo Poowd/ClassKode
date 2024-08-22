@@ -1,6 +1,6 @@
 import React from "react";
 
-export class DefaultButton extends React.Component {
+export default class DefaultButton extends React.Component {
   render() {
     return (
       <button

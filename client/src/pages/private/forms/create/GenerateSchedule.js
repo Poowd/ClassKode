@@ -9,7 +9,6 @@ import { FaRegSave } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../../hook/useDatabase";
 import useTimeFormat from "../../../../hook/useTimeFormat";
-import { GrSchedules } from "react-icons/gr";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();

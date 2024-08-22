@@ -1,8 +1,5 @@
 import React from "react";
-import { DefaultCard } from "../../component/card/DefaultCard";
 import { NoDisplay } from "../../component/placeholder/NoDisplay";
-import { DefaultButton } from "../../component/button/DefaultButton";
-import { FaFilter } from "react-icons/fa";
 
 export class UtilitiesTemplate extends React.Component {
   render() {

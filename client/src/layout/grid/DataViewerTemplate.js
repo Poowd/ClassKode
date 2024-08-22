@@ -1,5 +1,4 @@
 import React from "react";
-import { NoDisplay } from "../../component/placeholder/NoDisplay";
 
 export class DataViewerTemplate extends React.Component {
   render() {

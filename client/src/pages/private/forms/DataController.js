@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
+import React from "react";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
 import { useNavigate, useParams } from "react-router-dom";
 import { CreateCoach } from "./create/CreateCoach";

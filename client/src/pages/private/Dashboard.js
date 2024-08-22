@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DashboardTemplate } from "../../layout/grid/DashboardTemplate";
 import { DashboardCardContent } from "../../component/placeholder/content/DashboardCardContent";
-import { LuCalendarDays } from "react-icons/lu";
 import { DefaultButton } from "../../component/button/DefaultButton";
-import { TbWallpaper } from "react-icons/tb";
-import { LuCalendarClock } from "react-icons/lu";
-import { MdOutlineEmojiEvents } from "react-icons/md";
 import useChart from "../../hook/chart/useChart";
 import useDatabase from "../../hook/useDatabase";
 import { useNavigate } from "react-router-dom";

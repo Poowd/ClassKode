@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
 import { DefaultButton } from "../../../component/button/DefaultButton";
-import { RiStickyNoteAddLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
-import { MdArrowBackIosNew } from "react-icons/md";
 import useConfiguration from "../../../hook/useConfiguration";
 import { LinkButton } from "../../../component/button/LinkButton";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";

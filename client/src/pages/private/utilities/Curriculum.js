@@ -2,14 +2,10 @@ import React, { useEffect, useState } from "react";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { RiStickyNoteAddLine } from "react-icons/ri";
 import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceTemplate";
-import { GrView } from "react-icons/gr";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { LinkButton } from "../../../component/button/LinkButton";
 import { ListCard } from "../../../component/card/ListCard";
-import { MdArrowBackIosNew } from "react-icons/md";
-import { LuPackageOpen } from "react-icons/lu";
 import useConfiguration from "../../../hook/useConfiguration";
 
 export function Curriculum() {

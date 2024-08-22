@@ -23,6 +23,7 @@ import { BsMenuButtonWideFill } from "react-icons/bs";
 import { FaUserSecret } from "react-icons/fa6";
 import { LuHelpCircle } from "react-icons/lu";
 import { MdRestore } from "react-icons/md";
+import { MdOutlineQuickreply } from "react-icons/md";
 
 export default function useConfiguration() {
   const [info, setInfo] = useState({
@@ -49,6 +50,7 @@ export default function useConfiguration() {
       hiddenuser: <FaUserSecret />,
       help: <LuHelpCircle />,
       restore: <MdRestore />,
+      quicknav: <MdOutlineQuickreply />,
     },
   });
 

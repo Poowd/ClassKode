@@ -1,5 +1,4 @@
 import React from "react";
-import { UtilitiesTemplate } from "../../../layout/grid/UtilitiesTemplate";
 import vid from "../../../assets/videos/duk.mp4";
 
 export function Logs() {

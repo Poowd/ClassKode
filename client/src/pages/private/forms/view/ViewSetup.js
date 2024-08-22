@@ -6,7 +6,6 @@ import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
 import { DataControlView } from "../../../../component/datacontrolview/DataControlView";
 import { DataControlViewItem } from "../../../../component/datacontrolview/DataControlViewItem";
-import { GrView } from "react-icons/gr";
 import { LuFileEdit } from "react-icons/lu";
 import { LuFolderArchive } from "react-icons/lu";
 import { LinkButton } from "../../../../component/button/LinkButton";

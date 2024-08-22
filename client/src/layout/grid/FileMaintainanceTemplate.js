@@ -1,8 +1,4 @@
 import React from "react";
-import { DefaultDropdown } from "../../component/dropdown/default/DefaultDropdown";
-import { NoDisplay } from "../../component/placeholder/NoDisplay";
-import { DefaultButton } from "../../component/button/DefaultButton";
-import { DefaultInput } from "../../component/input/DefaultInput";
 
 export class FileMaintainanceTemplate extends React.Component {
   render() {

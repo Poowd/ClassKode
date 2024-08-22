@@ -1,7 +1,6 @@
 import "./App.css";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate, Form, Link } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
 import { Error404 } from "./component/placeholder/Error404";
@@ -15,13 +14,9 @@ import { Coach } from "./pages/private/file maintainance/Coach";
 import { AcademicYear } from "./pages/private/utilities/AcademicYear";
 import { Schedule } from "./pages/private/utilities/Schedule";
 import { Locator } from "./pages/private/utilities/Locator";
-import { Setup } from "./pages/private/miscellaneous/Setup";
-import { User } from "./pages/private/miscellaneous/User";
 import { Logs } from "./pages/private/miscellaneous/Logs";
 import { Archives } from "./pages/private/miscellaneous/Archives";
 import { DataController } from "./pages/private/forms/DataController";
-import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
-import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 import { CoachAssignment } from "./pages/private/utilities/academicyear/CoachAssignment";
 import { SectionProjection } from "./pages/private/utilities/academicyear/SectionProjection";
 import { CourseSetup } from "./pages/private/utilities/curriculum/CourseSetup";
@@ -33,10 +28,17 @@ import { ImagetoDB } from "./pages/testing/ImagetoDB";
 import { Login } from "./pages/public/Login";
 import { Homepage } from "./pages/public/Homepage";
 import useConfiguration from "./hook/useConfiguration";
+import { DefaultInput } from "./component/input/DefaultInput";
+import useHandleChange from "./hook/useHandleChange";
+import { DefaultButton } from "./component/button/DefaultButton";
 
 function App() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
+  const [data, setData] = useState({
+    First: "",
+  });
+  const [dataChange] = useHandleChange(setData);
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -56,6 +58,16 @@ function App() {
     window.location.reload(true);
   };
 
+  const quicknav = () => {
+    switch (`${data.First}`) {
+      case "coach":
+        navigate(`/institution/${data.First}`);
+        break;
+      default:
+        navigate(`/`);
+    }
+  };
+
   return (
     <main className="overflow-hidden">
       {/* Loading Screen */}
@@ -73,12 +85,30 @@ function App() {
                   <MainLayout
                     usericon={info.icons.hiddenuser}
                     helpicon={info.icons.help}
+                    quicknav={info.icons.quicknav}
+                    quicknavaction={
+                      <main>
+                        <section className="d-flex gap-1">
+                          <DefaultInput
+                            label="inputs"
+                            name="First"
+                            trigger={dataChange}
+                          />
+                          <DefaultButton
+                            class="btn-danger py-2"
+                            reversed={true}
+                            text="Enter"
+                            function={quicknav}
+                          />
+                        </section>
+                      </main>
+                    }
                     menuicon={info.icons.menu}
                     logout={handleLogout}
                     user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                     content={
                       <Routes>
-                        <Route path={"/"} element={<Dashboard />}></Route>
+                        <Route index element={<Dashboard />}></Route>
                         <Route path={"/institution"}>
                           <Route
                             path={"/institution/department"}
@@ -168,7 +198,10 @@ function App() {
                             path={"/miscellaneous/log"}
                             element={<Logs />}
                           ></Route>
-                          <Route path={"/log/log"} element={<Logs />}></Route>
+                          <Route
+                            path={"/miscellaneous/logs"}
+                            element={<Logs />}
+                          ></Route>
                         </Route>
                       </Routes>
                     }
@@ -178,9 +211,25 @@ function App() {
                 <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
             ) : loggeduser[0].UserType === "Admin" ? (
-              <Route path={"/"}>
-                <Route path={"/"} element={"hi"}></Route>
-                <Route path={"/*"} element={<Error404 />}></Route>
+              <Route
+                path={"/"}
+                element={
+                  <MainLayout
+                    usericon={info.icons.hiddenuser}
+                    helpicon={info.icons.help}
+                    menuicon={info.icons.menu}
+                    logout={handleLogout}
+                    user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                    content={
+                      <Routes>
+                        <Route index element={<Dashboard />}></Route>
+                        <Route path={"/institution"}></Route>
+                      </Routes>
+                    }
+                  />
+                }
+              >
+                <Route path={"//*"} element={<Error404 />}></Route>
               </Route>
             ) : loggeduser[0].UserType === "User" ? (
               <Route path={"/"}>

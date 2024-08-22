@@ -1,6 +1,5 @@
 import React from "react";
 import { DefaultCard } from "../../component/card/DefaultCard";
-import { NoDisplay } from "../../component/placeholder/NoDisplay";
 
 export class DashboardTemplate extends React.Component {
   render() {

@@ -59,3 +59,20 @@ app.use(SaveImage);
 
 import Login from "./routes/logic/Login.js";
 app.use(Login);
+
+// new Router(app, db);
+// app.get('/', function(req, res) {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
+
+// class Router {
+//   constructor(app, db) {
+//     this.login(app, db);
+//   }
+
+//   login(app, db) {
+//     app.post("/login", (req, res) => {});
+//   }
+// }
+
+// module.exports = Router;

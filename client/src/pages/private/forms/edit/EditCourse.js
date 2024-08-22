@@ -9,7 +9,6 @@ import { SelectButtonItem } from "../../../../component/dropdown/select/SelectBu
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
-import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 
 export function EditCourse() {

@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../../component/input/FormInput";
-import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
-import { RadioGroup } from "../../../../component/radiogroup/RadioGroup";
-import { RadioButton } from "../../../../component/radiogroup/RadioButton";
-import { MultipleFormInput } from "../../../../component/input/MultipleFormInput";
-import { MultipleFormInputItem } from "../../../../component/input/MultipleFormInputItem";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
-import useValidation from "../../../../hook/useValidation";
-import useValidate from "../../../../hook/useValidate";
 import useDatabase from "../../../../hook/useDatabase";
 
 export function EditRoom() {

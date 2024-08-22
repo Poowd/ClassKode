@@ -6,11 +6,6 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { ListCard } from "../../../component/card/ListCard";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import { LinkButton } from "../../../component/button/LinkButton";
-import { LuUsers2 } from "react-icons/lu";
-import { LuUser2 } from "react-icons/lu";
-import { MdArrowBackIosNew } from "react-icons/md";
-import { RiStickyNoteAddLine } from "react-icons/ri";
-import { GrView } from "react-icons/gr";
 import useConfiguration from "../../../hook/useConfiguration";
 
 export function AcademicYear() {

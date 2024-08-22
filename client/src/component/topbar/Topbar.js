@@ -12,6 +12,8 @@ import { DefaultDropdownItem } from "../dropdown/default/DefaultDropdownItem";
 import Logo from "../../assets/logo/ClassKode Logo (1).png";
 import { ViewModal } from "../modal/ViewModal";
 import { useNavigate } from "react-router-dom";
+import { DefaultInput } from "../input/DefaultInput";
+import { LinkButton } from "../button/LinkButton";
 
 export class Topbar extends React.Component {
   render() {
@@ -33,7 +35,15 @@ export class Topbar extends React.Component {
             </h5>
           </div>
         </div>
-        <div className="d-flex gap-2">
+        <div className="d-flex">
+          <DefaultButton
+            class="text-light px-2"
+            reversed={true}
+            icon={this.props.quicknav}
+            function={() => {}}
+            toggle="modal"
+            target="#QuickNav"
+          />
           <DefaultButton class="text-light" icon={this.props.helpicon} />
           <DefaultButton
             class="text-light px-2"
@@ -49,11 +59,11 @@ export class Topbar extends React.Component {
 
         <ViewModal
           id={"MenuModal"}
-          title={<h6 className="text-center text-black">What to Do?</h6>}
+          title={<h6 className="text-center text-black">Menu</h6>}
           content={
             <>
               <DefaultButton
-                class="w-100 btn-danger"
+                class="w-100 btn-danger py-2"
                 reversed={true}
                 icon={<PiQuestionMarkBold />}
                 text="Logout"
@@ -61,6 +71,11 @@ export class Topbar extends React.Component {
               />
             </>
           }
+        />
+        <ViewModal
+          id={"QuickNav"}
+          title={<h6 className="text-center text-black">Quick Navigation</h6>}
+          content={this.props.quicknavaction}
         />
       </nav>
     );

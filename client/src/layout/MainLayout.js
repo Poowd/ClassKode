@@ -11,6 +11,8 @@ export class MainLayout extends React.Component {
             <Topbar
               user={this.props.user}
               logout={this.props.logout}
+              quicknav={this.props.quicknav}
+              quicknavaction={this.props.quicknavaction}
               menuicon={this.props.menuicon}
               helpicon={this.props.helpicon}
               usericon={this.props.usericon}

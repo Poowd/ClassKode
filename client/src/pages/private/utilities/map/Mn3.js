@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { PlotButton } from "../../../../component/button/PlotButton";
-import { PassiveModal } from "../../../../component/modal/PassiveModal";
 import useModal from "../../../../hook/useModal";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import useDatabase from "../../../../hook/useDatabase";
 import { ViewModal } from "../../../../component/modal/ViewModal";
-import { MdArrowBackIosNew } from "react-icons/md";
 import { RoomCard } from "../../../../component/card/RoomCard";
 
 export function Mn3() {

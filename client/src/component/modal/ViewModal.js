@@ -25,12 +25,8 @@ export class ViewModal extends React.Component {
                   aria-label="Close"
                 ></button>
               </div>
-              <hr />
-              <div>
-                <small>
-                  <p className="m-0 p-0 text-secondary">{this.props.content}</p>
-                </small>
-              </div>
+              <hr className="p-0 my-2 mx-0 border" />
+              <div>{this.props.content}</div>
             </div>
           </div>
         </div>

@@ -30,7 +30,7 @@ import { Homepage } from "./pages/public/Homepage";
 import useConfiguration from "./hook/useConfiguration";
 import { DefaultInput } from "./component/input/DefaultInput";
 import useHandleChange from "./hook/useHandleChange";
-import { DefaultButton } from "../src/component/button/DefaultButton";
+import { DefaultButton } from "./component/button/DefaultButton";
 
 function App() {
   const navigate = useNavigate();

@@ -33,7 +33,7 @@ import { DefaultInput } from "./component/input/DefaultInput";
 import useHandleChange from "./hook/useHandleChange";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
-import { DefaultButton } from "/component/button/DefaultButton";
+import { DefaultButton } from "./component/button/DefaultButton";
 
 function App() {
   const navigate = useNavigate();

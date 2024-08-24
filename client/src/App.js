@@ -33,6 +33,7 @@ import { DefaultInput } from "./component/input/DefaultInput";
 import useHandleChange from "./hook/useHandleChange";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
+import { DefaultButton } from "/component/button/DefaultButton";
 
 function App() {
   const navigate = useNavigate();
@@ -98,12 +99,12 @@ function App() {
                             name="First"
                             trigger={dataChange}
                           />
-                          {/* <DefaultButton
+                          <DefaultButton
                             class="btn-danger py-2 px-2"
                             reversed={true}
                             text="Enter"
                             function={quicknav}
-                          /> */}
+                          />
                         </section>
                       </main>
                     }

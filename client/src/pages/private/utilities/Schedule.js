@@ -59,13 +59,13 @@ export function Schedule() {
                     </>
                   }
                 />
-                <Link to={"/institution/schedule/generate/0"}>
+                <Link to={"/schedule/generate/0"}>
                   <DefaultButton
                     class="btn-primary"
                     icon={info.icons.generate}
                   />
                 </Link>
-                <Link to={"/institution/schedule/create/0"}>
+                <Link to={"/schedule/create/0"}>
                   <DefaultButton class="btn-primary" icon={info.icons.add} />
                 </Link>
               </div>

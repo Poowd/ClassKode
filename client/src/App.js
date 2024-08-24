@@ -34,6 +34,7 @@ import useHandleChange from "./hook/useHandleChange";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 import { DefaultButton } from "./component/button/DefaultButton";
+import FileInput from "./pages/testing/FileInput";
 
 function App() {
   const navigate = useNavigate();
@@ -113,7 +114,12 @@ function App() {
                     user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
                     content={
                       <Routes>
+                        <Route
+                          path="/testing/excel"
+                          element={<FileInput />}
+                        ></Route>
                         <Route index element={<Dashboard />}></Route>
+
                         <Route path={"/institution"}>
                           <Route
                             path={"/institution/department"}
@@ -139,11 +145,8 @@ function App() {
                             path={"/institution/coach"}
                             element={<Coach />}
                           ></Route>
-                          <Route
-                            path={"/institution/:module/:form/:id"}
-                            element={<DataController />}
-                          ></Route>
                         </Route>
+
                         <Route path={"/utilities"}>
                           <Route path={"/utilities/curriculum"}>
                             <Route
@@ -208,6 +211,11 @@ function App() {
                             element={<User />}
                           ></Route>
                         </Route>
+
+                        <Route
+                          path={"/:module/:form/:id"}
+                          element={<DataController />}
+                        ></Route>
                       </Routes>
                     }
                   />

@@ -46,7 +46,7 @@ export function Course() {
             }
           />
           <LinkButton
-            to={"/institution/course/create/0"}
+            to={"/course/create/0"}
             class="btn-primary"
             textclass="text-white"
             icon={info.icons.add}
@@ -61,7 +61,7 @@ export function Course() {
           slot4={item.Program}
           slot5={item.AcademicLevel}
           view={info.icons.view}
-          link={`/institution/course/view/${item.CRSID}`}
+          link={`/course/view/${item.CRSID}`}
           state={{ data: item }}
         />
       ))}

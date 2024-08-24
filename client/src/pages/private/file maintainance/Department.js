@@ -46,7 +46,7 @@ export function Department() {
             }
           />
           <LinkButton
-            to={"/institution/department/create/0"}
+            to={"/department/create/0"}
             class="btn-primary"
             textclass="text-white"
             icon={info.icons.add}
@@ -61,7 +61,7 @@ export function Department() {
           slot4={item.DPT_Abbreviation}
           slot5={`-`}
           view={info.icons.view}
-          link={`/institution/department/view/${item.DPTID}`}
+          link={`/department/view/${item.DPTID}`}
           state={{ data: item }}
         />
       ))}

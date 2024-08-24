@@ -46,7 +46,7 @@ export function AcademicYear() {
             <LinkButton
               class="btn-primary px-2"
               textclass="text-white"
-              to={`/institution/academic-year/view/${current.ACYID}`}
+              to={`/academic-year/view/${current.ACYID}`}
               state={{ data: current }}
               text={`Details`}
               icon={info.icons.view}
@@ -110,7 +110,7 @@ export function AcademicYear() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={"/institution/academic-year/create/0"}
+                to={"/academic-year/create/0"}
                 icon={info.icons.add}
               />
             </div>

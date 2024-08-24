@@ -46,7 +46,7 @@ export function Room() {
             }
           />
           <LinkButton
-            to={"/institution/room/create/0"}
+            to={"/room/create/0"}
             class="btn-primary"
             textclass="text-white"
             icon={info.icons.add}
@@ -61,7 +61,7 @@ export function Room() {
           slot4={item.Facility}
           slot5={`${item.Building} - ${item.Floor}`}
           view={info.icons.view}
-          link={`/institution/room/view/${item.ROMID}`}
+          link={`/room/view/${item.ROMID}`}
           state={{ data: item }}
         />
       ))}

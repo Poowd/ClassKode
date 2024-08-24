@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2024 at 10:32 PM
+-- Generation Time: Aug 24, 2024 at 07:30 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -784,12 +784,13 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`SCDID`, `Section`, `CRS_Code`, `Room`, `Component`, `Units`, `Day`, `StartTime`, `EndTime`, `SCHLID`, `ACY_Code`, `SCD_Created`, `SCD_Status`) VALUES
-('0000000001', 'CS102', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 480, 600, '02000000001', 'AY-2425', '2024-08-07 11:52:13', 'ACTIVE'),
-('0000000002', 'CS201', 'ENGI001', '301M', 'Major Lecture', 2, 'Monday', 720, 840, '02000000003', 'AY-2425', '2024-08-07 11:52:13', 'ACTIVE'),
-('0000000003', 'CS701', 'COSC003', '301M', 'Major Lecture', 2, 'Monday', 840, 960, '02000000002', 'AY-2425', '2024-08-07 11:52:13', 'ACTIVE'),
-('0000000004', 'CS102', 'COSC004', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 480, 660, '02000000001', 'AY-2425', '2024-08-07 11:52:13', 'ACTIVE'),
-('0000000005', 'CS103', 'COSC004', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 660, 840, '02000000001', 'AY-2425', '2024-08-07 11:52:13', 'ACTIVE'),
-('0000000006', 'CS103', 'COSC004', '301M', 'Major Lecture', 2, 'Thursday', 480, 2160, '02000000001', 'AY-2425', '2024-08-07 11:52:13', 'ACTIVE');
+('0000000001', 'CS201', 'ENGI001', '301M', 'Major Lecture', 2, 'Monday', 720, 840, '02000000003', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
+('0000000002', 'CS102', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 480, 600, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
+('0000000003', 'CS701', 'COSC003', '301M', 'Major Lecture', 2, 'Monday', 840, 960, '02000000002', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
+('0000000004', 'CS103', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 600, 720, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
+('0000000005', 'CS102', 'COSC004', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 480, 660, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
+('0000000006', 'CS702', 'COSC003', '301M', 'Major Lecture', 2, 'Monday', 960, 1080, '02000000002', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
+('0000000007', 'CS103', 'COSC004', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 660, 840, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE');
 
 --
 -- Triggers `schedule`

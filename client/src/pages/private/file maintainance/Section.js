@@ -48,13 +48,13 @@ export function Section() {
           <LinkButton
             class="btn-outline-primary"
             textclass="text-primary"
-            to={"/institution/section/generate/0"}
+            to={"/section/generate/0"}
             icon={info.icons.generate}
           />
           <LinkButton
             class="btn-primary"
             textclass="text-white"
-            to={"/institution/section/create/0"}
+            to={"/section/create/0"}
             icon={info.icons.add}
           />
         </>
@@ -67,7 +67,7 @@ export function Section() {
           slot4={item.AcademicLevel}
           slot5={`${item.YearLevel} - ${item.Semester}`}
           view={info.icons.view}
-          link={`/institution/section/view/${item.SCTID}`}
+          link={`/section/view/${item.SCTID}`}
           state={{ data: item }}
         />
       ))}

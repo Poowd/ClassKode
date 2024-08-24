@@ -1,6 +1,4 @@
-import axios from "axios";
 import { useState } from "react";
-import { PassiveModal } from "../component/modal/PassiveModal";
 
 export default function useModal() {
   const bootstrap = require("bootstrap");

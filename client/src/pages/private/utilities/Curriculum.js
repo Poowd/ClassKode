@@ -36,7 +36,7 @@ export function Curriculum() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={`/institution/curriculum/view/${current.CRRID}`}
+                to={`/curriculum/view/${current.CRRID}`}
                 state={{
                   data: current,
                 }}
@@ -74,7 +74,7 @@ export function Curriculum() {
                 <LinkButton
                   class="btn-primary px-2"
                   textclass="text-white"
-                  to={"/institution/curriculum/create/0"}
+                  to={"/curriculum/create/0"}
                   state={{
                     curriculum: current,
                   }}

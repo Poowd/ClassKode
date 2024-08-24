@@ -32,6 +32,7 @@ import { CreateAssignment } from "./create/CreateAssignment";
 import { CreateProjection } from "./create/CreateProjection";
 import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
+import GenerateUsers from "./generate/GenerateUsers";
 
 export function DataController() {
   const navigate = useNavigate();
@@ -165,6 +166,19 @@ export function DataController() {
               <h1>temp view</h1>
             ) : params.form === "generate" ? (
               <GenerateSchedule />
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "user" ? (
+            params.form === "create" ? (
+              <h1>temp create</h1>
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "generate" ? (
+              <GenerateUsers />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

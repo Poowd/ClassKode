@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 
 export default function useDatabase() {
   const link = "http://localhost:8081/";

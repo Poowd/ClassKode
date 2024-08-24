@@ -45,7 +45,7 @@ export function Program() {
             }
           />
           <LinkButton
-            to={"/institution/program/create/0"}
+            to={"/program/create/0"}
             class="btn-primary"
             textclass="text-white"
             icon={info.icons.add}
@@ -60,7 +60,7 @@ export function Program() {
           slot4={"Available"}
           slot5={"2024-2025"}
           view={info.icons.view}
-          link={`/institution/program/view/${item.PRGID}`}
+          link={`/program/view/${item.PRGID}`}
           state={{ data: item }}
         />
       ))}

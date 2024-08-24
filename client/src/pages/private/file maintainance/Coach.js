@@ -46,7 +46,7 @@ export function Coach() {
             }
           />
           <LinkButton
-            to={"/institution/coach/create/0"}
+            to={"/coach/create/0"}
             class="btn-primary"
             textclass="text-white"
             icon={info.icons.add}
@@ -63,7 +63,7 @@ export function Coach() {
           slot4={item.Department}
           slot5={item.Email}
           view={info.icons.view}
-          link={`/institution/coach/view/${item.CCHID}`}
+          link={`/coach/view/${item.CCHID}`}
           state={{ data: item }}
         />
       ))}

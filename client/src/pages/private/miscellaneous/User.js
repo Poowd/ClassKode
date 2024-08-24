@@ -47,14 +47,14 @@ export function User() {
             class="btn-primary"
             icon={info.icons.generate}
             function={() => {
-              navigate("");
+              navigate("/user/generate/0");
             }}
           />
           <DefaultButton
             class="btn-primary"
             icon={info.icons.add}
             function={() => {
-              navigate("/institution/coach/create/0");
+              navigate("/coach/create/0");
             }}
           />
         </>

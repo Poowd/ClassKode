@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useHandleChange from "../../hook/useHandleChange";
 import useDatabase from "../../hook/useDatabase";
 
 export function ImagetoDB() {

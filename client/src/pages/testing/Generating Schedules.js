@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../hook/useDatabase";
 import useTimeFormat from "../../hook/useTimeFormat";
-import { ScheduleList } from "../../component/card/ScheduleList";
 import { Link } from "react-router-dom";
 
 export function GeneratingSchedules() {

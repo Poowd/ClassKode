@@ -1,14 +1,7 @@
 import "../../App.css";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import stiLogo from "../../assets/imgs/sti-logo.png";
-import sticampus from "../../assets/imgs/sti-bg-campus.jpg";
-import classkodelogo from "../../assets/logo/ClassKode Logo (1).png";
+import React from "react";
+import { Link } from "react-router-dom";
 import "../../css/CustomColours.css";
-import { DefaultInput } from "../../component/input/DefaultInput";
-import { DefaultButton } from "../../component/button/DefaultButton";
-import { RiCloseFill } from "react-icons/ri";
 
 export function Homepage() {
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { IoClose } from "react-icons/io5";
 import { FaSchoolFlag } from "react-icons/fa6";

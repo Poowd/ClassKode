@@ -1,5 +1,4 @@
 import React from "react";
-import { GrView } from "react-icons/gr";
 import { DefaultButton } from "../button/DefaultButton";
 import { Link } from "react-router-dom";
 

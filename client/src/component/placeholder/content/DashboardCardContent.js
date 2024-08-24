@@ -1,5 +1,4 @@
 import React from "react";
-import { DefaultButton } from "../../button/DefaultButton";
 import { LuAlertCircle } from "react-icons/lu";
 
 export class DashboardCardContent extends React.Component {
@@ -11,9 +10,7 @@ export class DashboardCardContent extends React.Component {
           <div>{this.props.button}</div>
         </header>
         <main>
-          <h2 className="p-0 m-0 fw-bold text-white">
-            {this.props.content}
-          </h2>
+          <h2 className="p-0 m-0 fw-bold text-white">{this.props.content}</h2>
         </main>
         <small>
           <footer className="d-flex gap-1 align-items-center fw-semibold fw-light text-light">

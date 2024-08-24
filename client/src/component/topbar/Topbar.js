@@ -1,19 +1,10 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { DefaultButton } from "../button/DefaultButton";
-import { BiGridAlt } from "react-icons/bi";
-import { FiMoreVertical } from "react-icons/fi";
-import { FaUserSecret } from "react-icons/fa6";
 import { PiQuestionMarkBold } from "react-icons/pi";
 import { Sidebar } from "../sidebar/Sidebar";
 import { SidebarItemList } from "../sidebar/SidebarItemList";
-import { DefaultDropdown } from "../dropdown/default/DefaultDropdown";
-import { DefaultDropdownItem } from "../dropdown/default/DefaultDropdownItem";
 import Logo from "../../assets/logo/ClassKode Logo (1).png";
 import { ViewModal } from "../modal/ViewModal";
-import { useNavigate } from "react-router-dom";
-import { DefaultInput } from "../input/DefaultInput";
-import { LinkButton } from "../button/LinkButton";
 
 export class Topbar extends React.Component {
   render() {

@@ -17,9 +17,21 @@ export function AcademicYear() {
   const [curray, setCurrAY] = useState([]);
   const [current, setCurrent] = useState([]);
 
+  const [totalcoach, setTotalCoach] = useState(0);
+  const [totalparttime, setTotalParttime] = useState(0);
+  const [totalfulltime, setTotalFulltime] = useState(0);
+  const [totalsection, setTotalSection] = useState(0);
+
   useEffect(() => {
     post("sel-ay", ay, setAY);
     post("sel-cur-ay", curray, setCurrAY);
+  }, []);
+
+  useEffect(() => {
+    post("total-coach", totalcoach, setTotalCoach);
+    post("total-coach-type", { type: "Fulltime" }, setTotalFulltime);
+    post("total-coach-type", { type: "Parttime" }, setTotalParttime);
+    post("total-section", { semester: "First Semester" }, setTotalSection);
   }, []);
 
   useEffect(() => {
@@ -49,13 +61,31 @@ export function AcademicYear() {
             </section>
             <main className="mt-2">
               <section className="px-2 m-0 d-flex flex-column">
-                <span>{`[ 0 ] Total Coachs`}</span>
+                <span>{`[ ${
+                  totalcoach[0] !== undefined ? totalcoach[0].Total_Coach : null
+                } ] Total Coachs`}</span>
                 <section className="px-5 d-flex flex-column">
-                  <span>{`[ 0 ] Fulltime`}</span>
-                  <span>{`[ 0 ] Parttime`}</span>
+                  <span>{`[ ${
+                    totalfulltime[0] !== undefined
+                      ? totalfulltime[0].Total_Coach_Type
+                      : null
+                  } ] Fulltime`}</span>
+                  <span>{`[ ${
+                    totalparttime[0] !== undefined
+                      ? totalparttime[0].Total_Coach_Type
+                      : null
+                  } ] Parttime`}</span>
                 </section>
-                <span>{`[ 0 ] Total Sections`}</span>
-                <span>{`[ 0 ] Total Population`}</span>
+                <span>{`[ ${
+                  totalsection[0] !== undefined
+                    ? totalsection[0].Total_Section
+                    : null
+                } ] Total Section`}</span>
+                <span>{`[ ${
+                  totalsection[0] !== undefined
+                    ? totalsection[0].Total_Population
+                    : null
+                } ] Total Population`}</span>
                 <section className="px-5 d-flex flex-column">
                   <span>{`[ 0 ] First Year`}</span>
                   <span>{`[ 0 ] Second Year`}</span>

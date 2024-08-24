@@ -65,7 +65,7 @@ export function User() {
           slot2={`${item.FirstName} ${item.LastName}`}
           slot3={item.UUID_Created}
           slot4={item.UserType}
-          slot5={item.UUID_Status}
+          slot5={item.Email}
           view={info.icons.details}
           link={null}
           state={null}

@@ -1,6 +1,4 @@
 import React from "react";
-import { DefaultButton } from "../button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 export class ViewModal extends React.Component {
   render() {

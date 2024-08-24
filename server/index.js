@@ -35,6 +35,12 @@ app.get("/status", (req, res) => {
 const router = (global.router = express.Router());
 
 // DATABASE
+import Statistics from "./routes/database/datapacks/Statistics.js";
+app.use(Statistics);
+
+import TotalPopulation from "./routes/database/datapacks/TotalPopulation.js";
+app.use(TotalPopulation);
+
 import Select from "./routes/database/Select.js";
 app.use(Select);
 

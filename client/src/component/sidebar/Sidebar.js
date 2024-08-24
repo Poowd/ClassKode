@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { IoClose } from "react-icons/io5";
-import { FaSchoolFlag } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo/ClassKode Logo (1).png";
 

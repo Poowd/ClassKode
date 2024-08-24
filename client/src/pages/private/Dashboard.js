@@ -12,6 +12,7 @@ export function Dashboard() {
   const [get, post] = useDatabase();
   const [info] = useConfiguration();
 
+  const [populationperyear, setPopulationPerYear] = useState([]);
   const [department, setDepartment] = useState([]);
   const [program, setProgram] = useState([]);
   const [section, setSection] = useState([]);
@@ -23,6 +24,7 @@ export function Dashboard() {
   const [currsched, setCurrentSched] = useState([]);
 
   useEffect(() => {
+    post("population-per-year", populationperyear, setPopulationPerYear);
     post("sel-dept", department, setDepartment);
     post("sel-prg", program, setProgram);
     post("sel-sect", section, setSection);
@@ -33,10 +35,6 @@ export function Dashboard() {
     post("sel-cur-curr", currentcrr, setCurrentCRR);
     post("sel-sched", currsched, setCurrentSched);
   }, []);
-
-  const [chart1] = "";
-  const [chart2] = "";
-  const [chart3] = "";
 
   return (
     <DashboardTemplate
@@ -89,9 +87,9 @@ export function Dashboard() {
         />
       }
       chart1={useChart(
-        ["a", "a", "a", "a", "a", "a", "a"],
+        ["a", "a", "a", "a", "a"],
         "My Chart",
-        [65, 59, 80, 81, 56, 55, 40],
+        [0, 59, 80, 81, 56, 55, 40],
         "line",
         "x",
         "auto",

@@ -31,6 +31,8 @@ import { Homepage } from "./pages/public/Homepage";
 import useConfiguration from "./hook/useConfiguration";
 import { DefaultInput } from "./component/input/DefaultInput";
 import useHandleChange from "./hook/useHandleChange";
+import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
+import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 import { DefaultButton } from "./component/button/DefaultButton";
 
 function App() {
@@ -63,9 +65,11 @@ function App() {
     switch (`${data.First}`) {
       case "coach":
         navigate(`/institution/${data.First}`);
+        setData({ First: "" });
         break;
       default:
         navigate(`/`);
+        setData({ First: "" });
     }
   };
 
@@ -96,7 +100,7 @@ function App() {
                             trigger={dataChange}
                           />
                           <DefaultButton
-                            class="btn-danger py-2"
+                            class="btn-danger py-2 px-2"
                             reversed={true}
                             text="Enter"
                             function={quicknav}
@@ -174,11 +178,11 @@ function App() {
                             ></Route>
                             <Route
                               path={"/utilities/schedule/room"}
-                              element={<Room />}
+                              element={<RoomSchedule />}
                             ></Route>
                             <Route
                               path={"/utilities/schedule/section"}
-                              element={<SectionProjection />}
+                              element={<SectionSchedule />}
                             ></Route>
                           </Route>
 

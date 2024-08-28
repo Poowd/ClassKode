@@ -283,7 +283,7 @@ app.post("/gen-section", (req, res) => {
 app.post("/ins-setup", (req, res) => {
   const sql = `
       INSERT INTO setup 
-      (CRS_Code, CRR_Code, PRG_Code, Component)
+      (CRS_Code, CRR_Code, PRG_Code, SMS, YL, Component)
       VALUES 
       (?)
   `;
@@ -292,6 +292,8 @@ app.post("/ins-setup", (req, res) => {
     req.body.CRS_Code,
     req.body.CRR_Code,
     req.body.PRG_Code,
+    req.body.Semester,
+    req.body.YearLevel,
     req.body.Component,
   ];
 

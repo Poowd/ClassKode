@@ -6,6 +6,10 @@ import { DefaultInput } from "../../../component/input/DefaultInput";
 import { useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import useConfiguration from "../../../hook/useConfiguration";
+import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
+import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
+import { ViewModal } from "../../../component/modal/ViewModal";
+import { RoomCard } from "../../../component/card/RoomCard";
 
 export function Locator() {
   const [convertMinutes] = useTimeFormat();
@@ -23,100 +27,196 @@ export function Locator() {
     "Saturday",
   ];
 
+  const [department, setDepartment] = useState([]);
   const [coaches, setCoaches] = useState([]);
   const [schedules, setSchedules] = useState([]);
+  const [selcoach, setSelCoach] = useState([]);
   const [currcoach, setCurrCoach] = useState("n/a");
   const [time, setTime] = useState();
+  const [filter, setFilter] = useState({
+    setbyDepartment: "",
+    setbyClass: "",
+  });
 
   useEffect(() => {
     post("sel-coach", coaches, setCoaches);
+    post("sel-dept", department, setDepartment);
     post("sel-sched", schedules, setSchedules);
+  }, [coaches, department, schedules]);
+
+  useEffect(() => {
+    setInterval(() => {
+      const dateObject = new Date();
+
+      const hour = dateObject.getHours();
+      const minute = dateObject.getMinutes();
+      const second = dateObject.getSeconds();
+
+      const currentTime = `${hour}:${minute}:${second}`;
+
+      setTime(currentTime);
+    }, 1000);
   }, []);
+
+  function checkClassStatus(coach) {
+    for (var i = 0; i < schedules.length; i++) {
+      if (schedules[i].Day === days[d.getDay()]) {
+        if (
+          schedules[i].StartTime < d.getHours() * 60 + d.getMinutes() &&
+          d.getHours() * 60 + d.getMinutes() < schedules[i].EndTime
+        ) {
+          if (schedules[i].SCHLID === coach) {
+            return "On Going";
+          }
+        }
+      }
+    }
+    return "No Class";
+  }
 
   return (
     <>
       <FileMaintainanceTemplate
         sidepanel={
-          <main className="p-2">
-            <section>
-              <h5>{`${days[d.getDay()]} - ${d.getHours()}:${
-                d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes()
-              } ${d.getHours() < 12 ? "AM" : "PM"}`}</h5>
-              {time}
-              <hr />
-              <h6>
-                {`ID: `} <span className="fw-normal">{currcoach}</span>
-              </h6>
-              <h6>
-                {`Coach: `}
-                <span className="fw-normal">
-                  {coaches.length > 0
-                    ? coaches.map((coach, i) =>
-                        coach.SCHLID === currcoach
-                          ? `${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
-                          : null
-                      )
-                    : null}
-                </span>
-              </h6>
-            </section>
-            <hr />
-            <section>
-              <h6>{`Schedule: `}</h6>
-              {schedules.length > 0
-                ? schedules.map((schedule, i) =>
-                    schedule.SCHLID === currcoach ? (
-                      schedule.Day === days[d.getDay()] ? (
+          <main className="h-100 p-1 d-flex flex-column justify-content-between">
+            <main>
+              <section>
+                {schedules.length > 0
+                  ? schedules.map((schedule, i) =>
+                      schedule.SCHLID === currcoach ? (
                         schedule.StartTime <
                           d.getHours() * 60 + d.getMinutes() &&
                         d.getHours() * 60 + d.getMinutes() <
                           schedule.EndTime ? (
-                          <main>
-                            <section className="border px-5 py-3">
+                          schedule.Day === days[d.getDay()] ? (
+                            <main className="border rounded p-3">
                               <header>
                                 <h6 className="fw-bold text-success">
-                                  ON CLASS
+                                  ON GOING
                                 </h6>
-                                <hr />
                               </header>
-                              <h6>
-                                {`Section: `}
-                                <span className="fw-normal">
-                                  {schedule.Section}
-                                </span>
-                              </h6>
-                              <h6>
-                                {`Course: `}
-                                <span className="fw-normal">
-                                  {schedule.Course}
-                                </span>
-                              </h6>
-                              <h6>
-                                {`Room: `}
-                                <span className="fw-normal">
-                                  {schedule.Room}
-                                </span>
-                              </h6>
-                              <h6>
-                                {`StartTime: `}
-                                <span className="fw-normal">
-                                  {convertMinutes(schedule.StartTime)}
-                                </span>
-                              </h6>
-                              <h6>
-                                {`EndTime: `}
-                                <span className="fw-normal">
-                                  {convertMinutes(schedule.EndTime)}
-                                </span>
-                              </h6>
-                            </section>
-                          </main>
+                              <main>
+                                <section className="px-3">
+                                  <h6>Coach Details</h6>
+                                  <main className="row m-0 p-0 ">
+                                    <section className="col-3 m-0 p-0">
+                                      <span className="fw-semibold">
+                                        School ID:
+                                      </span>
+                                    </section>
+                                    <section className="col-9 m-0 p-0">
+                                      {" ".concat(schedule.SCHLID)}
+                                    </section>
+                                  </main>
+                                  <main className="row m-0 p-0">
+                                    <section className="col-3 m-0 p-0">
+                                      <span className="fw-semibold">
+                                        Coach:
+                                      </span>
+                                    </section>
+                                    <section className="col-9 m-0 p-0">
+                                      {coaches.map((coach, i) =>
+                                        coach.SCHLID === currcoach
+                                          ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
+                                          : null
+                                      )}
+                                    </section>
+                                  </main>
+                                  <hr />
+                                  <h6>Schedule Details</h6>
+                                  <main className="row m-0 p-0 ">
+                                    <section className="col-3 m-0 p-0">
+                                      <span className="fw-semibold">
+                                        Section:
+                                      </span>
+                                    </section>
+                                    <section className="col-9 m-0 p-0">
+                                      {schedule.Section}
+                                    </section>
+                                  </main>
+                                  <main className="row m-0 p-0 ">
+                                    <section className="col-3 m-0 p-0">
+                                      <span className="fw-semibold">
+                                        Course:
+                                      </span>
+                                    </section>
+                                    <section className="col-9 m-0 p-0">
+                                      {schedule.Course}
+                                    </section>
+                                  </main>
+                                  <main className="row m-0 p-0 ">
+                                    <section className="col-3 m-0 p-0">
+                                      <span className="fw-semibold">Room:</span>
+                                    </section>
+                                    <section className="col-9 m-0 p-0">
+                                      {schedule.Room}
+                                    </section>
+                                  </main>
+                                  <main className="row m-0 p-0 ">
+                                    <section className="col-3 m-0 p-0">
+                                      <span className="fw-semibold">Time:</span>
+                                    </section>
+                                    <section className="col-9 m-0 p-0">
+                                      {`${convertMinutes(
+                                        schedule.StartTime
+                                      )} - ${convertMinutes(schedule.EndTime)}`}
+                                    </section>
+                                  </main>
+                                </section>
+                              </main>
+                            </main>
+                          ) : null
                         ) : null
                       ) : null
-                    ) : null
-                  )
-                : null}
-            </section>
+                    )
+                  : null}
+
+                {checkClassStatus(currcoach) === "No Class" ? (
+                  <main className="border rounded p-3">
+                    <header>
+                      <h6 className="fw-bold text-primary">NO CLASSES</h6>
+                    </header>
+                    <main>
+                      <section className="px-3">
+                        <h6>Coach Details</h6>
+                        <main className="row m-0 p-0 ">
+                          <section className="col-3 m-0 p-0">
+                            <span className="fw-semibold">School ID:</span>
+                          </section>
+                          <section className="col-9 m-0 p-0">
+                            {/* {" ".concat(schedule.SCHLID)} */}
+                          </section>
+                        </main>
+                        <main className="row m-0 p-0">
+                          <section className="col-3 m-0 p-0">
+                            <span className="fw-semibold">Coach:</span>
+                          </section>
+                          <section className="col-9 m-0 p-0">
+                            {coaches.map((coach, i) =>
+                              coach.SCHLID === currcoach
+                                ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
+                                : null
+                            )}
+                          </section>
+                        </main>
+                        <hr />
+                        <p className="m-0 p-0 text-secondary text-center border p-1 rounded">
+                          No Classes
+                        </p>
+                      </section>
+                    </main>
+                  </main>
+                ) : null}
+              </section>
+            </main>
+            <main className="border rounded py-1 px-2 text-secondary">
+              <small className="d-flex align-items-center gap-2">
+                {info.icons.schedule}
+                <span>{`${days[d.getDay()]} - ${time} ${
+                  d.getHours() < 12 ? "AM" : "PM"
+                }`}</span>
+              </small>
+            </main>
           </main>
         }
         control={
@@ -129,44 +229,245 @@ export function Locator() {
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
+                <DefaultDropdown
+                  class="border p-2"
+                  reversed={true}
+                  icon={info.icons.filter}
+                  dropdownitems={
+                    <>
+                      <DefaultDropdownItem
+                        title={"All"}
+                        trigger={() =>
+                          setFilter((prev) => ({
+                            ...prev,
+                            setbyDepartment: "",
+                          }))
+                        }
+                      />
+                      <hr />
+                      <main className="d-flex">
+                        <section>
+                          <DefaultDropdownItem
+                            title={"On Going"}
+                            trigger={() =>
+                              setFilter((prev) => ({
+                                ...prev,
+                                setbyClass: "On Going",
+                              }))
+                            }
+                          />
+                          <DefaultDropdownItem
+                            title={"No Class"}
+                            trigger={() =>
+                              setFilter((prev) => ({
+                                ...prev,
+                                setbyClass: "No Class",
+                              }))
+                            }
+                          />
+                        </section>
+                        <section>
+                          {department.map((item, i) => (
+                            <DefaultDropdownItem
+                              title={item.Department}
+                              trigger={() =>
+                                setFilter((prev) => ({
+                                  ...prev,
+                                  setbyDepartment: item.Department,
+                                }))
+                              }
+                            />
+                          ))}
+                        </section>
+                      </main>
+                    </>
+                  }
+                />
               </div>
             </div>
           </>
         }
         list={
-          coaches.length > 0
-            ? coaches.map((coach, i) => (
-                <main className={"w-100 rounded shadow-sm p-3 mb-2 row m-0 "}>
-                  <section className="col-2 p-0 m-0">
-                    <h6 className="p-0 m-0">{coach.DPT_Abbreviation}</h6>
-                  </section>
-                  <section className="col-5 p-0 m-0">
-                    <h5 className="p-0 m-0 custom-text-gradient fw-bold">{`${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`}</h5>
-                    <small>
-                      <p className="p-0 m-0 text-secondary fst-italic">
-                        <span>{coach.Email}</span>
-                      </p>
-                    </small>
-                  </section>
-                  <section className="col-4 p-0 m-0">
-                    <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end border-end px-3">
-                      <p className="p-0 m-0">{coach.SCHLID}</p>
-                    </div>
-                  </section>
-                  <section className="col-1 p-0 m-0">
-                    <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-                      <DefaultButton
-                        class="btn-info text-white"
-                        icon={info.icons.schedule}
-                        function={() => {
-                          setCurrCoach(coach.SCHLID);
-                        }}
+          <main className="row m-0 p-0">
+            <main className="my-1">
+              <section className="d-flex gap-1">
+                {filter.setbyClass !== "" ? (
+                  <DefaultButton
+                    class="btn-outline-primary px-2"
+                    reversed={true}
+                    icon={info.icons.close}
+                    text={filter.setbyClass}
+                    function={() =>
+                      setFilter((prev) => ({
+                        ...prev,
+                        setbyClass: "",
+                      }))
+                    }
+                  />
+                ) : null}
+                {filter.setbyDepartment !== "" ? (
+                  <DefaultButton
+                    class="btn-outline-primary px-2"
+                    reversed={true}
+                    icon={info.icons.close}
+                    text={filter.setbyDepartment}
+                    function={() =>
+                      setFilter((prev) => ({
+                        ...prev,
+                        setbyDepartment: "",
+                      }))
+                    }
+                  />
+                ) : null}
+              </section>
+            </main>
+            {coaches.length > 0
+              ? coaches.map(
+                  (coach, i) =>
+                    filter.setbyClass === "" ||
+                    checkClassStatus(coach.SCHLID) === filter.setbyClass ? (
+                      filter.setbyDepartment === "" ||
+                      coach.Department === filter.setbyDepartment ? (
+                        <section className="col-3 p-1 m-0">
+                          <main className="h-100 bg-white rounded shadow-sm ratio ratio-1x1">
+                            <section className="h-100 d-flex flex-column align-items-center">
+                              <header className="h-50 w-100 d-flex justify-content-center pt-3 px-2">
+                                <figure className="h-100 w-50 ratio ratio-1x1">
+                                  <img
+                                    src={`http://localhost:8081/images/${coach.Photo}`}
+                                    alt="..."
+                                    className="w-100 h-100 cover object-fit-cover"
+                                  />
+                                </figure>
+                              </header>
+                              <main className="h-50 w-50 d-flex flex-column text-center align-items-between py-3">
+                                <small className="h-100">
+                                  <h6 className="w-100 text-truncate">{`${coach.LastName}, ${coach.FirstName}`}</h6>
+                                  <p className="p-0 m-0">{`${coach.DPT_Abbreviation}`}</p>
+                                  <p className="p-0 m-0">
+                                    {checkClassStatus(coach.SCHLID) ===
+                                    "On Going"
+                                      ? schedules.length > 0
+                                        ? schedules.map((schedule, i) =>
+                                            schedule.SCHLID === coach.SCHLID
+                                              ? schedule.StartTime <
+                                                  d.getHours() * 60 +
+                                                    d.getMinutes() &&
+                                                d.getHours() * 60 +
+                                                  d.getMinutes() <
+                                                  schedule.EndTime
+                                                ? schedule.Day ===
+                                                  days[d.getDay()]
+                                                  ? schedule.Room
+                                                  : null
+                                                : null
+                                              : null
+                                          )
+                                        : null
+                                      : "No Class"}
+                                  </p>
+                                </small>
+                                <main>
+                                  <section className="d-flex gap-1">
+                                    <DefaultButton
+                                      class="w-100 btn-info text-white"
+                                      icon={info.icons.schedule}
+                                      function={() => {
+                                        setCurrCoach(coach.SCHLID);
+                                      }}
+                                    />
+                                    <DefaultButton
+                                      class="border px-2"
+                                      reversed={true}
+                                      icon={info.icons.schedule}
+                                      function={() => {
+                                        setSelCoach(coach);
+                                      }}
+                                      toggle="modal"
+                                      target="#CoachSchedule"
+                                    />
+                                  </section>
+                                </main>
+                              </main>
+                            </section>
+                          </main>
+                        </section>
+                      ) : null
+                    ) : null
+                  // <main className={"w-100 rounded shadow-sm p-3 mb-2 row m-0 "}>
+                  //   <section className="col-2 p-0 m-0">
+                  //     <h6 className="p-0 m-0">{coach.DPT_Abbreviation}</h6>
+                  //   </section>
+                  //   <section className="col-5 p-0 m-0">
+                  //     <h6 className="p-0 m-0 custom-text-gradient fw-bold">{`${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`}</h5>
+                  //     <small>
+                  //       <p className="p-0 m-0 text-secondary fst-italic">
+                  //         <span>{coach.Email}</span>
+                  //       </p>
+                  //     </small>
+                  //   </section>
+                  //   <section className="col-4 p-0 m-0">
+                  //     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end border-end px-3">
+                  //       <p className="p-0 m-0">{coach.SCHLID}</p>
+                  //     </div>
+                  //   </section>
+                  //   <section className="col-1 p-0 m-0">
+                  //     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
+                  //       <DefaultButton
+                  //         class="btn-info text-white"
+                  //         icon={info.icons.schedule}
+                  //         function={() => {
+                  //           setCurrCoach(coach.SCHLID);
+                  //         }}
+                  //       />
+                  //     </div>
+                  //   </section>
+                  // </main>
+                )
+              : null}
+          </main>
+        }
+      />
+      <ViewModal
+        id={"CoachSchedule"}
+        title={<h6 className="text-center text-black">Quick Navigation</h6>}
+        content={
+          <main className="p-3">
+            <header>
+              <main className="row m-0 p-0 ">
+                <section className="col-3 m-0 p-0">
+                  <span className="fw-semibold">School ID:</span>
+                </section>
+                <section className="col-9 m-0 p-0">
+                  {" ".concat(selcoach.SCHLID)}
+                </section>
+              </main>
+              <main className="row m-0 p-0">
+                <section className="col-3 m-0 p-0">
+                  <span className="fw-semibold">Coach:</span>
+                </section>
+                <section className="col-9 m-0 p-0">
+                  {` ${selcoach.LastName}, ${selcoach.FirstName} ${selcoach.MiddleInitial}`}
+                </section>
+              </main>
+              <hr />
+            </header>
+            <main>
+              {schedules.length > 0
+                ? schedules.map((item, i) =>
+                    item.SCHLID === selcoach.SCHLID ? (
+                      <RoomCard
+                        section={item.Section}
+                        course={item.Course}
+                        time={`${item.Room} - ${convertMinutes(
+                          item.StartTime
+                        )} - ${convertMinutes(item.EndTime)}`}
                       />
-                    </div>
-                  </section>
-                </main>
-              ))
-            : null
+                    ) : null
+                  )
+                : null}
+            </main>
+          </main>
         }
       />
     </>

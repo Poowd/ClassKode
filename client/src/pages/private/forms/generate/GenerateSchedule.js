@@ -3,14 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { PiGearSixFill } from "react-icons/pi";
 import { MdArrowBackIosNew } from "react-icons/md";
-import { ScheduleList } from "../../../../component/card/ScheduleList";
 import { TbListDetails } from "react-icons/tb";
 import { FaRegSave } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../../hook/useDatabase";
 import useTimeFormat from "../../../../hook/useTimeFormat";
-import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
-import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();
@@ -133,37 +130,6 @@ export function GenerateSchedule() {
                   icon={<TbListDetails />}
                   function={() => conflictChecker()}
                 />
-                <DefaultDropdown
-                  class="border px-2 btn-primary"
-                  reversed={true}
-                  text={
-                    data.currentSemester !== ""
-                      ? data.currentSemester
-                      : "Semester"
-                  }
-                  dropdownitems={
-                    <>
-                      <DefaultDropdownItem
-                        title={`First Semester`}
-                        trigger={() =>
-                          setData((prev) => ({
-                            ...prev,
-                            currentSemester: `First Semester`,
-                          }))
-                        }
-                      />
-                      <DefaultDropdownItem
-                        title={`Second Semester`}
-                        trigger={() =>
-                          setData((prev) => ({
-                            ...prev,
-                            currentSemester: `Second Semester`,
-                          }))
-                        }
-                      />
-                    </>
-                  }
-                />
                 <DefaultButton class="btn-primary px-2" icon={<FaFilter />} />
                 <DefaultButton
                   class="btn-primary px-2"
@@ -191,7 +157,6 @@ export function GenerateSchedule() {
                         sections: section,
                         coachtype: coachtype,
                         specialize: specialize,
-                        semester: data.currentSemester,
                       },
                       setSchedule
                     );

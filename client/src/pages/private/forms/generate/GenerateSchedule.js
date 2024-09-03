@@ -172,16 +172,16 @@ export function GenerateSchedule() {
           <table className="table table-hover text-center">
             <thead>
               <tr>
-                <th className="text-start">Course Code</th>
-                <th className="text-start">Course</th>
-                <th>Section</th>
-                <th>Course Level</th>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Room</th>
-                <th>Component</th>
-                <th>Coach</th>
-                <th>Population</th>
+                <th className="p-3">Course Code</th>
+                <th className="text-start p-3">Course</th>
+                <th className="p-3">Section</th>
+                <th className="p-3">Course Level</th>
+                <th className="p-3">Day</th>
+                <th className="p-3">Time</th>
+                <th className="p-3">Room</th>
+                <th className="p-3">Component</th>
+                <th className="p-3">Coach</th>
+                <th className="p-3">Population</th>
               </tr>
             </thead>
             <tbody>
@@ -207,21 +207,20 @@ export function GenerateSchedule() {
                     //   custom={null}
                     // />
                     <tr>
-                      <td className="text-start">{sc.CRS_CODE}</td>
-                      <td className="text-start">{sc.CRS}</td>
-                      <td>{sc.SCT}</td>
-                      <td>{sc.YRLVL}</td>
-                      <td>{sc.DAY}</td>
-                      <td>
-                        {" "}
+                      <td className="py-3">{sc.CRS_CODE}</td>
+                      <td className="text-start py-3">{sc.CRS}</td>
+                      <td className="py-3">{sc.SCT}</td>
+                      <td className="py-3">{sc.YRLVL}</td>
+                      <td className="py-3">{sc.DAY}</td>
+                      <td className="py-3">
                         {`${convertMinutes(sc.STR_TME)} - ${convertMinutes(
                           sc.END_TME
                         )}`}
                       </td>
-                      <td>{sc.ROM}</td>
-                      <td>{sc.CPT}</td>
-                      <td>{sc.CCH}</td>
-                      <td>{`${sc.PPL} | ${sc.CPC}`}</td>
+                      <td className="py-3">{sc.ROM}</td>
+                      <td className="py-3">{sc.CPT}</td>
+                      <td className="py-3">{sc.CCH}</td>
+                      <td className="py-3">{`${sc.PPL} out of ${sc.CPC}`}</td>
                     </tr>
                   ))
                 : "none"}

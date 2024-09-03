@@ -255,6 +255,7 @@ app.post("/gen-class", (req, res) => {
       return false;
     }
 
+    SHUFFLE(classes);
     GenerateSchedule.Phases.coach();
     GenerateSchedule.Phases.room();
     console.log(class_schedules);

@@ -1,4 +1,5 @@
-import React from "react";import { IoCloseOutline } from "react-icons/io5";
+import React from "react";
+import { IoCloseOutline } from "react-icons/io5";
 
 export class ViewModal extends React.Component {
   render() {
@@ -9,9 +10,9 @@ export class ViewModal extends React.Component {
         tabIndex="-1"
         data-bs-backdrop="static"
       >
-        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered ">
           <div className="modal-content">
-            <div className="py-3 px-5">
+            <div className="modal-body p-3">
               <div className="d-flex justify-content-between align-items-center m-0 ">
                 <span className="m-0 mt-2 p-0">{this.props.title}</span>
                 <button

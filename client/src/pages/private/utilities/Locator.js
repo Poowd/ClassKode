@@ -97,31 +97,16 @@ export function Locator() {
                               </header>
                               <main>
                                 <section className="px-3">
-                                  <h6>Coach Details</h6>
-                                  <main className="row m-0 p-0 ">
-                                    <section className="col-3 m-0 p-0">
-                                      <span className="fw-semibold">
-                                        School ID:
-                                      </span>
-                                    </section>
-                                    <section className="col-9 m-0 p-0">
-                                      {" ".concat(schedule.SCHLID)}
-                                    </section>
-                                  </main>
-                                  <main className="row m-0 p-0">
-                                    <section className="col-3 m-0 p-0">
-                                      <span className="fw-semibold">
-                                        Coach:
-                                      </span>
-                                    </section>
-                                    <section className="col-9 m-0 p-0">
+                                  <section className="m-0 p-0">
+                                    <h6>{" ".concat(schedule.SCHLID)}</h6>
+                                    <h5>
                                       {coaches.map((coach, i) =>
                                         coach.SCHLID === currcoach
                                           ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
                                           : null
                                       )}
-                                    </section>
-                                  </main>
+                                    </h5>
+                                  </section>
                                   <hr />
                                   <h6>Schedule Details</h6>
                                   <main className="row m-0 p-0 ">
@@ -174,37 +159,26 @@ export function Locator() {
                 {checkClassStatus(currcoach) === "No Class" ? (
                   <main className="border rounded p-3">
                     <header>
-                      <h6 className="fw-bold text-primary">NO CLASSES</h6>
+                      <h6 className="fw-bold text-primary m-0 p-0">NO CLASS</h6>
                     </header>
-                    <main>
+                    {/* <main>
                       <section className="px-3">
-                        <h6>Coach Details</h6>
-                        <main className="row m-0 p-0 ">
-                          <section className="col-3 m-0 p-0">
-                            <span className="fw-semibold">School ID:</span>
-                          </section>
-                          <section className="col-9 m-0 p-0">
-                            {/* {" ".concat(schedule.SCHLID)} */}
-                          </section>
-                        </main>
-                        <main className="row m-0 p-0">
-                          <section className="col-3 m-0 p-0">
-                            <span className="fw-semibold">Coach:</span>
-                          </section>
-                          <section className="col-9 m-0 p-0">
+                        <section className="m-0 p-0">
+                          <h6>{" ".concat(currcoach)}</h6>
+                          <h5 className="">
                             {coaches.map((coach, i) =>
                               coach.SCHLID === currcoach
                                 ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
                                 : null
                             )}
-                          </section>
-                        </main>
+                          </h5>
+                        </section>
                         <hr />
                         <p className="m-0 p-0 text-secondary text-center border p-1 rounded">
                           No Classes
                         </p>
                       </section>
-                    </main>
+                    </main> */}
                   </main>
                 ) : null}
               </section>
@@ -336,45 +310,53 @@ export function Locator() {
                                   <img
                                     src={`http://localhost:8081/images/${coach.Photo}`}
                                     alt="..."
-                                    className="w-100 h-100 cover object-fit-cover"
+                                    className="w-100 h-100 object-fit-cover rounded"
+                                    style={{ objectPosition: "top" }}
                                   />
                                 </figure>
                               </header>
                               <main className="h-50 w-50 d-flex flex-column text-center align-items-between py-3">
                                 <small className="h-100">
-                                  <h6 className="w-100 text-truncate">{`${coach.LastName}, ${coach.FirstName}`}</h6>
-                                  <p className="p-0 m-0">{`${coach.DPT_Abbreviation}`}</p>
-                                  <p className="p-0 m-0">
-                                    {checkClassStatus(coach.SCHLID) ===
-                                    "On Going"
-                                      ? schedules.length > 0
-                                        ? schedules.map((schedule, i) =>
-                                            schedule.SCHLID === coach.SCHLID
-                                              ? schedule.StartTime <
-                                                  d.getHours() * 60 +
-                                                    d.getMinutes() &&
-                                                d.getHours() * 60 +
-                                                  d.getMinutes() <
-                                                  schedule.EndTime
-                                                ? schedule.Day ===
-                                                  days[d.getDay()]
-                                                  ? schedule.Room
-                                                  : null
-                                                : null
-                                              : null
-                                          )
-                                        : null
-                                      : "No Class"}
-                                  </p>
+                                  <h4 className="w-100 text-truncate custom-text-gradient m-0 p-0">{`${coach.LastName}`}</h4>
+                                  <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
+                                  <p className="p-0 pt-1 m-0 fw-bold text-secondary">{`${coach.DPT_Abbreviation}`}</p>
                                 </small>
                                 <main>
                                   <section className="d-flex gap-1">
                                     <DefaultButton
                                       class="w-100 btn-info text-white"
                                       icon={info.icons.schedule}
+                                      text={
+                                        checkClassStatus(coach.SCHLID) ===
+                                        "On Going"
+                                          ? schedules.length > 0
+                                            ? schedules.map((schedule, i) =>
+                                                schedule.SCHLID === coach.SCHLID
+                                                  ? schedule.StartTime <
+                                                      d.getHours() * 60 +
+                                                        d.getMinutes() &&
+                                                    d.getHours() * 60 +
+                                                      d.getMinutes() <
+                                                      schedule.EndTime
+                                                    ? schedule.Day ===
+                                                      days[d.getDay()]
+                                                      ? schedule.Room
+                                                      : null
+                                                    : null
+                                                  : null
+                                              )
+                                            : null
+                                          : "No Class"
+                                      }
                                       function={() => {
                                         setCurrCoach(coach.SCHLID);
                                       }}
+                                      disabled={
+                                        checkClassStatus(coach.SCHLID) ===
+                                        "On Going"
+                                          ? false
+                                          : true
+                                      }
                                     />
                                     <DefaultButton
                                       class="border px-2"
@@ -434,22 +416,10 @@ export function Locator() {
         content={
           <main className="p-3">
             <header>
-              <main className="row m-0 p-0 ">
-                <section className="col-3 m-0 p-0">
-                  <span className="fw-semibold">School ID:</span>
-                </section>
-                <section className="col-9 m-0 p-0">
-                  {" ".concat(selcoach.SCHLID)}
-                </section>
-              </main>
-              <main className="row m-0 p-0">
-                <section className="col-3 m-0 p-0">
-                  <span className="fw-semibold">Coach:</span>
-                </section>
-                <section className="col-9 m-0 p-0">
-                  {` ${selcoach.LastName}, ${selcoach.FirstName} ${selcoach.MiddleInitial}`}
-                </section>
-              </main>
+              <section className="m-0 p-0">
+                <h6>{" ".concat(selcoach.SCHLID)}</h6>
+                <h5>{` ${selcoach.LastName}, ${selcoach.FirstName} ${selcoach.MiddleInitial}`}</h5>
+              </section>
               <hr />
             </header>
             <main>
@@ -459,7 +429,7 @@ export function Locator() {
                       <RoomCard
                         section={item.Section}
                         course={item.Course}
-                        time={`${item.Room} - ${convertMinutes(
+                        time={`${item.Day} - ${convertMinutes(
                           item.StartTime
                         )} - ${convertMinutes(item.EndTime)}`}
                       />

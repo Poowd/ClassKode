@@ -12,10 +12,14 @@ const db = mysql.createConnection({
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const myPlaintextPassword = "s0//P4$$w0rD";
-const someOtherPlaintextPassword = "not_bacon";
 
-bcrypt.hash(myPlaintextPassword, saltRounds, function (err, hash) {
-  console.log(hash);
+app.get("/encrypt-pass", (req, res) => {
+  bcrypt.hash(myPlaintextPassword, saltRounds, function (err, hash) {
+    console.log(hash);
+    return res.json(hash);
+  });
 });
+
+//password_verify(pass, Pass)
 
 export default app;

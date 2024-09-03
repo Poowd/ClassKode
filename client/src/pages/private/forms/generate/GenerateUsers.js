@@ -52,21 +52,7 @@ export default function GenerateUsers() {
           console.log(data[i]);
           post("gen-users", data[i], setSaveStatus);
         }
-        switch (savestatus) {
-          case true:
-            showToast(info.icons.calendar, "Users", "User Data are saved!");
-            break;
-          case false:
-            showToast(
-              info.icons.calendar,
-              "Users",
-              "User Data didn't processed!"
-            );
-            break;
-          case null:
-            showToast(info.icons.calendar, "Users", "No User Data detected!");
-            break;
-        }
+        showToast(info.icons.calendar, "Users", "User Data are saved!");
       } catch (err) {
         showToast(info.icons.calendar, "Users", "Error Encountered!");
       }

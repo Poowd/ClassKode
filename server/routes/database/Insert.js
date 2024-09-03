@@ -315,20 +315,24 @@ app.post("/gen-users", (req, res) => {
         VALUES 
         (?)
     `;
-  bcrypt.hash(req.body.Password, saltRounds, function (err, hash) {
-    console.log(hash);
-    const values = [
-      req.body.SchoolID,
-      req.body.Firstname,
-      req.body.Lastname,
-      req.body.Email,
-      hash,
-      req.body.Type,
-    ];
-    db.query(sql, [values], (err, data) => {
-      if (err) return res.json(false);
-      return res.json(true);
-    });
-  });
+  bcrypt.hash(
+    `${req.body.Firstname}${req.body.SchoolID}`,
+    saltRounds,
+    function (err, hash) {
+      console.log(hash);
+      const values = [
+        req.body.SchoolID,
+        req.body.Firstname,
+        req.body.Lastname,
+        req.body.Email,
+        hash,
+        req.body.Type,
+      ];
+      db.query(sql, [values], (err, data) => {
+        if (err) return res.json(false);
+        return res.json(true);
+      });
+    }
+  );
 });
 export default app;

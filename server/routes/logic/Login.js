@@ -1,5 +1,6 @@
 import express from "express";
 import mysql from "mysql";
+import bcrypt from "bcryptjs";
 
 const app = express();
 const db = mysql.createConnection({
@@ -10,14 +11,24 @@ const db = mysql.createConnection({
 });
 
 // Login =>
+//const bcrypt = require("bcryptjs");
 app.post("/login-now", (req, res) => {
   const sql = `
-        SELECT * FROM _users WHERE Email = ? AND Password = ? Limit 1
+        SELECT * FROM _users WHERE Email = ? Limit 1
       `;
+  const pass = req.body.password;
 
-  db.query(sql, [req.body.email, req.body.password], (err, data) => {
+  db.query(sql, [req.body.email], (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
-    return res.json({ Status: "Success", data: data });
+    bcrypt.compare(pass, data[0].Password, (err, resu) => {
+      if (err) {
+        console.error("Verification error:", err);
+      } else if (resu) {
+        return res.json({ Status: "Success", data: data });
+      } else {
+        console.log("Password does not match");
+      }
+    });
   });
 });
 

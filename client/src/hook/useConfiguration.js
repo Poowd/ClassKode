@@ -22,9 +22,13 @@ import { FaUserSecret } from "react-icons/fa6";
 import { LuHelpCircle } from "react-icons/lu";
 import { MdRestore } from "react-icons/md";
 import { MdOutlineQuickreply } from "react-icons/md";
+import { IoIosClose } from "react-icons/io";
+import { GrPowerReset } from "react-icons/gr";
+import { VscSettings } from "react-icons/vsc";
 
 export default function useConfiguration() {
   const [info, setInfo] = useState({
+    details: {},
     icons: {
       add: <GrChapterAdd />,
       generate: <VscSettingsGear />,
@@ -49,8 +53,10 @@ export default function useConfiguration() {
       help: <LuHelpCircle />,
       restore: <MdRestore />,
       quicknav: <MdOutlineQuickreply />,
+      close: <IoIosClose />,
+      reset: <GrPowerReset />,
+      set: <VscSettings />,
     },
   });
-
   return [info];
 }

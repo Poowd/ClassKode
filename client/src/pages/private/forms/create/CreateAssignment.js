@@ -35,8 +35,8 @@ export function CreateAssignment() {
     post("sel-coach", coach, setCoach);
     post("sel-asgn", asgned, setAsgned);
     post("sel-crs", course, setCourse);
-    post("coachtype", coachtype, setCoachType);
-    post("assignment", assignment, setAssignment);
+    post("sel-coach-type", coachtype, setCoachType);
+    post("sel-asgn", assignment, setAssignment);
   }, []);
 
   useEffect(() => {

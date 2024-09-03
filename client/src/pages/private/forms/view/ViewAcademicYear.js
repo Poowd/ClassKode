@@ -78,7 +78,7 @@ export function ViewAcademicYear() {
             <LinkButton
               class="btn-warning px-2"
               icon={<LuFileEdit />}
-              to={"/institution/curriculum/edit/" + params.id}
+              to={"/curriculum/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />
@@ -116,6 +116,13 @@ export function ViewAcademicYear() {
                   <ul className="m-0 p-0 d-flex gap-2">
                     <li className="border m-0 p-2 rounded">
                       <p className="m-0 p-0">{item.CRR_Code}</p>
+                    </li>
+                    <li className="border m-0 p-2 rounded">
+                      <p className="m-0 p-0">{`${
+                        item.Semester !== null
+                          ? item.Semester.replace("Semester", "Term")
+                          : "Term"
+                      }`}</p>
                     </li>
                   </ul>
                 </header>

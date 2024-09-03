@@ -3,14 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import { PiGearSixFill } from "react-icons/pi";
 import { MdArrowBackIosNew } from "react-icons/md";
-import { ScheduleList } from "../../../../component/card/ScheduleList";
 import { TbListDetails } from "react-icons/tb";
 import { FaRegSave } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../../hook/useDatabase";
 import useTimeFormat from "../../../../hook/useTimeFormat";
-import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
-import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();
@@ -133,37 +130,6 @@ export function GenerateSchedule() {
                   icon={<TbListDetails />}
                   function={() => conflictChecker()}
                 />
-                <DefaultDropdown
-                  class="border px-2 btn-primary"
-                  reversed={true}
-                  text={
-                    data.currentSemester !== ""
-                      ? data.currentSemester
-                      : "Semester"
-                  }
-                  dropdownitems={
-                    <>
-                      <DefaultDropdownItem
-                        title={`First Semester`}
-                        trigger={() =>
-                          setData((prev) => ({
-                            ...prev,
-                            currentSemester: `First Semester`,
-                          }))
-                        }
-                      />
-                      <DefaultDropdownItem
-                        title={`Second Semester`}
-                        trigger={() =>
-                          setData((prev) => ({
-                            ...prev,
-                            currentSemester: `Second Semester`,
-                          }))
-                        }
-                      />
-                    </>
-                  }
-                />
                 <DefaultButton class="btn-primary px-2" icon={<FaFilter />} />
                 <DefaultButton
                   class="btn-primary px-2"
@@ -191,7 +157,6 @@ export function GenerateSchedule() {
                         sections: section,
                         coachtype: coachtype,
                         specialize: specialize,
-                        semester: data.currentSemester,
                       },
                       setSchedule
                     );
@@ -207,16 +172,16 @@ export function GenerateSchedule() {
           <table className="table table-hover text-center">
             <thead>
               <tr>
-                <th className="text-start">Course Code</th>
-                <th className="text-start">Course</th>
-                <th>Section</th>
-                <th>Course Level</th>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Room</th>
-                <th>Component</th>
-                <th>Coach</th>
-                <th>Population</th>
+                <th className="p-3">Course Code</th>
+                <th className="text-start p-3">Course</th>
+                <th className="p-3">Section</th>
+                <th className="p-3">Course Level</th>
+                <th className="p-3">Day</th>
+                <th className="p-3">Time</th>
+                <th className="p-3">Room</th>
+                <th className="p-3">Component</th>
+                <th className="p-3">Coach</th>
+                <th className="p-3">Population</th>
               </tr>
             </thead>
             <tbody>
@@ -242,21 +207,20 @@ export function GenerateSchedule() {
                     //   custom={null}
                     // />
                     <tr>
-                      <td className="text-start">{sc.CRS_CODE}</td>
-                      <td className="text-start">{sc.CRS}</td>
-                      <td>{sc.SCT}</td>
-                      <td>{sc.YRLVL}</td>
-                      <td>{sc.DAY}</td>
-                      <td>
-                        {" "}
+                      <td className="py-3">{sc.CRS_CODE}</td>
+                      <td className="text-start py-3">{sc.CRS}</td>
+                      <td className="py-3">{sc.SCT}</td>
+                      <td className="py-3">{sc.YRLVL}</td>
+                      <td className="py-3">{sc.DAY}</td>
+                      <td className="py-3">
                         {`${convertMinutes(sc.STR_TME)} - ${convertMinutes(
                           sc.END_TME
                         )}`}
                       </td>
-                      <td>{sc.ROM}</td>
-                      <td>{sc.CPT}</td>
-                      <td>{sc.CCH}</td>
-                      <td>{`${sc.PPL} | ${sc.CPC}`}</td>
+                      <td className="py-3">{sc.ROM}</td>
+                      <td className="py-3">{sc.CPT}</td>
+                      <td className="py-3">{sc.CCH}</td>
+                      <td className="py-3">{`${sc.PPL} out of ${sc.CPC}`}</td>
                     </tr>
                   ))
                 : "none"}

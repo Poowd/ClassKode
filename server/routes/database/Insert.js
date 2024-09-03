@@ -1,5 +1,6 @@
 import express from "express";
 import mysql from "mysql";
+import bcrypt from "bcryptjs";
 
 const app = express();
 const db = mysql.createConnection({
@@ -58,7 +59,7 @@ app.post("/ins-curr", (req, res) => {
 app.post("/ins-ay", (req, res) => {
   const sql = `
       INSERT INTO academicyear 
-        (ACY_Code, AcademicYear, CRR_Code, StartDate, EndDate) 
+        (ACY_Code, AcademicYear, CRR_Code, Semester, StartDate, EndDate) 
       VALUES (?)
   `;
 
@@ -66,6 +67,7 @@ app.post("/ins-ay", (req, res) => {
     req.body.ACY_Code,
     req.body.AcademicYear,
     req.body.CRR_Code,
+    req.body.Semester,
     req.body.StartDate,
     req.body.EndDate,
   ];
@@ -283,7 +285,7 @@ app.post("/gen-section", (req, res) => {
 app.post("/ins-setup", (req, res) => {
   const sql = `
       INSERT INTO setup 
-      (CRS_Code, CRR_Code, PRG_Code, Component)
+      (CRS_Code, CRR_Code, PRG_Code, SMS, YL, Component)
       VALUES 
       (?)
   `;
@@ -292,6 +294,8 @@ app.post("/ins-setup", (req, res) => {
     req.body.CRS_Code,
     req.body.CRR_Code,
     req.body.PRG_Code,
+    req.body.Semester,
+    req.body.YearLevel,
     req.body.Component,
   ];
 
@@ -301,6 +305,34 @@ app.post("/ins-setup", (req, res) => {
   });
 });
 
-// SECTION =>
+// USERS =>
+const saltRounds = 10;
 
+app.post("/gen-users", (req, res) => {
+  const sql = `
+        INSERT INTO _users 
+        (SCHLID, FirstName, LastName, Email, Password, UserType)
+        VALUES 
+        (?)
+    `;
+  bcrypt.hash(
+    `${req.body.Firstname}${req.body.SchoolID}`,
+    saltRounds,
+    function (err, hash) {
+      console.log(hash);
+      const values = [
+        req.body.SchoolID,
+        req.body.Firstname,
+        req.body.Lastname,
+        req.body.Email,
+        hash,
+        req.body.Type,
+      ];
+      db.query(sql, [values], (err, data) => {
+        if (err) return res.json(false);
+        return res.json(true);
+      });
+    }
+  );
+});
 export default app;

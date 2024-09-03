@@ -1,6 +1,7 @@
 import React from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 
 export class PassiveModal extends React.Component {
   render() {
@@ -13,17 +14,16 @@ export class PassiveModal extends React.Component {
       >
         <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div className="modal-content">
-            <div className="modal-body">
-              <div className="d-flex justify-content-between align-items-center">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  {this.props.title}
-                </h1>
+            <div className="py-3 px-5">
+              <div className="d-flex justify-content-between align-items-center m-0 ">
+                <span className="m-0 mt-2 p-0">{this.props.title}</span>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="btn p-0 me-2 d-flex border-0"
                   data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                >
+                  <IoCloseOutline />
+                </button>
               </div>
               <hr />
               <div>

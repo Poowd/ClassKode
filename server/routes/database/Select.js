@@ -36,7 +36,7 @@ app.post("/sel-sched", (req, res) => {
         ON course.CRS_Code = schedule.CRS_Code
       LEFT JOIN section
         ON section.Section = schedule.Section
-      WHERE projection.ACY_Code = 'AY-2425'
+      WHERE projection.ACY_Code = 'AY-2425-1'
         OR SUBSTRING(schedule.Section, 1, 3) = 'ABC'
         AND schedule.Section
       LIKE '%${req.body.Search}%'
@@ -63,7 +63,7 @@ app.post("/sel-exp-class", (req, res) => {
         ON course.CRS_Code = setup.CRS_Code
       INNER JOIN course_component
         ON course_component.Component = setup.Component
-      WHERE projection.ACY_Code = 'AY-2425'
+      WHERE projection.ACY_Code = 'AY-2425-1'
         AND section.YearLevel = setup.YL
         AND section.Semester = setup.SMS
       ORDER BY section.Section ASC
@@ -220,7 +220,7 @@ app.post("/sel-spl-crs", (req, res) => {
         ON coach.SCHLID = specialization.SCHLID
         RIGHT JOIN course
         ON course.CRS_Code = specialization.CRS_Code
-        WHERE ACY_Code = 'AY-2425'
+        WHERE ACY_Code = 'AY-2425-1'
   `;
 
   db.query(sql, (err, data) => {

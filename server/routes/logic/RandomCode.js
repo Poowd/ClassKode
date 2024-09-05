@@ -1,7 +1,14 @@
-import express from "express";
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "db_classkode",
+});
 
-app.get("/random-code-generator", (req, res) => {
+router.get("/random-code-generator", (req, res) => {
   let result = "";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const charactersLength = characters.length;
@@ -12,5 +19,4 @@ app.get("/random-code-generator", (req, res) => {
 
   return res.json(result);
 });
-
-export default app;
+module.exports = router;

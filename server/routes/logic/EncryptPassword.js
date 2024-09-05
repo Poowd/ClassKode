@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -18,4 +17,4 @@ bcrypt.hash(myPlaintextPassword, saltRounds, function (err, hash) {
   console.log(hash);
 });
 
-export default app;
+module.exports = router;

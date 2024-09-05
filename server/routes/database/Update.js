@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 // SCHEDULES =>
-app.post("/res-sched", (req, res) => {
+router.post("/res-sched", (req, res) => {
   const sql = `
       UPDATE schedule 
       SET SCD_Status = 'ACTIVE' 
@@ -24,7 +23,7 @@ app.post("/res-sched", (req, res) => {
 });
 
 // CURRICULUM =>
-app.post("/upd-curr", (req, res) => {
+router.post("/upd-curr", (req, res) => {
   const sql = `
       UPDATE curriculum 
       SET CRR_Code = ?, 
@@ -42,7 +41,7 @@ app.post("/upd-curr", (req, res) => {
   );
 });
 
-app.post("/res-curr", (req, res) => {
+router.post("/res-curr", (req, res) => {
   const sql = `
       UPDATE curriculum 
       SET CRR_Status = 'ACTIVE' 
@@ -56,7 +55,7 @@ app.post("/res-curr", (req, res) => {
 });
 
 // ACADEMIC YEAR =>
-app.post("/arc-ay", (req, res) => {
+router.post("/arc-ay", (req, res) => {
   const sql = `
       UPDATE academicyear 
       SET ACY_Status = 'ARCHIVE' 
@@ -69,7 +68,7 @@ app.post("/arc-ay", (req, res) => {
   });
 });
 
-app.post("/res-acy", (req, res) => {
+router.post("/res-acy", (req, res) => {
   const sql = `
       UPDATE academicyear 
       SET ACY_Status = 'ACTIVE' 
@@ -83,7 +82,7 @@ app.post("/res-acy", (req, res) => {
 });
 
 // COACH =>
-app.post("/upd-coach", (req, res) => {
+router.post("/upd-coach", (req, res) => {
   const sql = `
       UPDATE coach 
       SET SCHLID = ?, 
@@ -121,7 +120,7 @@ app.post("/upd-coach", (req, res) => {
   );
 });
 
-app.post("/res-coach", (req, res) => {
+router.post("/res-coach", (req, res) => {
   const sql = `
       UPDATE coach 
       SET CCH_Status = 'ACTIVE' 
@@ -135,7 +134,7 @@ app.post("/res-coach", (req, res) => {
 });
 
 // DEPARTMENT =>
-app.post("/upd-dept", (req, res) => {
+router.post("/upd-dept", (req, res) => {
   const sql = `
       UPDATE department 
       SET DPT_Code = ?, 
@@ -161,7 +160,7 @@ app.post("/upd-dept", (req, res) => {
   );
 });
 
-app.post("/res-dept", (req, res) => {
+router.post("/res-dept", (req, res) => {
   const sql = "UPDATE department SET DPT_Status = 'ACTIVE' WHERE DPTID = ? ";
 
   db.query(sql, [req.body.DPTID], (err, data) => {
@@ -171,7 +170,7 @@ app.post("/res-dept", (req, res) => {
 });
 
 // PROGRAM =>
-app.post("/upd-prg", (req, res) => {
+router.post("/upd-prg", (req, res) => {
   const sql = `
       UPDATE program 
       SET PRG_Code = ?, 
@@ -201,7 +200,7 @@ app.post("/upd-prg", (req, res) => {
   );
 });
 
-app.post("/res-prg", (req, res) => {
+router.post("/res-prg", (req, res) => {
   const sql = "UPDATE program SET PRG_Status = 'ACTIVE' WHERE PRGID = ? ";
 
   db.query(sql, [req.body.PRGID], (err, data) => {
@@ -211,7 +210,7 @@ app.post("/res-prg", (req, res) => {
 });
 
 // COURSE =>
-app.post("/upd-crs", (req, res) => {
+router.post("/upd-crs", (req, res) => {
   const sql = `
       UPDATE course 
       SET CRS_Code = ?, 
@@ -230,7 +229,7 @@ app.post("/upd-crs", (req, res) => {
   );
 });
 
-app.post("/res-crs", (req, res) => {
+router.post("/res-crs", (req, res) => {
   const sql = "UPDATE course SET CRS_Status = 'ACTIVE' WHERE CRSID = ? ";
 
   db.query(sql, [req.body.CRSID], (err, data) => {
@@ -240,7 +239,7 @@ app.post("/res-crs", (req, res) => {
 });
 
 // ROOM =>
-app.post("/upd-room", (req, res) => {
+router.post("/upd-room", (req, res) => {
   const sql = `
       UPDATE room 
       SET Room = ?, 
@@ -268,7 +267,7 @@ app.post("/upd-room", (req, res) => {
   );
 });
 
-app.post("/res-rom", (req, res) => {
+router.post("/res-rom", (req, res) => {
   const sql = "UPDATE room SET ROM_Status = 'ACTIVE' WHERE ROMID = ? ";
 
   db.query(sql, [req.body.ROMID], (err, data) => {
@@ -278,7 +277,7 @@ app.post("/res-rom", (req, res) => {
 });
 
 // SECTION =>
-app.post("/upd-sct", (req, res) => {
+router.post("/upd-sct", (req, res) => {
   const sql = `
       UPDATE section 
       SET Section = ?, 
@@ -304,7 +303,7 @@ app.post("/upd-sct", (req, res) => {
   );
 });
 
-app.post("/res-sect", (req, res) => {
+router.post("/res-sect", (req, res) => {
   const sql = "UPDATE section SET SCT_Status = 'ACTIVE' WHERE SCTID = ? ";
 
   db.query(sql, [req.body.SCTID], (err, data) => {
@@ -313,4 +312,4 @@ app.post("/res-sect", (req, res) => {
   });
 });
 
-export default app;
+module.exports = router;

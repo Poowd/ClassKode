@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 // Login =>
-app.post("/login-now", (req, res) => {
+router.post("/login-now", (req, res) => {
   const sql = `
         SELECT * FROM _users WHERE Email = ? AND Password = ? Limit 1
       `;
@@ -21,4 +20,4 @@ app.post("/login-now", (req, res) => {
   });
 });
 
-export default app;
+module.exports = router;

@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 // USERS =>
-app.post("/sel-users", (req, res) => {
+router.post("/sel-users", (req, res) => {
   const sql = `
         SELECT * FROM _users
       `;
@@ -22,7 +21,7 @@ app.post("/sel-users", (req, res) => {
 });
 
 // SCHEDULES =>
-app.post("/sel-sched", (req, res) => {
+router.post("/sel-sched", (req, res) => {
   const sql = `
       SELECT schedule.SCDID, section.Section, projection.Population, course.Course, schedule.Component, room.Room, room.Capacity, schedule.Day, schedule.StartTime, schedule.EndTime, schedule.Units, coach.LastName, schedule.ACY_Code, schedule.SCHLID, room.Building, room.Floor
       FROM schedule
@@ -49,7 +48,7 @@ app.post("/sel-sched", (req, res) => {
   });
 });
 
-app.post("/sel-exp-class", (req, res) => {
+router.post("/sel-exp-class", (req, res) => {
   const sql = `
       SELECT course.CRS_Code, course.Course, section.Section, setup.Component, projection.Population, course_component.MaxUnits, section.Semester, yearlevel.YearLevel
       FROM section
@@ -75,7 +74,7 @@ app.post("/sel-exp-class", (req, res) => {
   });
 });
 
-app.post("/sel-wke-evt", (req, res) => {
+router.post("/sel-wke-evt", (req, res) => {
   const sql = `
       SELECT *
       FROM weeklyevent
@@ -89,7 +88,7 @@ app.post("/sel-wke-evt", (req, res) => {
 });
 
 // ACADEMIC YEAR =>
-app.post("/sel-ay", (req, res) => {
+router.post("/sel-ay", (req, res) => {
   const sql = `
       SELECT * 
       FROM academicyear 
@@ -103,7 +102,7 @@ app.post("/sel-ay", (req, res) => {
   });
 });
 
-app.post("/sel-cur-ay", (req, res) => {
+router.post("/sel-cur-ay", (req, res) => {
   const sql = `
       SELECT * 
       FROM academicyear 
@@ -119,7 +118,7 @@ app.post("/sel-cur-ay", (req, res) => {
 });
 
 // CURRICULUM =>
-app.post("/sel-curr", (req, res) => {
+router.post("/sel-curr", (req, res) => {
   const sql = `
       SELECT * 
       FROM curriculum 
@@ -133,7 +132,7 @@ app.post("/sel-curr", (req, res) => {
   });
 });
 
-app.post("/sel-cur-curr", (req, res) => {
+router.post("/sel-cur-curr", (req, res) => {
   const sql = `
       SELECT * 
       FROM curriculum 
@@ -149,7 +148,7 @@ app.post("/sel-cur-curr", (req, res) => {
 });
 
 // DEPARTMENT =>
-app.post("/sel-dept", (req, res) => {
+router.post("/sel-dept", (req, res) => {
   const sql = `
       SELECT * 
       FROM department 
@@ -164,7 +163,7 @@ app.post("/sel-dept", (req, res) => {
 });
 
 // PROGRAM =>
-app.post("/sel-prg", (req, res) => {
+router.post("/sel-prg", (req, res) => {
   const sql = `
       SELECT * 
       FROM program
@@ -181,7 +180,7 @@ app.post("/sel-prg", (req, res) => {
 });
 
 // COURSE =>
-app.post("/sel-crs", (req, res) => {
+router.post("/sel-crs", (req, res) => {
   const sql = `
       SELECT * 
       FROM course 
@@ -197,7 +196,7 @@ app.post("/sel-crs", (req, res) => {
   });
 });
 
-app.post("/sel-compt", (req, res) => {
+router.post("/sel-compt", (req, res) => {
   const sql = `
       SELECT * 
       FROM course_component 
@@ -211,7 +210,7 @@ app.post("/sel-compt", (req, res) => {
   });
 });
 
-app.post("/sel-spl-crs", (req, res) => {
+router.post("/sel-spl-crs", (req, res) => {
   const sql = `
       SELECT 
         coach.LastName, course.Course
@@ -229,7 +228,7 @@ app.post("/sel-spl-crs", (req, res) => {
   });
 });
 
-app.post("/sel-crs-preq", (req, res) => {
+router.post("/sel-crs-preq", (req, res) => {
   const sql = `
       SELECT *
         FROM prerequisite
@@ -251,7 +250,7 @@ app.post("/sel-crs-preq", (req, res) => {
 });
 
 // COACH =>
-app.post("/sel-coach", (req, res) => {
+router.post("/sel-coach", (req, res) => {
   const sql = `
       SELECT * 
       FROM coach 
@@ -267,7 +266,7 @@ app.post("/sel-coach", (req, res) => {
   });
 });
 
-app.post("/sel-coach-asgn", (req, res) => {
+router.post("/sel-coach-asgn", (req, res) => {
   const sql = `
       SELECT *
       FROM assignment
@@ -288,7 +287,7 @@ app.post("/sel-coach-asgn", (req, res) => {
   });
 });
 
-app.post("/sel-coach-spl", (req, res) => {
+router.post("/sel-coach-spl", (req, res) => {
   const sql = `
       SELECT * 
       FROM specialization 
@@ -310,7 +309,7 @@ app.post("/sel-coach-spl", (req, res) => {
 });
 
 // COACH TYPE =>
-app.post("/sel-coach-type", (req, res) => {
+router.post("/sel-coach-type", (req, res) => {
   const sql = `
       SELECT * 
       FROM coach_type 
@@ -324,7 +323,7 @@ app.post("/sel-coach-type", (req, res) => {
 });
 
 // SECTION =>
-app.post("/sel-sect", (req, res) => {
+router.post("/sel-sect", (req, res) => {
   const sql = `
       SELECT * 
       FROM section
@@ -339,7 +338,7 @@ app.post("/sel-sect", (req, res) => {
     return res.json(data);
   });
 });
-app.post("/sel-sect-proj", (req, res) => {
+router.post("/sel-sect-proj", (req, res) => {
   const sql = `
       SELECT * 
       FROM projection 
@@ -358,7 +357,7 @@ app.post("/sel-sect-proj", (req, res) => {
   });
 });
 
-app.post("/sel-proj", (req, res) => {
+router.post("/sel-proj", (req, res) => {
   const sql = `
       SELECT * 
       FROM projection 
@@ -377,7 +376,7 @@ app.post("/sel-proj", (req, res) => {
 });
 
 // ROOM =>
-app.post("/sel-rom", (req, res) => {
+router.post("/sel-rom", (req, res) => {
   const sql = `
     SELECT *
     FROM room
@@ -397,7 +396,7 @@ app.post("/sel-rom", (req, res) => {
   });
 });
 
-app.post("/sel-fac", (req, res) => {
+router.post("/sel-fac", (req, res) => {
   const sql = `
       SELECT * 
       FROM rom_facility 
@@ -411,7 +410,7 @@ app.post("/sel-fac", (req, res) => {
   });
 });
 
-app.post("/sel-buil", (req, res) => {
+router.post("/sel-buil", (req, res) => {
   const sql = `
       SELECT * 
       FROM rom_building 
@@ -425,7 +424,7 @@ app.post("/sel-buil", (req, res) => {
   });
 });
 
-app.post("/sel-flor", (req, res) => {
+router.post("/sel-flor", (req, res) => {
   const sql = `
       SELECT * 
       FROM rom_floor 
@@ -439,7 +438,7 @@ app.post("/sel-flor", (req, res) => {
   });
 });
 
-app.post("/sel-place", (req, res) => {
+router.post("/sel-place", (req, res) => {
   const sql = `
       SELECT PLCID,PLC_Code,PLC_Status,rom_building.Building,rom_floor.Floor,room.Room,room.Capacity
       FROM placement
@@ -460,7 +459,7 @@ app.post("/sel-place", (req, res) => {
 });
 
 // ASSIGNMENT =>
-app.post("/sel-asgn", (req, res) => {
+router.post("/sel-asgn", (req, res) => {
   const sql = `
       SELECT *
       FROM assignment
@@ -481,7 +480,7 @@ app.post("/sel-asgn", (req, res) => {
 });
 
 // PROJECTION =>
-app.post("/sel-prj", (req, res) => {
+router.post("/sel-prj", (req, res) => {
   const sql = `
       SELECT * 
       FROM projection 
@@ -500,7 +499,7 @@ app.post("/sel-prj", (req, res) => {
 });
 
 // SETUP =>
-app.post("/sel-setup", (req, res) => {
+router.post("/sel-setup", (req, res) => {
   const sql = `
       SELECT * 
       FROM setup 
@@ -521,7 +520,7 @@ app.post("/sel-setup", (req, res) => {
 });
 
 // PLACEMENT =>
-app.post("/sel-place", (req, res) => {
+router.post("/sel-place", (req, res) => {
   const sql = `
         SELECT PLCID,PLC_Code,PLC_Status,rom_building.Building,rom_floor.Floor,room.Room,room.Capacity
           FROM placement
@@ -544,7 +543,7 @@ app.post("/sel-place", (req, res) => {
 });
 
 // ACADEMIC LEVEL =>
-app.post("/sel-acyl", (req, res) => {
+router.post("/sel-acyl", (req, res) => {
   const sql = `
       SELECT * 
       FROM academiclevel 
@@ -558,7 +557,7 @@ app.post("/sel-acyl", (req, res) => {
 });
 
 // SEMESTER =>
-app.post("/sel-sem", (req, res) => {
+router.post("/sel-sem", (req, res) => {
   const sql = `
       SELECT * 
       FROM semester 
@@ -573,7 +572,7 @@ app.post("/sel-sem", (req, res) => {
 });
 
 // YEAR LEVEL =>
-app.post("/sel-yrlvl", (req, res) => {
+router.post("/sel-yrlvl", (req, res) => {
   const sql = `
       SELECT * 
       FROM yearlevel 
@@ -587,4 +586,4 @@ app.post("/sel-yrlvl", (req, res) => {
   });
 });
 
-export default app;
+module.exports = router;

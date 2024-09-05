@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 // SCHEDULES =>
-app.post("/arch-sched", (req, res) => {
+router.post("/arch-sched", (req, res) => {
   const sql = `
         SELECT schedule.SCDID, section.Section, projection.Population, course.Course, schedule.Component, room.Room, room.Capacity, schedule.Day, schedule.StartTime, schedule.EndTime, schedule.Units, coach.LastName, schedule.ACY_Code, schedule.SCHLID, room.Building, room.Floor, schedule.SCD_Created
         FROM schedule
@@ -36,7 +35,7 @@ app.post("/arch-sched", (req, res) => {
 });
 
 // ACADEMIC YEAR =>
-app.post("/arch-acy", (req, res) => {
+router.post("/arch-acy", (req, res) => {
   const sql = `
         SELECT * 
         FROM academicyear 
@@ -50,7 +49,7 @@ app.post("/arch-acy", (req, res) => {
   });
 });
 
-app.post("/archive-existing-academicyear", (req, res) => {
+router.post("/archive-existing-academicyear", (req, res) => {
   const sql = "UPDATE academicyear SET ACY_Status = 'ARCHIVE' WHERE ACYID = ? ";
 
   db.query(sql, [req.body.ACYID], (err, data) => {
@@ -60,7 +59,7 @@ app.post("/archive-existing-academicyear", (req, res) => {
 });
 
 // CURRICULUM =>
-app.post("/arch-curr", (req, res) => {
+router.post("/arch-curr", (req, res) => {
   const sql = `
       SELECT * 
       FROM curriculum 
@@ -74,7 +73,7 @@ app.post("/arch-curr", (req, res) => {
   });
 });
 
-app.post("/archive-existing-curriculum", (req, res) => {
+router.post("/archive-existing-curriculum", (req, res) => {
   const sql = "UPDATE curriculum SET CRR_Status = 'ARCHIVE' WHERE CRRID = ? ";
 
   db.query(sql, [req.body.CRRID], (err, data) => {
@@ -84,7 +83,7 @@ app.post("/archive-existing-curriculum", (req, res) => {
 });
 
 // DEPARTMENT =>
-app.post("/arch-dept", (req, res) => {
+router.post("/arch-dept", (req, res) => {
   const sql = `
         SELECT * 
         FROM department 
@@ -98,7 +97,7 @@ app.post("/arch-dept", (req, res) => {
   });
 });
 
-app.post("/archive-existing-department", (req, res) => {
+router.post("/archive-existing-department", (req, res) => {
   const sql = "UPDATE department SET DPT_Status = 'ARCHIVE' WHERE DPTID = ? ";
 
   db.query(sql, [req.body.DPTID], (err, data) => {
@@ -108,7 +107,7 @@ app.post("/archive-existing-department", (req, res) => {
 });
 
 // PROGRAM =>
-app.post("/arch-prg", (req, res) => {
+router.post("/arch-prg", (req, res) => {
   const sql = `
       SELECT * 
       FROM program
@@ -124,7 +123,7 @@ app.post("/arch-prg", (req, res) => {
   });
 });
 
-app.post("/archive-existing-program", (req, res) => {
+router.post("/archive-existing-program", (req, res) => {
   const sql = "UPDATE program SET PRG_Status = 'ARCHIVE' WHERE PRGID = ? ";
 
   db.query(sql, [req.body.PRGID], (err, data) => {
@@ -134,7 +133,7 @@ app.post("/archive-existing-program", (req, res) => {
 });
 
 // COURSE =>
-app.post("/arch-crs", (req, res) => {
+router.post("/arch-crs", (req, res) => {
   const sql = `
       SELECT * 
       FROM course 
@@ -150,7 +149,7 @@ app.post("/arch-crs", (req, res) => {
   });
 });
 
-app.post("/archive-existing-course", (req, res) => {
+router.post("/archive-existing-course", (req, res) => {
   const sql = "UPDATE course SET CRS_Status = 'ARCHIVE' WHERE CRSID = ? ";
 
   db.query(sql, [req.body.CRSID], (err, data) => {
@@ -160,7 +159,7 @@ app.post("/archive-existing-course", (req, res) => {
 });
 
 // COACH =>
-app.post("/arch-coach", (req, res) => {
+router.post("/arch-coach", (req, res) => {
   const sql = `
       SELECT * 
       FROM coach 
@@ -176,7 +175,7 @@ app.post("/arch-coach", (req, res) => {
   });
 });
 
-app.post("/archive-existing-coach", (req, res) => {
+router.post("/archive-existing-coach", (req, res) => {
   const sql = "UPDATE coach SET CCH_Status = 'ARCHIVE' WHERE CCHID = ? ";
 
   db.query(sql, [req.body.CCHID], (err, data) => {
@@ -186,7 +185,7 @@ app.post("/archive-existing-coach", (req, res) => {
 });
 
 // SECTION =>
-app.post("/arch-sect", (req, res) => {
+router.post("/arch-sect", (req, res) => {
   const sql = `
       SELECT * 
       FROM section
@@ -202,7 +201,7 @@ app.post("/arch-sect", (req, res) => {
   });
 });
 
-app.post("/archive-existing-section", (req, res) => {
+router.post("/archive-existing-section", (req, res) => {
   const sql = "UPDATE section SET SCT_Status = 'ARCHIVE' WHERE SCTID = ? ";
 
   db.query(sql, [req.body.SCTID], (err, data) => {
@@ -212,7 +211,7 @@ app.post("/archive-existing-section", (req, res) => {
 });
 
 // ROOM =>
-app.post("/arch-rom", (req, res) => {
+router.post("/arch-rom", (req, res) => {
   const sql = `
     SELECT *
     FROM room
@@ -232,7 +231,7 @@ app.post("/arch-rom", (req, res) => {
   });
 });
 
-app.post("/archive-existing-room", (req, res) => {
+router.post("/archive-existing-room", (req, res) => {
   const sql = "UPDATE room SET ROM_Status = 'ARCHIVE' WHERE ROMID = ? ";
 
   db.query(sql, [req.body.ROMID], (err, data) => {
@@ -241,4 +240,4 @@ app.post("/archive-existing-room", (req, res) => {
   });
 });
 
-export default app;
+module.exports = router;

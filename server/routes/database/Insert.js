@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 // SCHEDULES =>
-app.post("/ins-pre-sched", (req, res) => {
+router.post("/ins-pre-sched", (req, res) => {
   const sql = `
       INSERT INTO schedule 
       (Section, CRS_Code, Room, Component, Units, Day, StartTime, EndTime, SCHLID, ACY_Code ) 
@@ -38,7 +37,7 @@ app.post("/ins-pre-sched", (req, res) => {
 });
 
 // CURRICULUM =>
-app.post("/ins-curr", (req, res) => {
+router.post("/ins-curr", (req, res) => {
   const sql = `
         INSERT INTO curriculum 
         (CRR_Code, Curriculum) 
@@ -55,7 +54,7 @@ app.post("/ins-curr", (req, res) => {
 });
 
 // ACADEMIC YEAR =>
-app.post("/ins-ay", (req, res) => {
+router.post("/ins-ay", (req, res) => {
   const sql = `
       INSERT INTO academicyear 
         (ACY_Code, AcademicYear, CRR_Code, StartDate, EndDate) 
@@ -77,7 +76,7 @@ app.post("/ins-ay", (req, res) => {
 });
 
 // DEPARTMENT =>
-app.post("/ins-dpt", (req, res) => {
+router.post("/ins-dpt", (req, res) => {
   const sql = `
       INSERT INTO department 
       (DPT_Code, Department, DPT_Abbreviation, DPT_Description) 
@@ -98,7 +97,7 @@ app.post("/ins-dpt", (req, res) => {
 });
 
 // PROGRAM =>
-app.post("/ins-prg", (req, res) => {
+router.post("/ins-prg", (req, res) => {
   const sql = `
         INSERT INTO program 
         (PRG_Code, Program, PRG_Abbreviation, DPT_Code, AcademicLevel, PRG_Description) 
@@ -122,7 +121,7 @@ app.post("/ins-prg", (req, res) => {
 });
 
 // COACH =>
-app.post("/ins-coach", (req, res) => {
+router.post("/ins-coach", (req, res) => {
   const sql = `
       INSERT INTO coach 
       (SCHLID, FirstName, MiddleInitial, LastName, Gender, DPT_Code, Email, Phone, Facebook, Photo) 
@@ -149,7 +148,7 @@ app.post("/ins-coach", (req, res) => {
   });
 });
 
-app.post("/ins-assign", (req, res) => {
+router.post("/ins-assign", (req, res) => {
   const sql = `
     INSERT INTO assignment 
     (SCHLID, ACY_Code, CoachType) 
@@ -165,7 +164,7 @@ app.post("/ins-assign", (req, res) => {
   });
 });
 
-app.post("/ins-spec", (req, res) => {
+router.post("/ins-spec", (req, res) => {
   const sql = `
       INSERT INTO specialization 
       (SCHLID, CRS_Code, ACY_Code) 
@@ -182,7 +181,7 @@ app.post("/ins-spec", (req, res) => {
 });
 
 // COURSE =>
-app.post("/ins-crs", (req, res) => {
+router.post("/ins-crs", (req, res) => {
   const sql = `
       INSERT INTO course 
       (CRS_Code, Course, PRG_Code)
@@ -199,7 +198,7 @@ app.post("/ins-crs", (req, res) => {
 });
 
 // ROOM =>
-app.post("/ins-rom", (req, res) => {
+router.post("/ins-rom", (req, res) => {
   const sql = `
         INSERT INTO room 
         (Room, Capacity, Facility, Building, Floor) 
@@ -223,7 +222,7 @@ app.post("/ins-rom", (req, res) => {
 
 // SECTION =>
 
-app.post("/ins-sct", (req, res) => {
+router.post("/ins-sct", (req, res) => {
   const sql = `
       INSERT INTO section 
       (Section, Semester, YearLevel, PRG_Code) 
@@ -244,7 +243,7 @@ app.post("/ins-sct", (req, res) => {
   });
 });
 
-app.post("/ins-proj", (req, res) => {
+router.post("/ins-proj", (req, res) => {
   const sql = `
       INSERT INTO projection 
       (Section, Population, ACY_Code) 
@@ -260,7 +259,7 @@ app.post("/ins-proj", (req, res) => {
   });
 });
 
-app.post("/gen-section", (req, res) => {
+router.post("/gen-section", (req, res) => {
   const sql = `
       INSERT INTO section 
       (Section, Semester, YearLevel, PRG_Code)
@@ -280,7 +279,7 @@ app.post("/gen-section", (req, res) => {
 });
 
 // SETUP =>
-app.post("/ins-setup", (req, res) => {
+router.post("/ins-setup", (req, res) => {
   const sql = `
       INSERT INTO setup 
       (CRS_Code, CRR_Code, PRG_Code, Component)
@@ -303,4 +302,4 @@ app.post("/ins-setup", (req, res) => {
 
 // SECTION =>
 
-export default app;
+module.exports = router;

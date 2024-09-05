@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
+const bcrypt = require("bcryptjs");
 const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
@@ -57,7 +58,7 @@ router.post("/ins-curr", (req, res) => {
 router.post("/ins-ay", (req, res) => {
   const sql = `
       INSERT INTO academicyear 
-        (ACY_Code, AcademicYear, CRR_Code, StartDate, EndDate) 
+        (ACY_Code, AcademicYear, CRR_Code, Semester, StartDate, EndDate) 
       VALUES (?)
   `;
 
@@ -65,6 +66,7 @@ router.post("/ins-ay", (req, res) => {
     req.body.ACY_Code,
     req.body.AcademicYear,
     req.body.CRR_Code,
+    req.body.Semester,
     req.body.StartDate,
     req.body.EndDate,
   ];
@@ -282,7 +284,7 @@ router.post("/gen-section", (req, res) => {
 router.post("/ins-setup", (req, res) => {
   const sql = `
       INSERT INTO setup 
-      (CRS_Code, CRR_Code, PRG_Code, Component)
+      (CRS_Code, CRR_Code, PRG_Code, SMS, YL, Component)
       VALUES 
       (?)
   `;
@@ -291,6 +293,8 @@ router.post("/ins-setup", (req, res) => {
     req.body.CRS_Code,
     req.body.CRR_Code,
     req.body.PRG_Code,
+    req.body.Semester,
+    req.body.YearLevel,
     req.body.Component,
   ];
 
@@ -300,6 +304,35 @@ router.post("/ins-setup", (req, res) => {
   });
 });
 
-// SECTION =>
+// USERS =>
+const saltRounds = 10;
+
+router.post("/gen-users", (req, res) => {
+  const sql = `
+        INSERT INTO _users 
+        (SCHLID, FirstName, LastName, Email, Password, UserType)
+        VALUES 
+        (?)
+    `;
+  bcrypt.hash(
+    `${req.body.Firstname}${req.body.SchoolID}`,
+    saltRounds,
+    function (err, hash) {
+      console.log(hash);
+      const values = [
+        req.body.SchoolID,
+        req.body.Firstname,
+        req.body.Lastname,
+        req.body.Email,
+        hash,
+        req.body.Type,
+      ];
+      db.query(sql, [values], (err, data) => {
+        if (err) return res.json(false);
+        return res.json(true);
+      });
+    }
+  );
+});
 
 module.exports = router;

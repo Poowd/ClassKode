@@ -18,6 +18,7 @@ export function GenerateSection() {
   const [yearlevel, setYearLevel] = useState([]);
   const [semester, setSemester] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
+  const [preview, setPreview] = useState([]);
   const [data, setData] = useState({
     Semester: "",
     YearLevel: "",
@@ -120,7 +121,7 @@ export function GenerateSection() {
     post("gen-section", data, setData);
     sleep(2000);
   }
-  
+
   const submit = (e) => {
     e.preventDefault();
     for (var i in sectionlist) {
@@ -185,15 +186,11 @@ export function GenerateSection() {
         entry={
           <main className="p-3">
             <section className="row m-0 p-0">
-              {section.map((section, i) =>
-                section.PRG_Code === data.PRG_Code ? (
-                  <div className="col-2 p-1 m-0">
-                    <div className="border rounded p-2">{section.Section}</div>
-                  </div>
-                ) : (
-                  ""
-                )
-              )}
+              {sectionlist.map((section, i) => (
+                <div className="col-2 p-1 m-0">
+                  <div className="border rounded p-2">{section.Section}</div>
+                </div>
+              ))}
             </section>
           </main>
         }

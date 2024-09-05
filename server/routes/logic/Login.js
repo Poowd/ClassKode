@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
+const bcrypt = require("bcryptjs")
 const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
@@ -11,12 +12,21 @@ const db = mysql.createConnection({
 // Login =>
 router.post("/login-now", (req, res) => {
   const sql = `
-        SELECT * FROM _users WHERE Email = ? AND Password = ? Limit 1
+        SELECT * FROM _users WHERE Email = ? Limit 1
       `;
+  const pass = req.body.password;
 
-  db.query(sql, [req.body.email, req.body.password], (err, data) => {
+  db.query(sql, [req.body.email], (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
-    return res.json({ Status: "Success", data: data });
+    bcrypt.compare(pass, data[0].Password, (err, resu) => {
+      if (err) {
+        console.error("Verification error:", err);
+      } else if (resu) {
+        return res.json({ Status: "Success", data: data });
+      } else {
+        console.log("Password does not match");
+      }
+    });
   });
 });
 

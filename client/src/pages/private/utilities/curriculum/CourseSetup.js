@@ -78,7 +78,7 @@ export function CourseSetup() {
             <LinkButton
               class="btn-primary px-2"
               textclass="text-white"
-              to={`/institution/curriculum/view/${current.CRRID}`}
+              to={`/curriculum/view/${current.CRRID}`}
               state={{
                 data: current,
               }}
@@ -159,7 +159,7 @@ export function CourseSetup() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={data.Program !== "" ? "/institution/setup/create/0" : ""}
+                to={data.Program !== "" ? "/setup/create/0" : ""}
                 state={{
                   program: data.Program,
                   department: data.Department,
@@ -183,7 +183,7 @@ export function CourseSetup() {
                 slot4={item.Curriculum}
                 slot5={item.Program}
                 view={info.icons.view}
-                link={`/institution/course/view/${item.CRSID}`}
+                link={`/course/view/${item.CRSID}`}
                 state={{ data: item }}
               />
             ) : null

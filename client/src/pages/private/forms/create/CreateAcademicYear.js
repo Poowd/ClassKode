@@ -14,10 +14,12 @@ export function CreateAcademicYear() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [curriculum, setCurriculum] = useState([]);
+  const [semester, setSemester] = useState([]);
   const [data, setData] = useState({
     ACY_Code: "",
     AcademicYear: "",
     CRR_Code: "",
+    Semester: "",
     StartDate: "",
     EndDate: "",
   });
@@ -25,6 +27,7 @@ export function CreateAcademicYear() {
 
   useEffect(() => {
     post("sel-curr", curriculum, setCurriculum);
+    post("sel-sem", semester, setSemester);
   }, [curriculum]);
 
   const handleSubmit = (e) => {
@@ -95,6 +98,38 @@ export function CreateAcademicYear() {
                         <SelectButtonItem
                           value={option.CRR_Code}
                           content={option.Curriculum}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
+                </>
+              }
+            />
+
+            <SelectButton
+              label="Semester"
+              id="Semester"
+              trigger={dataChange}
+              required={true}
+              option={
+                <>
+                  <SelectButtonItemSelected
+                    content={semester.map((option, i) => (
+                      <>
+                        {option.Semester === data.Semester
+                          ? option.Semester
+                          : ""}
+                      </>
+                    ))}
+                  />
+                  {semester.map((option, i) => (
+                    <>
+                      {data.Semester !== option.Semester ? (
+                        <SelectButtonItem
+                          value={option.Semester}
+                          content={option.Semester}
                         />
                       ) : (
                         ""

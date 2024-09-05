@@ -8,7 +8,7 @@ export class Sidebar extends React.Component {
   render() {
     return (
       <div
-        className="offcanvas offcanvas-start m-2 rounded"
+        className="w-25 offcanvas offcanvas-start m-2 rounded"
         tabIndex="-1"
         id={this.props.id}
       >
@@ -35,7 +35,7 @@ export class Sidebar extends React.Component {
             dismiss="offcanvas"
           />
         </div>
-        <hr className="text-dark mx-3 py-0 mb-0" />
+        <hr className="w-100 text-dark mx-3 py-0 mb-0" />
         <div className="offcanvas-body py-0 my-0 w-100">
           {this.props.content}
         </div>

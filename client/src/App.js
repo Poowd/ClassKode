@@ -40,7 +40,7 @@ function App() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [data, setData] = useState({
-    First: "",
+    Input: "",
   });
   const [dataChange] = useHandleChange(setData);
 
@@ -63,15 +63,30 @@ function App() {
   };
 
   const quicknav = () => {
-    switch (`${data.First}`) {
-      case "coach":
-        navigate(`/institution/${data.First}`);
-        setData({ First: "" });
+    switch (`${data.Input}`) {
+      case "list department":
+        navigate(`/institution/${data.Input.slice(5)}`);
+        break;
+      case "list program":
+        navigate(`/institution/${data.Input.slice(5)}`);
+        break;
+      case "list course":
+        navigate(`/institution/${data.Input.slice(5)}`);
+        break;
+      case "list coach":
+        navigate(`/institution/${data.Input.slice(5)}`);
+        break;
+      case "list section":
+        navigate(`/institution/${data.Input.slice(5)}`);
+        break;
+      case "list room":
+        navigate(`/institution/${data.Input.slice(5)}`);
         break;
       default:
-        navigate(`/`);
-        setData({ First: "" });
+        navigate("/");
     }
+    document.getElementById("Input").value = "";
+    setData({ Input: "" });
   };
 
   return (
@@ -97,7 +112,8 @@ function App() {
                         <section className="d-flex gap-1">
                           <DefaultInput
                             label="inputs"
-                            name="First"
+                            id="Input"
+                            name="Input"
                             trigger={dataChange}
                           />
                           <DefaultButton

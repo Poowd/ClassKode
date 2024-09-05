@@ -9,10 +9,12 @@ import { ListCard } from "../../../../component/card/ListCard";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 import { LinkButton } from "../../../../component/button/LinkButton";
 import { MdArrowBackIosNew } from "react-icons/md";
+import useConfiguration from "../../../../hook/useConfiguration";
 
 export function CoachAssignment() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
   const [ay, setAY] = useState([]);
   const [curray, setCurrAY] = useState([]);
@@ -37,9 +39,9 @@ export function CoachAssignment() {
             <LinkButton
               class="btn-primary px-2"
               textclass="text-white"
-              to={`/institution/academic-year/view/${current.ACYID}`}
+              to={`/academic-year/view/${current.ACYID}`}
               state={{ data: current }}
-              icon={<GrView />}
+              icon={info.icons.view}
             />
           </header>
           <main className="mt-2">
@@ -54,7 +56,7 @@ export function CoachAssignment() {
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
                 class=""
-                icon={<MdArrowBackIosNew />}
+                icon={info.icons.back}
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -62,11 +64,11 @@ export function CoachAssignment() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={"/institution/assignment/create/0"}
+                to={"/assignment/create/0"}
                 state={{
                   academicyear: current,
                 }}
-                icon={<RiStickyNoteAddLine />}
+                icon={info.icons.add}
               />
             </div>
           </div>
@@ -84,7 +86,8 @@ export function CoachAssignment() {
                   slot3={item.ASG_Created}
                   slot4={item.ACY_Code}
                   slot5={`${item.MinUnits} units - ${item.MaxUnits} units`}
-                  link={`/institution/coach/view/${item.CCHID}`}
+                  view={info.icons.view}
+                  link={`/coach/view/${item.CCHID}`}
                   state={{ data: item }}
                 />
               ) : null

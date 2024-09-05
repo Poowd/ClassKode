@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2024 at 07:30 PM
+-- Generation Time: Sep 03, 2024 at 05:49 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,8 +39,8 @@ CREATE TABLE `academiclevel` (
 --
 
 INSERT INTO `academiclevel` (`ADLID`, `AcademicLevel`, `ADL_Created`, `ADL_Status`) VALUES
-('0000000002', 'Senior High School', '2024-06-21 12:34:05', 'ACTIVE'),
-('0000000001', 'Tertiary', '2024-06-21 12:33:53', 'ACTIVE');
+('0000000001', 'Senior High School', '2024-06-21 12:34:05', 'ACTIVE'),
+('0000000002', 'Tertiary', '2024-06-21 12:33:53', 'ACTIVE');
 
 --
 -- Triggers `academiclevel`
@@ -63,6 +63,7 @@ CREATE TABLE `academicyear` (
   `ACY_Code` varchar(25) NOT NULL,
   `CRR_Code` varchar(25) NOT NULL,
   `AcademicYear` varchar(255) NOT NULL,
+  `Semester` enum('First Semester','Second Semester') DEFAULT NULL,
   `StartDate` varchar(50) DEFAULT NULL,
   `EndDate` varchar(50) DEFAULT NULL,
   `ACY_Created` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -73,16 +74,8 @@ CREATE TABLE `academicyear` (
 -- Dumping data for table `academicyear`
 --
 
-INSERT INTO `academicyear` (`ACYID`, `ACY_Code`, `CRR_Code`, `AcademicYear`, `StartDate`, `EndDate`, `ACY_Created`, `ACY_Status`) VALUES
-('0000000009', 'asdas', 'CRR2020', 'dasda', '2434', '6453', '2024-08-09 15:27:23', 'ARCHIVE'),
-('0000000004', 'asdsda', 'CRR2020', 'dasdasdas', '1234', '1234', '2024-06-29 10:02:55', 'ARCHIVE'),
-('0000000001', 'AY-2425', 'CRR2020', 'Academic Year 2024-2025', '2024', '2025', '2024-06-20 15:15:09', 'ACTIVE'),
-('0000000002', 'AY2526', 'CRR2020', 'Academic Year 2025-2026', '2025', '2026', '2024-06-21 10:26:10', 'ARCHIVE'),
-('0000000006', 'das', 'CRR2020', 'dasd', 'dsada', 'dsada', '2024-07-03 19:26:50', 'ARCHIVE'),
-('0000000003', 'dasddas', 'CRR2020', 'asdasda', '1233', '2323', '2024-06-28 17:57:27', 'ARCHIVE'),
-('0000000008', 'dsadadas', 'CRR2020', 'dasdasd', '2133', '4323', '2024-08-08 07:22:36', 'ARCHIVE'),
-('0000000005', 'r34223re', 'CRR2020', 'rweqrwer', 'rwe', 'rewr', '2024-07-03 06:56:14', 'ARCHIVE'),
-('0000000007', 'wqeqe', 'CRR2020', 'ewqeq', '2313', '3432', '2024-08-07 20:17:27', 'ARCHIVE');
+INSERT INTO `academicyear` (`ACYID`, `ACY_Code`, `CRR_Code`, `AcademicYear`, `Semester`, `StartDate`, `EndDate`, `ACY_Created`, `ACY_Status`) VALUES
+('0000000001', 'AY-2425-1', 'CRR2020', 'Academic Year 2024-2025', 'First Semester', '2024', '2025', '2024-08-09 07:27:23', 'ACTIVE');
 
 --
 -- Triggers `academicyear`
@@ -114,13 +107,13 @@ CREATE TABLE `assignment` (
 --
 
 INSERT INTO `assignment` (`ASGID`, `SCHLID`, `ACY_Code`, `CoachType`, `ASG_Created`, `ASG_Status`) VALUES
-('0000000001', '02000000001', 'AY-2425', 'Fulltime', '2024-06-21 07:14:50', 'ACTIVE'),
-('0000000002', '02000000002', 'AY-2425', 'Fulltime', '2024-06-27 06:03:26', 'ACTIVE'),
-('0000000003', '02000000003', 'AY-2425', 'Parttime', '2024-07-01 10:36:38', 'ACTIVE'),
-('0000000004', 'dsadas', 'AY-2425', 'Fulltime', '2024-08-07 11:46:23', 'ACTIVE'),
-('0000000005', '02000000004', 'AY-2425', 'Parttime', '2024-08-07 11:46:41', 'ACTIVE'),
-('0000000006', '02000257902', 'AY-2425', 'Parttime', '2024-08-07 11:47:40', 'ACTIVE'),
-('0000000007', '02000257907', 'AY-2425', 'Parttime', '2024-08-09 15:32:02', 'ACTIVE');
+('0000000001', '02000000001', 'AY-2425-1', 'Fulltime', '2024-06-20 23:14:50', 'ACTIVE'),
+('0000000002', '02000000002', 'AY-2425-1', 'Fulltime', '2024-06-26 22:03:26', 'ACTIVE'),
+('0000000003', '02000000003', 'AY-2425-1', 'Parttime', '2024-07-01 02:36:38', 'ACTIVE'),
+('0000000004', 'dsadas', 'AY-2425-1', 'Fulltime', '2024-08-07 03:46:23', 'ACTIVE'),
+('0000000005', '02000000004', 'AY-2425-1', 'Parttime', '2024-08-07 03:46:41', 'ACTIVE'),
+('0000000006', '02000257902', 'AY-2425-1', 'Parttime', '2024-08-07 03:47:40', 'ACTIVE'),
+('0000000007', '02000257907', 'AY-2425-1', 'Parttime', '2024-08-09 07:32:02', 'ACTIVE');
 
 --
 -- Triggers `assignment`
@@ -159,18 +152,18 @@ CREATE TABLE `coach` (
 --
 
 INSERT INTO `coach` (`CCHID`, `SCHLID`, `DPT_Code`, `FirstName`, `MiddleInitial`, `LastName`, `Gender`, `Email`, `Phone`, `Facebook`, `Photo`, `CCH_Created`, `CCH_Status`) VALUES
-('0000000001', '02000000001', 'DPT_ICT', 'Joshua Rhey', 'N', 'Oliveros', 'Male', 'oliveros.000001@munoz.sti.edu.ph', '09123456789', 'https://www.facebook.com', '', '2024-06-20 16:41:22', 'ACTIVE'),
-('0000000002', '02000000002', 'DPT_ICT', 'Cristelyn', 'Q', 'Esporsado', 'Female', 'esporsado.000002@munoz.sti.edu.ph', '09123123123', 'https://www.facebook.com/RinkashimeTakanoku', '', '2024-06-21 19:08:36', 'ACTIVE'),
-('0000000003', '02000000003', 'DPT_ENG', 'Mark', 'L', 'Lopez', 'Male', 'dasd', '09323232323', 'eq', '', '2024-06-21 19:41:01', 'ACTIVE'),
-('0000000007', '02000000004', 'DPT_ICT', 'Yranimez', 'R', 'Repil', 'Male', 'yra@mez.com', '09249438539', 'https://www.facebook.comewqeqwqweq', 'image_1722838474947.png', '2024-08-05 06:14:37', 'ACTIVE'),
-('0000000005', '02000257902', 'DPT_ICT', 'Joshua Rhey', 'N', 'Lape', 'Male', 'admin231@munoz.sti.edu.ph', '09562342123', 'test313123123', '', '2024-08-01 08:21:47', 'ACTIVE'),
-('0000000009', '02000257905', 'BUS-MNG-001', 'Mark Limuel \'Maku\'', 'L', 'Lape', 'Male', 'lape@email.com', '03483569842', 'https://www.youtube.com/watch?v=dLXSJdTK9QI&t=1148s', 'image_1722841508046.jfif', '2024-08-05 07:05:10', 'ACTIVE'),
-('0000000004', '02000257907', 'DPT_ICT', 'Mark', 'L', 'Lape', 'Male', 'lape.257907@munoz.sti.edu.ph', '09682348413', 'Facebook', '', '2024-07-15 08:15:18', 'ACTIVE'),
-('0000000010', 'dsad', 'DPT_ICT', 'ada', 'das', 'dasdas', 'Male', 'dsa', 'dasdasd', 'dsada', 'image_1722844810063.jpg', '2024-08-05 08:00:11', 'ARCHIVE'),
-('0000000012', 'dsadac', 'DPT_TRM', 'sadca', 'dcsac', 'ascdascdas', 'Male', 'acsdsa', 'dcsacdasc', 'dsacdascdasc', 'image_1723221338466.png', '2024-08-09 16:35:42', 'ACTIVE'),
-('0000000006', 'dsadas', 'DPT_ICT', 'dasdas', 'dasds', 'adsada', 'Male', 'dsad', 'asdsada', 'dasd', 'image_1722838358421.png', '2024-08-05 06:12:45', 'ARCHIVE'),
-('0000000011', 'fwver', 'DPT_ICT', 'wervwe', 'rvwer', 'vwervwerv', 'Male', 'rwverw', 'vrvwervwer', 'vrwevrwevwrev', 'image_1722878747141.png', '2024-08-05 17:25:50', 'ARCHIVE'),
-('0000000008', 'wqceqwe', 'DPT_TRM', 'cqwce', 'qwec', 'wqecwqec', 'Male', 'cqwe', 'cwqecqwec', 'wqcewqc', 'image_1722839257962.jpg', '2024-08-05 06:27:40', 'ARCHIVE');
+('0000000001', '02000000001', 'DPT_ICT', 'Joshua Rhey', 'N', 'Oliveros', 'Male', 'oliveros.000001@munoz.sti.edu.ph', '09123456789', 'https://www.facebook.com', 'IMG_9115.jpg', '2024-06-20 08:41:22', 'ACTIVE'),
+('0000000002', '02000000002', 'DPT_ICT', 'Cristelyn', 'Q', 'Esporsado', 'Female', 'esporsado.000002@munoz.sti.edu.ph', '09123123123', 'https://www.facebook.com/RinkashimeTakanoku', 'IMG_9105.JPG', '2024-06-21 11:08:36', 'ACTIVE'),
+('0000000003', '02000000003', 'DPT_ENG', 'Miguel Jerome', 'N', 'Silverio', 'Male', 'dasd', '09323232323', 'eq', 'IMG_9119.JPG', '2024-06-21 11:41:01', 'ACTIVE'),
+('0000000004', '02000000004', 'DPT_ICT', 'Yranimez', 'R', 'Repil', 'Male', 'yra@mez.com', '09249438539', 'https://www.facebook.comewqeqwqweq', '_avatar.png', '2024-08-04 22:14:37', 'ACTIVE'),
+('0000000005', '02000257902', 'DPT_ICT', 'Joshua Rhey', 'N', 'Lape', 'Male', 'admin231@munoz.sti.edu.ph', '09562342123', 'test313123123', '_avatar.png', '2024-08-01 00:21:47', 'ACTIVE'),
+('0000000006', '02000257905', 'BUS-MNG-001', 'Mark Limuel \'Maku\'', 'L', 'Lape', 'Male', 'lape@email.com', '03483569842', 'https://www.youtube.com/watch?v=dLXSJdTK9QI&t=1148s', 'cute.jfif', '2024-08-04 23:05:10', 'ACTIVE'),
+('0000000007', '02000257907', 'DPT_ICT', 'Mark', 'L', 'Lape', 'Male', 'lape.257907@munoz.sti.edu.ph', '09682348413', 'Facebook', '_avatar.png', '2024-07-15 00:15:18', 'ACTIVE'),
+('0000000008', 'dsad', 'DPT_ICT', 'ada', 'das', 'dasdas', 'Male', 'dsa', 'dasdasd', 'dsada', '_avatar.png', '2024-08-05 00:00:11', 'ARCHIVE'),
+('0000000009', 'dsadac', 'DPT_TRM', 'sadca', 'dcsac', 'ascdascdas', 'Male', 'acsdsa', 'dcsacdasc', 'dsacdascdasc', '_avatar.png', '2024-08-09 08:35:42', 'ACTIVE'),
+('0000000010', 'dsadas', 'DPT_ICT', 'dasdas', 'dasds', 'adsada', 'Male', 'dsad', 'asdsada', 'dasd', '_avatar.png', '2024-08-04 22:12:45', 'ARCHIVE'),
+('0000000011', 'fwver', 'DPT_ICT', 'wervwe', 'rvwer', 'vwervwerv', 'Male', 'rwverw', 'vrvwervwer', 'vrwevrwevwrev', '_avatar.png', '2024-08-05 09:25:50', 'ARCHIVE'),
+('0000000012', 'wqceqwe', 'DPT_TRM', 'cqwce', 'qwec', 'wqecwqec', 'Male', 'cqwe', 'cwqecqwec', 'wqcewqc', '_avatar.png', '2024-08-04 22:27:40', 'ARCHIVE');
 
 --
 -- Triggers `coach`
@@ -266,12 +259,11 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`CRSID`, `CRS_Code`, `PRG_Code`, `Course`, `CRS_Created`, `CRS_Status`) VALUES
-('0000000001', 'COSC001', 'COSC', 'Methods of Research', '2024-06-21 09:57:53', 'ACTIVE'),
-('0000000002', 'ENGI001', 'COE', 'Computer Architecture', '2024-06-22 18:46:18', 'ACTIVE'),
-('0000000003', 'COSC002', 'COSC', 'Thesis 1', '2024-06-22 18:51:09', 'ACTIVE'),
-('0000000004', 'COSC003', 'COSC', 'Thesis 2', '2024-06-22 18:51:35', 'ACTIVE'),
-('0000000005', 'COSC004', 'COSC', 'Computer Programming 5', '2024-06-26 18:20:16', 'ACTIVE'),
-('0000000006', 'e', 'COE', 'e', '2024-08-04 17:56:02', 'ARCHIVE');
+('0000000001', 'COSC001', 'COSC', 'Methods of Research', '2024-06-21 01:57:53', 'ACTIVE'),
+('0000000002', 'ENGI001', 'COE', 'Computer Architecture', '2024-06-22 10:46:18', 'ACTIVE'),
+('0000000003', 'COSC002', 'COSC', 'Thesis 1', '2024-06-22 10:51:09', 'ACTIVE'),
+('0000000004', 'COSC003', 'COSC', 'Thesis 2', '2024-06-22 10:51:35', 'ACTIVE'),
+('0000000005', 'COSC004', 'COSC', 'Computer Programming 5', '2024-06-26 10:20:16', 'ACTIVE');
 
 --
 -- Triggers `course`
@@ -302,11 +294,11 @@ CREATE TABLE `course_component` (
 --
 
 INSERT INTO `course_component` (`CCPID`, `Component`, `MaxUnits`, `CCP_Created`, `CCP_Status`) VALUES
-('0000000003', 'Computer Laboratory', 3, '2024-06-21 08:48:54', 'ACTIVE'),
+('0000000001', 'Computer Laboratory', 3, '2024-06-21 08:48:54', 'ACTIVE'),
 ('0000000002', 'General Lecture', 1.5, '2024-06-21 08:48:20', 'ACTIVE'),
-('0000000001', 'Major Lecture', 2, '2024-06-21 08:48:05', 'ACTIVE'),
-('0000000005', 'NSTP', 3, '2024-06-21 08:49:29', 'ACTIVE'),
-('0000000004', 'PE ( Tertiary )', 2, '2024-06-21 08:49:13', 'ACTIVE'),
+('0000000003', 'Major Lecture', 2, '2024-06-21 08:48:05', 'ACTIVE'),
+('0000000004', 'NSTP', 3, '2024-06-21 08:49:29', 'ACTIVE'),
+('0000000005', 'PE ( Tertiary )', 2, '2024-06-21 08:49:13', 'ACTIVE'),
 ('0000000006', 'Weekly Event', 1.5, '2024-07-14 06:40:15', 'ACTIVE');
 
 --
@@ -371,11 +363,11 @@ CREATE TABLE `curriculum` (
 --
 
 INSERT INTO `curriculum` (`CRRID`, `CRR_Code`, `Curriculum`, `CRR_Created`, `CRR_Status`) VALUES
-('0000000005', '321cedwq', 'wqecwqe21c312c', '2024-08-07 19:57:55', 'ARCHIVE'),
-('0000000001', 'CRR2020', 'Curriculum 2020', '2024-06-20 15:14:39', 'ACTIVE'),
+('0000000001', '321cedwq', 'wqecwqe21c312c', '2024-08-07 19:57:55', 'ARCHIVE'),
+('0000000002', 'CRR2020', 'Curriculum 2020', '2024-06-20 15:14:39', 'ACTIVE'),
 ('0000000003', 'CRR@#$@', 'eqweqeq', '2024-06-27 18:27:12', 'ARCHIVE'),
-('0000000002', 'dsada', 'dsadasda', '2024-06-27 17:24:04', 'ARCHIVE'),
-('0000000004', 'ewrfweff', 'efwfwfw', '2024-06-29 10:11:07', 'ARCHIVE');
+('0000000004', 'dsada', 'dsadasda', '2024-06-27 17:24:04', 'ARCHIVE'),
+('0000000005', 'ewrfweff', 'efwfwfw', '2024-06-29 10:11:07', 'ARCHIVE');
 
 --
 -- Triggers `curriculum`
@@ -408,16 +400,16 @@ CREATE TABLE `department` (
 --
 
 INSERT INTO `department` (`DPTID`, `DPT_Code`, `Department`, `DPT_Abbreviation`, `DPT_Description`, `DPT_Created`, `DPT_Status`) VALUES
-('0000000010', 'asd', 'sad', 'asdasd', 'asd', '2024-08-04 06:47:36', 'ARCHIVE'),
-('0000000009', 'BUS-MNG-001', 'Business & Management', 'BAM', 'Focuses on business thinking and problem solving skills that makes successful entrepreneurs.', '2024-08-04 06:45:24', 'ACTIVE'),
-('0000000005', 'das', 'dasds', 'das', 'dasdas', '2024-06-22 08:20:09', 'ARCHIVE'),
-('0000000007', 'dasd', 'ddqweq', 'ew', '', '2024-08-04 04:43:20', 'ARCHIVE'),
-('0000000006', 'DPT_ENG', 'Engineering', 'ENG', 'test', '2024-06-22 18:00:14', 'ACTIVE'),
-('0000000003', 'DPT_GEPSYCH', 'General Education and Psychology', 'GEPsych', '', '2024-06-21 20:14:19', 'ACTIVE'),
-('0000000004', 'DPT_HM', 'Hospitality and Management', 'HM', '', '2024-06-21 20:16:07', 'ACTIVE'),
-('0000000001', 'DPT_ICT', 'Information Communication Technology', 'ICT', '', '2024-06-20 16:17:56', 'ACTIVE'),
-('0000000002', 'DPT_TRM', 'Tourism and Management', 'TM', '', '2024-06-20 17:17:51', 'ACTIVE'),
-('0000000008', 'fsdf', 'sdfsd', 'fdsf', 'sdfs', '2024-08-04 04:48:37', 'ARCHIVE');
+('0000000001', 'asd', 'sad', 'asdasd', 'asd', '2024-08-04 06:47:36', 'ARCHIVE'),
+('0000000002', 'BUS-MNG-001', 'Business & Management', 'BAM', 'Focuses on business thinking and problem solving skills that makes successful entrepreneurs.', '2024-08-04 06:45:24', 'ACTIVE'),
+('0000000003', 'das', 'dasds', 'das', 'dasdas', '2024-06-22 08:20:09', 'ARCHIVE'),
+('0000000004', 'dasd', 'ddqweq', 'ew', '', '2024-08-04 04:43:20', 'ARCHIVE'),
+('0000000005', 'DPT_ENG', 'Engineering', 'ENG', 'test', '2024-06-22 18:00:14', 'ACTIVE'),
+('0000000006', 'DPT_GEPSYCH', 'General Education and Psychology', 'GEPsych', '', '2024-06-21 20:14:19', 'ACTIVE'),
+('0000000007', 'DPT_HM', 'Hospitality and Management', 'HM', '', '2024-06-21 20:16:07', 'ACTIVE'),
+('0000000008', 'DPT_ICT', 'Information Communication Technology', 'ICT', '', '2024-06-20 16:17:56', 'ACTIVE'),
+('0000000009', 'DPT_TRM', 'Tourism and Management', 'TM', '', '2024-06-20 17:17:51', 'ACTIVE'),
+('0000000010', 'fsdf', 'sdfsd', 'fdsf', 'sdfs', '2024-08-04 04:48:37', 'ARCHIVE');
 
 --
 -- Triggers `department`
@@ -444,49 +436,6 @@ CREATE TABLE `placement` (
   `PLC_Created` timestamp NOT NULL DEFAULT current_timestamp(),
   `PLC_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `placement`
---
-
-INSERT INTO `placement` (`PLCID`, `PLC_Code`, `Room`, `Building`, `Floor`, `PLC_Created`, `PLC_Status`) VALUES
-('0000000001', 'a-1-1', NULL, 'Annex-A', 'First Floor', '2024-06-26 08:12:51', 'ACTIVE'),
-('0000000002', 'a-1-2', NULL, 'Annex-A', 'First Floor', '2024-06-26 08:19:18', 'ACTIVE'),
-('0000000003', 'a-1-3', NULL, 'Annex-A', 'First Floor', '2024-08-07 16:40:06', 'ACTIVE'),
-('0000000004', 'a-1-4', NULL, 'Annex-A', 'First Floor', '2024-08-07 16:40:06', 'ACTIVE'),
-('0000000005', 'a-2-1', NULL, 'Annex-A', 'Second Floor', '2024-08-07 16:42:07', 'ACTIVE'),
-('0000000006', 'a-3-1', NULL, 'Annex-A', 'Third Floor', '2024-08-07 16:47:19', 'ACTIVE'),
-('0000000007', 'a-3-2', NULL, 'Annex-A', 'Third Floor', '2024-08-07 16:47:19', 'ACTIVE'),
-('0000000008', 'a-3-3', NULL, 'Annex-A', 'Third Floor', '2024-08-07 16:47:44', 'ACTIVE'),
-('0000000009', 'a-3-4', NULL, 'Annex-A', 'Third Floor', '2024-08-07 16:47:44', 'ACTIVE'),
-('0000000010', 'b-1-1', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:49:39', 'ACTIVE'),
-('0000000019', 'b-1-10', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:53:21', 'ACTIVE'),
-('0000000011', 'b-1-2', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:52:01', 'ACTIVE'),
-('0000000012', 'b-1-3', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:52:01', 'ACTIVE'),
-('0000000013', 'b-1-4', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:52:24', 'ACTIVE'),
-('0000000014', 'b-1-5', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:52:24', 'ACTIVE'),
-('0000000015', 'b-1-6', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:52:55', 'ACTIVE'),
-('0000000016', 'b-1-7', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:52:55', 'ACTIVE'),
-('0000000017', 'b-1-8', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:53:10', 'ACTIVE'),
-('0000000018', 'b-1-9', NULL, 'Annex-B', 'First Floor', '2024-08-07 16:53:10', 'ACTIVE'),
-('0000000020', 'b-2-1', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:04', 'ACTIVE'),
-('0000000021', 'b-2-2', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:04', 'ACTIVE'),
-('0000000022', 'b-2-3', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:19', 'ACTIVE'),
-('0000000023', 'b-2-4', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:19', 'ACTIVE'),
-('0000000024', 'b-2-5', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:34', 'ACTIVE'),
-('0000000025', 'b-2-6', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:34', 'ACTIVE'),
-('0000000026', 'b-2-7', NULL, 'Annex-B', 'Second Floor', '2024-08-07 16:57:43', 'ACTIVE'),
-('0000000027', 'b-3-1', NULL, 'Annex-B', 'Third Floor', '2024-08-07 16:59:31', 'ACTIVE'),
-('0000000028', 'b-3-2', NULL, 'Annex-B', 'Third Floor', '2024-08-07 16:59:31', 'ACTIVE'),
-('0000000029', 'b-3-3', NULL, 'Annex-B', 'Third Floor', '2024-08-07 16:59:39', 'ACTIVE'),
-('0000000030', 'mn-2-1', 'ComLab4', 'Main', 'Second Floor', '2024-08-07 17:41:10', 'ACTIVE'),
-('0000000031', 'mn-2-2', NULL, 'Main', 'Second Floor', '2024-08-07 17:41:10', 'ACTIVE'),
-('0000000032', 'mn-2-3', NULL, 'Main', 'Second Floor', '2024-08-07 17:41:24', 'ACTIVE'),
-('0000000033', 'mn-2-4', NULL, 'Main', 'Second Floor', '2024-08-07 17:41:24', 'ACTIVE'),
-('0000000034', 'mn-3-1', NULL, 'Main', 'Third Floor', '2024-08-07 17:58:08', 'ACTIVE'),
-('0000000035', 'mn-3-2', '301M', 'Main', 'Third Floor', '2024-08-07 17:58:08', 'ACTIVE'),
-('0000000036', 'mn-3-3', NULL, 'Main', 'Third Floor', '2024-08-07 17:58:20', 'ACTIVE'),
-('0000000037', 'mn-3-4', NULL, 'Main', 'Third Floor', '2024-08-07 17:58:20', 'ACTIVE');
 
 --
 -- Triggers `placement`
@@ -554,11 +503,11 @@ CREATE TABLE `program` (
 --
 
 INSERT INTO `program` (`PRGID`, `PRG_Code`, `DPT_Code`, `Program`, `PRG_Abbreviation`, `AcademicLevel`, `PRG_Description`, `PRG_Created`, `PRG_Status`) VALUES
-('0000000002', 'COE', 'DPT_ENG', 'Bachelor of Science in Computer Engineering', 'COE', 'Tertiary', '', '2024-06-22 17:55:04', 'ACTIVE'),
-('0000000001', 'COSC', 'DPT_ICT', 'Bachelor of Science in Computer Science', 'CS', 'Tertiary', 'Add new Description', '2024-06-21 09:56:28', 'ACTIVE'),
-('0000000005', 'dsad', 'DPT_ICT', 'asd', 'adasd', 'Senior High School', 'test', '2024-08-04 16:52:41', 'ARCHIVE'),
+('0000000001', 'COE', 'DPT_ENG', 'Bachelor of Science in Computer Engineering', 'COE', 'Tertiary', '', '2024-06-22 17:55:04', 'ACTIVE'),
+('0000000002', 'COSC', 'DPT_ICT', 'Bachelor of Science in Computer Science', 'CS', 'Tertiary', 'Add new Description', '2024-06-21 09:56:28', 'ACTIVE'),
+('0000000003', 'dsad', 'DPT_ICT', 'asd', 'adasd', 'Senior High School', 'test', '2024-08-04 16:52:41', 'ARCHIVE'),
 ('0000000004', 'ICT-COSC-001', 'DPT_ICT', 'Bachelor of Science in Not Computer Science', 'BS', 'Tertiary', 'Program that offers computer science lessons that will focus on building and developing of software applications.', '2024-08-04 16:23:35', 'ACTIVE'),
-('0000000003', 'INTE', 'DPT_ICT', 'Bachelor of Science in Information Technology', 'IT', 'Tertiary', 'This is not Test description, Please indicate what you want and is this thing working?', '2024-06-23 18:25:49', 'ACTIVE');
+('0000000005', 'INTE', 'DPT_ICT', 'Bachelor of Science in Information Technology', 'IT', 'Tertiary', 'This is not Test description, Please indicate what you want and is this thing working?', '2024-06-23 18:25:49', 'ACTIVE');
 
 --
 -- Triggers `program`
@@ -590,20 +539,20 @@ CREATE TABLE `projection` (
 --
 
 INSERT INTO `projection` (`PRJID`, `Section`, `ACY_Code`, `Population`, `PRJ_Created`, `PRJ_Status`) VALUES
-('0000000001', 'COE101', 'AY-2425', 35, '2024-06-23 20:00:31', 'ACTIVE'),
-('0000000002', 'CS102', 'AY-2425', 25, '2024-06-25 09:26:18', 'ACTIVE'),
+('0000000001', 'COE101', 'AY-2425-1', 35, '2024-06-23 20:00:31', 'ACTIVE'),
+('0000000002', 'CS102', 'AY-2425-1', 25, '2024-06-25 09:26:18', 'ACTIVE'),
 ('0000000003', 'CS101', 'AY2526', 0, '2024-06-27 19:12:16', 'ACTIVE'),
-('0000000004', 'CS201', 'AY-2425', 25, '2024-06-27 19:12:37', 'ACTIVE'),
-('0000000005', 'CS103', 'AY-2425', 24, '2024-07-02 18:45:45', 'ACTIVE'),
-('0000000006', 'IT301', 'AY-2425', 25, '2024-07-02 18:46:03', 'ACTIVE'),
-('0000000007', 'IT401', 'AY-2425', 45, '2024-07-02 18:46:03', 'ACTIVE'),
-('0000000008', 'CS701', 'AY-2425', 42, '2024-07-02 19:07:32', 'ACTIVE'),
+('0000000004', 'CS201', 'AY-2425-1', 25, '2024-06-27 19:12:37', 'ACTIVE'),
+('0000000005', 'CS103', 'AY-2425-1', 24, '2024-07-02 18:45:45', 'ACTIVE'),
+('0000000006', 'IT301', 'AY-2425-1', 25, '2024-07-02 18:46:03', 'ACTIVE'),
+('0000000007', 'IT401', 'AY-2425-1', 45, '2024-07-02 18:46:03', 'ACTIVE'),
+('0000000008', 'CS701', 'AY-2425-1', 42, '2024-07-02 19:07:32', 'ACTIVE'),
 ('0000000009', 'CS101', 'r34223re', 24, '2024-07-03 06:56:25', 'ACTIVE'),
 ('0000000010', 'CS102', 'r34223re', 25, '2024-07-03 06:56:25', 'ACTIVE'),
 ('0000000011', 'CS103', 'r34223re', 23, '2024-07-03 06:56:25', 'ACTIVE'),
-('0000000012', 'CS702', 'AY-2425', 25, '2024-08-07 20:16:45', 'ACTIVE'),
-('0000000013', 'BS801', 'AY-2425', 10, '2024-08-09 16:22:16', 'ACTIVE'),
-('0000000014', 'BS802', 'AY-2425', 25, '2024-08-09 16:22:16', 'ACTIVE');
+('0000000012', 'CS702', 'AY-2425-1', 25, '2024-08-07 20:16:45', 'ACTIVE'),
+('0000000013', 'BS801', 'AY-2425-1', 10, '2024-08-09 16:22:16', 'ACTIVE'),
+('0000000014', 'BS802', 'AY-2425-1', 25, '2024-08-09 16:22:16', 'ACTIVE');
 
 --
 -- Triggers `projection`
@@ -634,9 +583,9 @@ CREATE TABLE `rom_building` (
 --
 
 INSERT INTO `rom_building` (`BLGID`, `Building`, `BLG_Short`, `BLG_Created`, `BLG_Status`) VALUES
-('0000000002', 'Annex-A', 'A', '2024-06-21 17:07:43', 'ACTIVE'),
-('0000000003', 'Annex-B', 'B', '2024-06-21 17:07:49', 'ACTIVE'),
-('0000000001', 'Main', 'M', '2024-06-21 17:07:43', 'ACTIVE');
+('0000000001', 'Annex-A', 'A', '2024-06-21 09:07:43', 'ACTIVE'),
+('0000000002', 'Annex-B', 'B', '2024-06-21 09:07:49', 'ACTIVE'),
+('0000000003', 'Main', 'M', '2024-06-21 09:07:43', 'ACTIVE');
 
 --
 -- Triggers `rom_building`
@@ -666,9 +615,9 @@ CREATE TABLE `rom_facility` (
 --
 
 INSERT INTO `rom_facility` (`FLTID`, `Facility`, `FLT_Created`, `FLT_Status`) VALUES
-('0000000003', 'Audio Visual Room', '2024-06-21 17:08:43', 'ACTIVE'),
-('0000000002', 'Computer Laboratory', '2024-06-21 17:08:13', 'ACTIVE'),
-('0000000001', 'Lecture', '2024-06-21 17:08:13', 'ACTIVE');
+('0000000001', 'Audio Visual Room', '2024-06-21 09:08:43', 'ACTIVE'),
+('0000000002', 'Computer Laboratory', '2024-06-21 09:08:13', 'ACTIVE'),
+('0000000003', 'Lecture', '2024-06-21 09:08:13', 'ACTIVE');
 
 --
 -- Triggers `rom_facility`
@@ -698,9 +647,9 @@ CREATE TABLE `rom_floor` (
 --
 
 INSERT INTO `rom_floor` (`FLRID`, `Floor`, `FLR_Created`, `FLR_Status`) VALUES
-('0000000001', 'First Floor', '2024-06-21 17:09:17', 'ACTIVE'),
-('0000000002', 'Second Floor', '2024-06-21 17:09:17', 'ACTIVE'),
-('0000000003', 'Third Floor', '2024-06-21 17:09:22', 'ACTIVE');
+('0000000001', 'First Floor', '2024-06-21 09:09:17', 'ACTIVE'),
+('0000000002', 'Second Floor', '2024-06-21 09:09:17', 'ACTIVE'),
+('0000000003', 'Third Floor', '2024-06-21 09:09:22', 'ACTIVE');
 
 --
 -- Triggers `rom_floor`
@@ -734,18 +683,18 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`ROMID`, `Room`, `Capacity`, `Facility`, `Building`, `Floor`, `ROM_Created`, `ROM_Status`) VALUES
-('0000000005', '101M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-25 05:30:24', 'ACTIVE'),
-('0000000006', '102M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-25 05:30:46', 'ACTIVE'),
-('0000000007', '103M', 25, 'Lecture', 'Main', 'First Floor', '2024-06-26 09:17:58', 'ACTIVE'),
-('0000000012', '203M', 32, 'Computer Laboratory', 'Main', 'Second Floor', '2024-08-07 19:33:02', 'ARCHIVE'),
-('0000000001', '301M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-21 17:09:46', 'ACTIVE'),
-('0000000002', '302M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:23', 'ACTIVE'),
-('0000000003', '303M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:38', 'ACTIVE'),
-('0000000004', '304M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 19:08:58', 'ACTIVE'),
-('0000000009', 'ComLab3', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-07-10 15:58:56', 'ACTIVE'),
-('0000000008', 'ComLab4', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 09:18:15', 'ACTIVE'),
-('0000000010', 'Court', 100, 'Lecture', 'Annex-B', 'First Floor', '2024-07-12 08:32:14', 'ACTIVE'),
-('0000000011', 'ThWahat?', 24, 'Lecture', 'Main', 'First Floor', '2024-08-05 17:51:36', 'ARCHIVE');
+('0000000001', '101M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-24 21:30:24', 'ACTIVE'),
+('0000000002', '102M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-24 21:30:46', 'ACTIVE'),
+('0000000003', '103M', 25, 'Lecture', 'Main', 'First Floor', '2024-06-26 01:17:58', 'ACTIVE'),
+('0000000004', '203M', 32, 'Computer Laboratory', 'Main', 'Second Floor', '2024-08-07 11:33:02', 'ARCHIVE'),
+('0000000005', '301M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-21 09:09:46', 'ACTIVE'),
+('0000000006', '302M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 11:08:23', 'ACTIVE'),
+('0000000007', '303M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 11:08:38', 'ACTIVE'),
+('0000000008', '304M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 11:08:58', 'ACTIVE'),
+('0000000009', 'ComLab3', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-07-10 07:58:56', 'ACTIVE'),
+('0000000010', 'ComLab4', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 01:18:15', 'ACTIVE'),
+('0000000011', 'Court', 100, 'Lecture', 'Annex-B', 'First Floor', '2024-07-12 00:32:14', 'ACTIVE'),
+('0000000012', 'ThWahat?', 24, 'Lecture', 'Main', 'First Floor', '2024-08-05 09:51:36', 'ARCHIVE');
 
 --
 -- Triggers `room`
@@ -784,13 +733,13 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`SCDID`, `Section`, `CRS_Code`, `Room`, `Component`, `Units`, `Day`, `StartTime`, `EndTime`, `SCHLID`, `ACY_Code`, `SCD_Created`, `SCD_Status`) VALUES
-('0000000001', 'CS201', 'ENGI001', '301M', 'Major Lecture', 2, 'Monday', 720, 840, '02000000003', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
-('0000000002', 'CS102', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 480, 600, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
-('0000000003', 'CS701', 'COSC003', '301M', 'Major Lecture', 2, 'Monday', 840, 960, '02000000002', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
-('0000000004', 'CS103', 'COSC004', '301M', 'Major Lecture', 2, 'Monday', 600, 720, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
-('0000000005', 'CS102', 'COSC004', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 480, 660, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
-('0000000006', 'CS702', 'COSC003', '301M', 'Major Lecture', 2, 'Monday', 960, 1080, '02000000002', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE'),
-('0000000007', 'CS103', 'COSC004', 'ComLab4', 'Computer Laboratory', 3, 'Tuesday', 660, 840, '02000000001', 'AY-2425', '2024-08-22 18:51:33', 'ACTIVE');
+('0000000001', 'CS701', 'COSC003', '101M', 'Major Lecture', 2, 'Monday', 480, 600, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000002', 'CS702', 'COSC003', '101M', 'Major Lecture', 2, 'Monday', 840, 960, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000003', 'CS103', 'COSC004', '101M', 'Major Lecture', 2, 'Monday', 960, 1080, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000004', 'CS102', 'COSC004', 'ComLab3', 'Computer Laboratory', 3, 'Tuesday', 480, 660, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000005', 'CS103', 'COSC004', 'ComLab3', 'Computer Laboratory', 3, 'Tuesday', 660, 840, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000006', 'CS201', 'ENGI001', '101M', 'Major Lecture', 2, 'Monday', 600, 720, '02000000003', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000007', 'CS102', 'COSC004', '101M', 'Major Lecture', 2, 'Monday', 720, 840, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE');
 
 --
 -- Triggers `schedule`
@@ -823,83 +772,83 @@ CREATE TABLE `section` (
 --
 
 INSERT INTO `section` (`SCTID`, `Section`, `PRG_Code`, `Semester`, `YearLevel`, `SCT_Created`, `SCT_Status`) VALUES
-('0000000037', 'BS101', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-07 04:50:27', 'ACTIVE'),
-('0000000045', 'BS102', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-07 05:11:30', 'ACTIVE'),
-('0000000047', 'BS103', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000055', 'BS104', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000063', 'BS105', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-07 15:20:44', 'ACTIVE'),
-('0000000038', 'BS201', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-07 04:50:27', 'ACTIVE'),
-('0000000046', 'BS202', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-07 05:11:30', 'ACTIVE'),
-('0000000048', 'BS203', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000056', 'BS204', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000064', 'BS205', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-07 15:20:44', 'ACTIVE'),
-('0000000039', 'BS301', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-07 04:50:27', 'ACTIVE'),
-('0000000049', 'BS302', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000057', 'BS303', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000065', 'BS304', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-07 15:20:44', 'ACTIVE'),
-('0000000040', 'BS401', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-07 04:50:27', 'ACTIVE'),
-('0000000050', 'BS402', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000058', 'BS403', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000066', 'BS404', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-07 15:20:44', 'ACTIVE'),
-('0000000051', 'BS501', 'ICT-COSC-001', 'First Semester', 'Third Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000059', 'BS502', 'ICT-COSC-001', 'First Semester', 'Third Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000067', 'BS503', 'ICT-COSC-001', 'First Semester', 'Third Year', '2024-08-07 15:20:44', 'ACTIVE'),
-('0000000041', 'BS601', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-07 04:50:27', 'ACTIVE'),
-('0000000052', 'BS602', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000060', 'BS603', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000068', 'BS604', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-07 15:20:44', 'ACTIVE'),
-('0000000053', 'BS701', 'ICT-COSC-001', 'First Semester', 'Fourth Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000061', 'BS702', 'ICT-COSC-001', 'First Semester', 'Fourth Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000069', 'BS703', 'ICT-COSC-001', 'First Semester', 'Fourth Year', '2024-08-07 15:20:45', 'ACTIVE'),
-('0000000054', 'BS801', 'ICT-COSC-001', 'Second Semester', 'Fourth Year', '2024-08-07 05:13:32', 'ACTIVE'),
-('0000000062', 'BS802', 'ICT-COSC-001', 'Second Semester', 'Fourth Year', '2024-08-07 05:15:16', 'ACTIVE'),
-('0000000026', 'COE101', 'COE', 'First Semester', 'First Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000070', 'COE102', 'COE', 'First Semester', 'First Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000027', 'COE201', 'COE', 'Second Semester', 'First Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000071', 'COE202', 'COE', 'Second Semester', 'First Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000028', 'COE301', 'COE', 'First Semester', 'Second Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000072', 'COE302', 'COE', 'First Semester', 'Second Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000029', 'COE401', 'COE', 'Second Semester', 'Second Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000073', 'COE402', 'COE', 'Second Semester', 'Second Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000030', 'COE501', 'COE', 'First Semester', 'Third Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000074', 'COE502', 'COE', 'First Semester', 'Third Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000031', 'COE601', 'COE', 'Second Semester', 'Third Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000075', 'COE602', 'COE', 'Second Semester', 'Third Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000032', 'COE701', 'COE', 'First Semester', 'Fourth Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000076', 'COE702', 'COE', 'First Semester', 'Fourth Year', '2024-08-07 15:21:43', 'ACTIVE'),
-('0000000033', 'COE801', 'COE', 'Second Semester', 'Fourth Year', '2024-06-29 16:58:11', 'ACTIVE'),
-('0000000077', 'COE802', 'COE', 'Second Semester', 'Fourth Year', '2024-08-07 15:21:43', 'ARCHIVE'),
-('0000000001', 'CS101', 'COSC', 'First Semester', 'First Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000017', 'CS102', 'COSC', 'First Semester', 'First Year', '2024-06-26 09:16:36', 'ACTIVE'),
-('0000000018', 'CS103', 'COSC', 'First Semester', 'First Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000034', 'CS104', 'COSC', 'First Semester', 'First Year', '2024-06-30 17:42:12', 'ARCHIVE'),
-('0000000035', 'CS105', 'COSC', 'First Semester', 'First Year', '2024-06-30 17:42:18', 'ARCHIVE'),
-('0000000002', 'CS201', 'COSC', 'Second Semester', 'First Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000019', 'CS202', 'COSC', 'Second Semester', 'First Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000003', 'CS301', 'COSC', 'First Semester', 'Second Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000020', 'CS302', 'COSC', 'First Semester', 'Second Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000004', 'CS401', 'COSC', 'Second Semester', 'Second Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000021', 'CS402', 'COSC', 'Second Semester', 'Second Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000005', 'CS501', 'COSC', 'First Semester', 'Third Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000022', 'CS502', 'COSC', 'First Semester', 'Third Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000006', 'CS601', 'COSC', 'Second Semester', 'Third Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000023', 'CS602', 'COSC', 'Second Semester', 'Third Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000007', 'CS701', 'COSC', 'First Semester', 'Fourth Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000024', 'CS702', 'COSC', 'First Semester', 'Fourth Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000008', 'CS801', 'COSC', 'Second Semester', 'Fourth Year', '2024-06-25 10:35:27', 'ACTIVE'),
-('0000000025', 'CS803', 'COSC', 'Second Semester', 'Fourth Year', '2024-06-26 09:16:44', 'ACTIVE'),
-('0000000009', 'IT101', 'INTE', 'First Semester', 'First Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000042', 'IT102', 'INTE', 'First Semester', 'First Year', '2024-08-07 04:51:05', 'ACTIVE'),
-('0000000010', 'IT201', 'INTE', 'Second Semester', 'First Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000043', 'IT202', 'INTE', 'Second Semester', 'First Year', '2024-08-07 04:51:05', 'ACTIVE'),
-('0000000011', 'IT301', 'INTE', 'First Semester', 'Second Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000044', 'IT302', 'INTE', 'First Semester', 'Second Year', '2024-08-07 04:51:05', 'ACTIVE'),
-('0000000012', 'IT401', 'INTE', 'Second Semester', 'Second Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000013', 'IT501', 'INTE', 'First Semester', 'Third Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000014', 'IT601', 'INTE', 'Second Semester', 'Third Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000015', 'IT701', 'INTE', 'First Semester', 'Fourth Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000016', 'IT801', 'INTE', 'Second Semester', 'Fourth Year', '2024-06-26 06:38:52', 'ACTIVE'),
-('0000000036', 'SEE-ES FYFS', 'COSC', 'First Semester', 'First Year', '2024-08-05 18:19:03', 'ACTIVE');
+('0000000001', 'BS101', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-06 20:50:27', 'ACTIVE'),
+('0000000002', 'BS102', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-06 21:11:30', 'ACTIVE'),
+('0000000003', 'BS103', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000004', 'BS104', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000005', 'BS105', 'ICT-COSC-001', 'First Semester', 'First Year', '2024-08-07 07:20:44', 'ACTIVE'),
+('0000000006', 'BS201', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-06 20:50:27', 'ACTIVE'),
+('0000000007', 'BS202', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-06 21:11:30', 'ACTIVE'),
+('0000000008', 'BS203', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000009', 'BS204', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000010', 'BS205', 'ICT-COSC-001', 'Second Semester', 'First Year', '2024-08-07 07:20:44', 'ACTIVE'),
+('0000000011', 'BS301', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-06 20:50:27', 'ACTIVE'),
+('0000000012', 'BS302', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000013', 'BS303', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000014', 'BS304', 'ICT-COSC-001', 'First Semester', 'Second Year', '2024-08-07 07:20:44', 'ACTIVE'),
+('0000000015', 'BS401', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-06 20:50:27', 'ACTIVE'),
+('0000000016', 'BS402', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000017', 'BS403', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000018', 'BS404', 'ICT-COSC-001', 'Second Semester', 'Second Year', '2024-08-07 07:20:44', 'ACTIVE'),
+('0000000019', 'BS501', 'ICT-COSC-001', 'First Semester', 'Third Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000020', 'BS502', 'ICT-COSC-001', 'First Semester', 'Third Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000021', 'BS503', 'ICT-COSC-001', 'First Semester', 'Third Year', '2024-08-07 07:20:44', 'ACTIVE'),
+('0000000022', 'BS601', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-06 20:50:27', 'ACTIVE'),
+('0000000023', 'BS602', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000024', 'BS603', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000025', 'BS604', 'ICT-COSC-001', 'Second Semester', 'Third Year', '2024-08-07 07:20:44', 'ACTIVE'),
+('0000000026', 'BS701', 'ICT-COSC-001', 'First Semester', 'Fourth Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000027', 'BS702', 'ICT-COSC-001', 'First Semester', 'Fourth Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000028', 'BS703', 'ICT-COSC-001', 'First Semester', 'Fourth Year', '2024-08-07 07:20:45', 'ACTIVE'),
+('0000000029', 'BS801', 'ICT-COSC-001', 'Second Semester', 'Fourth Year', '2024-08-06 21:13:32', 'ACTIVE'),
+('0000000030', 'BS802', 'ICT-COSC-001', 'Second Semester', 'Fourth Year', '2024-08-06 21:15:16', 'ACTIVE'),
+('0000000031', 'COE101', 'COE', 'First Semester', 'First Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000032', 'COE102', 'COE', 'First Semester', 'First Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000033', 'COE201', 'COE', 'Second Semester', 'First Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000034', 'COE202', 'COE', 'Second Semester', 'First Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000035', 'COE301', 'COE', 'First Semester', 'Second Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000036', 'COE302', 'COE', 'First Semester', 'Second Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000037', 'COE401', 'COE', 'Second Semester', 'Second Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000038', 'COE402', 'COE', 'Second Semester', 'Second Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000039', 'COE501', 'COE', 'First Semester', 'Third Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000040', 'COE502', 'COE', 'First Semester', 'Third Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000041', 'COE601', 'COE', 'Second Semester', 'Third Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000042', 'COE602', 'COE', 'Second Semester', 'Third Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000043', 'COE701', 'COE', 'First Semester', 'Fourth Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000044', 'COE702', 'COE', 'First Semester', 'Fourth Year', '2024-08-07 07:21:43', 'ACTIVE'),
+('0000000045', 'COE801', 'COE', 'Second Semester', 'Fourth Year', '2024-06-29 08:58:11', 'ACTIVE'),
+('0000000046', 'COE802', 'COE', 'Second Semester', 'Fourth Year', '2024-08-07 07:21:43', 'ARCHIVE'),
+('0000000047', 'CS101', 'COSC', 'First Semester', 'First Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000048', 'CS102', 'COSC', 'First Semester', 'First Year', '2024-06-26 01:16:36', 'ACTIVE'),
+('0000000049', 'CS103', 'COSC', 'First Semester', 'First Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000050', 'CS104', 'COSC', 'First Semester', 'First Year', '2024-06-30 09:42:12', 'ARCHIVE'),
+('0000000051', 'CS105', 'COSC', 'First Semester', 'First Year', '2024-06-30 09:42:18', 'ARCHIVE'),
+('0000000052', 'CS201', 'COSC', 'Second Semester', 'First Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000053', 'CS202', 'COSC', 'Second Semester', 'First Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000054', 'CS301', 'COSC', 'First Semester', 'Second Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000055', 'CS302', 'COSC', 'First Semester', 'Second Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000056', 'CS401', 'COSC', 'Second Semester', 'Second Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000057', 'CS402', 'COSC', 'Second Semester', 'Second Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000058', 'CS501', 'COSC', 'First Semester', 'Third Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000059', 'CS502', 'COSC', 'First Semester', 'Third Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000060', 'CS601', 'COSC', 'Second Semester', 'Third Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000061', 'CS602', 'COSC', 'Second Semester', 'Third Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000062', 'CS701', 'COSC', 'First Semester', 'Fourth Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000063', 'CS702', 'COSC', 'First Semester', 'Fourth Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000064', 'CS801', 'COSC', 'Second Semester', 'Fourth Year', '2024-06-25 02:35:27', 'ACTIVE'),
+('0000000065', 'CS803', 'COSC', 'Second Semester', 'Fourth Year', '2024-06-26 01:16:44', 'ACTIVE'),
+('0000000066', 'IT101', 'INTE', 'First Semester', 'First Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000067', 'IT102', 'INTE', 'First Semester', 'First Year', '2024-08-06 20:51:05', 'ACTIVE'),
+('0000000068', 'IT201', 'INTE', 'Second Semester', 'First Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000069', 'IT202', 'INTE', 'Second Semester', 'First Year', '2024-08-06 20:51:05', 'ACTIVE'),
+('0000000070', 'IT301', 'INTE', 'First Semester', 'Second Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000071', 'IT302', 'INTE', 'First Semester', 'Second Year', '2024-08-06 20:51:05', 'ACTIVE'),
+('0000000072', 'IT401', 'INTE', 'Second Semester', 'Second Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000073', 'IT501', 'INTE', 'First Semester', 'Third Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000074', 'IT601', 'INTE', 'Second Semester', 'Third Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000075', 'IT701', 'INTE', 'First Semester', 'Fourth Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000076', 'IT801', 'INTE', 'Second Semester', 'Fourth Year', '2024-06-25 22:38:52', 'ACTIVE'),
+('0000000077', 'SEE-ES FYFS', 'COSC', 'First Semester', 'First Year', '2024-08-05 10:19:03', 'ACTIVE');
 
 --
 -- Triggers `section`
@@ -929,8 +878,8 @@ CREATE TABLE `semester` (
 --
 
 INSERT INTO `semester` (`SMSID`, `Semester`, `SMS_Created`, `SMS_Status`) VALUES
-('0000000001', 'First Semester', '2024-06-21 16:42:46', 'ACTIVE'),
-('0000000002', 'Second Semester', '2024-06-21 16:42:52', 'ACTIVE');
+('0000000001', 'First Semester', '2024-06-21 08:42:46', 'ACTIVE'),
+('0000000002', 'Second Semester', '2024-06-21 08:42:52', 'ACTIVE');
 
 --
 -- Triggers `semester`
@@ -962,7 +911,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`SETID`, `Title`, `DayStart`, `DayEnd`, `SET_Created`, `SET_Status`) VALUES
-('0000000001', 'Default', 480, 1260, '2024-06-29 20:18:43', 'ACTIVE');
+('0000000001', 'Default', 480, 1260, '2024-06-29 12:18:43', 'ACTIVE');
 
 --
 -- Triggers `settings`
@@ -997,11 +946,11 @@ CREATE TABLE `setup` (
 --
 
 INSERT INTO `setup` (`STPID`, `CRS_Code`, `CRR_Code`, `PRG_Code`, `SMS`, `YL`, `Component`, `STP_Created`, `STP_Status`) VALUES
-('0000000001', 'COSC004', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'Major Lecture', '2024-07-16 06:05:26', 'ACTIVE'),
-('0000000002', 'COSC004', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'Computer Laboratory', '2024-07-16 06:05:26', 'ACTIVE'),
-('0000000003', 'COSC003', 'CRR2020', 'COSC', 'First Semester', 'Fourth Year', 'Major Lecture', '2024-07-16 06:20:40', 'ACTIVE'),
-('0000000004', 'ENGI001', 'CRR2020', 'COSC', 'Second Semester', 'First Year', 'Major Lecture', '2024-07-17 04:41:21', 'ACTIVE'),
-('0000000005', 'e', 'CRR2020', 'COSC', '', '', 'Major Lecture', '2024-08-07 15:24:33', 'ACTIVE');
+('0000000001', 'COSC004', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'Major Lecture', '2024-07-15 22:05:26', 'ACTIVE'),
+('0000000002', 'COSC004', 'CRR2020', 'COSC', 'First Semester', 'First Year', 'Computer Laboratory', '2024-07-15 22:05:26', 'ACTIVE'),
+('0000000003', 'COSC003', 'CRR2020', 'COSC', 'First Semester', 'Fourth Year', 'Major Lecture', '2024-07-15 22:20:40', 'ACTIVE'),
+('0000000004', 'ENGI001', 'CRR2020', 'COSC', 'Second Semester', 'First Year', 'Major Lecture', '2024-07-16 20:41:21', 'ACTIVE'),
+('0000000005', 'e', 'CRR2020', 'COSC', '', '', 'Major Lecture', '2024-08-07 07:24:33', 'ACTIVE');
 
 --
 -- Triggers `setup`
@@ -1033,17 +982,17 @@ CREATE TABLE `specialization` (
 --
 
 INSERT INTO `specialization` (`SPLID`, `SCHLID`, `CRS_Code`, `ACY_Code`, `SPL_Created`, `SPL_Status`) VALUES
-('0000000001', '02000000002', 'COSC003', 'AY-2425', '2024-06-21 10:04:50', 'ACTIVE'),
-('0000000002', '02000000001', 'COSC004', 'AY-2425', '2024-07-01 10:38:01', 'ACTIVE'),
-('0000000003', '02000000003', 'ENGI001', 'AY-2425', '2024-07-17 04:42:28', 'ACTIVE'),
-('0000000004', 'dsadas', 'COSC004', 'AY-2425', '2024-08-07 11:46:23', 'ACTIVE'),
-('0000000005', 'dsadas', 'COSC003', 'AY-2425', '2024-08-07 11:46:23', 'ACTIVE'),
-('0000000006', '02000000004', 'COSC004', 'AY-2425', '2024-08-07 11:46:41', 'ACTIVE'),
-('0000000007', '02000000004', 'COSC003', 'AY-2425', '2024-08-07 11:46:41', 'ACTIVE'),
-('0000000008', '02000257902', 'COSC002', 'AY-2425', '2024-08-07 11:47:40', 'ACTIVE'),
-('0000000009', '02000257902', 'COSC004', 'AY-2425', '2024-08-07 11:47:40', 'ACTIVE'),
-('0000000010', '02000257902', 'COSC003', 'AY-2425', '2024-08-07 11:47:40', 'ACTIVE'),
-('0000000011', '02000257907', 'COSC001', 'AY-2425', '2024-08-09 15:32:02', 'ACTIVE');
+('0000000001', '02000000002', 'COSC003', 'AY-2425-1', '2024-06-21 02:04:50', 'ACTIVE'),
+('0000000002', '02000000001', 'COSC004', 'AY-2425-1', '2024-07-01 02:38:01', 'ACTIVE'),
+('0000000003', '02000000003', 'ENGI001', 'AY-2425-1', '2024-07-16 20:42:28', 'ACTIVE'),
+('0000000004', 'dsadas', 'COSC004', 'AY-2425-1', '2024-08-07 03:46:23', 'ACTIVE'),
+('0000000005', 'dsadas', 'COSC003', 'AY-2425-1', '2024-08-07 03:46:23', 'ACTIVE'),
+('0000000006', '02000000004', 'COSC004', 'AY-2425-1', '2024-08-07 03:46:41', 'ACTIVE'),
+('0000000007', '02000000004', 'COSC003', 'AY-2425-1', '2024-08-07 03:46:41', 'ACTIVE'),
+('0000000008', '02000257902', 'COSC002', 'AY-2425-1', '2024-08-07 03:47:40', 'ACTIVE'),
+('0000000009', '02000257902', 'COSC004', 'AY-2425-1', '2024-08-07 03:47:40', 'ACTIVE'),
+('0000000010', '02000257902', 'COSC003', 'AY-2425-1', '2024-08-07 03:47:40', 'ACTIVE'),
+('0000000011', '02000257907', 'COSC001', 'AY-2425-1', '2024-08-09 07:32:02', 'ACTIVE');
 
 --
 -- Triggers `specialization`
@@ -1076,8 +1025,8 @@ CREATE TABLE `weeklyevent` (
 --
 
 INSERT INTO `weeklyevent` (`WKEID`, `WeeklyEvent`, `Day`, `StartTime`, `EndTime`, `WKE_Created`, `WKE_Status`) VALUES
-('0000000001', 'Kamustahan', 'Wednesday', 780, 870, '2024-06-29 20:08:59', 'ACTIVE'),
-('0000000002', 'Flag Ceremony', 'Monday', 420, 480, '2024-06-29 20:29:26', 'ACTIVE');
+('0000000001', 'Kamustahan', 'Wednesday', 780, 870, '2024-06-29 12:08:59', 'ACTIVE'),
+('0000000002', 'Flag Ceremony', 'Monday', 420, 480, '2024-06-29 12:29:26', 'ACTIVE');
 
 --
 -- Triggers `weeklyevent`
@@ -1100,14 +1049,6 @@ CREATE TABLE `whatatest` (
   `sad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `whatatest`
---
-
-INSERT INTO `whatatest` (`image`, `sad`) VALUES
-('image_1722495190252.png', 1),
-('image_1722495595783.png', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -1127,12 +1068,12 @@ CREATE TABLE `yearlevel` (
 --
 
 INSERT INTO `yearlevel` (`YRLID`, `YearLevel`, `AcademicLevel`, `YRL_Created`, `YRL_Status`) VALUES
-('0000000003', 'First Year', 'Tertiary', '2024-06-21 17:03:30', 'ACTIVE'),
-('0000000006', 'Fourth Year', 'Tertiary', '2024-06-21 17:03:41', 'ACTIVE'),
-('00000000001', 'Grade 11', 'Senior High School', '2024-06-21 17:03:55', 'ACTIVE'),
-('00000000002', 'Grade 12', 'Senior High School', '2024-06-21 17:03:55', 'ACTIVE'),
-('0000000004', 'Second Year', 'Tertiary', '2024-06-21 17:03:30', 'ACTIVE'),
-('0000000005', 'Third Year', 'Tertiary', '2024-06-21 17:03:41', 'ACTIVE');
+('0000000001', 'First Year', 'Tertiary', '2024-06-21 09:03:30', 'ACTIVE'),
+('0000000002', 'Fourth Year', 'Tertiary', '2024-06-21 09:03:41', 'ACTIVE'),
+('0000000003', 'Grade 11', 'Senior High School', '2024-06-21 09:03:55', 'ACTIVE'),
+('0000000004', 'Grade 12', 'Senior High School', '2024-06-21 09:03:55', 'ACTIVE'),
+('0000000005', 'Second Year', 'Tertiary', '2024-06-21 09:03:30', 'ACTIVE'),
+('0000000006', 'Third Year', 'Tertiary', '2024-06-21 09:03:41', 'ACTIVE');
 
 --
 -- Triggers `yearlevel`
@@ -1156,7 +1097,7 @@ CREATE TABLE `_users` (
   `FirstName` varchar(255) NOT NULL,
   `LastName` varchar(255) NOT NULL,
   `Email` varchar(255) NOT NULL,
-  `Password` varchar(36) NOT NULL,
+  `Password` varchar(255) NOT NULL,
   `UserType` enum('Developer','Manager','Admin','User') NOT NULL,
   `UUID_Created` timestamp NOT NULL DEFAULT current_timestamp(),
   `UUID_Status` enum('ACTIVE','ARCHIVE','PENDING') NOT NULL DEFAULT 'ACTIVE'
@@ -1167,8 +1108,9 @@ CREATE TABLE `_users` (
 --
 
 INSERT INTO `_users` (`UUID`, `SCHLID`, `FirstName`, `LastName`, `Email`, `Password`, `UserType`, `UUID_Created`, `UUID_Status`) VALUES
-('0000000001', '02000257000', 'Mark', 'Lape', 'lapemark11@gmail.com', 'admin', 'Developer', '2024-08-18 03:43:47', 'ACTIVE'),
-('0000000002', '02000257001', 'Joshua', 'Ramirez', 'joshramirez22@gmail.com', 'joshadd', 'Manager', '2024-08-18 04:21:21', 'ACTIVE');
+('0000000001', '02000257000', 'Mark', 'Lape', 'lapemark11@gmail.com', '$2a$10$WaakTQb9XAAt9wijJ/iIVOKS//jXG9BebjkvndTuf0Dofkv/rU/Pm', 'Developer', '2024-08-17 19:43:47', 'ACTIVE'),
+('0000000002', '02000257001', 'Joshua', 'Ramirez', 'joshramirez22@gmail.com', 'joshadd', 'Manager', '2024-08-17 20:21:21', 'ACTIVE'),
+('0000000003', '2000257913', 'Cristylen', 'Esporsado', 'esporsado77@gmail.com', '$2a$10$WuaXDlTesnjUKRPWWzQe1uqRvkI/BoGmdeWus4IZZnpfQ7pqf6iim', 'Admin', '2024-09-03 03:32:55', 'ACTIVE');
 
 --
 -- Triggers `_users`
@@ -1439,7 +1381,7 @@ ALTER TABLE `coach_images`
 -- AUTO_INCREMENT for table `whatatest`
 --
 ALTER TABLE `whatatest`
-  MODIFY `sad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `sad` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -1450,14 +1392,6 @@ ALTER TABLE `whatatest`
 --
 ALTER TABLE `academicyear`
   ADD CONSTRAINT `academicyear_ibfk_1` FOREIGN KEY (`CRR_Code`) REFERENCES `curriculum` (`CRR_Code`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `assignment`
---
-ALTER TABLE `assignment`
-  ADD CONSTRAINT `assignment_ibfk_2` FOREIGN KEY (`CoachType`) REFERENCES `coach_type` (`CoachType`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `assignment_ibfk_3` FOREIGN KEY (`SCHLID`) REFERENCES `coach` (`SCHLID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `assignment_ibfk_4` FOREIGN KEY (`ACY_Code`) REFERENCES `academicyear` (`ACY_Code`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `coach`

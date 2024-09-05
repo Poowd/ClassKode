@@ -23,7 +23,7 @@ router.post("/arch-sched", (req, res) => {
           ON course.CRS_Code = schedule.CRS_Code
         LEFT JOIN section
           ON section.Section = schedule.Section
-        WHERE projection.ACY_Code = 'AY-2425'
+        WHERE projection.ACY_Code = 'AY-2425-1'
           AND SCD_Status = 'ARCHIVE'
         ORDER BY schedule.StartTime ASC
       `;

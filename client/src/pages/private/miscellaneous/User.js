@@ -54,12 +54,12 @@ export function User() {
             class="btn-primary"
             icon={info.icons.add}
             function={() => {
-              navigate("/coach/create/0");
+              navigate("");
             }}
           />
         </>
       }
-      list={users.map((item, i) => (
+      list={users.map((item) => (
         <ListCard
           slot1={item.SCHLID}
           slot2={`${item.FirstName} ${item.LastName}`}

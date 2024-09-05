@@ -10,8 +10,6 @@ const db = mysql.createConnection({
 
 router.post("/gen-class", (req, res) => {
   try {
-    var semester = req.body.semester;
-
     var classes = [];
     var rooms = [];
     var coaches = [];
@@ -31,7 +29,6 @@ router.post("/gen-class", (req, res) => {
         Component: data.Component,
         Section: data.Section,
         Population: data.Population,
-        Semester: data.Semester,
         Units: data.MaxUnits,
         YearLevel: data.YearLevel,
       });
@@ -77,63 +74,55 @@ router.post("/gen-class", (req, res) => {
       Phases: {
         coach: function () {
           for (var i = 0; i < classes.length; i++) {
-            if (classes[i].Semester === semester) {
-              if (!IS_LAB(classes[i].Component)) {
-                var coach = ADD_COACH(classes[i].Course);
-                schedules.push({
-                  ACY: "AY-2425",
-                  SCT: classes[i].Section,
-                  CRS_CODE: classes[i].CRS_Code,
-                  CRS: classes[i].Course,
-                  SCHLID: coach.SCHLID,
-                  CCH: coach.LastName,
-                  CPT: classes[i].Component,
-                  UNT: classes[i].Units,
-                  SMS: classes[i].Semester,
-                  YRLVL: classes[i].YearLevel,
-                  ROM: "None",
-                  DAY: "None",
-                  STR_TME: "None",
-                  END_TME: "None",
-                  CPC: "None",
-                  ROM_UNT: "None",
-                  PPL: classes[i].Population,
-                  CCH_UNT:
-                    ADD_COACH(classes[i].Course).Units + classes[i].Units,
-                });
-                ADD_UNITS_TO_COACH(coach, classes[i].Units);
-                for (var j = 0; j < classes.length; j++) {
-                  if (classes[i].Semester === semester) {
-                    if (IS_LAB(classes[j].Component)) {
-                      if (
-                        classes[j].Section === classes[i].Section &&
-                        classes[j].Course === classes[i].Course
-                      ) {
-                        schedules.push({
-                          ACY: "AY-2425",
-                          SCT: classes[j].Section,
-                          CRS_CODE: classes[j].CRS_Code,
-                          CRS: classes[j].Course,
-                          SCHLID: coach.SCHLID,
-                          CCH: coach.LastName,
-                          CPT: classes[j].Component,
-                          UNT: classes[j].Units,
-                          SMS: classes[j].Semester,
-                          YRLVL: classes[j].YearLevel,
-                          ROM: "None",
-                          DAY: "None",
-                          STR_TME: "None",
-                          END_TME: "None",
-                          CPC: "None",
-                          ROM_UNT: "None",
-                          PPL: classes[j].Population,
-                          CCH_UNT:
-                            ADD_COACH(classes[j].Course).Units +
-                            classes[j].Units,
-                        });
-                        ADD_UNITS_TO_COACH(coach, classes[j].Units);
-                      }
-                    }
+            if (!IS_LAB(classes[i].Component)) {
+              var coach = ADD_COACH(classes[i].Course);
+              schedules.push({
+                ACY: "AY-2425-1",
+                SCT: classes[i].Section,
+                CRS_CODE: classes[i].CRS_Code,
+                CRS: classes[i].Course,
+                SCHLID: coach.SCHLID,
+                CCH: coach.LastName,
+                CPT: classes[i].Component,
+                UNT: classes[i].Units,
+                YRLVL: classes[i].YearLevel,
+                ROM: "None",
+                DAY: "None",
+                STR_TME: "None",
+                END_TME: "None",
+                CPC: "None",
+                ROM_UNT: "None",
+                PPL: classes[i].Population,
+                CCH_UNT: ADD_COACH(classes[i].Course).Units + classes[i].Units,
+              });
+              ADD_UNITS_TO_COACH(coach, classes[i].Units);
+              for (var j = 0; j < classes.length; j++) {
+                if (IS_LAB(classes[j].Component)) {
+                  if (
+                    classes[j].Section === classes[i].Section &&
+                    classes[j].Course === classes[i].Course
+                  ) {
+                    schedules.push({
+                      ACY: "AY-2425-1",
+                      SCT: classes[j].Section,
+                      CRS_CODE: classes[j].CRS_Code,
+                      CRS: classes[j].Course,
+                      SCHLID: coach.SCHLID,
+                      CCH: coach.LastName,
+                      CPT: classes[j].Component,
+                      UNT: classes[j].Units,
+                      YRLVL: classes[j].YearLevel,
+                      ROM: "None",
+                      DAY: "None",
+                      STR_TME: "None",
+                      END_TME: "None",
+                      CPC: "None",
+                      ROM_UNT: "None",
+                      PPL: classes[j].Population,
+                      CCH_UNT:
+                        ADD_COACH(classes[j].Course).Units + classes[j].Units,
+                    });
+                    ADD_UNITS_TO_COACH(coach, classes[j].Units);
                   }
                 }
               }
@@ -167,7 +156,6 @@ router.post("/gen-class", (req, res) => {
                       CCH: schedules[k].CCH,
                       CPT: schedules[k].CPT,
                       UNT: schedules[k].UNT,
-                      SMS: schedules[k].SMS,
                       YRLVL: schedules[k].YRLVL,
                       ROM: rooms[j].Room,
                       DAY: days[i],
@@ -274,9 +262,10 @@ router.post("/gen-class", (req, res) => {
       return false;
     }
 
+    SHUFFLE(classes);
     GenerateSchedule.Phases.coach();
     GenerateSchedule.Phases.room();
-
+    console.log(class_schedules);
     return res.json(class_schedules);
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });

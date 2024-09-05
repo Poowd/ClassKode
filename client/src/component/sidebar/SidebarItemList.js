@@ -22,12 +22,12 @@ import { FcViewDetails } from "react-icons/fc";
 export class SidebarItemList extends React.Component {
   render() {
     return (
-      <div className="d-flex flex-column align-items-center align-items-sm-start px-4 pt-2">
+      <div className="w-100 d-flex flex-column align-items-center align-items-sm-start px-4 pt-2">
         <ul
-          className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+          className="w-100 nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
           id="menu"
         >
-          <li className="nav-item">
+          <li className="w-100 nav-item">
             <Link to="/" className="nav-link align-middle px-0">
               <span className="ms-2 d-none d-sm-inline text-dark fw-medium">
                 Dashboard
@@ -35,7 +35,7 @@ export class SidebarItemList extends React.Component {
             </Link>
           </li>
           <hr className="text-dark my-1 w-100" />
-          <li className="nav-item">
+          <li className="w-100 nav-item">
             <SidebarDropdown
               text={"Institution"}
               reference={"#institution"}
@@ -79,7 +79,7 @@ export class SidebarItemList extends React.Component {
             />
           </li>
           <hr className="text-dark my-1 w-100" />
-          <li className="nav-item">
+          <li className="w-100 nav-item">
             <SidebarDropdown
               text={"Utilities"}
               reference={"#utilities"}
@@ -113,7 +113,7 @@ export class SidebarItemList extends React.Component {
             />
           </li>
           <hr className="text-dark my-1 w-100" />
-          <li className="nav-item">
+          <li className="w-100 nav-item">
             <SidebarDropdown
               text={"Miscellaneous"}
               reference={"#miscellaneous"}

@@ -9,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 router.post("/total-coach", (req, res) => {
-  const sql = `SELECT COUNT(SCHLID) as Total_Coach FROM assignment WHERE ACY_Code = 'AY-2425'`;
+  const sql = `SELECT COUNT(SCHLID) as Total_Coach FROM assignment WHERE ACY_Code = 'AY-2425-1'`;
 
   db.query(sql, (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
@@ -18,7 +18,7 @@ router.post("/total-coach", (req, res) => {
 });
 
 router.post("/total-coach-type", (req, res) => {
-  const sql = `SELECT COUNT(SCHLID) as Total_Coach_Type FROM assignment WHERE ACY_Code = 'AY-2425' AND CoachType = ?`;
+  const sql = `SELECT COUNT(SCHLID) as Total_Coach_Type FROM assignment WHERE ACY_Code = 'AY-2425-1' AND CoachType = ?`;
 
   db.query(sql, [req.body.type], (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });
@@ -35,7 +35,7 @@ router.post("/total-section", (req, res) => {
         FROM projection 
         INNER JOIN section
           ON section.Section = projection.Section 
-        WHERE ACY_Code = 'AY-2425' 
+        WHERE ACY_Code = 'AY-2425-1' 
           AND section.Semester = ?`;
 
   db.query(sql, [req.body.semester], (err, data) => {

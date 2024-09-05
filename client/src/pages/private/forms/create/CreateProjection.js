@@ -7,11 +7,13 @@ import useHandleChange from "../../../../hook/useHandleChange";
 import useValidation from "../../../../hook/useValidation";
 import useDatabase from "../../../../hook/useDatabase";
 import { NoDisplay } from "../../../../component/placeholder/NoDisplay";
+import useConfiguration from "../../../../hook/useConfiguration";
 
 export function CreateProjection() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
   const [
     Base,
     ValidateID,
@@ -80,7 +82,7 @@ export function CreateProjection() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.back}
               function={() => navigate(-1)}
             />
             <DefaultButton
@@ -92,10 +94,10 @@ export function CreateProjection() {
           </div>
         </main>
         {program.map((prg, i) => (
-          <div className="px-3 py-2 my-2 mx-1 rounded shadow-sm">
+          <div className="p-5 my-2 mx-1 rounded shadow-sm">
             <label className="d-flex align-items-center  my-2 mx-0">
               <div className="d-flex align-items-center justify-content-between w-100">
-                <span className="">{prg.Program}</span>
+                <span className="fs-5 fw-semibold">{prg.Program}</span>
                 <div className="d-flex align-items-center gap-3">
                   <span className="">{prg.AcademicLevel}</span>
                 </div>
@@ -117,66 +119,82 @@ export function CreateProjection() {
                           <span className="mb-2 fst-italic text-secondary">
                             {sms.Semester}
                           </span>
-                          <div className="mb-3">
+                          <div className="d-flex flex-wrap mb-3">
                             {section.map((sct, j) =>
                               yrl.YearLevel === sct.YearLevel ? (
                                 sms.Semester === sct.Semester ? (
                                   sct.PRG_Code === prg.PRG_Code ? (
-                                    <label
-                                      htmlFor={j}
-                                      className="d-flex flex-wrap gap-2 align-items-center justify-content-between py-2 px-5 rounded shadow-sm"
-                                    >
-                                      <div className="d-flex gap-2">
-                                        <span className="fw-semibold">
-                                          {sct.Section}
-                                        </span>
-                                      </div>
-                                      <div className="d-flex gap-2 align-items-center">
-                                        <form
-                                          className="d-flex gap-2 align-items-center"
-                                          onSubmit={(e) => {
-                                            e.preventDefault();
-                                            setSelectedValues((prev) => [
-                                              ...prev,
-                                              {
-                                                id: "SCT" + j,
-                                                Section: sct.Section,
-                                                Population:
-                                                  document.getElementById(
-                                                    "SCT" + j
-                                                  ).value,
-                                                ACY_Code: data.ACY_Code,
-                                              },
-                                            ]);
-                                          }}
-                                        >
-                                          <FormInput
-                                            label={null}
-                                            id={"SCT" + j}
-                                            class={"text-end form-control-sm"}
-                                            required={true}
-                                          />
+                                    <main className="w-50 p-1">
+                                      <label
+                                        htmlFor={j}
+                                        className=" d-flex flex-wrap gap-2 align-items-center justify-content-between py-2 px-5 rounded shadow-sm"
+                                      >
+                                        <div className="d-flex gap-2">
+                                          <span className="fw-semibold">
+                                            {sct.Section}
+                                          </span>
+                                        </div>
+                                        <div className="d-flex gap-2 align-items-center">
+                                          <form
+                                            className="d-flex gap-2 align-items-center"
+                                            onSubmit={(e) => {
+                                              e.preventDefault();
+                                              setSelectedValues((prev) => [
+                                                ...prev,
+                                                {
+                                                  id: "SCT" + j,
+                                                  Section: sct.Section,
+                                                  Population:
+                                                    document.getElementById(
+                                                      "SCT" + j
+                                                    ).value,
+                                                  ACY_Code: data.ACY_Code,
+                                                },
+                                              ]);
+                                            }}
+                                          >
+                                            <FormInput
+                                              label={null}
+                                              id={"SCT" + j}
+                                              class={"text-end form-control-sm"}
+                                              required={true}
+                                            />
 
-                                          <DefaultButton
-                                            class="btn-outline-success"
-                                            type="submit"
-                                            icon={<IoMdArrowRoundBack />}
-                                          />
-                                        </form>
-
-                                        <DefaultButton
-                                          class="btn-outline-danger"
-                                          type="button"
-                                          icon={<IoMdArrowRoundBack />}
-                                          function={() => {
-                                            removeItem(sct.Section);
-                                            document.getElementById(
+                                            {document.getElementById(
                                               `SCT${j}`
-                                            ).value = "";
-                                          }}
-                                        />
-                                      </div>
-                                    </label>
+                                            ) !== null ? (
+                                              document.getElementById(`SCT${j}`)
+                                                .value === "" ? (
+                                                <DefaultButton
+                                                  class="btn-outline-success"
+                                                  type="submit"
+                                                  icon={info.icons.set}
+                                                />
+                                              ) : null
+                                            ) : null}
+                                          </form>
+
+                                          {document.getElementById(
+                                            `SCT${j}`
+                                          ) !== null ? (
+                                            document.getElementById(`SCT${j}`)
+                                              .value !== "" ? (
+                                              <DefaultButton
+                                                class="btn-outline-danger"
+                                                type="button"
+                                                icon={info.icons.reset}
+                                                function={() => {
+                                                  removeItem(sct.Section);
+                                                  document.getElementById(
+                                                    `SCT${j}`
+                                                  ).value = "";
+                                                }}
+                                              />
+                                            ) : null
+                                          ) : null}
+                                        </div>
+                                      </label>
+                                    </main>
                                   ) : null
                                 ) : null
                               ) : null

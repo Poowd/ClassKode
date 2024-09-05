@@ -1,7 +1,14 @@
-import express from "express";
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "db_classkode",
+});
 
-app.post("/gen-class", (req, res) => {
+router.post("/gen-class", (req, res) => {
   try {
     var classes = [];
     var rooms = [];
@@ -265,4 +272,4 @@ app.post("/gen-class", (req, res) => {
   }
 });
 
-export default app;
+module.exports = router;

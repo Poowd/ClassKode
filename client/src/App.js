@@ -101,7 +101,7 @@ function App() {
             {loggeduser[0].UserType === "Manager" ||
             loggeduser[0].UserType === "Developer" ? (
               <Route
-                path={"/"}
+                path={"/*"}
                 element={
                   <MainLayout
                     usericon={info.icons.hiddenuser}

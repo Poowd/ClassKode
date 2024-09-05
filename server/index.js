@@ -1,13 +1,41 @@
-import express from "express";
-import mysql from "mysql";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import jwt from "jsonwebtoken";
-import { env } from "node:process";
-
+const Statistics = require("./routes/database/datapacks/Statistics.js");
+const TotalPopulation = require("./routes/database/datapacks/TotalPopulation.js");
+const Select = require("./routes/database/Select.js");
+const Insert = require("./routes/database/Insert.js");
+const Update = require("./routes/database/Update.js");
+const Archives = require("./routes/database/Archives.js");
+const Generate = require("./routes/logic/GenerateSchedule.js");
+const RandomCode = require("./routes/logic/RandomCode.js");
+const SaveImage = require("./routes/logic/SaveImage.js");
+const Login = require("./routes/logic/Login.js");
+// = = >
+const { Pool } = require("pg");
+const express = require("express");
+const cors = require("cors");
 const app = express();
+const router = express.Router();
+const pool = new Pool({
+  user: "postgres.pgcztzkowuxixfyiqera",
+  password: "Clskde_#5*Ths2",
+  host: "aws-0-ap-southeast-1.pooler.supabase.com",
+  port: 6543,
+  database: "postgres",
+});
+// = = >
+global.router = router;
+router.use("/", Statistics);
+router.use("/", TotalPopulation);
+router.use("/", Select);
+router.use("/", Insert);
+router.use("/", Update);
+router.use("/", Archives);
+router.use("/", Generate);
+router.use("/", RandomCode);
+router.use("/", SaveImage);
+router.use("/", Login);
+// = = >
 app.use(express.json());
-app.use(cookieParser());
+app.use(express.static("public"));
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -15,71 +43,36 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.static("public"));
-
-// const db = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "db_classkode",
-// });
-
-//checks of the server is running
+// = = >
 app.listen(8081, () => {
   console.log("Running");
 });
-
 app.get("/status", (req, res) => {
   res.send("server is running");
 });
+// = = >
+pool.connect();
+// = = >
 
-const router = (global.router = express.Router());
-
-// DATABASE
-import Statistics from "./routes/database/datapacks/Statistics.js";
-app.use(Statistics);
-
-import TotalPopulation from "./routes/database/datapacks/TotalPopulation.js";
-app.use(TotalPopulation);
-
-import Select from "./routes/database/Select.js";
-app.use(Select);
-
-import Insert from "./routes/database/Insert.js";
-app.use(Insert);
-
-import Update from "./routes/database/Update.js";
-app.use(Update);
-
-import Archives from "./routes/database/Archives.js";
-app.use(Archives);
-
-// LOGIC
-import Generate from "./routes/logic/GenerateSchedule.js";
-app.use(Generate);
-
-import RandomCode from "./routes/logic/RandomCode.js";
-app.use(RandomCode);
-
-import SaveImage from "./routes/logic/SaveImage.js";
-app.use(SaveImage);
-
-import Login from "./routes/logic/Login.js";
-app.use(Login);
-
-// new Router(app, db);
-// app.get('/', function(req, res) {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// pool.query(`SELECT * FROM _user`, (err, res) => {
+//   if (!err) {
+//     console.log(res.rows);
+//   } else {
+//     console.log(err.message);
+//   }
 // });
 
-// class Router {
-//   constructor(app, db) {
-//     this.login(app, db);
-//   }
+app.post("/test-data", (req, res) => {
+  try {
+    pool.query(`SELECT * FROM _user`, (err, ris) => res.json(ris.rows));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
-//   login(app, db) {
-//     app.post("/login", (req, res) => {});
-//   }
-// }
+// = = >
+pool.end;
+// = = >
 
-// module.exports = Router;
+app.use(global.router);

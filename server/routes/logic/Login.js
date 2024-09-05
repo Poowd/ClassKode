@@ -1,8 +1,7 @@
-import express from "express";
-import mysql from "mysql";
-import bcrypt from "bcryptjs";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const bcrypt = require("bcryptjs")
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -11,8 +10,7 @@ const db = mysql.createConnection({
 });
 
 // Login =>
-//const bcrypt = require("bcryptjs");
-app.post("/login-now", (req, res) => {
+router.post("/login-now", (req, res) => {
   const sql = `
         SELECT * FROM _users WHERE Email = ? Limit 1
       `;
@@ -32,4 +30,4 @@ app.post("/login-now", (req, res) => {
   });
 });
 
-export default app;
+module.exports = router;

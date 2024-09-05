@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import vid from "../../../assets/videos/duk.mp4";
+import useDatabase from "../../../hook/useDatabase";
 
 export function Logs() {
+  const [get, post] = useDatabase();
+  const [testdata, setTestData] = useState([]);
+
+  useEffect(() => {
+    post("test-data", testdata, setTestData);
+  }, []);
+
   return (
-    <div className="h-100">
-      <video className="h-100" controls>
-        <source src={vid} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <div className="h-100 w-25">
+      <ul className="list-group">
+        {testdata &&
+          testdata.map((item, i) => (
+            <li className="list-group-item">{item.Email}</li>
+          ))}
+      </ul>
+      <p>{`The total number of the _user table: ${testdata.length} rows`}</p>
     </div>
   );
 }

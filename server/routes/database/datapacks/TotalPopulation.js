@@ -1,7 +1,6 @@
-import express from "express";
-import mysql from "mysql";
-
-const app = express();
+const express = require("express");
+const mysql = require("mysql");
+const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,7 +9,7 @@ const db = mysql.createConnection({
 });
 
 // SCHEDULES =>
-app.post("/population-per-year", (req, res) => {
+router.post("/population-per-year", (req, res) => {
   const sql = `
         SELECT 
           SUM(projection.Population) as Population, 
@@ -29,4 +28,4 @@ app.post("/population-per-year", (req, res) => {
   });
 });
 
-export default app;
+module.exports = router;

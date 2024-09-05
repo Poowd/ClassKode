@@ -25,11 +25,52 @@ import { MdOutlineQuickreply } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
 import { VscSettings } from "react-icons/vsc";
+import { FaUserGear } from "react-icons/fa6";
+import { FaUserTie } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
+import { FaUserTimes } from "react-icons/fa";
+import { FaUserFriends } from "react-icons/fa";
 
 export default function useConfiguration() {
   const [info, setInfo] = useState({
     details: {},
     icons: {
+      pages: {
+        institution: {
+          department: null,
+          program: null,
+          course: null,
+          section: null,
+          coach: null,
+          room: null,
+        },
+        utilities: {
+          curriculum: null,
+          academicyear: null,
+          schedule: null,
+          locator: null,
+        },
+        misc: {
+          archive: null,
+          user: null,
+          setup: null,
+          log: null,
+        },
+      },
+      usertypes: {
+        developer: <FaUserEdit />,
+        manager: <FaUserTie />,
+        admin: <FaUserGear />,
+        user: <FaUserFriends />,
+        invalid: <FaUserSecret />,
+      },
+      forms: {
+        view: <TbListDetails />,
+        add: <GrChapterAdd />,
+        edit: <TbEdit />,
+        archive: <MdFolderDelete />,
+        generate: <VscSettingsGear />,
+      },
       add: <GrChapterAdd />,
       generate: <VscSettingsGear />,
       edit: <TbEdit />,

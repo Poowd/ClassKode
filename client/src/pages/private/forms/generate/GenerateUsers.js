@@ -16,10 +16,10 @@ export default function GenerateUsers() {
   const [get, post] = useDatabase();
   const [file, sheets, FileUpload] = useSheetImport();
   const [data, setData] = useState([]);
-  const text = "sdas";
   const [info] = useConfiguration();
 
   const [toasty, showToast] = useToasty();
+  const [details, setDetails] = useState({});
   // const [CopyClipboard] = useClipboard();
   const [itemCounter] = useItemCounter();
   const [savestatus, setSaveStatus] = useState(null);
@@ -58,6 +58,45 @@ export default function GenerateUsers() {
       }
     }
   };
+  const [usertypes, setUserTypes] = useState([
+    {
+      title: "Developer",
+      icon: info.icons.usertypes.developer,
+      shortform: "dev/s",
+    },
+    {
+      title: "Manager",
+      icon: info.icons.usertypes.manager,
+      shortform: "mngr/s",
+    },
+    {
+      title: "Admin",
+      icon: info.icons.usertypes.admin,
+      shortform: "adm/s",
+    },
+    {
+      title: "User",
+      icon: info.icons.usertypes.user,
+      shortform: "usr/s",
+    },
+  ]);
+
+  const temparr = [];
+
+  useEffect(() => {
+    usertypes.map((type, i) => {
+      temparr.push({
+        title: type.title,
+        icon: type.icon,
+        shortform: type.shortform,
+        count:
+          file !== null
+            ? sheets && itemCounter(sheets, type.title, "Type")
+            : "0",
+      });
+    });
+    setDetails(temparr);
+  }, [file]);
 
   return (
     <>
@@ -95,6 +134,18 @@ export default function GenerateUsers() {
                 class="ms-2 bg-primary text-white"
                 icon={info.icons.add}
                 function={saveUserData}
+                disabled={
+                  file !== null
+                    ? sheets.length -
+                        (itemCounter(sheets, "Developer", "Type") +
+                          itemCounter(sheets, "Manager", "Type") +
+                          itemCounter(sheets, "Admin", "Type") +
+                          itemCounter(sheets, "User", "Type")) >
+                      0
+                      ? true
+                      : false
+                    : true
+                }
               />
 
               {/* <button
@@ -147,77 +198,45 @@ export default function GenerateUsers() {
                     : "No file selected"
                 }`}</p>
               </header>
-              <main className="mt-2">
-                <small>
-                  <p className="fw-semibold p-0 m-0">User Types</p>
-                </small>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Developer</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "Developer", "Type")
-                            : "0"
-                        } dev/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Manager</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "Manager", "Type")
-                            : "0"
-                        } mngr/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Admin</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "Admin", "Type")
-                            : "0"
-                        } adm/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} User</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "User", "Type")
-                            : "0"
-                        } user/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Invalid</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets.length -
-                              (itemCounter(sheets, "Developer", "Type") +
-                                itemCounter(sheets, "Manager", "Type") +
-                                itemCounter(sheets, "Admin", "Type") +
-                                itemCounter(sheets, "User", "Type"))
-                            : "0"
-                        } row/s`}
-                      </section>
-                    </main>
-                  </li>
-                </ul>
-              </main>
+              {file && (
+                <main className="mt-2">
+                  <small>
+                    <p className="fw-semibold p-0 m-0">User Types</p>
+                  </small>
+                  <ul class="list-group list-group-flush">
+                    {details.map((item, i) => (
+                      <li class="list-group-item">
+                        <main className="d-flex justify-content-between">
+                          <section>
+                            {item.icon} {item.title}
+                          </section>
+                          <section>
+                            {item.count} {item.shortform}
+                          </section>
+                        </main>
+                      </li>
+                    ))}
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>
+                          {info.icons.usertypes.invalid} Invalid
+                        </section>
+                        <section>
+                          {`${
+                            file !== null
+                              ? sheets.length -
+                                (itemCounter(sheets, "Developer", "Type") +
+                                  itemCounter(sheets, "Manager", "Type") +
+                                  itemCounter(sheets, "Admin", "Type") +
+                                  itemCounter(sheets, "User", "Type"))
+                              : "0"
+                          } row/s`}
+                        </section>
+                      </main>
+                    </li>
+                  </ul>
+                </main>
+              )}
             </section>
           </main>
         </section>

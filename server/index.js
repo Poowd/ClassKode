@@ -3,6 +3,7 @@ import mysql from "mysql";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import { env } from "node:process";
 
 const app = express();
 app.use(express.json());
@@ -16,12 +17,12 @@ app.use(
 );
 app.use(express.static("public"));
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "db_classkode",
-});
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "db_classkode",
+// });
 
 //checks of the server is running
 app.listen(8081, () => {

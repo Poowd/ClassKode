@@ -47,13 +47,10 @@ export function Locator() {
   useEffect(() => {
     setInterval(() => {
       const dateObject = new Date();
-
       const hour = dateObject.getHours();
       const minute = dateObject.getMinutes();
       const second = dateObject.getSeconds();
-
       const currentTime = `${hour}:${minute}:${second}`;
-
       setTime(currentTime);
     }, 1000);
   }, []);
@@ -219,7 +216,7 @@ export function Locator() {
                         }
                       />
                       <hr />
-                      <main className="d-flex">
+                      <main className="d-flex pb-3">
                         <section>
                           <DefaultDropdownItem
                             title={"On Going"}

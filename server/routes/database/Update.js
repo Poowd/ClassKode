@@ -202,7 +202,10 @@ app.post("/upd-prg", (req, res) => {
 });
 
 app.post("/res-prg", (req, res) => {
-  const sql = "UPDATE program SET PRG_Status = 'ACTIVE' WHERE PRGID = ? ";
+  const sql = `
+      UPDATE program 
+      SET PRG_Status = 'ACTIVE'
+      WHERE PRGID = ?`;
 
   db.query(sql, [req.body.PRGID], (err, data) => {
     if (err) return res.json({ Message: "Server Sided Error" });

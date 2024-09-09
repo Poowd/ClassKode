@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2024 at 05:49 AM
+-- Generation Time: Sep 10, 2024 at 12:49 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -159,11 +159,11 @@ INSERT INTO `coach` (`CCHID`, `SCHLID`, `DPT_Code`, `FirstName`, `MiddleInitial`
 ('0000000005', '02000257902', 'DPT_ICT', 'Joshua Rhey', 'N', 'Lape', 'Male', 'admin231@munoz.sti.edu.ph', '09562342123', 'test313123123', '_avatar.png', '2024-08-01 00:21:47', 'ACTIVE'),
 ('0000000006', '02000257905', 'BUS-MNG-001', 'Mark Limuel \'Maku\'', 'L', 'Lape', 'Male', 'lape@email.com', '03483569842', 'https://www.youtube.com/watch?v=dLXSJdTK9QI&t=1148s', 'cute.jfif', '2024-08-04 23:05:10', 'ACTIVE'),
 ('0000000007', '02000257907', 'DPT_ICT', 'Mark', 'L', 'Lape', 'Male', 'lape.257907@munoz.sti.edu.ph', '09682348413', 'Facebook', '_avatar.png', '2024-07-15 00:15:18', 'ACTIVE'),
-('0000000008', 'dsad', 'DPT_ICT', 'ada', 'das', 'dasdas', 'Male', 'dsa', 'dasdasd', 'dsada', '_avatar.png', '2024-08-05 00:00:11', 'ARCHIVE'),
+('0000000008', 'dsad', 'DPT_ICT', 'ada', 'das', 'dasdas', 'Male', 'dsa', 'dasdasd', 'dsada', '_avatar.png', '2024-08-05 00:00:11', 'ACTIVE'),
 ('0000000009', 'dsadac', 'DPT_TRM', 'sadca', 'dcsac', 'ascdascdas', 'Male', 'acsdsa', 'dcsacdasc', 'dsacdascdasc', '_avatar.png', '2024-08-09 08:35:42', 'ACTIVE'),
-('0000000010', 'dsadas', 'DPT_ICT', 'dasdas', 'dasds', 'adsada', 'Male', 'dsad', 'asdsada', 'dasd', '_avatar.png', '2024-08-04 22:12:45', 'ARCHIVE'),
-('0000000011', 'fwver', 'DPT_ICT', 'wervwe', 'rvwer', 'vwervwerv', 'Male', 'rwverw', 'vrvwervwer', 'vrwevrwevwrev', '_avatar.png', '2024-08-05 09:25:50', 'ARCHIVE'),
-('0000000012', 'wqceqwe', 'DPT_TRM', 'cqwce', 'qwec', 'wqecwqec', 'Male', 'cqwe', 'cwqecqwec', 'wqcewqc', '_avatar.png', '2024-08-04 22:27:40', 'ARCHIVE');
+('0000000010', 'dsadas', 'DPT_ICT', 'dasdas', 'dasds', 'adsada', 'Male', 'dsad', 'asdsada', 'dasd', '_avatar.png', '2024-08-04 22:12:45', 'ACTIVE'),
+('0000000011', 'fwver', 'DPT_ICT', 'wervwe', 'rvwer', 'vwervwerv', 'Male', 'rwverw', 'vrvwervwer', 'vrwevrwevwrev', '_avatar.png', '2024-08-05 09:25:50', 'ACTIVE'),
+('0000000012', 'wqceqwe', 'DPT_TRM', 'cqwce', 'qwec', 'wqecwqec', 'Male', 'cqwe', 'cwqecqwec', 'wqcewqc', '_avatar.png', '2024-08-04 22:27:40', 'ACTIVE');
 
 --
 -- Triggers `coach`
@@ -400,8 +400,8 @@ CREATE TABLE `department` (
 --
 
 INSERT INTO `department` (`DPTID`, `DPT_Code`, `Department`, `DPT_Abbreviation`, `DPT_Description`, `DPT_Created`, `DPT_Status`) VALUES
-('0000000001', 'asd', 'sad', 'asdasd', 'asd', '2024-08-04 06:47:36', 'ARCHIVE'),
-('0000000002', 'BUS-MNG-001', 'Business & Management', 'BAM', 'Focuses on business thinking and problem solving skills that makes successful entrepreneurs.', '2024-08-04 06:45:24', 'ACTIVE'),
+('0000000001', 'asd', 'sad', 'asdasd', 'asd', '2024-08-04 06:47:36', 'ACTIVE'),
+('0000000002', 'BUS-MNG-001', 'Business & Management', 'BAM', 'Focuses on business thinking and problem solving skills that makes successful entrepreneurs.', '2024-08-04 06:45:24', 'ARCHIVE'),
 ('0000000003', 'das', 'dasds', 'das', 'dasdas', '2024-06-22 08:20:09', 'ARCHIVE'),
 ('0000000004', 'dasd', 'ddqweq', 'ew', '', '2024-08-04 04:43:20', 'ARCHIVE'),
 ('0000000005', 'DPT_ENG', 'Engineering', 'ENG', 'test', '2024-06-22 18:00:14', 'ACTIVE'),
@@ -505,7 +505,7 @@ CREATE TABLE `program` (
 INSERT INTO `program` (`PRGID`, `PRG_Code`, `DPT_Code`, `Program`, `PRG_Abbreviation`, `AcademicLevel`, `PRG_Description`, `PRG_Created`, `PRG_Status`) VALUES
 ('0000000001', 'COE', 'DPT_ENG', 'Bachelor of Science in Computer Engineering', 'COE', 'Tertiary', '', '2024-06-22 17:55:04', 'ACTIVE'),
 ('0000000002', 'COSC', 'DPT_ICT', 'Bachelor of Science in Computer Science', 'CS', 'Tertiary', 'Add new Description', '2024-06-21 09:56:28', 'ACTIVE'),
-('0000000003', 'dsad', 'DPT_ICT', 'asd', 'adasd', 'Senior High School', 'test', '2024-08-04 16:52:41', 'ARCHIVE'),
+('0000000003', 'dsad', 'DPT_ICT', 'asd', 'adasd', 'Senior High School', 'test', '2024-08-04 16:52:41', 'ACTIVE'),
 ('0000000004', 'ICT-COSC-001', 'DPT_ICT', 'Bachelor of Science in Not Computer Science', 'BS', 'Tertiary', 'Program that offers computer science lessons that will focus on building and developing of software applications.', '2024-08-04 16:23:35', 'ACTIVE'),
 ('0000000005', 'INTE', 'DPT_ICT', 'Bachelor of Science in Information Technology', 'IT', 'Tertiary', 'This is not Test description, Please indicate what you want and is this thing working?', '2024-06-23 18:25:49', 'ACTIVE');
 
@@ -686,7 +686,7 @@ INSERT INTO `room` (`ROMID`, `Room`, `Capacity`, `Facility`, `Building`, `Floor`
 ('0000000001', '101M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-24 21:30:24', 'ACTIVE'),
 ('0000000002', '102M', 45, 'Lecture', 'Main', 'First Floor', '2024-06-24 21:30:46', 'ACTIVE'),
 ('0000000003', '103M', 25, 'Lecture', 'Main', 'First Floor', '2024-06-26 01:17:58', 'ACTIVE'),
-('0000000004', '203M', 32, 'Computer Laboratory', 'Main', 'Second Floor', '2024-08-07 11:33:02', 'ARCHIVE'),
+('0000000004', '203M', 32, 'Computer Laboratory', 'Main', 'Second Floor', '2024-08-07 11:33:02', 'ACTIVE'),
 ('0000000005', '301M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-21 09:09:46', 'ACTIVE'),
 ('0000000006', '302M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 11:08:23', 'ACTIVE'),
 ('0000000007', '303M', 45, 'Lecture', 'Main', 'Third Floor', '2024-06-23 11:08:38', 'ACTIVE'),
@@ -694,7 +694,7 @@ INSERT INTO `room` (`ROMID`, `Room`, `Capacity`, `Facility`, `Building`, `Floor`
 ('0000000009', 'ComLab3', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-07-10 07:58:56', 'ACTIVE'),
 ('0000000010', 'ComLab4', 45, 'Computer Laboratory', 'Main', 'Second Floor', '2024-06-26 01:18:15', 'ACTIVE'),
 ('0000000011', 'Court', 100, 'Lecture', 'Annex-B', 'First Floor', '2024-07-12 00:32:14', 'ACTIVE'),
-('0000000012', 'ThWahat?', 24, 'Lecture', 'Main', 'First Floor', '2024-08-05 09:51:36', 'ARCHIVE');
+('0000000012', 'ThWahat?', 24, 'Lecture', 'Main', 'First Floor', '2024-08-05 09:51:36', 'ACTIVE');
 
 --
 -- Triggers `room`
@@ -733,12 +733,12 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`SCDID`, `Section`, `CRS_Code`, `Room`, `Component`, `Units`, `Day`, `StartTime`, `EndTime`, `SCHLID`, `ACY_Code`, `SCD_Created`, `SCD_Status`) VALUES
-('0000000001', 'CS701', 'COSC003', '101M', 'Major Lecture', 2, 'Monday', 480, 600, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000001', 'CS701', 'COSC003', '101M', 'Major Lecture', 2, 'Monday', 480, 600, '02000000001', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
 ('0000000002', 'CS702', 'COSC003', '101M', 'Major Lecture', 2, 'Monday', 840, 960, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
 ('0000000003', 'CS103', 'COSC004', '101M', 'Major Lecture', 2, 'Monday', 960, 1080, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
-('0000000004', 'CS102', 'COSC004', 'ComLab3', 'Computer Laboratory', 3, 'Tuesday', 480, 660, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
-('0000000005', 'CS103', 'COSC004', 'ComLab3', 'Computer Laboratory', 3, 'Tuesday', 660, 840, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
-('0000000006', 'CS201', 'ENGI001', '101M', 'Major Lecture', 2, 'Monday', 600, 720, '02000000003', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000004', 'CS102', 'COSC004', 'ComLab3', 'Computer Laboratory', 3, 'Tuesday', 480, 1200, '02000000001', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000005', 'CS103', 'COSC004', 'ComLab3', 'Computer Laboratory', 3, 'Tuesday', 660, 840, '02000000002', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
+('0000000006', 'CS201', 'ENGI001', '101M', 'Major Lecture', 2, 'Tuesday', 480, 1200, '02000000003', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE'),
 ('0000000007', 'CS102', 'COSC004', '101M', 'Major Lecture', 2, 'Monday', 720, 840, 'dsadas', 'AY-2425-1', '2024-09-02 14:16:19', 'ACTIVE');
 
 --
@@ -817,12 +817,12 @@ INSERT INTO `section` (`SCTID`, `Section`, `PRG_Code`, `Semester`, `YearLevel`, 
 ('0000000043', 'COE701', 'COE', 'First Semester', 'Fourth Year', '2024-06-29 08:58:11', 'ACTIVE'),
 ('0000000044', 'COE702', 'COE', 'First Semester', 'Fourth Year', '2024-08-07 07:21:43', 'ACTIVE'),
 ('0000000045', 'COE801', 'COE', 'Second Semester', 'Fourth Year', '2024-06-29 08:58:11', 'ACTIVE'),
-('0000000046', 'COE802', 'COE', 'Second Semester', 'Fourth Year', '2024-08-07 07:21:43', 'ARCHIVE'),
+('0000000046', 'COE802', 'COE', 'Second Semester', 'Fourth Year', '2024-08-07 07:21:43', 'ACTIVE'),
 ('0000000047', 'CS101', 'COSC', 'First Semester', 'First Year', '2024-06-25 02:35:27', 'ACTIVE'),
 ('0000000048', 'CS102', 'COSC', 'First Semester', 'First Year', '2024-06-26 01:16:36', 'ACTIVE'),
 ('0000000049', 'CS103', 'COSC', 'First Semester', 'First Year', '2024-06-26 01:16:44', 'ACTIVE'),
-('0000000050', 'CS104', 'COSC', 'First Semester', 'First Year', '2024-06-30 09:42:12', 'ARCHIVE'),
-('0000000051', 'CS105', 'COSC', 'First Semester', 'First Year', '2024-06-30 09:42:18', 'ARCHIVE'),
+('0000000050', 'CS104', 'COSC', 'First Semester', 'First Year', '2024-06-30 09:42:12', 'ACTIVE'),
+('0000000051', 'CS105', 'COSC', 'First Semester', 'First Year', '2024-06-30 09:42:18', 'ACTIVE'),
 ('0000000052', 'CS201', 'COSC', 'Second Semester', 'First Year', '2024-06-25 02:35:27', 'ACTIVE'),
 ('0000000053', 'CS202', 'COSC', 'Second Semester', 'First Year', '2024-06-26 01:16:44', 'ACTIVE'),
 ('0000000054', 'CS301', 'COSC', 'First Semester', 'Second Year', '2024-06-25 02:35:27', 'ACTIVE'),

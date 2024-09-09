@@ -13,38 +13,24 @@ export class DataControllerTemplate extends React.Component {
         <section className="col-lg-9 p-2 h-100">
           <main className="h-100 position-relative overflow-y-auto">
             <main className="h-100 p-2">
-              <header>
-                <h3 className="m-0 p-0">{this.props.title}</h3>
-                <p className="m-0 p-0 text-secondary">
-                  {this.props.description}
-                </p>
-                <hr className="p-0 mx-0 my-2" />
-              </header>
               <main className="pb-1">
                 <div className="d-flex gap-2 my-2">{this.props.control}</div>
                 <section className="">
                   <main className="row m-0">
-                    <section className="col-8 p-0">
+                    <section className="col-7 p-0">
+                      <header>
+                        <h1 className="fw-bold custom-text-gradient pb-2">
+                          {this.props.title}
+                        </h1>
+                        <hr />
+                      </header>
                       <section>
-                        <header className="mt-3">
-                          <h5 className="fw-bold">Entry Form</h5>
-                        </header>
                         <main>{this.props.entryform}</main>
                       </section>
-                      <section>
-                        <header className="mt-3">
-                          <h5 className="fw-bold">Entry</h5>
-                        </header>
-                        <main className="border p-3 rounded">
-                          <p className="text-secondary m-0 p-0 px-3">
-                            Entry No.
-                          </p>
-                          {this.props.entry}
-                        </main>
-                      </section>
+                      <section>{this.props.entry}</section>
                     </section>
 
-                    <section className="col-4 p-0">
+                    <section className="col-5 p-0">
                       <main className="">{this.props.additional}</main>
                     </section>
                   </main>

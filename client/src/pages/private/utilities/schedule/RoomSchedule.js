@@ -2,26 +2,18 @@ import React, { useEffect, useState } from "react";
 import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import "../Map.css";
 import useDatabase from "../../../../hook/useDatabase";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TbStairs } from "react-icons/tb";
-import { B1 } from "../map/B1";
-import { B2 } from "../map/B2";
-import { B3 } from "../map/B3";
-import { A1 } from "../map/A1";
-import { A2 } from "../map/A2";
-import { A3 } from "../map/A3";
 import useTimeFormat from "../../../../hook/useTimeFormat";
-import { Mn1 } from "../map/Mn1";
-import { Mn2 } from "../map/Mn2";
-import { Mn3 } from "../map/Mn3";
+import useConfiguration from "../../../../hook/useConfiguration";
 
 export function RoomSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
 
   const [schedule, setSchedule] = useState([]);
   const [convertMinutes] = useTimeFormat();
@@ -31,15 +23,15 @@ export function RoomSchedule() {
   const [building, setBuilding] = useState([]);
   const [floorstatus, setFloorStatus] = useState(true);
   const [location, setLocation] = useState([
-    { Floor: "First Floor", Building: "Main", Map: <Mn1 /> },
-    { Floor: "Second Floor", Building: "Main", Map: <Mn2 /> },
-    { Floor: "Third Floor", Building: "Main", Map: <Mn3 /> },
-    { Floor: "First Floor", Building: "Annex-A", Map: <A1 /> },
-    { Floor: "Second Floor", Building: "Annex-A", Map: <A2 /> },
-    { Floor: "Third Floor", Building: "Annex-A", Map: <A3 /> },
-    { Floor: "First Floor", Building: "Annex-B", Map: <B1 /> },
-    { Floor: "Second Floor", Building: "Annex-B", Map: <B2 /> },
-    { Floor: "Third Floor", Building: "Annex-B", Map: <B3 /> },
+    { Floor: "First Floor", Building: "Main", Map: info.maps.m1 },
+    { Floor: "Second Floor", Building: "Main", Map: info.maps.m2 },
+    { Floor: "Third Floor", Building: "Main", Map: info.maps.m3 },
+    { Floor: "First Floor", Building: "Annex-A", Map: info.maps.a1 },
+    { Floor: "Second Floor", Building: "Annex-A", Map: info.maps.a2 },
+    { Floor: "Third Floor", Building: "Annex-A", Map: info.maps.a3 },
+    { Floor: "First Floor", Building: "Annex-B", Map: info.maps.b1 },
+    { Floor: "Second Floor", Building: "Annex-B", Map: info.maps.b2 },
+    { Floor: "Third Floor", Building: "Annex-B", Map: info.maps.b3 },
   ]);
 
   const [currfloor, setCurrentFloor] = useState(location[0].Floor);
@@ -88,14 +80,14 @@ export function RoomSchedule() {
           <main>
             <DefaultButton
               class=""
-              icon={<MdArrowBackIosNew />}
+              icon={info.icons.navigation.previous}
               function={() => {
                 previousLocation();
               }}
             />
           </main>
-          <main className="h-100 flex-fill">
-            {location.map((location, i) =>
+          <main className="h-100 w-100 p-3">
+            {location.map((location) =>
               location.Floor === currfloor && location.Building === currbuilding
                 ? location.Map
                 : null
@@ -104,7 +96,7 @@ export function RoomSchedule() {
           <main>
             <DefaultButton
               class=""
-              icon={<MdArrowBackIosNew />}
+              icon={info.icons.navigation.next}
               function={() => {
                 nextLocation();
               }}

@@ -39,7 +39,7 @@ export function Locator() {
   });
 
   useEffect(() => {
-    post("sel-coach", coaches, setCoaches);
+    post("sel-asgn", coaches, setCoaches);
     post("sel-dept", department, setDepartment);
     post("sel-sched", schedules, setSchedules);
   }, [coaches, department, schedules]);
@@ -158,24 +158,6 @@ export function Locator() {
                     <header>
                       <h6 className="fw-bold text-primary m-0 p-0">NO CLASS</h6>
                     </header>
-                    {/* <main>
-                      <section className="px-3">
-                        <section className="m-0 p-0">
-                          <h6>{" ".concat(currcoach)}</h6>
-                          <h5 className="">
-                            {coaches.map((coach, i) =>
-                              coach.SCHLID === currcoach
-                                ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
-                                : null
-                            )}
-                          </h5>
-                        </section>
-                        <hr />
-                        <p className="m-0 p-0 text-secondary text-center border p-1 rounded">
-                          No Classes
-                        </p>
-                      </section>
-                    </main> */}
                   </main>
                 ) : null}
               </section>

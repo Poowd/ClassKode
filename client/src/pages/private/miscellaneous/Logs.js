@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import vid from "../../../assets/videos/duk.mp4";
 import useDatabase from "../../../hook/useDatabase";
 
 export function Logs() {

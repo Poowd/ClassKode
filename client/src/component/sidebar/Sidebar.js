@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/logo/ClassKode Logo (1).png";
+import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 
 export class Sidebar extends React.Component {
   render() {

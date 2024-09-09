@@ -3,7 +3,7 @@ import { DefaultButton } from "../button/DefaultButton";
 import { PiQuestionMarkBold } from "react-icons/pi";
 import { Sidebar } from "../sidebar/Sidebar";
 import { SidebarItemList } from "../sidebar/SidebarItemList";
-import Logo from "../../assets/logo/ClassKode Logo (1).png";
+import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { ViewModal } from "../modal/ViewModal";
 
 export class Topbar extends React.Component {

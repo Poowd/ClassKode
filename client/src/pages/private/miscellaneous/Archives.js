@@ -47,8 +47,8 @@ export function Archives() {
   });
 
   useEffect(() => {
-    post("arch-dept", department, setDepartment);
-    post("arch-prg", program, setProgram);
+    get("department/list-archived", setDepartment);
+    get("program/list-archived", setProgram);
     post("arch-crs", course, setCourse);
     post("arch-coach", coach, setCoach);
     post("arch-sect", section, setSection);
@@ -56,7 +56,7 @@ export function Archives() {
     post("arch-acy", academicyear, setAcademicYear);
     post("arch-curr", curriculum, setCurriculum);
     post("arch-sched", schedule, setSchedule);
-  }, [selection]);
+  }, [department]);
 
   useEffect(() => {
     // if (selection !== LocalStorage[0].selection) {
@@ -151,13 +151,13 @@ export function Archives() {
         }
         list={
           selection === "Department"
-            ? department.map((dept, i) => (
+            ? department.map((department, i) => (
                 <ListCard
-                  slot1={dept.DPT_Code}
-                  slot2={dept.Department}
-                  slot3={dept.DPT_Created}
-                  slot4={dept.DPT_Abbreviation}
-                  slot5={dept.DPT_Abbreviation}
+                  slot1={department.Code}
+                  slot2={department.Department}
+                  slot3={department.Created}
+                  slot4={department.Abbrev}
+                  slot5={department.Status}
                   link={null}
                   state={null}
                   custom={
@@ -165,11 +165,15 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-dept", { DPTID: dept.DPTID }, setData);
+                        post(
+                          "department/restore",
+                          { data: department.DPTID },
+                          setData
+                        );
                         showToast(
                           info.icons.calendar,
                           "Department",
-                          `Department ${dept.Department} is set to active!`
+                          `Department ${department.Department} is set to active!`
                         );
                       }}
                     />
@@ -179,11 +183,11 @@ export function Archives() {
             : selection === "Program"
             ? program.map((prog, i) => (
                 <ListCard
-                  slot1={prog.PRG_Code}
+                  slot1={prog.Code}
                   slot2={prog.Program}
-                  slot3={prog.PRG_Created}
-                  slot4={"Available"}
-                  slot5={"2024-2025"}
+                  slot3={prog.Created}
+                  slot4={prog.Abbrev}
+                  slot5={prog.Status}
                   link={null}
                   state={null}
                   custom={
@@ -191,7 +195,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-prg", { PRGID: prog.PRGID }, setData);
+                        post("program/restore", { data: prog.PRGID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Program",

@@ -11,7 +11,7 @@ export class DefaultInput extends React.Component {
             : this.props.type
         }
         id={this.props.id}
-        name={this.props.name}
+        name={this.props.id}
         onChange={this.props.trigger}
         placeholder={this.props.placeholder}
       />

@@ -10,21 +10,56 @@ import useConfiguration from "../../../hook/useConfiguration";
 import { LinkButton } from "../../../component/button/LinkButton";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
+import useHandleChange from "../../../hook/useHandleChange";
+import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Course() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [info] = useConfiguration();
+  const [search, setSearch] = useState({
+    setbyDepartment: "",
+    search: "",
+  });
+  const [dataChange] = useHandleChange(setSearch);
 
-  const [data, setData] = useState([]);
+  const [course, setCourse] = useState([]);
+  const [department, setDepartment] = useState([]);
 
   useEffect(() => {
-    post("sel-crs", data, setData);
-  }, [data]);
+    get("course/list", setCourse);
+    get("department/list", setDepartment);
+  }, [course]);
 
   return (
     <FileMaintainanceTemplate
-      sidepanel={<NoDisplay />}
+      sidepanel={
+        <main>
+          <header className="">
+            <h5 className="p-0 m-0">Course Details</h5>
+            <p>Entries: {course.length} row/s</p>
+          </header>
+          <section>
+            <ul className="list-group list-group-flush">
+              {department &&
+                department.map((item, i) => (
+                  <li className="list-group-item">
+                    <TextFormat1
+                      header={
+                        <span>
+                          {info.icons.pages.users.ter} {item.Abbrev}
+                        </span>
+                      }
+                      data={
+                        course.filter((x) => x.Department === item.Code).length
+                      }
+                    />
+                  </li>
+                ))}
+            </ul>
+          </section>
+        </main>
+      }
       control={
         <>
           <DefaultButton
@@ -32,16 +67,26 @@ export function Course() {
             icon={info.icons.back}
             function={() => navigate(-1)}
           />
-          <DefaultInput placeholder="Search" />
+          <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
             icon={info.icons.filter}
             dropdownitems={
               <>
-                <DefaultDropdownItem title={"Profile"} />
-                <hr />
-                <DefaultDropdownItem title={"Logout"} />
+                {department &&
+                  department.map((item, i) => (
+                    <DefaultDropdownItem
+                      key={i}
+                      title={item.Department}
+                      trigger={() =>
+                        setSearch((prev) => ({
+                          ...prev,
+                          setbyDepartment: item.Code,
+                        }))
+                      }
+                    />
+                  ))}
               </>
             }
           />
@@ -53,18 +98,75 @@ export function Course() {
           />
         </>
       }
-      list={data.map((item, i) => (
-        <ListCard
-          slot1={item.CRS_Code}
-          slot2={item.Course}
-          slot3={item.CRS_Created}
-          slot4={item.Program}
-          slot5={item.AcademicLevel}
-          view={info.icons.view}
-          link={`/course/view/${item.CRSID}`}
-          state={{ data: item }}
-        />
-      ))}
+      list={
+        <main>
+          <section>
+            <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
+              <li className={search.search === "" ? "visually-hidden" : ""}>
+                <DefaultButton
+                  class="btn-outline-primary px-2"
+                  text={search.search}
+                  function={() => {
+                    document.getElementById(`search`).value = "";
+                    setSearch((prev) => ({
+                      ...prev,
+                      search: "",
+                    }));
+                  }}
+                />
+              </li>
+              <li
+                className={
+                  search.setbyDepartment === "" ? "visually-hidden" : ""
+                }
+              >
+                <DefaultButton
+                  class="btn-outline-primary px-2"
+                  text={
+                    department &&
+                    department.map((item) =>
+                      item.Code === search.setbyDepartment
+                        ? item.Department
+                        : null
+                    )
+                  }
+                  function={() =>
+                    setSearch((prev) => ({
+                      ...prev,
+                      setbyDepartment: "",
+                    }))
+                  }
+                />
+              </li>
+            </ul>
+          </section>
+          <section>
+            {course.map((item, i) =>
+              item.Course.toLowerCase().includes(search.search.toLowerCase()) ||
+              search.search === "" ? (
+                item.Department.includes(search.setbyDepartment) ||
+                search.setbyDepartment === "" ? (
+                  <ListCard
+                    slot1={item.Code}
+                    slot2={item.Course}
+                    slot3={item.Created}
+                    slot4={
+                      department &&
+                      department.map((dept) =>
+                        dept.Code === item.Department ? dept.Department : null
+                      )
+                    }
+                    slot5={item.Status}
+                    view={info.icons.view}
+                    link={`/course/view/${item.CRSID}`}
+                    state={{ data: item }}
+                  />
+                ) : null
+              ) : null
+            )}
+          </section>
+        </main>
+      }
     />
   );
 }

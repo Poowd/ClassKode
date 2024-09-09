@@ -9,33 +9,43 @@ import { SelectButtonItem } from "../../../../component/dropdown/select/SelectBu
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
+import { useToasty } from "../../../../hook/useToasty";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { MainInput } from "../../../../component/input/MainInput";
+import { MainSelect } from "../../../../component/dropdown/select/MainSelect";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
 
 export function CreateCourse() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-
-  const [course, setCourse] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [academiclevel, setAcademicLevel] = useState([]);
+  const [toasty, showToast] = useToasty();
+  const [info] = useConfiguration();
   const [data, setData] = useState({
-    CRS_Code: "",
+    Code: "",
     Course: "",
-    PRG_Code: "",
+    Department: "",
+    Description: "",
   });
 
   const [dataChange] = useHandleChange(setData);
+  const [department, setDepartment] = useState([]);
 
   useEffect(() => {
-    post("sel-crs", course, setCourse);
-    post("sel-acyl", academiclevel, setAcademicLevel);
-    post("sel-prg", program, setProgram);
-  }, [course]);
+    get("department/list", setDepartment);
+  }, []);
 
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      post("ins-crs", data, setData);
-      navigate(-1);
+      post("course/insert", data, setData);
+      showToast(
+        info.icons.calendar,
+        "Course",
+        `Course ${data.Course} is updated!`
+      );
+      setTimeout(() => {
+        navigate(-1);
+      }, 1000); // 2 second delay
     }
   };
 
@@ -61,73 +71,60 @@ export function CreateCourse() {
         }
         entryform={
           <>
-            <FormInput
-              label="Course Code"
-              id="CRS_Code"
+            <MainInput
+              label="Code"
+              id="Code"
               trigger={dataChange}
-              value={data.CRS_Code}
+              value={data.Code}
               required={true}
             />
-
-            <FormInput
+            <MainInput
               label="Course"
               id="Course"
               trigger={dataChange}
               value={data.Course}
-              required={false}
+              required={true}
             />
-
-            <SelectButton
-              label="Program"
-              id="PRG_Code"
+            <MainSelect
+              label="Department"
+              id="Department"
               trigger={dataChange}
               required={true}
               option={
                 <>
                   <SelectButtonItemSelected
-                    content={program.map((option, i) => (
-                      <>
-                        {option.PRG_Code === data.PRG_Code
-                          ? option.Program
-                          : ""}
-                      </>
-                    ))}
+                    content={department.map((option, i) =>
+                      option.Code === data.Department ? option.Department : null
+                    )}
                   />
-                  {program.map((option, i) => (
+                  {department.map((option, i) => (
                     <>
-                      {data.PRG_Code !== option.PRG_Code ? (
+                      {data.Department !== option.Code ? (
                         <SelectButtonItem
-                          value={option.PRG_Code}
-                          content={option.Program}
+                          value={option.Code}
+                          content={option.Department}
                         />
-                      ) : (
-                        ""
-                      )}
+                      ) : null}
                     </>
                   ))}
                 </>
               }
             />
+            <MainInput
+              label="Description"
+              id="Description"
+              trigger={dataChange}
+              value={data.Description}
+              required={false}
+            />
           </>
         }
-        entry={
-          <main className="p-3">
-            <section>
-              <h6>{data.CRS_Code.length > 0 ? data.CRS_Code : "Code"}</h6>
-              <h3>{data.Course.length > 0 ? data.Course : "Course"}</h3>
-              <hr />
-              <ul className="m-0 p-0 d-flex gap-2 mb-3">
-                <li className="border m-0 p-2 rounded">
-                  <p className="fst-italic text-secondary m-0 p-0">
-                    {program.map((prog, i) =>
-                      data.PRG_Code === prog.PRG_Code ? prog.Program : null
-                    )}
-                  </p>
-                </li>
-              </ul>
-            </section>
-          </main>
-        }
+        entry={<main className="p-3"></main>}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </form>
   );

@@ -8,6 +8,16 @@ const Generate = require("./routes/logic/GenerateSchedule.js");
 const RandomCode = require("./routes/logic/RandomCode.js");
 const SaveImage = require("./routes/logic/SaveImage.js");
 const Login = require("./routes/logic/Login.js");
+
+const AcademicLevel = require("./routes/Tables/AcademicLevel.js");
+const AcademicYear = require("./routes/Tables/AcademicYear.js");
+const Department = require("./routes/Tables/Department.js");
+const Program = require("./routes/Tables/Program.js");
+const Coach = require("./routes/Tables/Coach.js");
+const Course = require("./routes/Tables/Course.js");
+const Room = require("./routes/Tables/Room.js");
+const Section = require("./routes/Tables/Section.js");
+const _User = require("./routes/Tables/_User.js");
 // = = >
 const { Pool } = require("pg");
 const express = require("express");
@@ -22,6 +32,10 @@ const pool = new Pool({
   database: "postgres",
 });
 // = = >
+pool.connect();
+// = = >
+
+// = = >
 global.router = router;
 router.use("/", Statistics);
 router.use("/", TotalPopulation);
@@ -33,6 +47,16 @@ router.use("/", Generate);
 router.use("/", RandomCode);
 router.use("/", SaveImage);
 router.use("/", Login);
+
+router.use("/academic-level", AcademicLevel);
+router.use("/academic-year", AcademicYear);
+router.use("/department", Department);
+router.use("/program", Program);
+router.use("/coach", Coach);
+router.use("/course", Course);
+router.use("/room", Room);
+router.use("/section", Section);
+router.use("/user", _User);
 // = = >
 app.use(express.json());
 app.use(express.static("public"));
@@ -50,9 +74,6 @@ app.listen(8081, () => {
 app.get("/status", (req, res) => {
   res.send("server is running");
 });
-// = = >
-pool.connect();
-// = = >
 
 // pool.query(`SELECT * FROM _user`, (err, res) => {
 //   if (!err) {

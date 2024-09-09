@@ -18,23 +18,37 @@
 .gradient-bg-yellow {
   background-image: linear-gradient(
     to bottom right,
-    #ffd300,
-    #fcd12a,
-    #ffc30b,
+    #f24a17,
+    #f55d0c,
+    #f97a05,
     #ffbf00,
-    #f2bc34
+    #feca74,
+    #ffbf00,
+    #f97a05,
+    #f55d0c,
+    #f24a17
   );
   color: #ffffed;
 }
 
-.custom-text-gradient {
-  background: linear-gradient(
-    to right,
+/*
     #005483,
     #007a9a,
     #008da1,
     #00a1a4,
     #00ca9a
+  
+  */
+
+.custom-text-gradient {
+  background: linear-gradient(
+    to right,
+    #f97a05,
+    #f55d0c,
+    #f97a05,
+    #e58c02,
+    #fe9c02,
+    #f97a05
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

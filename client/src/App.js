@@ -35,6 +35,7 @@ import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 import { DefaultButton } from "./component/button/DefaultButton";
 import FileInput from "./pages/testing/FileInput";
+import { Setup } from "./pages/private/miscellaneous/Setup";
 
 function App() {
   const navigate = useNavigate();
@@ -161,6 +162,7 @@ function App() {
                             path={"/institution/coach"}
                             element={<Coach />}
                           ></Route>
+                          <Route path={"*"} element={<Error404 />}></Route>
                         </Route>
 
                         <Route path={"/utilities"}>
@@ -173,6 +175,7 @@ function App() {
                               path={"/utilities/curriculum/setup"}
                               element={<CourseSetup />}
                             ></Route>
+                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
 
                           <Route path={"/utilities/academicyear"}>
@@ -188,6 +191,7 @@ function App() {
                               path={"/utilities/academicyear/projection"}
                               element={<SectionProjection />}
                             ></Route>
+                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
 
                           <Route path={"/utilities/schedule"}>
@@ -203,6 +207,7 @@ function App() {
                               path={"/utilities/schedule/section"}
                               element={<SectionSchedule />}
                             ></Route>
+                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
 
                           <Route path={"/utilities"}>
@@ -210,6 +215,7 @@ function App() {
                               path={"/utilities/locator/"}
                               element={<Locator />}
                             ></Route>
+                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
                         </Route>
 
@@ -226,12 +232,19 @@ function App() {
                             path={"/miscellaneous/user"}
                             element={<User />}
                           ></Route>
+                          <Route
+                            path={"/miscellaneous/setup"}
+                            element={<Setup />}
+                          ></Route>
+                          <Route path={"*"} element={<Error404 />}></Route>
                         </Route>
 
                         <Route
                           path={"/:module/:form/:id"}
                           element={<DataController />}
                         ></Route>
+
+                        <Route path={"*"} element={<Error404 />}></Route>
                       </Routes>
                     }
                   />

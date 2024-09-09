@@ -53,3 +53,13 @@ STYLE FOCUSED - GRADIENT
   - IMPORTANT : YELLOW
   - CREATE : BLUE
 */
+
+.sheep {
+  height: 5em;
+  opacity: 0.5;
+  filter: drop-shadow(1em);
+}
+
+.sheep:hover {
+  opacity: 0.75;
+}

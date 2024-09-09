@@ -1,6 +1,6 @@
 import React from "react";
 import "./Loader.css";
-import logo from "../../assets/logo/ClassKode Logo (1).png";
+import logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 
 export class FullscreenLoader extends React.Component {
   render() {

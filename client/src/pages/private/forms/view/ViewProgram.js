@@ -13,49 +13,58 @@ import useValidation from "../../../../hook/useValidation";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
 import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { useToasty } from "../../../../hook/useToasty";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
 
 export function ViewProgram() {
   const navigate = useNavigate();
   const params = useParams();
-  const { state } = useLocation();
   const [get, post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
-  const [data, setData] = useState([state.data]);
+  const [data, setData] = useState([]);
   const [department, setDepartment] = useState([]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
-  const [validation, setValidation] = useState({
-    Confirm: ValidateCode(confirmCode.Confirm),
-  });
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    post("sel-dept", department, setDepartment);
     get("random-code-generator", setCode);
-  }, [data]);
+    get("department/list", setDepartment);
+    post("program/target", { data: params.id }, setData);
+  }, []);
 
-  useEffect(() => {
-    setValidation({
-      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
-    });
-  }, [confirmCode]);
+  const archiveEntry = (e) => {
+    e.preventDefault();
+    if (code === confirmCode.Confirm) {
+      post("program/archive", { data: params.id }, setData);
+      showToast(
+        info.icons.calendar,
+        "Program",
+        `Program ${data[0].Program} is set to archive!`
+      );
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
+    } else {
+      showModal(
+        "Modal",
+        "Archive Entry",
+        <p>
+          <span>Type the code </span>
+          <span className="fw-bold text-black">{code}</span>
+          <span> to archive </span>
+          <span className="fw-bold text-black">{data[0].Program}</span>
+        </p>
+      );
+    }
+  };
 
   return (
     <>
@@ -66,19 +75,19 @@ export function ViewProgram() {
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.back}
               function={() => navigate(-1)}
             />
             <LinkButton
               class="btn-warning px-2"
-              icon={<LuFileEdit />}
-              to={"/institution/program/edit/" + params.id}
+              icon={info.icons.forms.edit}
+              to={`/program/edit/${params.id}`}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
               class="btn-danger px-2"
-              icon={<LuFolderArchive />}
+              icon={info.icons.forms.archive}
               function={() =>
                 showModal(
                   "Modal",
@@ -99,46 +108,44 @@ export function ViewProgram() {
         }
         content={
           <>
-            {data.map((item, i) => (
-              <main key={i} className="px-0 py-3 m-0">
-                <header>
-                  <h6>{item.PRG_Code}</h6>
-                  <h1 className="fw-bold custom-text-gradient pb-2">
-                    {item.Program} <span>({item.PRG_Abbreviation})</span>
-                  </h1>
-                  <hr />
-                  <ul className="m-0 p-0 d-flex gap-2">
-                    <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">{item.AcademicLevel}</p>
-                    </li>
-                    <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">
-                        {department.map((dept, i) =>
-                          dept.DPT_Code === item.DPT_Code
-                            ? dept.Department
-                            : null
-                        )}
+            {data &&
+              data.map((item, i) => (
+                <main key={i} className="px-0 py-3 m-0">
+                  <header>
+                    <h1 className="fw-bold custom-text-gradient pb-2">
+                      {item.Program} <span>({item.Abbrev})</span>
+                    </h1>
+                    <hr />
+                  </header>
+                  <main className="p-3">
+                    <section>
+                      <h6>{item.Code}</h6>
+                      <p>
+                        {item.Description !== null ? item.Description : "None"}
                       </p>
-                    </li>
-                  </ul>
-                </header>
-                <main className="p-3">
-                  <section>
-                    <p>
-                      {item.PRG_Description !== ""
-                        ? item.PRG_Description
-                        : "None"}
-                    </p>
-                    <small>
-                      <p className="text-secondary">
-                        Date Created: {item.PRG_Created}
-                      </p>
-                    </small>
-                  </section>
+                      <ul className="m-0 mt-3 p-0 d-flex">
+                        <li className="border m-0 p-2 rounded">
+                          <p className="m-0 p-0">
+                            {department &&
+                              department.map((dept) =>
+                                dept.Code === item.Department
+                                  ? dept.Department
+                                  : null
+                              )}
+                          </p>
+                        </li>
+                      </ul>
+                      <footer className="mt-5">
+                        <small>
+                          <p className="text-secondary">
+                            Date Created: {item.Created}
+                          </p>
+                        </small>
+                      </footer>
+                    </section>
+                  </main>
                 </main>
-                {/* <CollapseButton id="aasdasdas" title="hello" content="bye" /> */}
-              </main>
-            ))}
+              ))}
           </>
         }
         additional={<></>}
@@ -152,24 +159,18 @@ export function ViewProgram() {
             <FormInput
               hidden={true}
               id="Confirm"
-              alert={validation.Confirm[0].Message}
-              class={validation.Confirm[0].State[0]}
-              success={validation.Confirm[0].State[1]}
               trigger={dataChange}
               value={confirmCode.Confirm}
               required={true}
             />
           </>
         }
-        trigger={() =>
-          ArchiveEntry(
-            "archive-existing-program",
-            post,
-            code,
-            confirmCode.Confirm,
-            data[0]
-          )
-        }
+        trigger={archiveEntry}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </>
   );

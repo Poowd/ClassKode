@@ -134,18 +134,7 @@ export default function GenerateUsers() {
                 class="ms-2 bg-primary text-white"
                 icon={info.icons.add}
                 function={saveUserData}
-                disabled={
-                  file !== null
-                    ? sheets.length -
-                        (itemCounter(sheets, "Developer", "Type") +
-                          itemCounter(sheets, "Manager", "Type") +
-                          itemCounter(sheets, "Admin", "Type") +
-                          itemCounter(sheets, "User", "Type")) >
-                      0
-                      ? true
-                      : false
-                    : true
-                }
+                disabled={file !== null ? false : true}
               />
 
               {/* <button

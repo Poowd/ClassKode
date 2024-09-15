@@ -4,7 +4,6 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
-import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
 import useConfiguration from "../../../hook/useConfiguration";
 import { LinkButton } from "../../../component/button/LinkButton";
@@ -12,7 +11,6 @@ import { DefaultDropdownItem } from "../../../component/dropdown/default/Default
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import useHandleChange from "../../../hook/useHandleChange";
 import { TextFormat1 } from "../../../component/textformat/TextFormat1";
-import useItemCounter from "../../../hook/useItemCounter";
 
 export function Department() {
   const navigate = useNavigate();
@@ -41,27 +39,24 @@ export function Department() {
             <p>Entries: {department.length} row/s</p>
           </header>
           <section>
-            <ul className="list-group list-group-flush">
-              <li className="list-group-item">
-                <TextFormat1
-                  header={<span>{info.icons.pages.users.ter} Tertiary</span>}
-                  data={
-                    department.filter((x) => x.AcademicLevel === "Tertiary")
-                      .length
-                  }
-                />
-              </li>
-              <li className="list-group-item">
-                <TextFormat1
-                  header={<span>{info.icons.pages.users.shs} SHS</span>}
-                  data={
-                    department.filter(
-                      (x) => x.AcademicLevel === "Senior High School"
-                    ).length
-                  }
-                />
-              </li>
-            </ul>
+            <section>
+              <h6>Academic Level</h6>
+              <ul className="list-group list-group-flush">
+                {academiclevel &&
+                  academiclevel.map((item, i) => (
+                    <li className="list-group-item">
+                      <TextFormat1
+                        header={<span>{item.AcademicLevel}</span>}
+                        data={
+                          department.filter(
+                            (x) => x.AcademicLevel === item.AcademicLevel
+                          ).length
+                        }
+                      />
+                    </li>
+                  ))}
+              </ul>
+            </section>
           </section>
         </main>
       }
@@ -78,21 +73,24 @@ export function Department() {
             reversed={true}
             icon={info.icons.filter}
             dropdownitems={
-              <>
-                {academiclevel &&
-                  academiclevel.map((item, i) => (
-                    <DefaultDropdownItem
-                      key={i}
-                      title={item.AcademicLevel}
-                      trigger={() =>
-                        setSearch((prev) => ({
-                          ...prev,
-                          setbyAcadLevel: item.AcademicLevel,
-                        }))
-                      }
-                    />
-                  ))}
-              </>
+              <main className="d-flex gap-2 p-3">
+                <section>
+                  <h6>Academic Level</h6>
+                  {academiclevel &&
+                    academiclevel.map((item, i) => (
+                      <DefaultDropdownItem
+                        key={i}
+                        title={item.AcademicLevel}
+                        trigger={() =>
+                          setSearch((prev) => ({
+                            ...prev,
+                            setbyAcadLevel: item.AcademicLevel,
+                          }))
+                        }
+                      />
+                    ))}
+                </section>
+              </main>
             }
           />
           <LinkButton
@@ -139,25 +137,26 @@ export function Department() {
             </ul>
           </section>
           <section>
-            {department.map((item, i) =>
-              item.Department.toLowerCase().includes(
-                search.search.toLowerCase()
-              ) || search.search === "" ? (
-                item.AcademicLevel.includes(search.setbyAcadLevel) ||
-                search.setbyAcadLevel === "" ? (
-                  <ListCard
-                    slot1={item.Code}
-                    slot2={item.Department}
-                    slot3={item.Created}
-                    slot4={item.Abbrev}
-                    slot5={item.AcademicLevel}
-                    view={info.icons.view}
-                    link={`/department/view/${item.DPTID}`}
-                    state={{ data: item }}
-                  />
+            {department &&
+              department.map((item, i) =>
+                item.Department.toLowerCase().includes(
+                  search.search.toLowerCase()
+                ) || search.search === "" ? (
+                  item.AcademicLevel.includes(search.setbyAcadLevel) ||
+                  search.setbyAcadLevel === "" ? (
+                    <ListCard
+                      slot1={item.Code}
+                      slot2={item.Department}
+                      slot3={item.Created}
+                      slot4={item.Abbrev}
+                      slot5={item.AcademicLevel}
+                      view={info.icons.view}
+                      link={`/department/view/${item.DPTID}`}
+                      state={{ data: item }}
+                    />
+                  ) : null
                 ) : null
-              ) : null
-            )}
+              )}
           </section>
         </main>
       }

@@ -78,10 +78,10 @@ router.post("/insert", (req, res) => {
 
 router.post("/edit", (req, res) => {
   try {
-    var id = req.body.DPTID;
+    var id = req.body.CRSID;
     var code = req.body.Code;
+    var course = req.body.Course;
     var department = req.body.Department;
-    var abbrev = req.body.Abbrev;
     var description =
       req.body.Description === null ? null : req.body.Description;
     pool.query(
@@ -89,11 +89,11 @@ router.post("/edit", (req, res) => {
 
       SET 
       "Code"='${code}', 
+      "Course"='${course}', 
       "Department"='${department}', 
-      "Abbrev"='${abbrev}', 
       "Description"='${description}' 
       
-      WHERE "DPTID"='${id}'`,
+      WHERE "CRSID"='${id}'`,
 
       (err, rslt) => {
         if (err) {

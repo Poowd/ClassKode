@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormInput } from "../../../../component/input/FormInput";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
+import { useToasty } from "../../../../hook/useToasty";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
+import { MainSelect } from "../../../../component/dropdown/select/MainSelect";
+import { MainInput } from "../../../../component/input/MainInput";
 
 export function CreateRoom() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
-
-  const [room, setRoom] = useState([]);
-  const [facility, setFacility] = useState([]);
-  const [building, setBuilding] = useState([]);
-  const [floor, setFloor] = useState([]);
+  const [toasty, showToast] = useToasty();
+  const [info] = useConfiguration();
   const [roomName, setRoomName] = useState("");
-  const [program, setProgram] = useState([]);
   const [data, setData] = useState({
     Room: "",
     Capacity: "",
@@ -29,13 +27,17 @@ export function CreateRoom() {
   });
 
   const [dataChange] = useHandleChange(setData);
+  const [room, setRoom] = useState([]);
+  const [facility, setFacility] = useState([]);
+  const [building, setBuilding] = useState([]);
+  const [floor, setFloor] = useState([]);
 
   useEffect(() => {
-    post("sel-fac", facility, setFacility);
-    post("sel-buil", building, setBuilding);
-    post("sel-flor", floor, setFloor);
-    post("sel-rom", room, setRoom);
-  }, []);
+    get("room/list", setRoom);
+    get("facility/list", setFacility);
+    get("building/list", setBuilding);
+    get("floor/list", setFloor);
+  }, [room]);
 
   var temp = [];
   var roomList = [];
@@ -54,7 +56,7 @@ export function CreateRoom() {
 
     for (var i = 0; i < building.length; i++) {
       if (building[i].Building === data.Building) {
-        buildin = building[i].BLG_Short;
+        buildin = building[i].Abbrev;
       }
     }
 
@@ -73,11 +75,13 @@ export function CreateRoom() {
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      post("ins-rom", data, setData);
-      navigate(-1);
+      post("room/insert", data, setData);
+      showToast(info.icons.calendar, "Room", `Room ${data.Room} is updated!`);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
     }
   };
-
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
@@ -88,7 +92,7 @@ export function CreateRoom() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.back}
               function={() => navigate(-1)}
             />
             <DefaultButton
@@ -100,7 +104,7 @@ export function CreateRoom() {
         }
         entryform={
           <>
-            <SelectButton
+            <MainSelect
               label="Building"
               id="Building"
               trigger={dataChange}
@@ -131,7 +135,7 @@ export function CreateRoom() {
                 </>
               }
             />
-            <SelectButton
+            <MainSelect
               label="Floor"
               id="Floor"
               trigger={dataChange}
@@ -158,7 +162,7 @@ export function CreateRoom() {
                 </>
               }
             />
-            <SelectButton
+            <MainSelect
               label="Facility"
               id="Facility"
               trigger={dataChange}
@@ -189,14 +193,14 @@ export function CreateRoom() {
                 </>
               }
             />
-            <FormInput
+            <MainInput
               label="Capacity"
               id="Capacity"
               trigger={dataChange}
               value={data.Capacity}
               required={true}
             />
-            <FormInput
+            <MainInput
               label="Room"
               id="Room"
               trigger={dataChange}
@@ -205,37 +209,12 @@ export function CreateRoom() {
             />
           </>
         }
-        entry={
-          <main className="p-3">
-            <section>
-              <h6>{data.Facility.length > 0 ? data.Facility : "Facility"}</h6>
-              <h3>
-                {data.Room.length > 0 ? data.Room : "Room"}{" "}
-                <span>
-                  (
-                  {data.Capacity.length > 0
-                    ? `${data.Capacity} Students`
-                    : "0 Students"}
-                  )
-                </span>
-              </h3>
-              <hr />
-              <main className="row m-0 p-0 mt-3 mb-2">
-                <section className="col m-0 p-0">
-                  <p className="m-0 p-0">
-                    Building:{" "}
-                    {data.Building.length > 0 ? data.Building : "Building"}
-                  </p>
-                </section>
-                <section className="col m-0 p-0">
-                  <p className="m-0 p-0">
-                    Floor: {data.Floor.length > 0 ? data.Floor : "Floor"}
-                  </p>
-                </section>
-              </main>
-            </section>
-          </main>
-        }
+        entry={<main className="p-3"></main>}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </form>
   );

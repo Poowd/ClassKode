@@ -1,6 +1,6 @@
 const express = require("express");
 const mysql = require("mysql");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",

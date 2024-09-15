@@ -10,21 +10,55 @@ import { LinkButton } from "../../../component/button/LinkButton";
 import useConfiguration from "../../../hook/useConfiguration";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
+import useHandleChange from "../../../hook/useHandleChange";
+import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Section() {
   const navigate = useNavigate();
   const [get, post] = useDatabase();
   const [info] = useConfiguration();
+  const [search, setSearch] = useState({
+    setbyProgram: "",
+    search: "",
+  });
+  const [dataChange] = useHandleChange(setSearch);
 
-  const [data, setData] = useState([]);
+  const [section, setSection] = useState([]);
+  const [program, setProgram] = useState([]);
 
   useEffect(() => {
-    post("sel-sect", data, setData);
-  }, [data]);
+    get("section/list", setSection);
+    get("program/list", setProgram);
+  }, [section]);
 
   return (
     <FileMaintainanceTemplate
-      sidepanel={<NoDisplay />}
+      sidepanel={
+        <main>
+          <header className="">
+            <h5 className="p-0 m-0">Department Details</h5>
+            <p>Entries: {section.length} row/s</p>
+          </header>
+          <section>
+            <section>
+              <h6>Academic Level</h6>
+              <ul className="list-group list-group-flush">
+                {program &&
+                  program.map((item, i) => (
+                    <li className="list-group-item">
+                      <TextFormat1
+                        header={<span>{item.Program}</span>}
+                        data={
+                          section.filter((x) => x.Program === item.Code).length
+                        }
+                      />
+                    </li>
+                  ))}
+              </ul>
+            </section>
+          </section>
+        </main>
+      }
       control={
         <>
           <DefaultButton
@@ -32,17 +66,30 @@ export function Section() {
             icon={info.icons.back}
             function={() => navigate(-1)}
           />
-          <DefaultInput placeholder="Search" />
+          <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
             icon={info.icons.filter}
             dropdownitems={
-              <>
-                <DefaultDropdownItem title={"Profile"} />
-                <hr />
-                <DefaultDropdownItem title={"Logout"} />
-              </>
+              <main className="d-flex gap-2 p-3">
+                <section>
+                  <h6>Program</h6>
+                  {program &&
+                    program.map((item, i) => (
+                      <DefaultDropdownItem
+                        key={i}
+                        title={item.Program}
+                        trigger={() =>
+                          setSearch((prev) => ({
+                            ...prev,
+                            setbyProgram: item.Code,
+                          }))
+                        }
+                      />
+                    ))}
+                </section>
+              </main>
             }
           />
           <LinkButton
@@ -59,18 +106,73 @@ export function Section() {
           />
         </>
       }
-      list={data.map((item, i) => (
-        <ListCard
-          slot1={item.SCTID}
-          slot2={item.Section}
-          slot3={item.SCT_Created}
-          slot4={item.AcademicLevel}
-          slot5={`${item.YearLevel} - ${item.Semester}`}
-          view={info.icons.view}
-          link={`/section/view/${item.SCTID}`}
-          state={{ data: item }}
-        />
-      ))}
+      list={
+        <main>
+          <section>
+            <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
+              <li className={search.search === "" ? "visually-hidden" : ""}>
+                <DefaultButton
+                  class="btn-outline-primary px-2"
+                  text={search.search}
+                  function={() => {
+                    document.getElementById(`search`).value = "";
+                    setSearch((prev) => ({
+                      ...prev,
+                      search: "",
+                    }));
+                  }}
+                />
+              </li>
+              <li
+                className={search.setbyProgram === "" ? "visually-hidden" : ""}
+              >
+                <DefaultButton
+                  class="btn-outline-primary px-2"
+                  text={
+                    program &&
+                    program.map((item) =>
+                      item.Code === search.setbyProgram ? item.Program : null
+                    )
+                  }
+                  function={() =>
+                    setSearch((prev) => ({
+                      ...prev,
+                      setbyProgram: "",
+                    }))
+                  }
+                />
+              </li>
+            </ul>
+          </section>
+          <section>
+            {section &&
+              section.map((item, i) =>
+                item.Section.toLowerCase().includes(
+                  search.search.toLowerCase()
+                ) || search.search === "" ? (
+                  item.Program.includes(search.setbyProgram) ||
+                  search.setbyProgram === "" ? (
+                    <ListCard
+                      slot1={item.SCTID}
+                      slot2={item.Section}
+                      slot3={item.Created}
+                      slot4={
+                        program &&
+                        program.map((prg) =>
+                          prg.Code === item.Program ? prg.Program : null
+                        )
+                      }
+                      slot5={`${item.YearLevel}`}
+                      view={info.icons.view}
+                      link={`/section/view/${item.SCTID}`}
+                      state={{ data: item }}
+                    />
+                  ) : null
+                ) : null
+              )}
+          </section>
+        </main>
+      }
     />
   );
 }

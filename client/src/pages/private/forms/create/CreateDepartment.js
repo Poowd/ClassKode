@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
@@ -28,11 +27,9 @@ export function CreateDepartment() {
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [department, setDepartment] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
 
   useEffect(() => {
-    get("department/list", setDepartment);
     get("academic-level/list", setAcademicLevel);
   }, []);
 
@@ -47,7 +44,7 @@ export function CreateDepartment() {
       );
       setTimeout(() => {
         navigate(-1);
-      }, 1000); // 2 second delay
+      }, 2500); // 2 second delay
     }
   };
 

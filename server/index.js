@@ -9,7 +9,7 @@ const RandomCode = require("./routes/logic/RandomCode.js");
 const SaveImage = require("./routes/logic/SaveImage.js");
 const Login = require("./routes/logic/Login.js");
 
-const AcademicLevel = require("./routes/Tables/AcademicLevel.js");
+const AcademicLevel = require("./routes/Tables/Additional/AcademicLevel.js");
 const AcademicYear = require("./routes/Tables/AcademicYear.js");
 const Department = require("./routes/Tables/Department.js");
 const Program = require("./routes/Tables/Program.js");
@@ -18,6 +18,10 @@ const Course = require("./routes/Tables/Course.js");
 const Room = require("./routes/Tables/Room.js");
 const Section = require("./routes/Tables/Section.js");
 const _User = require("./routes/Tables/_User.js");
+const Facility = require("./routes/Tables/Additional/Facility.js");
+const Building = require("./routes/Tables/Additional/Building.js");
+const Floor = require("./routes/Tables/Additional/Floor.js");
+const YearLevel = require("./routes/Tables/Additional/YearLevel.js");
 // = = >
 const { Pool } = require("pg");
 const express = require("express");
@@ -57,6 +61,10 @@ router.use("/course", Course);
 router.use("/room", Room);
 router.use("/section", Section);
 router.use("/user", _User);
+router.use("/facility", Facility);
+router.use("/building", Building);
+router.use("/floor", Floor);
+router.use("/year-level", YearLevel);
 // = = >
 app.use(express.json());
 app.use(express.static("public"));

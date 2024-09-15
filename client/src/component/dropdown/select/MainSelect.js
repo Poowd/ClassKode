@@ -22,6 +22,7 @@ export class MainSelect extends React.Component {
             name={this.props.id}
             id={this.props.id}
             required={this.props.required}
+            disabled={this.props.disabled}
           >
             {this.props.option}
           </select>

@@ -35,8 +35,6 @@ export default function GenerateUsers() {
   }, [sheets]);
   console.log(data);
 
-  function saveSingleUser(data) {}
-
   const saveUserData = (e) => {
     e.preventDefault();
     if (sheets === null) {
@@ -50,7 +48,7 @@ export default function GenerateUsers() {
       try {
         for (var i in data) {
           console.log(data[i]);
-          post("gen-users", data[i], setSaveStatus);
+          post("user/generate", data[i], setSaveStatus);
         }
         showToast(info.icons.calendar, "Users", "User Data are saved!");
       } catch (err) {

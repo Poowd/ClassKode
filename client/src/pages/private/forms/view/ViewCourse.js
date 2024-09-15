@@ -14,57 +14,59 @@ import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
 import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
 import { CollapseButton } from "../../../../component/button/CollapsButton";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { useToasty } from "../../../../hook/useToasty";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
 
 export function ViewCourse() {
+  const { state } = useLocation();
   const navigate = useNavigate();
   const params = useParams();
-  const { state } = useLocation();
   const [get, post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
-  const [prerequisite, setPreRequisite] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [academicyear, setAcademicYear] = useState([]);
-  const [data, setData] = useState([state.data]);
+  const [data, setData] = useState([]);
+  const [department, setDepartment] = useState([]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
-  const [validation, setValidation] = useState({
-    Confirm: ValidateCode(confirmCode.Confirm),
-  });
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    post("sel-prg", program, setProgram);
     get("random-code-generator", setCode);
+    get("department/list", setDepartment);
+    post("course/target", { data: params.id }, setData);
   }, []);
 
-  useEffect(() => {
-    post("sel-crs-preq", { CRS_Code: data[0].CRS_Code }, setPreRequisite);
-    post("sel-cur-ay", academicyear, setAcademicYear);
-  }, [prerequisite, academicyear]);
-
-  useEffect(() => {
-    setValidation({
-      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
-    });
-  }, [confirmCode]);
-
+  const archiveEntry = (e) => {
+    e.preventDefault();
+    if (code === confirmCode.Confirm) {
+      post("course/archive", { data: params.id }, setData);
+      showToast(
+        info.icons.calendar,
+        "Course",
+        `Course ${data[0].Course} is set to archive!`
+      );
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
+    } else {
+      showModal(
+        "Modal",
+        "Archive Entry",
+        <p>
+          <span>Type the code </span>
+          <span className="fw-bold text-black">{code}</span>
+          <span> to archive </span>
+          <span className="fw-bold text-black">{data[0].Department}</span>
+        </p>
+      );
+    }
+  };
   return (
     <>
       <DataViewerTemplate
@@ -79,14 +81,14 @@ export function ViewCourse() {
             />
             <LinkButton
               class="btn-warning px-2"
-              icon={<LuFileEdit />}
-              to={"/institution/course/edit/" + params.id}
+              icon={info.icons.edit}
+              to={"/course/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
               class="btn-danger px-2"
-              icon={<LuFolderArchive />}
+              icon={info.icons.archive}
               function={() =>
                 showModal(
                   "Modal",
@@ -105,55 +107,36 @@ export function ViewCourse() {
         }
         content={
           <>
-            {data.map((item, i) => (
-              <main key={i} className="px-0 py-3 m-0">
-                <header>
-                  <h6>{item.CRS_Code}</h6>
-                  <h1 className="fw-bold custom-text-gradient pb-2">
-                    {item.Course}
-                  </h1>
-                  <hr />
-                  <ul className="m-0 p-0 d-flex gap-2">
-                    <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">{item.AcademicLevel}</p>
-                    </li>
-                    <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">
-                        {program.map((prog, i) =>
-                          item.PRG_Code === prog.PRG_Code ? prog.Program : null
-                        )}
-                      </p>
-                    </li>
-                  </ul>
-                </header>
-                <main className="p-3">
-                  <section>
-                    <CollapseButton
-                      id="prerequisites"
-                      title="Prerequisites"
-                      content={
-                        prerequisite.length > 0
-                          ? prerequisite.map((item, i) => (
-                              <li className="d-flex gap-2">
-                                <span className="fw-semibold">
-                                  {item.CRR_Code}
-                                </span>
-                                <span className="">-</span>
-                                <span className="">{item.Course}</span>
-                              </li>
-                            ))
-                          : "None"
-                      }
-                    />
-                    <small>
-                      <p className="text-secondary">
-                        Date Created: {item.CRS_Created}
-                      </p>
-                    </small>
-                  </section>
+            {data &&
+              data.map((item, i) => (
+                <main key={i} className="px-0 py-3 m-0">
+                  <header>
+                    <h1 className="fw-bold custom-text-gradient pb-2">
+                      {item.Course}
+                    </h1>
+                    <hr />
+                  </header>
+                  <main className="p-3">
+                    <section>
+                      <h6>{item.Code}</h6>
+                      <h6>
+                        {department &&
+                          department.map((dpt) =>
+                            dpt.Code === item.Department ? dpt.Department : null
+                          )}
+                      </h6>
+                      <p>{item.Description && item.Description}</p>
+                      <footer className="mt-5">
+                        <small>
+                          <p className="text-secondary">
+                            Date Created: {item.Created}
+                          </p>
+                        </small>
+                      </footer>
+                    </section>
+                  </main>
                 </main>
-              </main>
-            ))}
+              ))}
           </>
         }
       />
@@ -166,24 +149,18 @@ export function ViewCourse() {
             <FormInput
               hidden={true}
               id="Confirm"
-              alert={validation.Confirm[0].Message}
-              class={validation.Confirm[0].State[0]}
-              success={validation.Confirm[0].State[1]}
               trigger={dataChange}
               value={confirmCode.Confirm}
               required={true}
             />
           </>
         }
-        trigger={() =>
-          ArchiveEntry(
-            "archive-existing-course",
-            post,
-            code,
-            confirmCode.Confirm,
-            data[0]
-          )
-        }
+        trigger={archiveEntry}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </>
   );

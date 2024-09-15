@@ -40,16 +40,13 @@ export function Course() {
             <p>Entries: {course.length} row/s</p>
           </header>
           <section>
+            <h6>Department</h6>
             <ul className="list-group list-group-flush">
               {department &&
                 department.map((item, i) => (
                   <li className="list-group-item">
                     <TextFormat1
-                      header={
-                        <span>
-                          {info.icons.pages.users.ter} {item.Abbrev}
-                        </span>
-                      }
+                      header={<span>{item.Department}</span>}
                       data={
                         course.filter((x) => x.Department === item.Code).length
                       }
@@ -73,21 +70,24 @@ export function Course() {
             reversed={true}
             icon={info.icons.filter}
             dropdownitems={
-              <>
-                {department &&
-                  department.map((item, i) => (
-                    <DefaultDropdownItem
-                      key={i}
-                      title={item.Department}
-                      trigger={() =>
-                        setSearch((prev) => ({
-                          ...prev,
-                          setbyDepartment: item.Code,
-                        }))
-                      }
-                    />
-                  ))}
-              </>
+              <main className="d-flex gap-2 p-3">
+                <section>
+                  <h6>Department</h6>
+                  {department &&
+                    department.map((item, i) => (
+                      <DefaultDropdownItem
+                        key={i}
+                        title={item.Department}
+                        trigger={() =>
+                          setSearch((prev) => ({
+                            ...prev,
+                            setbyDepartment: item.Code,
+                          }))
+                        }
+                      />
+                    ))}
+                </section>
+              </main>
             }
           />
           <LinkButton

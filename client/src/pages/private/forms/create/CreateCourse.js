@@ -45,7 +45,7 @@ export function CreateCourse() {
       );
       setTimeout(() => {
         navigate(-1);
-      }, 1000); // 2 second delay
+      }, 2500); // 2 second delay
     }
   };
 

@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FormInput } from "../../../../component/input/FormInput";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { LuFileEdit } from "react-icons/lu";
-import { LuFolderArchive } from "react-icons/lu";
 import { LinkButton } from "../../../../component/button/LinkButton";
 import useModal from "../../../../hook/useModal";
 import { PassiveModal } from "../../../../component/modal/PassiveModal";
 import useHandleChange from "../../../../hook/useHandleChange";
-import useValidation from "../../../../hook/useValidation";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
 import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
@@ -120,9 +116,7 @@ export function ViewProgram() {
                   <main className="p-3">
                     <section>
                       <h6>{item.Code}</h6>
-                      <p>
-                        {item.Description !== null ? item.Description : "None"}
-                      </p>
+                      <p>{item.Description && item.Description}</p>
                       <ul className="m-0 mt-3 p-0 d-flex">
                         <li className="border m-0 p-2 rounded">
                           <p className="m-0 p-0">

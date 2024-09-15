@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { FormInput } from "../../../../component/input/FormInput";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
-import { MultipleFormInput } from "../../../../component/input/MultipleFormInput";
-import { MultipleFormInputItem } from "../../../../component/input/MultipleFormInputItem";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
 import useConfiguration from "../../../../hook/useConfiguration";
@@ -24,7 +20,7 @@ export function EditDepartment() {
     Code: null,
     Department: null,
     Abbrev: null,
-    Description: "",
+    Description: null,
   });
 
   const [dataChange] = useHandleChange(setData);

@@ -9,75 +9,55 @@ import { SelectButtonItem } from "../../../../component/dropdown/select/SelectBu
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
+import { MainInput } from "../../../../component/input/MainInput";
+import { MainSelect } from "../../../../component/dropdown/select/MainSelect";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { useToasty } from "../../../../hook/useToasty";
 
 export function EditRoom() {
   const params = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
   const [room, setRoom] = useState([]);
   const [facility, setFacility] = useState([]);
   const [building, setBuilding] = useState([]);
   const [floor, setFloor] = useState([]);
   const [roomName, setRoomName] = useState("");
-  const [program, setProgram] = useState([]);
   const [data, setData] = useState({
-    ROMID: state.data[0].ROMID,
-    Room: state.data[0].Room,
-    Capacity: state.data[0].Capacity,
-    Facility: state.data[0].Facility,
-    Building: state.data[0].Building,
-    Floor: state.data[0].Floor,
+    ROMID: null,
+    Room: null,
+    Capacity: null,
+    Facility: null,
+    Building: null,
+    Floor: null,
   });
 
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("sel-fac", facility, setFacility);
-    post("sel-buil", building, setBuilding);
-    post("sel-flor", floor, setFloor);
-    post("sel-rom", room, setRoom);
+    post("room/target", { data: params.id }, setData);
+    get("facility/list", setFacility);
+    get("building/list", setBuilding);
+    get("floor/list", setFloor);
   }, []);
 
-  var temp = [];
-  var roomList = [];
-  var buildin = "";
-
   useEffect(() => {
-    for (var f = 0; f < room.length; f++) {
-      if (room[f].Building === data.Building && room[f].Floor === data.Floor) {
-        temp.push(room[f].Room);
-      }
-    }
-
-    for (var i = 0; i < floor.length; i++) {
-      roomList.push(floor[i].Floor);
-    }
-
-    for (var i = 0; i < building.length; i++) {
-      if (building[i].Building === data.Building) {
-        buildin = building[i].BLG_Short;
-      }
-    }
-
-    setRoomName(
-      roomList.indexOf(data.Floor) + 1 + "0" + (temp.length + 1) + "" + buildin
-    );
-  }, [data.Facility, data.Building, data.Floor]);
-
-  // useEffect(() => {
-  //   setData((prev) => ({
-  //     ...prev,
-  //     Room: roomName,
-  //   }));
-  // }, [roomName]);
+    data[0] && data.map((item) => setData(item));
+  }, [data]);
 
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      post("upd-room", data, setData);
-      navigate(-1);
+      post("room/edit", data, setData);
+      showToast(info.icons.calendar, "Room", `Room ${data.Room} is updated!`);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
     }
   };
 
@@ -91,7 +71,7 @@ export function EditRoom() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.back}
               function={() => navigate(-1)}
             />
             <DefaultButton
@@ -103,7 +83,7 @@ export function EditRoom() {
         }
         entryform={
           <>
-            <SelectButton
+            <MainSelect
               label="Building"
               id="Building"
               trigger={dataChange}
@@ -134,8 +114,7 @@ export function EditRoom() {
                 </>
               }
             />
-
-            <SelectButton
+            <MainSelect
               label="Floor"
               id="Floor"
               trigger={dataChange}
@@ -162,8 +141,7 @@ export function EditRoom() {
                 </>
               }
             />
-
-            <SelectButton
+            <MainSelect
               label="Facility"
               id="Facility"
               trigger={dataChange}
@@ -194,16 +172,14 @@ export function EditRoom() {
                 </>
               }
             />
-
-            <FormInput
+            <MainInput
               label="Capacity"
               id="Capacity"
               trigger={dataChange}
               value={data.Capacity}
               required={true}
             />
-
-            <FormInput
+            <MainInput
               label="Room"
               id="Room"
               trigger={dataChange}
@@ -212,37 +188,12 @@ export function EditRoom() {
             />
           </>
         }
-        entry={
-          <main className="p-3">
-            <section>
-              <h6>{data.Facility.length > 0 ? data.Facility : "Facility"}</h6>
-              <h3>
-                {data.Room.length > 0 ? data.Room : "Room"}{" "}
-                <span>
-                  (
-                  {data.Capacity.length > 0
-                    ? `${data.Capacity} Students`
-                    : "0 Students"}
-                  )
-                </span>
-              </h3>
-              <hr />
-              <main className="row m-0 p-0 mt-3 mb-2">
-                <section className="col m-0 p-0">
-                  <p className="m-0 p-0">
-                    Building:{" "}
-                    {data.Building.length > 0 ? data.Building : "Building"}
-                  </p>
-                </section>
-                <section className="col m-0 p-0">
-                  <p className="m-0 p-0">
-                    Floor: {data.Floor.length > 0 ? data.Floor : "Floor"}
-                  </p>
-                </section>
-              </main>
-            </section>
-          </main>
-        }
+        entry={<main className="p-3"></main>}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </form>
   );

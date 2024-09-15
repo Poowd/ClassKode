@@ -17,81 +17,90 @@ import useDatabase from "../../../../hook/useDatabase";
 import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
 import { CollapseButton } from "../../../../component/button/CollapsButton";
 import { NoDisplay } from "../../../../component/placeholder/NoDisplay";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { useToasty } from "../../../../hook/useToasty";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
 
 export function ViewRoom() {
+  const { state } = useLocation();
   const navigate = useNavigate();
   const params = useParams();
-  const { state } = useLocation();
   const [get, post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
-  const [data, setData] = useState([state.data]);
+  const [data, setData] = useState([]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
-  const [validation, setValidation] = useState({
-    Confirm: ValidateCode(confirmCode.Confirm),
-  });
-
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
     get("random-code-generator", setCode);
-  }, [data]);
+    post("room/target", { data: params.id }, setData);
+  }, []);
 
-  useEffect(() => {
-    setValidation({
-      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
-    });
-  }, [confirmCode]);
+  const archiveEntry = (e) => {
+    e.preventDefault();
+    if (code === confirmCode.Confirm) {
+      post("room/archive", { data: params.id }, setData);
+      showToast(
+        info.icons.calendar,
+        "Room",
+        `Room ${data[0].Room} is set to archive!`
+      );
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
+    } else {
+      showModal(
+        "Modal",
+        "Archive Entry",
+        <p>
+          <span>Type the code </span>
+          <span className="fw-bold text-black">{code}</span>
+          <span> to archive </span>
+          <span className="fw-bold text-black">{data[0].Room}</span>
+        </p>
+      );
+    }
+  };
 
   return (
     <>
       <DataViewerTemplate
         title={"View A Room"}
         description={"This module views a room"}
-        extradata={<NoDisplay />}
         control={
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.back}
               function={() => navigate(-1)}
             />
             <LinkButton
               class="btn-warning px-2"
-              icon={<LuFileEdit />}
-              to={"/institution/room/edit/" + params.id}
+              icon={info.icons.forms.edit}
+              to={`/room/edit/${params.id}`}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
               class="btn-danger px-2"
-              icon={<LuFolderArchive />}
+              icon={info.icons.forms.archive}
               function={() =>
                 showModal(
                   "Modal",
                   "Archive Entry",
-                  <>
+                  <p>
                     <span>Type the code </span>
                     <span className="fw-bold text-black">{code}</span>
                     <span> to archive </span>
                     <span className="fw-bold text-black">{data[0].Room}</span>
-                  </>
+                  </p>
                 )
               }
               text={"Archive"}
@@ -100,70 +109,35 @@ export function ViewRoom() {
         }
         content={
           <>
-            {data.map((item, i) => (
-              <main key={i} className="px-0 py-3 m-0">
-                <header>
-                  <h6>{item.Facility}</h6>
-                  <h1 className="fw-bold custom-text-gradient pb-2">
-                    {item.Room}
-                  </h1>
-                  <hr />
-                </header>
-                <main className="p-3">
-                  <section>
-                    <CollapseButton
-                      id="details"
-                      title="Room Details"
-                      content={
-                        <DataControlView
-                          content={
-                            <>
-                              <DataControlViewItem
-                                label={"Capacity"}
-                                content={`${item.Capacity} Students`}
-                              />
-                              <DataControlViewItem
-                                label={"Usage"}
-                                content={item.Facility}
-                              />
-                              <DataControlViewItem
-                                label={"Location"}
-                                content={
-                                  <ul className="p-0 m-0">
-                                    <li className="p-0 m-0">
-                                      <DataControlViewItem
-                                        label={"Building:"}
-                                        content={item.Building}
-                                      />
-                                    </li>
-
-                                    <li className="p-0 m-0">
-                                      <DataControlViewItem
-                                        label={"Floor:"}
-                                        content={item.Floor}
-                                      />
-                                    </li>
-                                  </ul>
-                                }
-                              />
-                            </>
-                          }
-                        />
-                      }
-                    />
-                    <small>
-                      <p className="text-secondary">
-                        Date Created: {item.ROM_Created}
-                      </p>
-                    </small>
-                  </section>
+            {data &&
+              data.map((item, i) => (
+                <main key={i} className="px-0 py-3 m-0">
+                  <header>
+                    <h1 className="fw-bold custom-text-gradient pb-2">
+                      {item.Room} <span>({item.Capacity})</span>
+                    </h1>
+                    <hr />
+                  </header>
+                  <main className="p-3">
+                    <section>
+                      <h6>{item.Facility}</h6>
+                      <h6>
+                        {item.Building} - {item.Floor}
+                      </h6>
+                      <footer className="mt-5">
+                        <small>
+                          <p className="text-secondary">
+                            Date Created: {item.Created}
+                          </p>
+                        </small>
+                      </footer>
+                    </section>
+                  </main>
                 </main>
-
-                {/* <CollapseButton id="aasdasdas" title="hello" content="bye" /> */}
-              </main>
-            ))}
+              ))}
           </>
         }
+        additional={<></>}
       />
       <PassiveModal
         id={"Modal"}
@@ -174,24 +148,18 @@ export function ViewRoom() {
             <FormInput
               hidden={true}
               id="Confirm"
-              alert={validation.Confirm[0].Message}
-              class={validation.Confirm[0].State[0]}
-              success={validation.Confirm[0].State[1]}
               trigger={dataChange}
               value={confirmCode.Confirm}
               required={true}
             />
           </>
         }
-        trigger={() =>
-          ArchiveEntry(
-            "archive-existing-room",
-            post,
-            code,
-            confirmCode.Confirm,
-            data[0]
-          )
-        }
+        trigger={archiveEntry}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </>
   );

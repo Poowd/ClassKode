@@ -86,8 +86,12 @@ export default function useConfiguration() {
         edit: <TbEdit />,
         archive: <MdFolderDelete />,
         generate: <VscSettingsGear />,
+        reset: <GrPowerReset />,
+        set: <VscSettings />,
       },
       navigation: {
+        menu: <BsMenuButtonWideFill />,
+        back: <IoArrowBackOutline />,
         next: <GrNext />,
         previous: <GrPrevious />,
       },

@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FormInput } from "../../../../component/input/FormInput";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { LuFileEdit } from "react-icons/lu";
-import { LuFolderArchive } from "react-icons/lu";
 import { LinkButton } from "../../../../component/button/LinkButton";
 import useModal from "../../../../hook/useModal";
 import { PassiveModal } from "../../../../component/modal/PassiveModal";
 import useHandleChange from "../../../../hook/useHandleChange";
-import useValidation from "../../../../hook/useValidation";
 import useArchiveEntry from "../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../hook/useDatabase";
 import useConfiguration from "../../../../hook/useConfiguration";
 import { DataViewerTemplate } from "../../../../layout/grid/DataViewerTemplate";
 import { useToasty } from "../../../../hook/useToasty";
 import { DefaultToast } from "../../../../component/toast/DefaultToast";
-import { CollapseButton } from "../../../../component/button/CollapsButton";
-import { DataControlView } from "../../../../component/datacontrolview/DataControlView";
-import { DataControlViewItem } from "../../../../component/datacontrolview/DataControlViewItem";
 
 export function ViewDepartment() {
   const navigate = useNavigate();
@@ -121,9 +114,7 @@ export function ViewDepartment() {
                   <main className="p-3">
                     <section>
                       <h6>{item.Code}</h6>
-                      <p>
-                        {item.Description !== null ? item.Description : "None"}
-                      </p>
+                      <p>{item.Description && item.Description}</p>
                       <footer className="mt-5">
                         <small>
                           <p className="text-secondary">

@@ -27,9 +27,9 @@ export function Login() {
   const handleSubmit = (e) => {
     e.preventDefault(); //prevents normal function of onsubmit in forms
     axios
-      .post("http://localhost:8081/login-now", values) //stores in usestate values
+      .post("http://localhost:8081/user/login-now", values) //stores in usestate values
       .then((res) => {
-        if (res.data.Status === "Success" && res.data.data[0].UUID !== null) {
+        if (res.data.Status === "Success" && res.data.data.UUID !== null) {
           sessionStorage.setItem("user", JSON.stringify(res.data.data));
           sessionStorage.setItem("loggedin", true);
           navigate("/"); //to dashboard

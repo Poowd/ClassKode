@@ -40,23 +40,23 @@ export function Program() {
             <p>Entries: {program.length} row/s</p>
           </header>
           <section>
-            <ul className="list-group list-group-flush">
-              {department &&
-                department.map((item, i) => (
-                  <li className="list-group-item">
-                    <TextFormat1
-                      header={
-                        <span>
-                          {info.icons.pages.users.ter} {item.Abbrev}
-                        </span>
-                      }
-                      data={
-                        program.filter((x) => x.Department === item.Code).length
-                      }
-                    />
-                  </li>
-                ))}
-            </ul>
+            <section>
+              <h6>Department</h6>
+              <ul className="list-group list-group-flush">
+                {department &&
+                  department.map((item, i) => (
+                    <li className="list-group-item">
+                      <TextFormat1
+                        header={<span>{item.Department}</span>}
+                        data={
+                          program.filter((x) => x.Department === item.Code)
+                            .length
+                        }
+                      />
+                    </li>
+                  ))}
+              </ul>
+            </section>
           </section>
         </main>
       }
@@ -73,21 +73,24 @@ export function Program() {
             reversed={true}
             icon={info.icons.filter}
             dropdownitems={
-              <>
-                {department &&
-                  department.map((item, i) => (
-                    <DefaultDropdownItem
-                      key={i}
-                      title={item.Department}
-                      trigger={() =>
-                        setSearch((prev) => ({
-                          ...prev,
-                          setbyDepartment: item.Code,
-                        }))
-                      }
-                    />
-                  ))}
-              </>
+              <main className="d-flex gap-2 p-3">
+                <section>
+                  <h6>Department</h6>
+                  {department &&
+                    department.map((item, i) => (
+                      <DefaultDropdownItem
+                        key={i}
+                        title={item.Department}
+                        trigger={() =>
+                          setSearch((prev) => ({
+                            ...prev,
+                            setbyDepartment: item.Code,
+                          }))
+                        }
+                      />
+                    ))}
+                </section>
+              </main>
             }
           />
           <LinkButton

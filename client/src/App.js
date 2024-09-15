@@ -99,8 +99,8 @@ function App() {
       <Routes>
         {status === true ? (
           <>
-            {loggeduser[0].UserType === "Manager" ||
-            loggeduser[0].UserType === "Developer" ? (
+            {loggeduser.UserType === "Manager" ||
+            loggeduser.UserType === "Developer" ? (
               <Route
                 path={"/*"}
                 element={
@@ -128,7 +128,7 @@ function App() {
                     }
                     menuicon={info.icons.menu}
                     logout={handleLogout}
-                    user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                    user={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
                     content={
                       <Routes>
                         <Route
@@ -252,7 +252,7 @@ function App() {
               >
                 <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
-            ) : loggeduser[0].UserType === "Admin" ? (
+            ) : loggeduser.UserType === "Admin" ? (
               <Route
                 path={"/"}
                 element={
@@ -261,7 +261,7 @@ function App() {
                     helpicon={info.icons.help}
                     menuicon={info.icons.menu}
                     logout={handleLogout}
-                    user={`${loggeduser[0].LastName}, ${loggeduser[0].FirstName}`}
+                    user={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
                     content={
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
@@ -273,11 +273,11 @@ function App() {
               >
                 <Route path={"//*"} element={<Error404 />}></Route>
               </Route>
-            ) : loggeduser[0].UserType === "User" ? (
+            ) : loggeduser.UserType === "User" ? (
               <Route path={"/"}>
                 <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
-            ) : loggeduser[0].UserType === "Developer" ? (
+            ) : loggeduser.UserType === "Developer" ? (
               <Route path={"/testing"}>
                 <Route
                   path="/testing/bgcolour"

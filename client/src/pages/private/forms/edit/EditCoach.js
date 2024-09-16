@@ -1,53 +1,72 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { FormInput } from "../../../../component/input/FormInput";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
-import { RadioGroup } from "../../../../component/radiogroup/RadioGroup";
-import { RadioButton } from "../../../../component/radiogroup/RadioButton";
-import { MultipleFormInput } from "../../../../component/input/MultipleFormInput";
-import { MultipleFormInputItem } from "../../../../component/input/MultipleFormInputItem";
-import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
-import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { MainInput } from "../../../../component/input/MainInput";
+import { useToasty } from "../../../../hook/useToasty";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
+import { RadioGroup } from "../../../../component/radiogroup/RadioGroup";
+import { RadioButton } from "../../../../component/radiogroup/RadioButton";
+import { MainSelect } from "../../../../component/dropdown/select/MainSelect";
+import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
+import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 
 export function EditCoach() {
   const params = useParams();
-  const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post] = useDatabase();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
-  const [department, setDepartment] = useState([]);
-  const [coach, setCoach] = useState();
   const [data, setData] = useState({
-    CCHID: state.data[0].CCHID,
-    SCHLID: state.data[0].SCHLID,
-    FirstName: state.data[0].FirstName,
-    MiddleInitial: state.data[0].MiddleInitial,
-    LastName: state.data[0].LastName,
-    Gender: state.data[0].Gender,
-    Department: state.data[0].DPT_Code,
-    Email: state.data[0].Email,
-    Phone: state.data[0].Phone,
-    Facebook: state.data[0].Facebook,
-    Photo: state.data[0].Photo,
+    SCHLID: null,
+    FirstName: null,
+    MiddleInitial: null,
+    LastName: null,
+    Gender: null,
+    Department: null,
+    Email: null,
+    Phone: null,
+    Image: null,
+    Link: null,
   });
 
-  useEffect(() => {
-    post("sel-dept", department, setDepartment);
-    post("sel-coach", coach, setCoach);
-  }, [department, coach]);
-
   const [dataChange] = useHandleChange(setData);
+  const [department, setDepartment] = useState([]);
+  const [coach, setCoach] = useState();
+  const [file, setFile] = useState([]);
+  const [retrieve, setRetrieved] = useState([]);
+
+  useEffect(() => {
+    get("department/list", setDepartment);
+    post("coach/target", { data: params.id }, setData);
+  }, [coach]);
+
+  useEffect(() => {
+    data[0] && data.map((item) => setData(item));
+  }, [data]);
+
+  useEffect(() => {
+    const formdata = new FormData();
+    formdata.append("image", file);
+    post("upload", formdata, setRetrieved);
+  }, [file]);
 
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      post("upd-coach", data, setData);
-      navigate(-1);
+      post("coach/edit", data, setData);
+      showToast(
+        info.icons.calendar,
+        "Coach",
+        `Coach  ${data.FirstName} ${data.LastName} is updated!`
+      );
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
     }
   };
 
@@ -61,7 +80,7 @@ export function EditCoach() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.back}
               function={() => navigate(-1)}
             />
             <DefaultButton
@@ -73,36 +92,33 @@ export function EditCoach() {
         }
         entryform={
           <>
-            <FormInput
-              label="School ID"
+            <MainInput
+              label="SCHLID"
               id="SCHLID"
               trigger={dataChange}
               value={data.SCHLID}
+              required={true}
             />
-            <MultipleFormInput
-              label="First Name, Middle Initial, & Last Name"
-              item={
-                <>
-                  <MultipleFormInputItem
-                    id="FirstName"
-                    placeholder="First Name"
-                    trigger={dataChange}
-                    value={data.FirstName}
-                  />
-                  <MultipleFormInputItem
-                    id="MiddleInitial"
-                    placeholder="Middle Initial"
-                    trigger={dataChange}
-                    value={data.MiddleInitial}
-                  />
-                  <MultipleFormInputItem
-                    id="LastName"
-                    placeholder="Last Name"
-                    trigger={dataChange}
-                    value={data.LastName}
-                  />
-                </>
-              }
+            <MainInput
+              label="FirstName"
+              id="FirstName"
+              trigger={dataChange}
+              value={data.FirstName}
+              required={true}
+            />
+            <MainInput
+              label="MiddleInitial"
+              id="MiddleInitial"
+              trigger={dataChange}
+              value={data.MiddleInitial}
+              required={true}
+            />
+            <MainInput
+              label="LastName"
+              id="LastName"
+              trigger={dataChange}
+              value={data.LastName}
+              required={true}
             />
             <RadioGroup
               label="Gender"
@@ -127,22 +143,22 @@ export function EditCoach() {
                 </>
               }
             />
-            <SelectButton
+            <MainSelect
+              label="Department"
               id="Department"
               trigger={dataChange}
+              required={true}
               option={
                 <>
                   <SelectButtonItemSelected
                     content={department.map((option, i) =>
-                      option.DPT_Code === data.Department
-                        ? option.Department
-                        : null
+                      option.Code === data.Department ? option.Department : null
                     )}
                   />
                   {department.map((option, i) =>
-                    data.Department !== option.DPT_Code ? (
+                    data.Code !== option.Department ? (
                       <SelectButtonItem
-                        value={option.DPT_Code}
+                        value={option.Code}
                         content={option.Department}
                       />
                     ) : null
@@ -150,89 +166,55 @@ export function EditCoach() {
                 </>
               }
             />
-            <MultipleFormInput
-              label="Email & Phone"
-              item={
-                <>
-                  <MultipleFormInputItem
-                    id="Email"
-                    placeholder="Email"
-                    trigger={dataChange}
-                    value={data.Email}
-                  />
-                  <MultipleFormInputItem
-                    id="Phone"
-                    placeholder="Phone"
-                    trigger={dataChange}
-                    value={data.Phone}
-                  />
-                </>
-              }
-            />
-            <FormInput
-              label="Facebook"
-              id="Facebook"
+
+            <MainInput
+              label="Email"
+              id="Email"
               trigger={dataChange}
-              value={data.Facebook}
+              value={data.Email}
+              required={true}
             />
+
+            <MainInput
+              label="Phone"
+              id="Phone"
+              trigger={dataChange}
+              value={data.Phone}
+              required={true}
+            />
+
+            <MainInput
+              label="Link"
+              id="Link"
+              trigger={dataChange}
+              value={data.Link}
+              required={true}
+            />
+            {/* <main className="w-100 row mb-2 ms-0">
+              <section className="col-2 p-0 m-0 ">
+                <label htmlFor="what">
+                  <span className="fw-semibold">Image</span>
+                </label>
+              </section>
+              <section className="col-10 p-0 m-0">
+                <input
+                  type="file"
+                  className="form-control"
+                  id="what"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  accept="image/png, image/jpeg"
+                />
+              </section>
+              {data.Image}
+            </main> */}
           </>
         }
-        entry={
-          <main className="p-3">
-            <section>
-              <header>
-                <h6>{data.SCHLID.length > 0 ? data.SCHLID : "Code"}</h6>
-                <h3>
-                  <span>
-                    {data.FirstName.length > 0 ? data.FirstName : "FirstName"}
-                  </span>{" "}
-                  <span>
-                    {data.MiddleInitial.length > 0
-                      ? data.MiddleInitial
-                      : "MiddleInitial"}
-                  </span>{" "}
-                  <span>
-                    {data.LastName.length > 0 ? data.LastName : "LastName"}
-                  </span>
-                </h3>
-                <hr />
-                <ul className="m-0 p-0 d-flex gap-2">
-                  <li className="border m-0 p-2 rounded">
-                    <p className="m-0 p-0">{data.Gender}</p>
-                  </li>
-                  <li className="border m-0 p-2 rounded">
-                    <p className="m-0 p-0">
-                      {department.map((dept, i) =>
-                        dept.DPT_Code === data.Department
-                          ? dept.Department
-                          : null
-                      )}
-                    </p>
-                  </li>
-                </ul>
-              </header>
-              <main className="row m-0 p-0 mt-3 mb-2">
-                <section className="col m-0 p-0">
-                  <p className="m-0 p-0">
-                    Phone: {data.Phone.length > 0 ? data.Phone : "Phone"}
-                  </p>
-                </section>
-                <section className="col m-0 p-0">
-                  <p className="m-0 p-0">
-                    Email: {data.Email.length > 0 ? data.Email : "Email"}
-                  </p>
-                </section>
-              </main>
-              <main>
-                <section>
-                  <Link to={data.Facebook} target="_blank">
-                    {data.Facebook.length > 0 ? data.Facebook : "Facebook"}
-                  </Link>
-                </section>
-              </main>
-            </section>
-          </main>
-        }
+        entry={<main className="p-3"></main>}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </form>
   );

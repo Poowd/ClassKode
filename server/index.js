@@ -23,6 +23,8 @@ const Building = require("./routes/Tables/Additional/Building.js");
 const Floor = require("./routes/Tables/Additional/Floor.js");
 const YearLevel = require("./routes/Tables/Additional/YearLevel.js");
 // = = >
+const multer = require("multer");
+const path = require("path");
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
@@ -98,6 +100,28 @@ app.post("/test-data", (req, res) => {
     console.error(err);
     res.status(500).send("Internal Server Error");
   }
+});
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
+
+router.post("/upload", upload.single("image"), (req, res) => {
+  console.log(req.file);
+  const image = req.file.filename;
+  return res.json(image);
 });
 
 // = = >

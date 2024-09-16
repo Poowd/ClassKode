@@ -50,7 +50,7 @@ export function Archives() {
     get("department/list-archived", setDepartment);
     get("program/list-archived", setProgram);
     post("arch-crs", course, setCourse);
-    post("arch-coach", coach, setCoach);
+    get("coach/list-archived", setCoach);
     post("arch-sect", section, setSection);
     post("arch-rom", room, setRoom);
     post("arch-acy", academicyear, setAcademicYear);
@@ -241,7 +241,7 @@ export function Archives() {
                       ? " " + coach.MiddleInitial + ". "
                       : " "
                   } ${coach.LastName}`}
-                  slot3={coach.CCH_Created}
+                  slot3={coach.Created}
                   slot4={coach.Department}
                   slot5={coach.Email}
                   link={null}
@@ -251,7 +251,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-coach", { CCHID: coach.CCHID }, setData);
+                        post("coach/restore", { data: coach.CCHID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Coach",

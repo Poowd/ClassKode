@@ -12,12 +12,12 @@ import useConfiguration from "../../../hook/useConfiguration";
 
 export function User() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [users, setUsers] = useState([]);
   const [info] = useConfiguration();
 
   useEffect(() => {
-    post("sel-users", users, setUsers);
+    data_post("user-list", users, setUsers);
   }, [users]);
 
   return (

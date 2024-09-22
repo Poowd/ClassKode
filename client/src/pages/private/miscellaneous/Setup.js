@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useDatabase from "../../../hook/useDatabase";
 
 export function Setup() {
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   const [user, setUser] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
@@ -15,15 +15,15 @@ export function Setup() {
   const [section, setSection] = useState([]);
 
   useEffect(() => {
-    post("user", user, setUser);
-    post("academic-level", academiclevel, setAcademicLevel);
-    post("academic-year", academicyear, setAcademicYear);
-    get("department/list", setDepartment);
-    post("program", program, setProgram);
-    post("coach", coach, setCoach);
-    post("course", course, setCourse);
-    post("room", room, setRoom);
-    post("section", section, setSection);
+    data_post("user", user, setUser);
+    data_post("academic-level", academiclevel, setAcademicLevel);
+    data_post("academic-year", academicyear, setAcademicYear);
+    data_get("department-list", setDepartment);
+    data_post("program", program, setProgram);
+    data_post("coach", coach, setCoach);
+    data_post("course", course, setCourse);
+    data_post("room", room, setRoom);
+    data_post("section", section, setSection);
   }, []);
 
   return (

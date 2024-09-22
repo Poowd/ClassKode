@@ -15,7 +15,7 @@ import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Course() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [search, setSearch] = useState({
     setbyDepartment: "",
@@ -27,8 +27,8 @@ export function Course() {
   const [department, setDepartment] = useState([]);
 
   useEffect(() => {
-    get("course/list", setCourse);
-    get("department/list", setDepartment);
+    data_get("course-list", setCourse);
+    data_get("department-list", setDepartment);
   }, [course]);
 
   return (
@@ -44,7 +44,7 @@ export function Course() {
             <ul className="list-group list-group-flush">
               {department &&
                 department.map((item, i) => (
-                  <li className="list-group-item">
+                  <li key={i} className="list-group-item">
                     <TextFormat1
                       header={<span>{item.Department}</span>}
                       data={
@@ -147,6 +147,7 @@ export function Course() {
                 item.Department.includes(search.setbyDepartment) ||
                 search.setbyDepartment === "" ? (
                   <ListCard
+                    key={i}
                     slot1={item.Code}
                     slot2={item.Course}
                     slot3={item.Created}

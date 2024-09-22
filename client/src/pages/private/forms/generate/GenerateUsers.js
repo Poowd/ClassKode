@@ -13,7 +13,7 @@ import useDatabase from "../../../../hook/useDatabase";
 
 export default function GenerateUsers() {
   //const bootstrap = require("bootstrap");
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [file, sheets, FileUpload] = useSheetImport();
   const [data, setData] = useState([]);
   const [info] = useConfiguration();
@@ -48,7 +48,7 @@ export default function GenerateUsers() {
       try {
         for (var i in data) {
           console.log(data[i]);
-          post("user/generate", data[i], setSaveStatus);
+          data_post("user-generate", data[i], setSaveStatus);
         }
         showToast(info.icons.calendar, "Users", "User Data are saved!");
       } catch (err) {

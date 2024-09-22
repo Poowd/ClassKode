@@ -89,7 +89,7 @@ export function AcademicYearSetup() {
 
   //Data Request
   useEffect(() => {
-    axios.post("http://localhost:8081/display-temp-course").then((res) => {
+    axios.data_post("http://localhost:8081/display-temp-course").then((res) => {
       try {
         setTempCourses(res.data);
       } catch (err) {
@@ -99,7 +99,7 @@ export function AcademicYearSetup() {
   }, [tempcourses]);
 
   useEffect(() => {
-    axios.post("http://localhost:8081/coach-selection").then((res) => {
+    axios.data_post("http://localhost:8081/coach-selection").then((res) => {
       try {
         setCoaches(res.data);
       } catch (err) {
@@ -109,7 +109,7 @@ export function AcademicYearSetup() {
   }, [coaches]);
 
   useEffect(() => {
-    axios.post("http://localhost:8081/course-2").then((res) => {
+    axios.data_post("http://localhost:8081/course-2").then((res) => {
       try {
         setCourses(res.data);
       } catch (err) {
@@ -119,17 +119,19 @@ export function AcademicYearSetup() {
   }, [courses]);
 
   useEffect(() => {
-    axios.post("http://localhost:8081/department-selection").then((res) => {
-      try {
-        setDepartments(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    });
+    axios
+      .data_post("http://localhost:8081/department-selection")
+      .then((res) => {
+        try {
+          setDepartments(res.data);
+        } catch (err) {
+          console.log(err);
+        }
+      });
   }, [departments]);
 
   useEffect(() => {
-    axios.post("http://localhost:8081/section-selection").then((res) => {
+    axios.data_post("http://localhost:8081/section-selection").then((res) => {
       try {
         setSections(res.data);
       } catch (err) {
@@ -139,7 +141,7 @@ export function AcademicYearSetup() {
   }, [sections]);
 
   useEffect(() => {
-    axios.post("http://localhost:8081/program-selection").then((res) => {
+    axios.data_post("http://localhost:8081/program-selection").then((res) => {
       try {
         setPrograms(res.data);
       } catch (err) {
@@ -150,7 +152,7 @@ export function AcademicYearSetup() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8081/display-ay-coach", {
+      .data_post("http://localhost:8081/display-ay-coach", {
         AYID: params.id,
       })
       .then((res) => {
@@ -164,7 +166,7 @@ export function AcademicYearSetup() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8081/display-ay-coach-course", {
+      .data_post("http://localhost:8081/display-ay-coach-course", {
         AYID: params.id,
       })
       .then((res) => {
@@ -178,7 +180,7 @@ export function AcademicYearSetup() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8081/display-ay-program", {
+      .data_post("http://localhost:8081/display-ay-program", {
         AYID: params.id,
       })
       .then((res) => {
@@ -192,7 +194,7 @@ export function AcademicYearSetup() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8081/display-ay-program-section", {
+      .data_post("http://localhost:8081/display-ay-program-section", {
         AYID: params.id,
       })
       .then((res) => {
@@ -206,7 +208,7 @@ export function AcademicYearSetup() {
 
   useEffect(() => {
     axios
-      .post("http://localhost:8081/display-section-w-course", {
+      .data_post("http://localhost:8081/display-section-w-course", {
         AYID: params.id,
         CRRID: state.Curriculum,
       })
@@ -227,7 +229,7 @@ export function AcademicYearSetup() {
       SubTitle: "Added",
     });
     axios
-      .post("http://localhost:8081/set-ay-coach", addCoach)
+      .data_post("http://localhost:8081/set-ay-coach", addCoach)
       .then((res) => {
         try {
           getSuccess().show();
@@ -245,7 +247,7 @@ export function AcademicYearSetup() {
       SubTitle: "Added",
     });
     axios
-      .post("http://localhost:8081/set-ay-program", addProgram)
+      .data_post("http://localhost:8081/set-ay-program", addProgram)
       .then((res) => {
         try {
           getSuccess().show();
@@ -265,7 +267,7 @@ export function AcademicYearSetup() {
 
     for (let i = 0; i <= selectedValues.length - 1; i++) {
       axios
-        .post("http://localhost:8081/set-ay-coach-course", {
+        .data_post("http://localhost:8081/set-ay-coach-course", {
           AYID: addCourse.AYID,
           CCHID: addCourse.CCHID,
           Courses: selectedValues[i],
@@ -295,7 +297,7 @@ export function AcademicYearSetup() {
 
     for (let i = 0; i <= selectedValues1.length - 1; i++) {
       axios
-        .post("http://localhost:8081/set-ay-program-section", {
+        .data_post("http://localhost:8081/set-ay-program-section", {
           AYID: addSection.AYID,
           Sections: selectedValues1[i],
           SCT_Population: addSection.SCT_Population,
@@ -353,7 +355,7 @@ export function AcademicYearSetup() {
 
     for (let i = 0; i <= selectedValues2.length - 1; i++) {
       axios
-        .post("http://localhost:8081/set-program-section-courses", {
+        .data_post("http://localhost:8081/set-program-section-courses", {
           AYID: addSectionCourse.AYID,
           CRRID: state.Curriculum,
           PRGID: addSectionCourse.PRGID,

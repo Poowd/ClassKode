@@ -14,7 +14,7 @@ import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Coach() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [search, setSearch] = useState({
     setbyDepartment: "",
@@ -26,8 +26,8 @@ export function Coach() {
   const [department, setDepartment] = useState([]);
 
   useEffect(() => {
-    get("coach/list", setCoach);
-    get("department/list", setDepartment);
+    data_get("coach-list", setCoach);
+    data_get("department-list", setDepartment);
   }, [coach]);
 
   return (
@@ -44,7 +44,7 @@ export function Coach() {
               <ul className="list-group list-group-flush">
                 {department &&
                   department.map((item, i) => (
-                    <li className="list-group-item">
+                    <li key={i} className="list-group-item">
                       <TextFormat1
                         header={<span>{item.Department}</span>}
                         data={

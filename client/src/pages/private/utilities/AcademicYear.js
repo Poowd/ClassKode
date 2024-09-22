@@ -11,7 +11,7 @@ import useConfiguration from "../../../hook/useConfiguration";
 export function AcademicYear() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   const [ay, setAY] = useState([]);
   const [curray, setCurrAY] = useState([]);
@@ -23,15 +23,15 @@ export function AcademicYear() {
   const [totalsection, setTotalSection] = useState(0);
 
   useEffect(() => {
-    post("sel-ay", ay, setAY);
-    post("sel-cur-ay", curray, setCurrAY);
-  }, []);
+    data_get("academic-year-list", setAY);
+    data_get("current-academic-year", setCurrAY);
+  }, [ay, curray]);
 
   useEffect(() => {
-    post("total-coach", totalcoach, setTotalCoach);
-    post("total-coach-type", { type: "Fulltime" }, setTotalFulltime);
-    post("total-coach-type", { type: "Parttime" }, setTotalParttime);
-    post("total-section", { semester: "First Semester" }, setTotalSection);
+    data_post("total-coach", totalcoach, setTotalCoach);
+    data_post("total-coach-type", { type: "Fulltime" }, setTotalFulltime);
+    data_post("total-coach-type", { type: "Parttime" }, setTotalParttime);
+    data_post("total-section", { semester: "First Semester" }, setTotalSection);
   }, []);
 
   useEffect(() => {
@@ -41,60 +41,25 @@ export function AcademicYear() {
   return (
     <FileMaintainanceTemplate
       sidepanel={
-        <main className="h-100">
-          <header className="d-flex justify-content-end align-items-center border-bottom pb-2 gap-2">
+        <main>
+          <header className="mb-3">
+            <h5 className="p-0 m-0">Curriculum Details</h5>
+            <p>Entries: {ay.length} row/s</p>
             <LinkButton
-              class="btn-primary px-2"
+              class="btn-primary py-2"
               textclass="text-white"
               to={`/academic-year/view/${current.ACYID}`}
               state={{ data: current }}
-              text={`Details`}
+              text={`Current Academic Year`}
               icon={info.icons.view}
             />
           </header>
-          <main className="mt-2">
+          <section>
             <section>
-              <p className="p-0 m-0 fw-semibold text-secondary">
-                Academic Year
-              </p>
-              <h5>{current.AcademicYear}</h5>
+              <h6></h6>
+              <ul className="list-group list-group-flush"></ul>
             </section>
-            <main className="mt-2">
-              <section className="px-2 m-0 d-flex flex-column">
-                <span>{`[ ${
-                  totalcoach[0] !== undefined ? totalcoach[0].Total_Coach : null
-                } ] Total Coachs`}</span>
-                <section className="px-5 d-flex flex-column">
-                  <span>{`[ ${
-                    totalfulltime[0] !== undefined
-                      ? totalfulltime[0].Total_Coach_Type
-                      : null
-                  } ] Fulltime`}</span>
-                  <span>{`[ ${
-                    totalparttime[0] !== undefined
-                      ? totalparttime[0].Total_Coach_Type
-                      : null
-                  } ] Parttime`}</span>
-                </section>
-                <span>{`[ ${
-                  totalsection[0] !== undefined
-                    ? totalsection[0].Total_Section
-                    : null
-                } ] Total Section`}</span>
-                <span>{`[ ${
-                  totalsection[0] !== undefined
-                    ? totalsection[0].Total_Population
-                    : null
-                } ] Total Population`}</span>
-                <section className="px-5 d-flex flex-column">
-                  <span>{`[ 0 ] First Year`}</span>
-                  <span>{`[ 0 ] Second Year`}</span>
-                  <span>{`[ 0 ] Third Year`}</span>
-                  <span>{`[ 0 ] Fourth Year`}</span>
-                </section>
-              </section>
-            </main>
-          </main>
+          </section>
         </main>
       }
       control={
@@ -121,10 +86,10 @@ export function AcademicYear() {
         ay.length > 0
           ? ay.map((item, i) => (
               <ListCard
-                slot1={item.ACY_Code}
+                slot1={item.Code}
                 slot2={item.AcademicYear}
-                slot3={item.ACY_Created}
-                slot4={item.CRR_Code}
+                slot3={item.Created}
+                slot4={item.Code}
                 slot5={`${item.StartDate} : ${item.EndDate}`}
                 link={null}
                 state={null}

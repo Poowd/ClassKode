@@ -9,7 +9,7 @@ import useConfiguration from "../../hook/useConfiguration";
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const [populationperyear, setPopulationPerYear] = useState([]);
@@ -19,21 +19,21 @@ export function Dashboard() {
   const [course, setCourse] = useState([]);
   const [room, setRoom] = useState([]);
   const [coach, setCoach] = useState([]);
-  const [currentay, setCurrentAY] = useState([]);
-  const [currentcrr, setCurrentCRR] = useState([]);
+  const [currentacademicyear, setCurrentAcademicYear] = useState([]);
+  const [currentcurriculum, setCurrentCurriculum] = useState([]);
   const [currsched, setCurrentSched] = useState([]);
 
   useEffect(() => {
-    post("population-per-year", populationperyear, setPopulationPerYear);
-    post("sel-dept", department, setDepartment);
-    post("sel-prg", program, setProgram);
-    post("sel-sect", section, setSection);
-    post("sel-crs", course, setCourse);
-    post("sel-rom", room, setRoom);
-    post("sel-coach", coach, setCoach);
-    post("sel-cur-ay", currentay, setCurrentAY);
-    post("sel-cur-curr", currentcrr, setCurrentCRR);
-    post("sel-sched", currsched, setCurrentSched);
+    data_post("population-per-year", populationperyear, setPopulationPerYear);
+    data_get("department-list", setDepartment);
+    data_get("program-list", setProgram);
+    data_get("section-list", setSection);
+    data_get("course-list", setCourse);
+    data_get("room-list", setRoom);
+    data_get("coach-list", setCoach);
+    data_get("current-academic-year", setCurrentAcademicYear);
+    data_get("current-curriculum", setCurrentCurriculum);
+    data_post("sel-sched", currsched, setCurrentSched);
   }, []);
 
   return (
@@ -48,7 +48,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/academicyear")}
             />
           }
-          content={currentay.map((ay, i) => ay.ACY_Code)}
+          content={currentacademicyear.map((ay, i) => ay.Code)}
         />
       }
       card2={
@@ -61,7 +61,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/curriculum")}
             />
           }
-          content={currentcrr.map((ay, i) => ay.CRR_Code)}
+          content={currentcurriculum.map((crr, i) => crr.Code)}
         />
       }
       card3={

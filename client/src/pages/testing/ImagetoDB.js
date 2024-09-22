@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useDatabase from "../../hook/useDatabase";
 
 export function ImagetoDB() {
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [SCHLID, setSCHLID] = useState({
     name: "asda",
   });
@@ -12,11 +12,11 @@ export function ImagetoDB() {
   useEffect(() => {
     const formdata = new FormData();
     formdata.append("image", file);
-    post("upload", formdata, setRetrieved);
+    data_post("upload", formdata, setRetrieved);
   }, [file]);
 
   const handleUpload = () => {
-    post("tf", { id: SCHLID.id, image: retrieve }, setRetrieved);
+    data_post("tf", { id: SCHLID.id, image: retrieve }, setRetrieved);
   };
   return (
     <>

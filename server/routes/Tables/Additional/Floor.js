@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/floor-list", (req, res) => {
   try {
     pool.query(`SELECT * FROM floor WHERE "Status"='ACTIVE'`, (err, rslt) =>
       res.json(rslt.rows)

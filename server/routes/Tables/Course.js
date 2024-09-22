@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/course-list", (req, res) => {
   try {
     pool.query(`SELECT * FROM course WHERE "Status"='ACTIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -21,7 +21,7 @@ router.get("/list", (req, res) => {
   }
 });
 
-router.get("/list-archived", (req, res) => {
+router.get("/course-list-archived", (req, res) => {
   try {
     pool.query(`SELECT * FROM course WHERE "Status"='ARCHIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -32,9 +32,10 @@ router.get("/list-archived", (req, res) => {
   }
 });
 
-router.post("/target", (req, res) => {
+router.post("/course-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `SELECT * FROM course WHERE "CRSID"='${id}' OR "Code"='${id}'`,
       (err, rslt) => {
@@ -51,13 +52,14 @@ router.post("/target", (req, res) => {
   }
 });
 
-router.post("/insert", (req, res) => {
+router.post("/course-insert", (req, res) => {
   try {
-    var code = req.body.Code;
-    var course = req.body.Course;
-    var department = req.body.Department;
+    const clientData = JSON.parse(req.body);
+    var code = clientData.Code;
+    var course = clientData.Course;
+    var department = clientData.Department;
     var description =
-      req.body.Description === null ? null : req.body.Description;
+      clientData.Description === null ? null : clientData.Description;
     pool.query(
       `INSERT INTO course ("CRSID", "Code", "Course", "Department", "Description")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from course), '${code}', '${course}', '${department}', '${description}')`,
@@ -76,14 +78,15 @@ router.post("/insert", (req, res) => {
   }
 });
 
-router.post("/edit", (req, res) => {
+router.post("/course-edit", (req, res) => {
   try {
-    var id = req.body.CRSID;
-    var code = req.body.Code;
-    var course = req.body.Course;
-    var department = req.body.Department;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.CRSID;
+    var code = clientData.Code;
+    var course = clientData.Course;
+    var department = clientData.Department;
     var description =
-      req.body.Description === null ? null : req.body.Description;
+      clientData.Description === null ? null : clientData.Description;
     pool.query(
       `UPDATE course 
 
@@ -109,9 +112,10 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.post("/archive", (req, res) => {
+router.post("/course-archive", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE course SET "Status"='ARCHIVE' WHERE "CRSID"='${id}'`,
       (err, rslt) => {
@@ -128,9 +132,10 @@ router.post("/archive", (req, res) => {
   }
 });
 
-router.post("/restore", (req, res) => {
+router.post("/course-restore", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE course SET "Status"='ACTIVE' WHERE "CRSID"='${id}'`,
       (err, rslt) => {

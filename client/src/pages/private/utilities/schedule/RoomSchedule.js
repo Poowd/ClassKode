@@ -12,7 +12,7 @@ import useConfiguration from "../../../../hook/useConfiguration";
 export function RoomSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const [schedule, setSchedule] = useState([]);
@@ -37,13 +37,13 @@ export function RoomSchedule() {
   const [currfloor, setCurrentFloor] = useState(location[0].Floor);
   const [currbuilding, setCurrentBuilding] = useState(location[0].Building);
   useEffect(() => {
-    post("sel-place", placement, setPlacement);
-    post("sel-flor", floor, setFloor);
-    post("sel-buil", building, setBuilding);
+    data_post("sel-place", placement, setPlacement);
+    data_post("sel-flor", floor, setFloor);
+    data_post("sel-buil", building, setBuilding);
   }, []);
 
   useEffect(() => {
-    post("sel-sched", schedule, setSchedule);
+    data_post("sel-sched", schedule, setSchedule);
   }, []);
 
   function previousLocation() {

@@ -10,7 +10,7 @@ import useModal from "../../../../hook/useModal";
 export function CurriculumSelector() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [data, setData] = useState({
@@ -25,9 +25,9 @@ export function CurriculumSelector() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("sel-dept", department, setDepartment);
-    post("sel-prg", program, setProgram);
-    post("sel-cur-curr", currentcrr, setCurrentCRR);
+    data_post("sel-dept", department, setDepartment);
+    data_post("sel-prg", program, setProgram);
+    data_post("sel-cur-curr", currentcrr, setCurrentCRR);
   }, []);
 
   useEffect(() => {

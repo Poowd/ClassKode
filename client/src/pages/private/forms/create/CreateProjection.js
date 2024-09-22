@@ -12,7 +12,7 @@ import useConfiguration from "../../../../hook/useConfiguration";
 export function CreateProjection() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [
     Base,
@@ -39,10 +39,10 @@ export function CreateProjection() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("sel-prg", program, setProgram);
-    post("sel-sect", section, setSection);
-    post("sel-yrlvl", yearlevel, setYearLevel);
-    post("sel-sem", semester, setSemester);
+    data_post("sel-prg", program, setProgram);
+    data_post("sel-sect", section, setSection);
+    data_post("sel-yrlvl", yearlevel, setYearLevel);
+    data_post("sel-sem", semester, setSemester);
   }, []);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export function CreateProjection() {
   const submitForm = () => {
     if (true) {
       selectedValues.map((item, i) => {
-        post("ins-proj", item, setSelectedValues);
+        data_post("ins-proj", item, setSelectedValues);
       });
       navigate(-1);
     }

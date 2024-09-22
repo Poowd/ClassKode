@@ -33,6 +33,7 @@ import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import { FaHighlighter } from "react-icons/fa6";
 import { FaUserGraduate } from "react-icons/fa";
+
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
 import m3 from "./../assets/imgs/stimap/m3.png";
@@ -42,10 +43,115 @@ import a3 from "./../assets/imgs/stimap/a3.png";
 import b1 from "./../assets/imgs/stimap/b1.png";
 import b2 from "./../assets/imgs/stimap/b2.png";
 import b3 from "./../assets/imgs/stimap/b3.png";
+import temp_dp from "./../assets/imgs/misc/char.png";
+
+import carou_item1 from "./../assets/imgs/background/sti-bg-campus.jpg";
+import carou_item2 from "./../assets/imgs/background/sti-wallpaper-1.png";
+import carou_item3 from "./../assets/imgs/background/sti-wallpaper-2.jpg";
+
+import lape from "./../assets/imgs/misc/lape.jpg";
+import esporsado from "./../assets/imgs/misc/esporsado.JPG";
+import silverio from "./../assets/imgs/misc/silverio.JPG";
+import oliveros from "./../assets/imgs/misc/oliveros.JPG";
+
+import scheduler from "./../assets/imgs/misc/Scheduler.png";
+import locator from "./../assets/imgs/misc/Locator.png";
+import team from "./../assets/imgs/misc/Team.png";
+import host from "./../assets/imgs/misc/Host.png";
 
 export default function useConfiguration() {
   const [info, setInfo] = useState({
-    details: {},
+    details: {
+      app_name: "Class Kode",
+      sub_name: "Scheduling and Faculty Locator",
+      dev_team: [
+        {
+          Name: "Mark Lape",
+          Role: "Leader / Project Manager",
+          Image: lape,
+        },
+        {
+          Name: "Yranimez Repil",
+          Role: "Backend Developer",
+          Image: temp_dp,
+        },
+        {
+          Name: "James Gereña",
+          Role: "Backend / Manager Assistant",
+          Image: temp_dp,
+        },
+        {
+          Name: "Mia Maddara",
+          Role: "Documentation",
+          Image: temp_dp,
+        },
+        {
+          Name: "Aeron Pagaoa",
+          Role: "Documentation Support",
+          Image: temp_dp,
+        },
+      ],
+      special_thanks: [
+        {
+          Name: "Joshua Oliveros",
+          Role: "Thesis Adviser",
+          Image: oliveros,
+        },
+        {
+          Name: "Jerome Silverio",
+          Role: "Thesis Coordinator",
+          Image: silverio,
+        },
+        {
+          Name: "Cristelyn Esporsado",
+          Role: "Thesis Coordinator",
+          Image: esporsado,
+        },
+      ],
+      carousel: {
+        item1: {
+          Title: "",
+          Subtitle: "",
+          Image: carou_item1,
+        },
+        item2: {
+          Title: "",
+          Subtitle: "",
+          Image: carou_item2,
+        },
+        item3: {
+          Title: "",
+          Subtitle: "",
+          Image: carou_item3,
+        },
+      },
+      content: {
+        content1: {
+          Title: "",
+          SubTitle: "",
+          Content: "",
+          Image: scheduler,
+        },
+        content2: {
+          Title: "",
+          SubTitle: "",
+          Content: "",
+          Image: locator,
+        },
+        content3: {
+          Title: "",
+          SubTitle: "",
+          Content: "",
+          Image: team,
+        },
+        content4: {
+          Title: "",
+          SubTitle: "",
+          Content: "",
+          Image: host,
+        },
+      },
+    },
     icons: {
       pages: {
         institution: {

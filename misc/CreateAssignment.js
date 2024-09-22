@@ -10,7 +10,7 @@ import useDatabase from "../../../../hook/useDatabase";
 
 export function CreateAssignment() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [selectedValues, setSelectedValues] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
   const coursecheckbox = document.querySelectorAll(".course-checkbox");
@@ -46,9 +46,9 @@ export function CreateAssignment() {
   ] = useValidate();
 
   useEffect(() => {
-    post("sel-coach", coach, setCoach);
-    post("sel-crs", course, setCourse);
-    post("sel-coach-type", coachtype, setCoachType);
+    data_post("sel-coach", coach, setCoach);
+    data_post("sel-crs", course, setCourse);
+    data_post("sel-coach-type", coachtype, setCoachType);
   }, []);
 
   useEffect(() => {}, []);
@@ -176,7 +176,7 @@ export function CreateAssignment() {
     //   onSubmit={(e) => {
     //     e.preventDefault();
     //     if (true) {
-    //       post("add-new-room", data, setData);
+    //       data_post("add-new-room", data, setData);
     //       navigate(-1);
     //     }
     //   }}

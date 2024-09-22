@@ -8,25 +8,34 @@ const db = mysql.createConnection({
   password: "",
   database: "db_classkode",
 });
+const app = express();
 
 // Login =>
-router.post("/login-now", (req, res) => {
+router.post("/ldasdaogin-now", (req, res) => {
+  const clientData = JSON.parse(req.body);
   const sql = `
         SELECT * FROM _users WHERE Email = ? Limit 1
       `;
-  const pass = req.body.password;
+  const pass = clientData.password;
+  const email = clientData.email;
 
-  db.query(sql, [req.body.email], (err, data) => {
-    if (err) return res.json({ Message: "Server Sided Error" });
-    bcrypt.compare(pass, data[0].Password, (err, resu) => {
-      if (err) {
-        console.error("Verification error:", err);
-      } else if (resu) {
-        return res.json({ Status: "Success", data: data });
-      } else {
-        console.log("Password does not match");
-      }
-    });
+  db.query(sql, [email], (err, data) => {
+    if (err) return res.json({ Status: "Server Sided Error" });
+    try {
+      bcrypt.compare(pass, data[0].Password, (err, resu) => {
+        if (err) {
+          console.error("Verification error:", err);
+        } else if (resu) {
+          return res.json({ Status: "Success", data: JSON.parse(req.body) });
+        } else {
+          console.log("Password does not match");
+          console.log(pass);
+          return res.json({ Status: "Account doesn't exist", data: null });
+        }
+      });
+    } catch (error) {
+      return res.json({ Status: "Account doesn't exist" });
+    }
   });
 });
 

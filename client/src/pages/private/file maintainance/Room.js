@@ -15,7 +15,7 @@ import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Room() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [search, setSearch] = useState({
     setbyFloor: "",
@@ -31,10 +31,10 @@ export function Room() {
   const [floor, setFloor] = useState([]);
 
   useEffect(() => {
-    get("room/list", setRoom);
-    get("facility/list", setFacility);
-    get("building/list", setBuilding);
-    get("floor/list", setFloor);
+    data_get("room-list", setRoom);
+    data_get("facility-list", setFacility);
+    data_get("building-list", setBuilding);
+    data_get("floor-list", setFloor);
   }, [room]);
 
   return (

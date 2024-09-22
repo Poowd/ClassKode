@@ -15,13 +15,13 @@ import useConfiguration from "../../../hook/useConfiguration";
 export function Schedule() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   const [sched, setSched] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
-    post("sel-sched", sched, setSched);
+    data_post("sel-sched", sched, setSched);
   }, [sched]);
   return (
     <>

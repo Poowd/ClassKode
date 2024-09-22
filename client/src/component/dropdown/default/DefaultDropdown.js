@@ -36,8 +36,8 @@ export class DefaultDropdown extends React.Component {
               ""
             )}
           </div>
-          <ul class="dropdown-menu z-3">{this.props.dropdownitems}</ul>
         </button>
+        <ul className="dropdown-menu z-3">{this.props.dropdownitems}</ul>
       </div>
     );
   }

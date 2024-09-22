@@ -11,7 +11,7 @@ import useHandleChange from "../../../../hook/useHandleChange";
 export function SectionSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   const [search, setSearch] = useState({
     Search: "",
@@ -39,8 +39,8 @@ export function SectionSchedule() {
   ]);
 
   useEffect(() => {
-    post("sel-sched", search, setSchedule);
-    post("sel-proj", section, setSection);
+    data_post("sel-sched", search, setSchedule);
+    data_post("sel-proj", section, setSection);
     if (search.Search === "") {
       for (var i = 0; i < section.length; i++) {
         setCurrentSection(section[0].Section);

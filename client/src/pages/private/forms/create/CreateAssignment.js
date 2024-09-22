@@ -12,7 +12,7 @@ import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTe
 export function CreateAssignment() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [selectedValues, setSelectedValues] = useState([]);
   const coursecheckbox = document.querySelectorAll(".course-checkbox");
 
@@ -32,11 +32,11 @@ export function CreateAssignment() {
 
   var test = [];
   useEffect(() => {
-    post("sel-coach", coach, setCoach);
-    post("sel-asgn", asgned, setAsgned);
-    post("sel-crs", course, setCourse);
-    post("sel-coach-type", coachtype, setCoachType);
-    post("sel-asgn", assignment, setAssignment);
+    data_post("sel-coach", coach, setCoach);
+    data_post("sel-asgn", asgned, setAsgned);
+    data_post("sel-crs", course, setCourse);
+    data_post("sel-coach-type", coachtype, setCoachType);
+    data_post("sel-asgn", assignment, setAssignment);
   }, []);
 
   useEffect(() => {
@@ -66,9 +66,9 @@ export function CreateAssignment() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (true) {
-      post("ins-assign", data, setData);
+      data_post("ins-assign", data, setData);
       selectedValues.map((item, i) => {
-        post("ins-spec", item, setSelectedValues);
+        data_post("ins-spec", item, setSelectedValues);
       });
       navigate(-1);
     }

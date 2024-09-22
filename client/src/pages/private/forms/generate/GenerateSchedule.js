@@ -11,7 +11,7 @@ import useTimeFormat from "../../../../hook/useTimeFormat";
 
 export function GenerateSchedule() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [convertMinutes] = useTimeFormat();
 
   const LocalStorage = [JSON.parse(localStorage.getItem("semester_selector"))];
@@ -19,7 +19,7 @@ export function GenerateSchedule() {
   const [sched, setSched] = useState([]);
 
   useEffect(() => {
-    post("sel-sched", sched, setSched);
+    data_post("sel-sched", sched, setSched);
   }, [sched]);
 
   var classes = [];
@@ -46,14 +46,14 @@ export function GenerateSchedule() {
   ]);
 
   useEffect(() => {
-    post("sel-exp-class", expected, setExpected);
-    post("sel-rom", room, setRoom);
-    post("sel-proj", section, setSection);
-    post("sel-asgn", coach, setCoach);
-    post("sel-coach-type", coachtype, setCoachType);
-    post("sel-wke-evt", weekly, setWeekly);
-    post("sel-cur-ay", ay, setAY);
-    post("sel-spl-crs", specialize, setSpecialize);
+    data_post("sel-exp-class", expected, setExpected);
+    data_post("sel-rom", room, setRoom);
+    data_post("sel-proj", section, setSection);
+    data_post("sel-asgn", coach, setCoach);
+    data_post("sel-coach-type", coachtype, setCoachType);
+    data_post("sel-wke-evt", weekly, setWeekly);
+    data_post("sel-cur-ay", ay, setAY);
+    data_post("sel-spl-crs", specialize, setSpecialize);
   }, []);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ export function GenerateSchedule() {
                   function={() => {
                     for (var i = 0; i < schedule.length; i++) {
                       console.log(schedule[i]);
-                      post("ins-pre-sched", schedule[i], setSchedule);
+                      data_post("ins-pre-sched", schedule[i], setSchedule);
                     }
                     navigate(-1);
                   }}

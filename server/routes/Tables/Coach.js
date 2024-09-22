@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/coach-list", (req, res) => {
   try {
     pool.query(`SELECT * FROM coach WHERE "Status"='ACTIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -21,7 +21,7 @@ router.get("/list", (req, res) => {
   }
 });
 
-router.get("/list-archived", (req, res) => {
+router.get("/coach-list-archived", (req, res) => {
   try {
     pool.query(`SELECT * FROM coach WHERE "Status"='ARCHIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -32,9 +32,10 @@ router.get("/list-archived", (req, res) => {
   }
 });
 
-router.post("/target", (req, res) => {
+router.post("/coach-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `SELECT * FROM coach WHERE "CCHID"='${id}' OR "SCHLID"='${id}'`,
       (err, rslt) => {
@@ -51,18 +52,20 @@ router.post("/target", (req, res) => {
   }
 });
 
-router.post("/insert", (req, res) => {
+router.post("/coach-insert", (req, res) => {
   try {
-    var id = req.body.SCHLID;
-    var first = req.body.FirstName;
-    var middle = req.body.MiddleInitial;
-    var last = req.body.LastName;
-    var gender = req.body.Gender;
-    var department = req.body.Department;
-    var email = req.body.Email;
-    var phone = req.body.Phone;
-    var link = req.body.Link;
-    var image = req.body.Image;
+    const clientData = JSON.parse(req.body);
+    console.log(clientData);
+    var id = clientData.SCHLID;
+    var first = clientData.FirstName;
+    var middle = clientData.MiddleInitial;
+    var last = clientData.LastName;
+    var gender = clientData.Gender;
+    var department = clientData.Department;
+    var email = clientData.Email;
+    var phone = clientData.Phone;
+    var link = clientData.Link;
+    var image = clientData.Image;
     pool.query(
       `INSERT INTO coach ("CCHID", "SCHLID", "FirstName", "MiddleInitial", "LastName", "Gender", "Department", "Email", "Phone", "Link", "Image")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from coach), '${id}', '${first}', '${middle}', '${last}', '${gender}', '${department}', '${email}', '${phone}', '${link}', '${image}')`,
@@ -81,19 +84,20 @@ router.post("/insert", (req, res) => {
   }
 });
 
-router.post("/edit", (req, res) => {
+router.post("/coach-edit", (req, res) => {
   try {
-    var idd = req.body.CCHID;
-    var id = req.body.SCHLID;
-    var first = req.body.FirstName;
-    var middle = req.body.MiddleInitial;
-    var last = req.body.LastName;
-    var gender = req.body.Gender;
-    var department = req.body.Department;
-    var email = req.body.Email;
-    var phone = req.body.Phone;
-    var link = req.body.Link;
-    var image = req.body.Image;
+    const clientData = JSON.parse(req.body);
+    var idd = clientData.CCHID;
+    var id = clientData.SCHLID;
+    var first = clientData.FirstName;
+    var middle = clientData.MiddleInitial;
+    var last = clientData.LastName;
+    var gender = clientData.Gender;
+    var department = clientData.Department;
+    var email = clientData.Email;
+    var phone = clientData.Phone;
+    var link = clientData.Link;
+    var image = clientData.Image;
     pool.query(
       `UPDATE coach 
 
@@ -125,9 +129,10 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.post("/archive", (req, res) => {
+router.post("/coach-archive", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE coach SET "Status"='ARCHIVE' WHERE "CCHID"='${id}'`,
       (err, rslt) => {
@@ -144,9 +149,10 @@ router.post("/archive", (req, res) => {
   }
 });
 
-router.post("/restore", (req, res) => {
+router.post("/coach-restore", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE coach SET "Status"='ACTIVE' WHERE "CCHID"='${id}'`,
       (err, rslt) => {

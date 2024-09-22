@@ -1,7 +1,9 @@
 import axios from "axios";
+import { useState } from "react";
 
 export default function useDatabase() {
   const link = "http://localhost:8081/";
+  const origin = "http://localhost:8081/";
 
   function get(target, trigger) {
     axios
@@ -29,5 +31,41 @@ export default function useDatabase() {
       .catch((err) => console.log(err));
   }
 
-  return [get, post];
+  async function data_get(link, target) {
+    try {
+      const response = await fetch(origin.concat(link), {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Methods": "GET, POST",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Credentials": true,
+        },
+      });
+      const data = await response.json();
+      try {
+        target(data);
+      } catch (error) {}
+    } catch (error) {}
+  }
+  async function data_post(link, values, target) {
+    try {
+      const response = await fetch(origin.concat(link), {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Access-Control-Allow-Origin": "http://localhost:3000",
+          "Access-Control-Allow-Methods": "GET, POST",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Credentials": true,
+        },
+      });
+      const data = await response.json();
+      try {
+        target(data);
+      } catch (error) {}
+    } catch (error) {}
+  }
+
+  return [get, post, data_get, data_post];
 }

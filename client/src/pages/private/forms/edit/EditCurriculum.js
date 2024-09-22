@@ -11,7 +11,7 @@ export function EditCurriculum() {
   const params = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
@@ -22,13 +22,13 @@ export function EditCurriculum() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("sel-curr", curriculum, setCurriculum);
+    data_post("sel-curr", curriculum, setCurriculum);
   }, [curriculum]);
 
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      post("upd-curr", data, setData);
+      data_post("upd-curr", data, setData);
       navigate(-1);
     }
   };

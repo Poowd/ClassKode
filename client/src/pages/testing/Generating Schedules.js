@@ -4,7 +4,7 @@ import useTimeFormat from "../../hook/useTimeFormat";
 import { Link } from "react-router-dom";
 
 export function GeneratingSchedules() {
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [convertMinutes] = useTimeFormat();
 
   var classes = [];
@@ -30,12 +30,12 @@ export function GeneratingSchedules() {
   ]);
 
   useEffect(() => {
-    post("expected-classes", expected, setExpected);
-    post("room", room, setRoom);
-    post("assignment", coach, setCoach);
-    post("coachtype", coachtype, setCoachType);
-    post("weekly-event", weekly, setWeekly);
-    post("academicyear-current", ay, setAY);
+    data_post("expected-classes", expected, setExpected);
+    data_post("room", room, setRoom);
+    data_post("assignment", coach, setCoach);
+    data_post("coachtype", coachtype, setCoachType);
+    data_post("weekly-event", weekly, setWeekly);
+    data_post("academicyear-current", ay, setAY);
     // console.log(classes);
     // console.log(room);
     // console.log(coaches);
@@ -78,7 +78,7 @@ export function GeneratingSchedules() {
   }
 
   useEffect(() => {
-    post("SPCL_CRS", specialize, setSpecialize);
+    data_post("SPCL_CRS", specialize, setSpecialize);
   }, []);
 
   MGRT_DATA();

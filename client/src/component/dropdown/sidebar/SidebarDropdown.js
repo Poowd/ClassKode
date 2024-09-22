@@ -3,7 +3,7 @@ import React from "react";
 export class SidebarDropdown extends React.Component {
   render() {
     return (
-      <li className="w-100">
+      <section className="w-100">
         <a
           href={this.props.reference}
           data-bs-toggle="collapse"
@@ -21,7 +21,7 @@ export class SidebarDropdown extends React.Component {
         >
           {this.props.itemlist}
         </ul>
-      </li>
+      </section>
     );
   }
 }

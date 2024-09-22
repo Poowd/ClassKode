@@ -16,7 +16,7 @@ import { DefaultToast } from "../../../component/toast/DefaultToast";
 
 export function Archives() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const LocalStorage = [JSON.parse(localStorage.getItem("archive_selection"))];
@@ -47,15 +47,15 @@ export function Archives() {
   });
 
   useEffect(() => {
-    get("department/list-archived", setDepartment);
-    get("program/list-archived", setProgram);
-    post("arch-crs", course, setCourse);
-    get("coach/list-archived", setCoach);
-    post("arch-sect", section, setSection);
-    post("arch-rom", room, setRoom);
-    post("arch-acy", academicyear, setAcademicYear);
-    post("arch-curr", curriculum, setCurriculum);
-    post("arch-sched", schedule, setSchedule);
+    data_get("department-list-archived", setDepartment);
+    data_get("program-list-archived", setProgram);
+    data_post("arch-crs", course, setCourse);
+    data_get("coach-list-archived", setCoach);
+    data_post("arch-sect", section, setSection);
+    data_post("arch-rom", room, setRoom);
+    data_post("arch-acy", academicyear, setAcademicYear);
+    data_post("arch-curr", curriculum, setCurriculum);
+    data_post("arch-sched", schedule, setSchedule);
   }, [department]);
 
   useEffect(() => {
@@ -166,7 +166,7 @@ export function Archives() {
                       icon={info.icons.restore}
                       function={() => {
                         post(
-                          "department/restore",
+                          "department-restore",
                           { data: department.DPTID },
                           setData
                         );
@@ -195,7 +195,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("program/restore", { data: prog.PRGID }, setData);
+                        data_post(
+                          "program/restore",
+                          { data: prog.PRGID },
+                          setData
+                        );
                         showToast(
                           info.icons.calendar,
                           "Program",
@@ -221,7 +225,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-crs", { CRSID: cors.CRSID }, setData);
+                        data_post("res-crs", { CRSID: cors.CRSID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Course",
@@ -251,7 +255,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("coach/restore", { data: coach.CCHID }, setData);
+                        data_post(
+                          "coach/restore",
+                          { data: coach.CCHID },
+                          setData
+                        );
                         showToast(
                           info.icons.calendar,
                           "Coach",
@@ -281,7 +289,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-sect", { SCTID: sect.SCTID }, setData);
+                        data_post("res-sect", { SCTID: sect.SCTID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Section",
@@ -307,7 +315,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-rom", { ROMID: rom.ROMID }, setData);
+                        data_post("res-rom", { ROMID: rom.ROMID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Room",
@@ -333,7 +341,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-curr", { CRRID: crr.CRRID }, setData);
+                        data_post("res-curr", { CRRID: crr.CRRID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Curriculum",
@@ -359,7 +367,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-acy", { ACYID: acy.ACYID }, setData);
+                        data_post("res-acy", { ACYID: acy.ACYID }, setData);
                         showToast(
                           info.icons.calendar,
                           "AcademicYear",
@@ -385,7 +393,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.restore}
                       function={() => {
-                        post("res-sched", { SCDID: sched.SCDID }, setData);
+                        data_post("res-sched", { SCDID: sched.SCDID }, setData);
                         showToast(
                           info.icons.calendar,
                           "Schedules",

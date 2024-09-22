@@ -10,10 +10,11 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/program-list", (req, res) => {
   try {
-    pool.query(`SELECT * FROM program WHERE "Status"='ACTIVE'`, (err, rslt) =>
-      res.json(rslt.rows)
+    pool.query(
+      `SELECT program."PRGID", program."Code", program."Program", program."Abbrev", department."Code" as DPTCode, department."AcademicLevel", program."Created", program."Status" FROM program INNER JOIN department ON program."Department"=department."Code" WHERE program."Status"='ACTIVE'`,
+      (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
     console.error(err);
@@ -21,7 +22,7 @@ router.get("/list", (req, res) => {
   }
 });
 
-router.get("/list-archived", (req, res) => {
+router.get("/program-list-archived", (req, res) => {
   try {
     pool.query(`SELECT * FROM program WHERE "Status"='ARCHIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -32,9 +33,10 @@ router.get("/list-archived", (req, res) => {
   }
 });
 
-router.post("/target", (req, res) => {
+router.post("/program-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `SELECT * FROM program WHERE "PRGID"='${id}' OR "Code"='${id}'`,
       (err, rslt) => {
@@ -51,14 +53,15 @@ router.post("/target", (req, res) => {
   }
 });
 
-router.post("/insert", (req, res) => {
+router.post("/program-insert", (req, res) => {
   try {
-    var code = req.body.Code;
-    var program = req.body.Program;
-    var abbrev = req.body.Abbrev;
-    var department = req.body.Department;
+    const clientData = JSON.parse(req.body);
+    var code = clientData.Code;
+    var program = clientData.Program;
+    var abbrev = clientData.Abbrev;
+    var department = clientData.Department;
     var description =
-      req.body.Description === null ? null : req.body.Description;
+      clientData.Description === null ? null : clientData.Description;
     pool.query(
       `INSERT INTO program ("PRGID", "Code", "Program", "Abbrev", "Department", "Description")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from program), '${code}', '${program}', '${abbrev}', '${department}', '${description}')`,
@@ -77,15 +80,16 @@ router.post("/insert", (req, res) => {
   }
 });
 
-router.post("/edit", (req, res) => {
+router.post("/program-edit", (req, res) => {
   try {
-    var id = req.body.PRGID;
-    var code = req.body.Code;
-    var program = req.body.Program;
-    var department = req.body.Department;
-    var abbrev = req.body.Abbrev;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.PRGID;
+    var code = clientData.Code;
+    var program = clientData.Program;
+    var department = clientData.Department;
+    var abbrev = clientData.Abbrev;
     var description =
-      req.body.Description === null ? null : req.body.Description;
+      clientData.Description === null ? null : clientData.Description;
     pool.query(
       `UPDATE program 
         SET 
@@ -111,9 +115,10 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.post("/archive", (req, res) => {
+router.post("/program-archive", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE program SET "Status"='ARCHIVE' WHERE "PRGID"='${id}'`,
       (err, rslt) => {
@@ -130,9 +135,10 @@ router.post("/archive", (req, res) => {
   }
 });
 
-router.post("/restore", (req, res) => {
+router.post("/program-restore", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE program SET "Status"='ACTIVE' WHERE "PRGID"='${id}'`,
       (err, rslt) => {

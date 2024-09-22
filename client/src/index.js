@@ -5,6 +5,7 @@ import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import bootstrap from "bootstrap"; //do not remove -- will disable some frontend functionalities like dropdowns
 import "./css/CustomColours.css";
+import "./css/Colours.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

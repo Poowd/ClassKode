@@ -1,32 +1,38 @@
 import React from "react";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
 import { useNavigate, useParams } from "react-router-dom";
-import { CreateCoach } from "./create/CreateCoach";
-import { ViewCoach } from "./view/ViewCoach";
-import { EditCoach } from "./edit/EditCoach";
-import { CreateDepartment } from "./create/CreateDepartment";
-import { ViewDepartment } from "./view/ViewDepartment";
-import { ViewProgram } from "./view/ViewProgram";
-import { ViewCourse } from "./view/ViewCourse";
-import { ViewSection } from "./view/ViewSection";
-import { ViewRoom } from "./view/ViewRoom";
-import { CreateProgram } from "./create/CreateProgram";
-import { CreateCourse } from "./create/CreateCourse";
-import { CreateSection } from "./create/CreateSection";
-import { CreateRoom } from "./create/CreateRoom";
+
+import { CreateCoach } from "./file maintainance/create/CreateCoach";
+import { CreateDepartment } from "./file maintainance/create/CreateDepartment";
+import { CreateProgram } from "./file maintainance/create/CreateProgram";
+import { CreateCourse } from "./file maintainance/create/CreateCourse";
+import { CreateSection } from "./file maintainance/create/CreateSection";
+import { CreateRoom } from "./file maintainance/create/CreateRoom";
+
+import { ViewCoach } from "./file maintainance/view/ViewCoach";
+import { ViewDepartment } from "./file maintainance/view/ViewDepartment";
+import { ViewProgram } from "./file maintainance/view/ViewProgram";
+import { ViewCourse } from "./file maintainance/view/ViewCourse";
+import { ViewSection } from "./file maintainance/view/ViewSection";
+import { ViewRoom } from "./file maintainance/view/ViewRoom";
+
+import { EditCoach } from "./file maintainance/edit/EditCoach";
+import { EditCourse } from "./file maintainance/edit/EditCourse";
+import { EditDepartment } from "./file maintainance/edit/EditDepartment";
+import { EditProgram } from "./file maintainance/edit/EditProgram";
+import { EditRoom } from "./file maintainance/edit/EditRoom";
+import { EditSection } from "./file maintainance/edit/EditSection";
+
+import { CreateCurriculum } from "./utilities/create/CreateCurriculum";
+import { CreateAcademicYear } from "./utilities/create/CreateAcademicYear";
+
+import { ViewCurriculum } from "./utilities/view/ViewCurriculum";
+import { ViewAcademicYear } from "./utilities/view/ViewAcademicYear";
+import { CreateSetup } from "./utilities/create/CreateSetup";
+
 import { GenerateSection } from "./generate/GenerateSection";
-import { EditCourse } from "./edit/EditCourse";
-import { EditDepartment } from "./edit/EditDepartment";
-import { EditProgram } from "./edit/EditProgram";
-import { EditRoom } from "./edit/EditRoom";
-import { EditSection } from "./edit/EditSection";
-import { CreateCurriculum } from "./create/CreateCurriculum";
-import { ViewCurriculum } from "./view/ViewCurriculum";
 import { EditCurriculum } from "./edit/EditCurriculum";
-import { CreateSetup } from "./create/CreateSetup";
 import { ViewSetup } from "./view/ViewSetup";
-import { ViewAcademicYear } from "./view/ViewAcademicYear";
-import { CreateAcademicYear } from "./create/CreateAcademicYear";
 import { GenerateSchedule } from "./generate/GenerateSchedule";
 import { CreateAssignment } from "./create/CreateAssignment";
 import { CreateProjection } from "./create/CreateProjection";

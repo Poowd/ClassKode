@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/room-list", (req, res) => {
   try {
     pool.query(`SELECT * FROM room WHERE "Status"='ACTIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -21,7 +21,7 @@ router.get("/list", (req, res) => {
   }
 });
 
-router.get("/list-raw", (req, res) => {
+router.get("/room-list-raw", (req, res) => {
   try {
     pool.query(`SELECT * FROM room`, (err, rslt) => res.json(rslt.rows));
   } catch (err) {
@@ -30,7 +30,7 @@ router.get("/list-raw", (req, res) => {
   }
 });
 
-router.get("/list-archived", (req, res) => {
+router.get("/room-list-archived", (req, res) => {
   try {
     pool.query(`SELECT * FROM room WHERE "Status"='ARCHIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -41,9 +41,10 @@ router.get("/list-archived", (req, res) => {
   }
 });
 
-router.post("/target", (req, res) => {
+router.post("/room-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(`SELECT * FROM room WHERE "ROMID"='${id}'`, (err, rslt) => {
       if (err) {
         console.error("Query error:", err);
@@ -57,13 +58,14 @@ router.post("/target", (req, res) => {
   }
 });
 
-router.post("/insert", (req, res) => {
+router.post("/room-insert", (req, res) => {
   try {
-    var room = req.body.Room;
-    var capacity = req.body.Capacity;
-    var facility = req.body.Facility;
-    var building = req.body.Building;
-    var floor = req.body.Floor;
+    const clientData = JSON.parse(req.body);
+    var room = clientData.Room;
+    var capacity = clientData.Capacity;
+    var facility = clientData.Facility;
+    var building = clientData.Building;
+    var floor = clientData.Floor;
     pool.query(
       `INSERT INTO room ("ROMID", "Room", "Capacity", "Facility", "Building", "Floor")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from room), '${room}', '${capacity}', '${facility}', '${building}', '${floor}')`,
@@ -82,14 +84,15 @@ router.post("/insert", (req, res) => {
   }
 });
 
-router.post("/edit", (req, res) => {
+router.post("/room-edit", (req, res) => {
   try {
-    var id = req.body.ROMID;
-    var room = req.body.Room;
-    var capacity = req.body.Capacity;
-    var facility = req.body.Facility;
-    var building = req.body.Building;
-    var floor = req.body.Floor;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.ROMID;
+    var room = clientData.Room;
+    var capacity = clientData.Capacity;
+    var facility = clientData.Facility;
+    var building = clientData.Building;
+    var floor = clientData.Floor;
     pool.query(
       `UPDATE room 
 
@@ -116,9 +119,10 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.post("/archive", (req, res) => {
+router.post("/room-archive", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE room SET "Status"='ARCHIVE' WHERE "ROMID"='${id}'`,
       (err, rslt) => {
@@ -135,9 +139,10 @@ router.post("/archive", (req, res) => {
   }
 });
 
-router.post("/restore", (req, res) => {
+router.post("/room-restore", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE room SET "Status"='ACTIVE' WHERE "ROMID"='${id}'`,
       (err, rslt) => {

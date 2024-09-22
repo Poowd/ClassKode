@@ -13,7 +13,7 @@ import useConfiguration from "../../../../hook/useConfiguration";
 
 export function CoachAssignment() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const [ay, setAY] = useState([]);
@@ -22,9 +22,9 @@ export function CoachAssignment() {
   const [asgn, setAsgn] = useState([]);
 
   useEffect(() => {
-    post("sel-ay", ay, setAY);
-    post("sel-cur-ay", curray, setCurrAY);
-    post("sel-asgn", asgn, setAsgn);
+    data_post("sel-ay", ay, setAY);
+    data_post("sel-cur-ay", curray, setCurrAY);
+    data_post("sel-asgn", asgn, setAsgn);
   }, []);
 
   useEffect(() => {

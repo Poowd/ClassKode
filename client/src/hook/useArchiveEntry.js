@@ -3,7 +3,7 @@ import useDatabase from "./useDatabase";
 
 export default function useArchiveEntry() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   function ArchiveEntry(link, trigger, generated, input, data, action) {
     if (generated === input) {

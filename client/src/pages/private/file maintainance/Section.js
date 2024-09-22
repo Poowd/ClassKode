@@ -15,7 +15,7 @@ import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Section() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [search, setSearch] = useState({
     setbyProgram: "",
@@ -27,8 +27,8 @@ export function Section() {
   const [program, setProgram] = useState([]);
 
   useEffect(() => {
-    get("section/list", setSection);
-    get("program/list", setProgram);
+    data_get("section-list", setSection);
+    data_get("program-list", setProgram);
   }, [section]);
 
   return (
@@ -45,7 +45,7 @@ export function Section() {
               <ul className="list-group list-group-flush">
                 {program &&
                   program.map((item, i) => (
-                    <li className="list-group-item">
+                    <li key={i} className="list-group-item">
                       <TextFormat1
                         header={<span>{item.Program}</span>}
                         data={
@@ -153,6 +153,7 @@ export function Section() {
                   item.Program.includes(search.setbyProgram) ||
                   search.setbyProgram === "" ? (
                     <ListCard
+                      key={i}
                       slot1={item.SCTID}
                       slot2={item.Section}
                       slot3={item.Created}

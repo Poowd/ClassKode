@@ -94,7 +94,7 @@ function App() {
     <main className="overflow-hidden">
       {/* Loading Screen */}
       <header>
-        {isLoading ? <FullscreenLoader class="position-absolute z-3" /> : ""}
+        {isLoading ? <FullscreenLoader class="position-fixed z-3" /> : ""}
       </header>
       <Routes>
         {status === true ? (
@@ -172,7 +172,7 @@ function App() {
                               element={<Curriculum />}
                             ></Route>
                             <Route
-                              path={"/utilities/curriculum/setup"}
+                              path={"/utilities/curriculum/setup/:id"}
                               element={<CourseSetup />}
                             ></Route>
                             <Route path={"*"} element={<Error404 />}></Route>

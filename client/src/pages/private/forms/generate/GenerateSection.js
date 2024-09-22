@@ -14,7 +14,7 @@ import { DefaultToast } from "../../../../component/toast/DefaultToast";
 
 export function GenerateSection() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
 
@@ -29,9 +29,9 @@ export function GenerateSection() {
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    get("section/list", setSection);
-    get("program/list", setProgram);
-    get("year-level/list", setYearLevel);
+    data_get("section-list", setSection);
+    data_get("program-list", setProgram);
+    data_get("year-level-list", setYearLevel);
   }, [section]);
 
   var counter = 0;
@@ -83,7 +83,7 @@ export function GenerateSection() {
 
   async function TestData(data) {
     setTimeout(() => {
-      post("section/generate", data, setData);
+      data_post("section-generate", data, setData);
     }, 750); // 2 second delay
   }
 

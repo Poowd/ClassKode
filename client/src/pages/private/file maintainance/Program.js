@@ -15,7 +15,7 @@ import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Program() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [search, setSearch] = useState({
     setbyDepartment: "",
@@ -27,8 +27,8 @@ export function Program() {
   const [department, setDepartment] = useState([]);
 
   useEffect(() => {
-    get("program/list", setProgram);
-    get("department/list", setDepartment);
+    data_get("program-list", setProgram);
+    data_get("department-list", setDepartment);
   }, [program]);
 
   return (
@@ -45,12 +45,11 @@ export function Program() {
               <ul className="list-group list-group-flush">
                 {department &&
                   department.map((item, i) => (
-                    <li className="list-group-item">
+                    <li key={i} className="list-group-item">
                       <TextFormat1
                         header={<span>{item.Department}</span>}
                         data={
-                          program.filter((x) => x.Department === item.Code)
-                            .length
+                          program.filter((x) => x.dptcode === item.Code).length
                         }
                       />
                     </li>
@@ -148,9 +147,10 @@ export function Program() {
               item.Program.toLowerCase().includes(
                 search.search.toLowerCase()
               ) || search.search === "" ? (
-                item.Department.includes(search.setbyDepartment) ||
+                item.dptcode.includes(search.setbyDepartment) ||
                 search.setbyDepartment === "" ? (
                   <ListCard
+                    key={i}
                     slot1={item.Code}
                     slot2={item.Program}
                     slot3={item.Created}

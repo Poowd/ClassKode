@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/department-list", (req, res) => {
   try {
     pool.query(
       `SELECT * FROM department WHERE "Status"='ACTIVE'`,
@@ -22,7 +22,7 @@ router.get("/list", (req, res) => {
   }
 });
 
-router.get("/list-archived", (req, res) => {
+router.get("/department-list-archived", (req, res) => {
   try {
     pool.query(
       `SELECT * FROM department WHERE "Status"='ARCHIVE'`,
@@ -34,9 +34,10 @@ router.get("/list-archived", (req, res) => {
   }
 });
 
-router.post("/target", (req, res) => {
+router.post("/department-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `SELECT * FROM department WHERE "DPTID"='${id}' OR "Code"='${id}'`,
       (err, rslt) => {
@@ -53,14 +54,15 @@ router.post("/target", (req, res) => {
   }
 });
 
-router.post("/insert", (req, res) => {
+router.post("/department-insert", (req, res) => {
   try {
-    var code = req.body.Code;
-    var department = req.body.Department;
-    var abbrev = req.body.Abbrev;
-    var academiclevel = req.body.AcademicLevel;
+    const clientData = JSON.parse(req.body);
+    var code = clientData.Code;
+    var department = clientData.Department;
+    var abbrev = clientData.Abbrev;
+    var academiclevel = clientData.AcademicLevel;
     var description =
-      req.body.Description === null ? null : req.body.Description;
+      clientData.Description === null ? null : clientData.Description;
     pool.query(
       `INSERT INTO department ("DPTID", "Code", "Department", "Abbrev", "AcademicLevel", "Description")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from department), '${code}', '${department}', '${abbrev}', '${academiclevel}', '${description}')`,
@@ -79,14 +81,15 @@ router.post("/insert", (req, res) => {
   }
 });
 
-router.post("/edit", (req, res) => {
+router.post("/department-edit", (req, res) => {
   try {
-    var id = req.body.DPTID;
-    var code = req.body.Code;
-    var department = req.body.Department;
-    var abbrev = req.body.Abbrev;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.DPTID;
+    var code = clientData.Code;
+    var department = clientData.Department;
+    var abbrev = clientData.Abbrev;
     var description =
-      req.body.Description === null ? null : req.body.Description;
+      clientData.Description === null ? null : clientData.Description;
     pool.query(
       `UPDATE department 
 
@@ -112,9 +115,10 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.post("/archive", (req, res) => {
+router.post("/department-archive", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE department SET "Status"='ARCHIVE' WHERE "DPTID"='${id}'`,
       (err, rslt) => {
@@ -131,9 +135,10 @@ router.post("/archive", (req, res) => {
   }
 });
 
-router.post("/restore", (req, res) => {
+router.post("/department-restore", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE department SET "Status"='ACTIVE' WHERE "DPTID"='${id}'`,
       (err, rslt) => {

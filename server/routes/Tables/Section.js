@@ -10,7 +10,7 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/section-list", (req, res) => {
   try {
     pool.query(`SELECT * FROM section WHERE "Status"='ACTIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -21,9 +21,10 @@ router.get("/list", (req, res) => {
   }
 });
 
-router.post("/list-target", (req, res) => {
+router.post("/section-list-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `SELECT * FROM section WHERE "Program"='${id}' AND "Status"='ACTIVE'`,
       (err, rslt) => res.json(rslt.rows)
@@ -34,7 +35,7 @@ router.post("/list-target", (req, res) => {
   }
 });
 
-router.get("/list-raw", (req, res) => {
+router.get("/section-list-raw", (req, res) => {
   try {
     pool.query(`SELECT * FROM section`, (err, rslt) => res.json(rslt.rows));
   } catch (err) {
@@ -43,7 +44,7 @@ router.get("/list-raw", (req, res) => {
   }
 });
 
-router.get("/list-archived", (req, res) => {
+router.get("/section-list-archived", (req, res) => {
   try {
     pool.query(`SELECT * FROM section WHERE "Status"='ARCHIVE'`, (err, rslt) =>
       res.json(rslt.rows)
@@ -54,9 +55,10 @@ router.get("/list-archived", (req, res) => {
   }
 });
 
-router.post("/target", (req, res) => {
+router.post("/section-target", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(`SELECT * FROM section WHERE "SCTID"='${id}'`, (err, rslt) => {
       if (err) {
         console.error("Query error:", err);
@@ -70,11 +72,12 @@ router.post("/target", (req, res) => {
   }
 });
 
-router.post("/generate", (req, res) => {
+router.post("/section-generate", (req, res) => {
   try {
-    var section = req.body.Section;
-    var yearlevel = req.body.YearLevel;
-    var program = req.body.Program;
+    const clientData = JSON.parse(req.body);
+    var section = clientData.Section;
+    var yearlevel = clientData.YearLevel;
+    var program = clientData.Program;
     pool.query(
       `INSERT INTO section ("SCTID", "Section", "YearLevel", "Program")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from section), '${section}', '${yearlevel}', '${program}')`,
@@ -89,9 +92,10 @@ router.post("/generate", (req, res) => {
     );
   } catch (err) {
     try {
-      var section = req.body.Section;
-      var yearlevel = req.body.YearLevel;
-      var program = req.body.Program;
+      const clientData = JSON.parse(req.body);
+      var section = clientData.Section;
+      var yearlevel = clientData.YearLevel;
+      var program = clientData.Program;
       pool.query(
         `INSERT INTO section ("SCTID", "Section", "YearLevel", "Program")
         VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from section), '${section}', '${yearlevel}', '${program}')`,
@@ -111,11 +115,12 @@ router.post("/generate", (req, res) => {
   }
 });
 
-router.post("/insert", (req, res) => {
+router.post("/section-insert", (req, res) => {
   try {
-    var section = req.body.Section;
-    var program = req.body.Program;
-    var yearlevel = req.body.YearLevel;
+    const clientData = JSON.parse(req.body);
+    var section = clientData.Section;
+    var program = clientData.Program;
+    var yearlevel = clientData.YearLevel;
     pool.query(
       `INSERT INTO section ("SCTID", "Section", "YearLevel", "Program")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from section), '${section}', '${yearlevel}', '${program}')`,
@@ -134,12 +139,13 @@ router.post("/insert", (req, res) => {
   }
 });
 
-router.post("/edit", (req, res) => {
+router.post("/section-edit", (req, res) => {
   try {
-    var id = req.body.SCTID;
-    var section = req.body.Section;
-    var program = req.body.Program;
-    var yearlevel = req.body.YearLevel;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.SCTID;
+    var section = clientData.Section;
+    var program = clientData.Program;
+    var yearlevel = clientData.YearLevel;
     pool.query(
       `UPDATE section 
 
@@ -166,9 +172,10 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.post("/archive", (req, res) => {
+router.post("/section-archive", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE section SET "Status"='ARCHIVE' WHERE "SCTID"='${id}'`,
       (err, rslt) => {
@@ -185,9 +192,10 @@ router.post("/archive", (req, res) => {
   }
 });
 
-router.post("/restore", (req, res) => {
+router.post("/section-restore", (req, res) => {
   try {
-    var id = req.body.data;
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
     pool.query(
       `UPDATE section SET "Status"='ACTIVE' WHERE "SCTID"='${id}'`,
       (err, rslt) => {

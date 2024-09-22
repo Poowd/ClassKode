@@ -15,7 +15,7 @@ export function Locator() {
   const [convertMinutes] = useTimeFormat();
   const [info] = useConfiguration();
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const d = new Date();
   const days = [
     "Sunday",
@@ -39,9 +39,9 @@ export function Locator() {
   });
 
   useEffect(() => {
-    post("sel-asgn", coaches, setCoaches);
-    post("sel-dept", department, setDepartment);
-    post("sel-sched", schedules, setSchedules);
+    data_post("sel-asgn", coaches, setCoaches);
+    data_post("sel-dept", department, setDepartment);
+    data_post("sel-sched", schedules, setSchedules);
   }, [coaches, department, schedules]);
 
   useEffect(() => {
@@ -355,35 +355,6 @@ export function Locator() {
                         </section>
                       ) : null
                     ) : null
-                  // <main className={"w-100 rounded shadow-sm p-3 mb-2 row m-0 "}>
-                  //   <section className="col-2 p-0 m-0">
-                  //     <h6 className="p-0 m-0">{coach.DPT_Abbreviation}</h6>
-                  //   </section>
-                  //   <section className="col-5 p-0 m-0">
-                  //     <h6 className="p-0 m-0 custom-text-gradient fw-bold">{`${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`}</h5>
-                  //     <small>
-                  //       <p className="p-0 m-0 text-secondary fst-italic">
-                  //         <span>{coach.Email}</span>
-                  //       </p>
-                  //     </small>
-                  //   </section>
-                  //   <section className="col-4 p-0 m-0">
-                  //     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end border-end px-3">
-                  //       <p className="p-0 m-0">{coach.SCHLID}</p>
-                  //     </div>
-                  //   </section>
-                  //   <section className="col-1 p-0 m-0">
-                  //     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-                  //       <DefaultButton
-                  //         class="btn-info text-white"
-                  //         icon={info.icons.schedule}
-                  //         function={() => {
-                  //           setCurrCoach(coach.SCHLID);
-                  //         }}
-                  //       />
-                  //     </div>
-                  //   </section>
-                  // </main>
                 )
               : null}
           </main>

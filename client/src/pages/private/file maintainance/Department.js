@@ -14,7 +14,7 @@ import { TextFormat1 } from "../../../component/textformat/TextFormat1";
 
 export function Department() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [search, setSearch] = useState({
     setbyAcadLevel: "",
@@ -26,8 +26,8 @@ export function Department() {
   const [academiclevel, setAcademicLevel] = useState([]);
 
   useEffect(() => {
-    get("department/list", setDepartment);
-    get("academic-level/list", setAcademicLevel);
+    data_get("department-list", setDepartment);
+    data_get("academic-level-list", setAcademicLevel);
   }, [department]);
 
   return (
@@ -44,7 +44,7 @@ export function Department() {
               <ul className="list-group list-group-flush">
                 {academiclevel &&
                   academiclevel.map((item, i) => (
-                    <li className="list-group-item">
+                    <li key={i} className="list-group-item">
                       <TextFormat1
                         header={<span>{item.AcademicLevel}</span>}
                         data={
@@ -145,6 +145,7 @@ export function Department() {
                   item.AcademicLevel.includes(search.setbyAcadLevel) ||
                   search.setbyAcadLevel === "" ? (
                     <ListCard
+                      key={i}
                       slot1={item.Code}
                       slot2={item.Department}
                       slot3={item.Created}

@@ -1,7 +1,7 @@
 import "../../App.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 import stiLogo from "../../assets/imgs/logo/sti-logo.png";
 import sticampus from "../../assets/imgs/background/sti-bg-campus.jpg";
 import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
@@ -9,6 +9,7 @@ import "../../css/CustomColours.css";
 import { DefaultInput } from "../../component/input/DefaultInput";
 import { DefaultButton } from "../../component/button/DefaultButton";
 import { RiCloseFill } from "react-icons/ri";
+import useDatabase from "../../hook/useDatabase";
 
 export function Login() {
   const navigate = useNavigate();
@@ -16,32 +17,29 @@ export function Login() {
     email: "",
     password: "",
   });
+  const [get, post, data_get, data_post] = useDatabase();
+  const [data, setData] = useState(null);
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [values]);
 
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
   //get the data from server, if the server response if success -- login
-  axios.defaults.withCredentials = true;
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); //prevents normal function of onsubmit in forms
-    axios
-      .post("http://localhost:8081/user/login-now", values) //stores in usestate values
-      .then((res) => {
-        if (res.data.Status === "Success" && res.data.data.UUID !== null) {
-          sessionStorage.setItem("user", JSON.stringify(res.data.data));
-          sessionStorage.setItem("loggedin", true);
-          navigate("/"); //to dashboard
-        } else {
-          alert(
-            res.data.Message === undefined
-              ? "Wrong User / Password"
-              : res.data.Message
-          );
-        }
-      })
-      .catch((err) => console.log(err));
+    data_post("user-login", values, setData);
+    try {
+      if (data.Status === "Success") {
+        sessionStorage.setItem("user", JSON.stringify(data.data));
+        sessionStorage.setItem("loggedin", true);
+        navigate("/"); //to dashboard
+      } else {
+        alert(data.Status === undefined ? "A problem occurred" : data.Status);
+      }
+    } catch (error) {
+      alert("A Problem Occurred");
+    }
   };
 
   return (
@@ -126,25 +124,6 @@ export function Login() {
                     text="Login"
                   />
                 </div>
-                {/* <div className="my-2">
-                  <InputTopBottom
-                    title={"Email"}
-                    type={"email"}
-                  />
-                  <div className="input-group mb-3">
-                    <InputTopBottom
-                      title={"Password"}
-                      type={"password"}
-                      required
-                    />
-                  </div>
-                </div> */}
-                {/* <Button //submit button
-                  class={"btn btn-primary w-100"}
-                  type={"submit"}
-                  text={"Login"}
-                  onClick={() => console.log("Log-Login-Clicked")}
-                /> */}
               </div>
               <p className="w-100 my-3 d-flex gap-3 justify-content-center">
                 <span>
@@ -162,8 +141,6 @@ export function Login() {
             </div>
           </form>
         </section>
-        {/* <section className="d-flex justify-content-center align-items-center">
-        </section> */}
       </main>
     </>
   );

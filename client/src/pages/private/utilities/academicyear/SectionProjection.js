@@ -13,7 +13,7 @@ import useConfiguration from "../../../../hook/useConfiguration";
 
 export function SectionProjection() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const [ay, setAY] = useState([]);
@@ -22,9 +22,9 @@ export function SectionProjection() {
   const [prj, setPrj] = useState([]);
 
   useEffect(() => {
-    post("sel-ay", ay, setAY);
-    post("sel-cur-ay", curray, setCurrAY);
-    post("sel-prj", prj, setPrj);
+    data_post("sel-ay", ay, setAY);
+    data_post("sel-cur-ay", curray, setCurrAY);
+    data_post("sel-prj", prj, setPrj);
   }, []);
 
   useEffect(() => {

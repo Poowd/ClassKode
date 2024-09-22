@@ -10,10 +10,11 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/list", (req, res) => {
+router.get("/academic-level-list", (req, res) => {
   try {
-    pool.query(`SELECT * FROM academic_level`, (err, rslt) =>
-      res.json(rslt.rows)
+    pool.query(
+      `SELECT * FROM academic_level WHERE "Status"='ACTIVE'`,
+      (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
     console.error(err);

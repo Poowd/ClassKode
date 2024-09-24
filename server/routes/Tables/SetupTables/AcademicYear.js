@@ -26,7 +26,7 @@ router.get("/current-academic-year", (req, res) => {
   try {
     pool.query(
       `SELECT * FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1`,
-      (err, rslt) => res.json(rslt.rows)
+      (err, rslt) => res.json(rslt.rows[0])
     );
   } catch (err) {
     console.error(err);

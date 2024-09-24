@@ -1,6 +1,8 @@
 const AcademicYear = require("./routes/Tables/SetupTables/AcademicYear.js");
 const Curriculum = require("./routes/Tables/SetupTables/Curriculum.js");
 const Setup = require("./routes/Tables/SetupTables/Setup.js");
+const Assignment = require("./routes/Tables/SetupTables/Assignment.js");
+const Projection = require("./routes/Tables/SetupTables/Projection.js");
 
 const AcademicLevel = require("./routes/Tables/Additional/AcademicLevel.js");
 const Semester = require("./routes/Tables/Additional/Semester.js");
@@ -9,6 +11,7 @@ const Building = require("./routes/Tables/Additional/Building.js");
 const Floor = require("./routes/Tables/Additional/Floor.js");
 const YearLevel = require("./routes/Tables/Additional/YearLevel.js");
 const Component = require("./routes/Tables/Additional/Component.js");
+const CoachType = require("./routes/Tables/Additional/CoachType.js");
 
 const Department = require("./routes/Tables/Department.js");
 const Program = require("./routes/Tables/Program.js");
@@ -23,6 +26,7 @@ const RandomCode = require("./routes/Logic/RandomCode.js");
 const Generate = require("./routes/Logic/GenerateSchedule.js");
 const SaveImage = require("./routes/Logic/SaveImage.js");
 const Login = require("./routes/Logic/Login.js");
+const Statistics = require("./routes/Logic/Statistics.js");
 // = = >
 
 const port = 3000;
@@ -66,10 +70,13 @@ router.use("/", RandomCode);
 router.use("/", Generate);
 router.use("/", SaveImage);
 router.use("/", Login);
+router.use("/", Statistics);
 
 router.use("/", AcademicYear);
 router.use("/", Curriculum);
 router.use("/", Setup);
+router.use("/", Assignment);
+router.use("/", Projection);
 
 router.use("/", Department);
 router.use("/", Program);
@@ -87,6 +94,7 @@ router.use("/", YearLevel);
 router.use("/", AcademicLevel);
 router.use("/", Semester);
 router.use("/", Component);
+router.use("/", CoachType);
 
 // = = >
 app.listen(8081, () => {

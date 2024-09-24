@@ -3,7 +3,7 @@ import React from "react";
 export class MainInput extends React.Component {
   render() {
     return (
-      <div className="row mb-2">
+      <div className="row mb-2 align-items-center">
         <div className="col-2">
           <label
             for={this.props.id}
@@ -27,6 +27,7 @@ export class MainInput extends React.Component {
             onChange={this.props.trigger}
             value={this.props.value}
             required={this.props.required}
+            disabled={this.props.disabled}
           />
         </div>
       </div>

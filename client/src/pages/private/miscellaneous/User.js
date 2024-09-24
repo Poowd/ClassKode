@@ -17,8 +17,8 @@ export function User() {
   const [info] = useConfiguration();
 
   useEffect(() => {
-    data_post("user-list", users, setUsers);
-  }, [users]);
+    data_get("user-list", setUsers);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
@@ -59,18 +59,21 @@ export function User() {
           />
         </>
       }
-      list={users.map((item) => (
-        <ListCard
-          slot1={item.SCHLID}
-          slot2={`${item.FirstName} ${item.LastName}`}
-          slot3={item.UUID_Created}
-          slot4={item.UserType}
-          slot5={item.Email}
-          view={info.icons.details}
-          link={null}
-          state={null}
-        />
-      ))}
+      list={
+        users &&
+        users.map((item) => (
+          <ListCard
+            slot1={item.SCHLID}
+            slot2={`${item.FirstName} ${item.LastName}`}
+            slot3={item.UUID_Created}
+            slot4={`${item.UserType} : ${item.PermissionLevel}`}
+            slot5={item.Email}
+            view={info.icons.details}
+            link={null}
+            state={null}
+          />
+        ))
+      }
     />
   );
 }

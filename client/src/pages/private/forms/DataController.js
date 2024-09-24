@@ -29,13 +29,13 @@ import { CreateAcademicYear } from "./utilities/create/CreateAcademicYear";
 import { ViewCurriculum } from "./utilities/view/ViewCurriculum";
 import { ViewAcademicYear } from "./utilities/view/ViewAcademicYear";
 import { CreateSetup } from "./utilities/create/CreateSetup";
+import { CreateAssignment } from "./utilities/create/CreateAssignment";
+import { CreateProjection } from "./utilities/create/CreateProjection";
 
 import { GenerateSection } from "./generate/GenerateSection";
 import { EditCurriculum } from "./edit/EditCurriculum";
 import { ViewSetup } from "./view/ViewSetup";
 import { GenerateSchedule } from "./generate/GenerateSchedule";
-import { CreateAssignment } from "./create/CreateAssignment";
-import { CreateProjection } from "./create/CreateProjection";
 import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
 import GenerateUsers from "./generate/GenerateUsers";

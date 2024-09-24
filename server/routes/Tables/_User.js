@@ -11,11 +11,14 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.post("/user-list", (req, res) => {
+router.get("/user-list", (req, res) => {
   try {
-    pool.query(`SELECT * FROM _user`, (err, rslt) => {
-      res.json(rslt.rows);
-    });
+    pool.query(
+      `SELECT * FROM _user WHERE "UUI_Status"='ACTIVE'`,
+      (err, rslt) => {
+        res.json(rslt.rows);
+      }
+    );
   } catch (err) {
     console.error(err);
     res.status(500).send("Internal Server Error");
@@ -33,10 +36,11 @@ router.post("/user-generate", (req, res) => {
       var last = clientData.Lastname;
       var email = clientData.Email;
       var type = clientData.Type;
+      var level = clientData.PermissionLevel;
       var pass = hash;
       pool.query(
-        `INSERT INTO _user ("UUID", "SCHLID", "FirstName", "LastName", "Email", "Password", "UserType")
-          VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from _user), '${id}', '${first}', '${last}', '${email}', '${pass}', '${type}')`,
+        `INSERT INTO _user ("UUID", "SCHLID", "FirstName", "LastName", "Email", "Password", "UserType", "PermissionLevel")
+          VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from _user), '${id}', '${first}', '${last}', '${email}', '${pass}', '${type}', '${level}')`,
 
         (err, rslt) => {
           if (err) {
@@ -69,7 +73,10 @@ router.post("/user-login", (req, res) => {
             return res.json({ Status: "Success", data: rslt.rows[0] });
           } else {
             console.log("Password does not match");
-            return res.json({ Status: "Account doesn't exist", data: null });
+            return res.json({
+              Status: "Account Details doesn't match",
+              data: null,
+            });
           }
         });
       } catch (error) {

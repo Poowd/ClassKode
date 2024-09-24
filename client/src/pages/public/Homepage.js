@@ -26,7 +26,7 @@ export function Homepage() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <main className="w-100 d-flex justify-content-end gap-3 align-items-center">
+            <main className="w-100 d-lg-flex justify-content-end gap-3 align-items-center">
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <a
@@ -90,7 +90,7 @@ export function Homepage() {
               <img
                 src={info.details.carousel.item1.Image}
                 className="d-block w-100 object-fit-cover"
-                style={{ height: "75vh" }}
+                style={{ height: "85vh" }}
                 alt="..."
               />
             </div>
@@ -98,7 +98,7 @@ export function Homepage() {
               <img
                 src={info.details.carousel.item2.Image}
                 className="d-block w-100 object-fit-cover"
-                style={{ height: "75vh" }}
+                style={{ height: "85vh" }}
                 alt="..."
               />
             </div>
@@ -106,7 +106,7 @@ export function Homepage() {
               <img
                 src={info.details.carousel.item3.Image}
                 className="d-block w-100 object-fit-cover"
-                style={{ height: "75vh" }}
+                style={{ height: "85vh" }}
                 alt="..."
               />
             </div>
@@ -249,7 +249,10 @@ export function Homepage() {
                 <ul className="d-lg-flex justify-content-center gap-5">
                   {info &&
                     info.details.dev_team.map((item, i) => (
-                      <li className="d-flex flex-column align-items-center">
+                      <li
+                        key={i}
+                        className="d-flex flex-column align-items-center"
+                      >
                         <figure
                           className="ratio ratio-1x1 rounded object-fit-cover"
                           style={{ width: "10em" }}
@@ -313,7 +316,10 @@ export function Homepage() {
                 <ul className="d-lg-flex justify-content-center gap-5">
                   {info &&
                     info.details.special_thanks.map((item, i) => (
-                      <li className="d-flex flex-column align-items-center">
+                      <li
+                        key={i}
+                        className="d-flex flex-column align-items-center"
+                      >
                         <figure
                           className="ratio ratio-1x1"
                           style={{ width: "10em" }}

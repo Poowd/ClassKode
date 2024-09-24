@@ -8,37 +8,39 @@ export class Sidebar extends React.Component {
   render() {
     return (
       <div
-        className="w-25 offcanvas offcanvas-start m-2 rounded"
+        className="w-100 h-100 offcanvas offcanvas-top bg-transparent p-3"
         tabIndex="-1"
         id={this.props.id}
       >
-        <div className="offcanvas-header mb-0 pb-0 d-flex justify-content-between align-items-center">
-          <Link to={"/"} className="">
-            <div className="h-100 d-flex gap-1">
-              <img
-                src={Logo}
-                alt="..."
-                className="img-fluid p-1"
-                style={{ height: "3em" }}
+        <main className="h-100 w-100 position-relative p-2 m-0">
+          <div className="w-100 position-absolute top-0 start-0 m-0 p-0 d-flex justify-content-start">
+            <Link to={"/"} className="">
+              <div className="">
+                <img
+                  src={Logo}
+                  alt="..."
+                  className="img-fluid"
+                  style={{ height: "5em" }}
+                />
+              </div>
+            </Link>
+          </div>
+          <div className="w-100 position-absolute bottom-0 start-0 m-0 p-0 d-flex justify-content-center">
+            <div className="d-flex align-items-center py-2">
+              <DefaultButton
+                type="button"
+                class="bg-white rounded-pill px-3 py-2 border border-dark"
+                text="Close Navigation"
+                icon={<IoClose />}
+                dismiss="offcanvas"
               />
-              <h5 className="p-0 m-0 d-flex align-items-center text-black">
-                <span className="fw-bold">Class</span>
-                <span> </span>
-                <span className="fw-light">Kode</span>
-              </h5>
             </div>
-          </Link>
-          <DefaultButton
-            type="button"
-            class="p-2"
-            icon={<IoClose />}
-            dismiss="offcanvas"
-          />
-        </div>
-        <hr className="w-100 text-dark mx-3 py-0 mb-0" />
-        <div className="offcanvas-body py-0 my-0 w-100">
-          {this.props.content}
-        </div>
+          </div>
+
+          <div className="offcanvas-body m-0 h-100 w-100">
+            {this.props.content}
+          </div>
+        </main>
       </div>
     );
   }

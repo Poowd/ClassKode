@@ -16,38 +16,41 @@ export function SectionProjection() {
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
-  const [ay, setAY] = useState([]);
-  const [curray, setCurrAY] = useState([]);
+  const [currentacademicyear, setCurrentAcademicYear] = useState([]);
   const [current, setCurrent] = useState([]);
-  const [prj, setPrj] = useState([]);
+  const [projection, setProjection] = useState([]);
 
   useEffect(() => {
-    data_post("sel-ay", ay, setAY);
-    data_post("sel-cur-ay", curray, setCurrAY);
-    data_post("sel-prj", prj, setPrj);
+    data_get("current-academic-year", setCurrentAcademicYear);
+    data_get("project-list", setProjection);
   }, []);
 
-  useEffect(() => {
-    curray.map((ay, i) => setCurrent(ay));
-  }, [curray]);
+  // useEffect(() => {
+  //   currentacademicyear.map((ay, i) => setCurrent(ay));
+  // }, [currentacademicyear]);
 
   return (
     <FileMaintainanceTemplate
       sidepanel={
-        <main className="h-100">
-          <header className="d-flex justify-content-end align-items-center border-bottom pb-2 gap-2">
+        <main>
+          <header className="mb-3">
+            <h5 className="p-0 m-0">Projected Sections Details</h5>
+            <p>Entries: {projection.length} row/s</p>
             <LinkButton
-              class="btn-primary px-2"
+              class="btn-primary py-2"
               textclass="text-white"
-              to={`/academic-year/view/${current.ACYID}`}
+              to={`/academic-year/view/${currentacademicyear.ACYID}`}
               state={{ data: current }}
+              text={`Current Academic Year`}
               icon={info.icons.view}
             />
           </header>
-          <main className="mt-2">
-            <p className="p-0 m-0 fw-semibold text-secondary">Academic Year</p>
-            <h5>{current.AcademicYear}</h5>
-          </main>
+          <section>
+            <section>
+              <h6></h6>
+              <ul className="list-group list-group-flush"></ul>
+            </section>
+          </section>
         </main>
       }
       control={
@@ -64,9 +67,9 @@ export function SectionProjection() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={"/projection/create/0"}
+                to={`/projection/create/${currentacademicyear.ACYID}`}
                 state={{
-                  academicyear: current,
+                  academicyear: currentacademicyear,
                 }}
                 icon={info.icons.add}
               />
@@ -75,22 +78,21 @@ export function SectionProjection() {
         </>
       }
       list={
-        prj.length > 0
-          ? prj.map((item, i) =>
-              item.ACY_Code === current.ACY_Code ? (
-                <ListCard
-                  slot1={`${item.Population} Students`}
-                  slot2={item.Section}
-                  slot3={item.PRJ_Created}
-                  slot4={item.ACY_Code}
-                  slot5={item.AcademicYear}
-                  view={info.icons.view}
-                  link={`/section/view/${item.SCTID}`}
-                  state={{ data: item }}
-                />
-              ) : null
-            )
-          : "none"
+        projection &&
+        projection.map((item, i) =>
+          item.AcademicYear === currentacademicyear.Code ? (
+            <ListCard
+              slot1={`${item.Population} Students`}
+              slot2={item.Section}
+              slot3={item.Created}
+              slot4={item.AcademicYear}
+              slot5={`${item.Population} Students`}
+              view={info.icons.view}
+              link={`/section/view/${item.Section}`}
+              state={{ data: item }}
+            />
+          ) : null
+        )
       }
     />
   );

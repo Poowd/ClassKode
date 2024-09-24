@@ -16,38 +16,41 @@ export function CoachAssignment() {
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
-  const [ay, setAY] = useState([]);
-  const [curray, setCurrAY] = useState([]);
+  const [currentacademicyear, setCurrentAcademicYear] = useState([]);
   const [current, setCurrent] = useState([]);
-  const [asgn, setAsgn] = useState([]);
+  const [assignment, setAssignment] = useState([]);
 
   useEffect(() => {
-    data_post("sel-ay", ay, setAY);
-    data_post("sel-cur-ay", curray, setCurrAY);
-    data_post("sel-asgn", asgn, setAsgn);
-  }, []);
+    data_get("current-academic-year", setCurrentAcademicYear);
+    data_get("assign-list", setAssignment);
+  }, [assignment]);
 
-  useEffect(() => {
-    curray.map((ay, i) => setCurrent(ay));
-  }, [curray]);
+  // useEffect(() => {
+  //   currentacademicyear.map((ay, i) => setCurrent(ay));
+  // }, [currentacademicyear]);
 
   return (
     <FileMaintainanceTemplate
       sidepanel={
-        <main className="h-100">
-          <header className="d-flex justify-content-end align-items-center border-bottom pb-2 gap-2">
+        <main>
+          <header className="mb-3">
+            <h5 className="p-0 m-0">Assigned Coaches Details</h5>
+            <p>Entries: {assignment.length} row/s</p>
             <LinkButton
-              class="btn-primary px-2"
+              class="btn-primary py-2"
               textclass="text-white"
-              to={`/academic-year/view/${current.ACYID}`}
+              to={`/academic-year/view/${currentacademicyear.ACYID}`}
               state={{ data: current }}
+              text={`Current Academic Year`}
               icon={info.icons.view}
             />
           </header>
-          <main className="mt-2">
-            <p className="p-0 m-0 fw-semibold text-secondary">Academic Year</p>
-            <h5>{current.AcademicYear}</h5>
-          </main>
+          <section>
+            <section>
+              <h6></h6>
+              <ul className="list-group list-group-flush"></ul>
+            </section>
+          </section>
         </main>
       }
       control={
@@ -64,9 +67,9 @@ export function CoachAssignment() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
-                to={"/assignment/create/0"}
+                to={`/assignment/create/${currentacademicyear.ACYID}`}
                 state={{
-                  academicyear: current,
+                  academicyear: currentacademicyear,
                 }}
                 icon={info.icons.add}
               />
@@ -75,24 +78,22 @@ export function CoachAssignment() {
         </>
       }
       list={
-        asgn.length > 0
-          ? asgn.map((item, i) =>
-              item.ACY_Code === current.ACY_Code ? (
-                <ListCard
-                  slot1={item.CoachType}
-                  slot2={`${item.FirstName} ${
-                    item.MiddleInitial !== null ? `${item.MiddleInitial}.` : ""
-                  } ${item.LastName}`}
-                  slot3={item.ASG_Created}
-                  slot4={item.ACY_Code}
-                  slot5={`${item.MinUnits} units - ${item.MaxUnits} units`}
-                  view={info.icons.view}
-                  link={`/coach/view/${item.CCHID}`}
-                  state={{ data: item }}
-                />
-              ) : null
-            )
-          : "none"
+        assignment &&
+        assignment.map((item, i) =>
+          item.AcademicYear === currentacademicyear.Code ? (
+            <ListCard
+              key={i}
+              slot1={item.CoachType}
+              slot2={item.Coach}
+              slot3={item.Created}
+              slot4={item.AcademicYear}
+              slot5={`${item.Coach} units - ${item.Coach} units`}
+              view={info.icons.view}
+              link={`/coach/view/${item.Coach}`}
+              state={{ data: item }}
+            />
+          ) : null
+        )
       }
     />
   );

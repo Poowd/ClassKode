@@ -10,9 +10,11 @@ import useItemCounter from "../../../../hook/useItemCounter";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/BatchUploadTemplate.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
+import { useNavigate } from "react-router-dom";
 
 export default function GenerateUsers() {
   //const bootstrap = require("bootstrap");
+  const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [file, sheets, FileUpload] = useSheetImport();
   const [data, setData] = useState([]);
@@ -51,6 +53,9 @@ export default function GenerateUsers() {
           data_post("user-generate", data[i], setSaveStatus);
         }
         showToast(info.icons.calendar, "Users", "User Data are saved!");
+        setTimeout(() => {
+          navigate(-1);
+        }, 2500); // 2 second delay
       } catch (err) {
         showToast(info.icons.calendar, "Users", "Error Encountered!");
       }
@@ -162,7 +167,7 @@ export default function GenerateUsers() {
                     slot2={`${item.Firstname} ${item.Lastname}`}
                     slot3={item.Email}
                     slot4={item.Type}
-                    slot5={null}
+                    slot5={item.PermissionLevel}
                     view={info.icons.view}
                     link={null}
                     state={null}

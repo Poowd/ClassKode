@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DefaultButton } from "../../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
 import { SelectButton } from "../../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../../hook/useHandleChange";
-import useValidation from "../../../../../hook/useValidation";
-import useValidate from "../../../../../hook/useValidate";
 import useDatabase from "../../../../../hook/useDatabase";
 import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import useConfiguration from "../../../../../hook/useConfiguration";
 
 export function CreateSetup() {
-  const params = useParams();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
   const { state } = useLocation();
@@ -121,7 +117,7 @@ export function CreateSetup() {
                       {data.Course !== option.Code ? (
                         <SelectButtonItem
                           key={i}
-                          value={option.CRS_Code}
+                          value={option.Code}
                           content={option.Course}
                         />
                       ) : (

@@ -3,6 +3,7 @@ import "../css/Layout.css";
 import { Topbar } from "../component/topbar/Topbar";
 import powd from "../assets/imgs/misc/char.png";
 import { DefaultButton } from "../component/button/DefaultButton";
+import { BsFillArrowUpCircleFill } from "react-icons/bs";
 
 export class MainLayout extends React.Component {
   render() {
@@ -26,18 +27,6 @@ export class MainLayout extends React.Component {
             </main>
           </section>
         </main>
-        <figure className="position-fixed bottom-0 start-0 ms-3 z-3">
-          <DefaultButton
-            class="text-light"
-            reversed={true}
-            icon={
-              <img src={powd} alt="..." className="sheep ratio ratio-1x1"></img>
-            }
-            function={() => {}}
-            toggle="modal"
-            target="#QuickNav"
-          />
-        </figure>
       </main>
     );
   }

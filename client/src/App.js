@@ -254,7 +254,7 @@ function App() {
               </Route>
             ) : loggeduser.UserType === "Admin" ? (
               <Route
-                path={"/"}
+                path={"*"}
                 element={
                   <MainLayout
                     usericon={info.icons.hiddenuser}
@@ -265,16 +265,51 @@ function App() {
                     content={
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
-                        <Route path={"/institution"}></Route>
+                        <>
+                          {loggeduser.PermissionLevel >= 0 ? (
+                            <>
+                              <Route
+                                path={"/a"}
+                                element={<h1>Hello 2</h1>}
+                              ></Route>
+                              <Route
+                                path={"/e"}
+                                element={<h1>Hello 25</h1>}
+                              ></Route>
+                            </>
+                          ) : null}
+                        </>
+                        <>
+                          {loggeduser.PermissionLevel >= 1 ? (
+                            <>
+                              <Route
+                                path={"/b"}
+                                element={<h1>Hello 2</h1>}
+                              ></Route>
+                              <Route
+                                path={"/d"}
+                                element={<h1>Hello 3</h1>}
+                              ></Route>
+                            </>
+                          ) : null}
+                        </>
+                        <>
+                          {loggeduser.PermissionLevel >= 2 ? (
+                            <Route
+                              path={"/c"}
+                              element={<h1>Hello 3</h1>}
+                            ></Route>
+                          ) : null}
+                        </>
                       </Routes>
                     }
                   />
                 }
               >
-                <Route path={"//*"} element={<Error404 />}></Route>
+                <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
             ) : loggeduser.UserType === "User" ? (
-              <Route path={"/"}>
+              <Route path={"*"}>
                 <Route path={"/*"} element={<Error404 />}></Route>
               </Route>
             ) : loggeduser.UserType === "Developer" ? (
@@ -296,7 +331,7 @@ function App() {
           </>
         ) : (
           <>
-            <Route path={"/"} element={<Homepage />}></Route>
+            <Route path={"*"} element={<Homepage />}></Route>
             <Route path={"/login"} element={<Login />}></Route>
             <Route path={"/*"} element={<Error404 />}></Route>
           </>

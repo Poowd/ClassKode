@@ -108,7 +108,7 @@ export function ViewAcademicYear() {
             {data.map((item, i) => (
               <main key={i} className="px-0 py-3 m-0">
                 <header>
-                  <h6>{item.ACY_Code}</h6>
+                  <h6>{item.Code}</h6>
                   <h1 className="fw-bold custom-text-gradient pb-2">
                     {item.AcademicYear}
                   </h1>
@@ -118,11 +118,7 @@ export function ViewAcademicYear() {
                       <p className="m-0 p-0">{item.CRR_Code}</p>
                     </li>
                     <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">{`${
-                        item.Semester !== null
-                          ? item.Semester.replace("Semester", "Term")
-                          : "Term"
-                      }`}</p>
+                      <p className="m-0 p-0">{`${item.Semester}`}</p>
                     </li>
                   </ul>
                 </header>

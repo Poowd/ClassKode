@@ -84,14 +84,28 @@ export function GenerateSection() {
   async function TestData(data) {
     setTimeout(() => {
       data_post("section-generate", data, setData);
-    }, 750); // 2 second delay
+    }, 1000); // 2 second delay
   }
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     if (true) {
       for (var i in sectionlist) {
-        TestData(sectionlist[i]);
+        do {
+          try {
+            const response = await fetch(
+              "http://localhost:8081/section-generate",
+              {
+                method: "POST",
+                body: JSON.stringify(sectionlist[i]),
+              }
+            );
+            const data = await response.json();
+            console.log(data);
+          } catch (error) {
+            console.log(error);
+          }
+        } while (data.Status === "Success");
       }
       showToast(info.icons.calendar, "Sections", `Sections are saved!`);
       setTimeout(() => {

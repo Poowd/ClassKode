@@ -3,7 +3,7 @@ import React from "react";
 export class MainSelect extends React.Component {
   render() {
     return (
-      <div className={"row my-2 " + this.props.width}>
+      <div className="row mb-2 align-items-center">
         <section className="col-2">
           <label for={this.props.id}>
             <span className="fw-semibold">

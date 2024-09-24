@@ -10,15 +10,23 @@ export class Topbar extends React.Component {
   render() {
     return (
       <nav className="main-top-bar gradient-bg-blue">
-        <div className="h-100 d-flex">
-          <DefaultButton
-            class="text-light border-0 px-2 fs-6"
-            icon={this.props.menuicon}
-            toggle={"offcanvas"}
-            target={"#sidebar"}
-          />
-          <div className="h-100 d-flex gap-1">
-            <img src={Logo} alt="..." className="h-100 img-fluid p-1" />
+        <div className="d-flex align-items-center gap-2">
+          <div>
+            <DefaultButton
+              class="text-white"
+              icon={this.props.menuicon}
+              toggle={"offcanvas"}
+              target={"#sidebar"}
+            />
+          </div>
+          <div className="d-flex">
+            {/* <img
+              src={Logo}
+              alt="..."
+              className="h-100 img-fluid p-1"
+              height={"45"}
+              width={"45"}
+            /> */}
             <h5 className="p-0 m-0 d-flex align-items-center text-white">
               <span className="fw-bold">Class</span>
               <span> </span>
@@ -26,19 +34,24 @@ export class Topbar extends React.Component {
             </h5>
           </div>
         </div>
-        <div className="d-flex">
+        <div className="d-flex align-items-center gap-2">
           <DefaultButton
-            class="text-light px-2"
-            reversed={true}
+            class="text-white"
+            reversed={false}
             icon={this.props.quicknav}
+            text={"Commands"}
             function={() => {}}
             toggle="modal"
             target="#QuickNav"
           />
-          <DefaultButton class="text-light" icon={this.props.helpicon} />
           <DefaultButton
-            class="text-light px-2"
-            reversed={true}
+            class="text-white"
+            icon={this.props.helpicon}
+            text={"Guide"}
+          />
+          <span>|</span>
+          <DefaultButton
+            class="text-white"
             icon={this.props.usericon}
             text={this.props.user}
             function={() => {}}

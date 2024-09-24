@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { DefaultButton } from "../../../../component/button/DefaultButton";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { DefaultButton } from "../../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
-import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
-import useHandleChange from "../../../../hook/useHandleChange";
-import useDatabase from "../../../../hook/useDatabase";
-import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
+import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
+import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
+import { SelectButton } from "../../../../../component/dropdown/select/SelectButton";
+import { MainInput } from "../../../../../component/input/MainInput";
+import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
+import useHandleChange from "../../../../../hook/useHandleChange";
+import useDatabase from "../../../../../hook/useDatabase";
+import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
 
 export function CreateAssignment() {
   const navigate = useNavigate();
@@ -20,24 +22,31 @@ export function CreateAssignment() {
   const [assignment, setAssignment] = useState([]);
   const [course, setCourse] = useState([]);
   const [coachtype, setCoachType] = useState([]);
-  const [asgned, setAsgned] = useState([]);
   const [data, setData] = useState({
     SCHLID: "",
     CoachType: "",
-    ACY_Code: state.academicyear.ACY_Code,
-    DPT_Code: "",
+    AcademicYear: "",
+    Department: "",
   });
 
   const [dataChange] = useHandleChange(setData);
+  const [current, setCurrent] = useState([]);
+  const [currentacademicyear, setCurrentAcademicYear] = useState([]);
 
   var test = [];
+
   useEffect(() => {
-    data_post("sel-coach", coach, setCoach);
-    data_post("sel-asgn", asgned, setAsgned);
-    data_post("sel-crs", course, setCourse);
-    data_post("sel-coach-type", coachtype, setCoachType);
-    data_post("sel-asgn", assignment, setAssignment);
+    data_get("current-academic-year", setCurrentAcademicYear);
+    data_get("assign-list", setAssignment);
+    data_get("coach-list", setCoach);
+    data_get("course-list", setCourse);
+    data_get("coach-type-list", setCoachType);
   }, []);
+
+  useEffect(() => {
+    //currentacademicyear.map((ay, i) => setCurrent(ay));
+    setData((prev) => ({ ...prev, AcademicYear: currentacademicyear.Code }));
+  }, [currentacademicyear]);
 
   useEffect(() => {
     console.log(selectedValues);
@@ -50,7 +59,7 @@ export function CreateAssignment() {
     });
     coach.map((item, i) =>
       item.SCHLID === data.SCHLID
-        ? setData((prev) => ({ ...prev, DPT_Code: item.DPT_Code }))
+        ? setData((prev) => ({ ...prev, Department: item.Department }))
         : null
     );
   }, [data.SCHLID]);
@@ -66,10 +75,10 @@ export function CreateAssignment() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (true) {
-      data_post("ins-assign", data, setData);
-      selectedValues.map((item, i) => {
-        data_post("ins-spec", item, setSelectedValues);
-      });
+      data_post("assignment-insert", data, setData);
+      // selectedValues.map((item, i) => {
+      //   data_post("ins-spec", item, setSelectedValues);
+      // });
       navigate(-1);
     }
   };
@@ -110,7 +119,15 @@ export function CreateAssignment() {
         }
         entryform={
           <>
-            <SelectButton
+            <MainInput
+              label="AcademicYear"
+              id="AcademicYear"
+              trigger={dataChange}
+              value={data.AcademicYear}
+              required={true}
+              disabled={true}
+            />
+            <MainSelect
               label="SCHLID"
               id="SCHLID"
               trigger={dataChange}
@@ -138,7 +155,7 @@ export function CreateAssignment() {
               }
             />
 
-            <SelectButton
+            <MainSelect
               label="CoachType"
               id="CoachType"
               trigger={dataChange}
@@ -146,20 +163,17 @@ export function CreateAssignment() {
               option={
                 <>
                   <SelectButtonItemSelected
-                    content={coachtype.map((option, i) => (
-                      <>
-                        {option.CoachType === data.CoachType
-                          ? option.CoachType
-                          : ""}
-                      </>
+                    content={coachtype.map((option) => (
+                      <>{option.Type === data.CoachType ? option.Type : ""}</>
                     ))}
                   />
                   {coachtype.map((option, i) => (
                     <>
-                      {data.CoachType !== option.CoachType ? (
+                      {data.CoachType !== option.Type ? (
                         <SelectButtonItem
-                          value={option.CoachType}
-                          content={option.CoachType}
+                          key={i}
+                          value={option.Type}
+                          content={option.Type}
                         />
                       ) : (
                         ""
@@ -169,48 +183,59 @@ export function CreateAssignment() {
                 </>
               }
             />
+            <div className="row mb-2 align-items-middle">
+              <div className="col-2 pt-2">
+                <span className="fw-semibold">Specialization</span>
+              </div>
+              <div className="col-10">
+                <div
+                  className="overflow-y-auto p-1 border rounded"
+                  style={{ height: "25vh" }}
+                >
+                  {data.SCHLID !== ""
+                    ? course.map((crs, j) =>
+                        crs.Department === data.Department ? (
+                          <div className={"form-check p-0"}>
+                            <label
+                              className="form-check-label px-5 py-2 w-100 rounded shadow-sm mb-2"
+                              htmlFor={j}
+                            >
+                              {crs.Course}
+                              <input
+                                className="form-check-input course-checkbox"
+                                type="checkbox"
+                                id={j}
+                                onChange={(e) => {
+                                  {
+                                    if (e.target.checked) {
+                                      setSelectedValues((prev) => [
+                                        ...prev,
+                                        {
+                                          id: j,
+                                          SCHLID: data.SCHLID,
+                                          CRS_Code: crs.CRS_Code,
+                                          AcademicYear: data.AcademicYear,
+                                        },
+                                      ]);
+                                    } else {
+                                      removeItem(j);
+                                    }
+                                  }
+                                }}
+                              />
+                            </label>
+                          </div>
+                        ) : null
+                      )
+                    : null}
+                </div>
+              </div>
+            </div>
+
             <main className="">
               <small>
-                <p className="p-0 m-0 fw-semibold mb-1">Specialization</p>
+                <p className="p-0 m-0 fw-semibold mb-1"></p>
               </small>
-              <div className="overflow-y-auto px-1" style={{ height: "20vh" }}>
-                {data.SCHLID !== ""
-                  ? course.map((crs, j) =>
-                      crs.DPT_Code === data.DPT_Code ? (
-                        <div className={"form-check p-0"}>
-                          <label
-                            className="form-check-label px-5 py-2 w-100 rounded shadow-sm mb-2"
-                            htmlFor={j}
-                          >
-                            {crs.Course}
-                            <input
-                              className="form-check-input course-checkbox"
-                              type="checkbox"
-                              id={j}
-                              onChange={(e) => {
-                                {
-                                  if (e.target.checked) {
-                                    setSelectedValues((prev) => [
-                                      ...prev,
-                                      {
-                                        id: j,
-                                        SCHLID: data.SCHLID,
-                                        CRS_Code: crs.CRS_Code,
-                                        ACY_Code: data.ACY_Code,
-                                      },
-                                    ]);
-                                  } else {
-                                    removeItem(j);
-                                  }
-                                }
-                              }}
-                            />
-                          </label>
-                        </div>
-                      ) : null
-                    )
-                  : null}
-              </div>
             </main>
           </>
         }

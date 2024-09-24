@@ -34,21 +34,21 @@ export function AcademicYear() {
     data_post("total-section", { semester: "First Semester" }, setTotalSection);
   }, []);
 
-  useEffect(() => {
-    curray.map((ay, i) => setCurrent(ay));
-  }, [curray]);
+  // useEffect(() => {
+  //   curray.map((ay, i) => setCurrent(ay));
+  // }, [curray]);
 
   return (
     <FileMaintainanceTemplate
       sidepanel={
         <main>
           <header className="mb-3">
-            <h5 className="p-0 m-0">Curriculum Details</h5>
+            <h5 className="p-0 m-0">Academic Year Details</h5>
             <p>Entries: {ay.length} row/s</p>
             <LinkButton
               class="btn-primary py-2"
               textclass="text-white"
-              to={`/academic-year/view/${current.ACYID}`}
+              to={`/academic-year/view/${curray.ACYID}`}
               state={{ data: current }}
               text={`Current Academic Year`}
               icon={info.icons.view}
@@ -94,7 +94,7 @@ export function AcademicYear() {
                 link={null}
                 state={null}
                 custom={
-                  item.ACY_Code === current.ACY_Code ? (
+                  item.ACY_Code === curray.ACY_Code ? (
                     <>
                       <DefaultButton
                         class="custom-bg-primary-light px-2"

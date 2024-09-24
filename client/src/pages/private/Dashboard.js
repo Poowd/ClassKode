@@ -24,7 +24,6 @@ export function Dashboard() {
   const [currsched, setCurrentSched] = useState([]);
 
   useEffect(() => {
-    data_post("population-per-year", populationperyear, setPopulationPerYear);
     data_get("department-list", setDepartment);
     data_get("program-list", setProgram);
     data_get("section-list", setSection);
@@ -33,7 +32,8 @@ export function Dashboard() {
     data_get("coach-list", setCoach);
     data_get("current-academic-year", setCurrentAcademicYear);
     data_get("current-curriculum", setCurrentCurriculum);
-    data_post("sel-sched", currsched, setCurrentSched);
+
+    data_get("total-population-check", setPopulationPerYear);
   }, []);
 
   return (
@@ -48,7 +48,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/academicyear")}
             />
           }
-          content={currentacademicyear.map((ay, i) => ay.Code)}
+          content={currentacademicyear.Code}
         />
       }
       card2={
@@ -61,7 +61,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/curriculum")}
             />
           }
-          content={currentcurriculum.map((crr, i) => crr.Code)}
+          content={currentacademicyear.Curriculum}
         />
       }
       card3={
@@ -74,7 +74,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/schedule")}
             />
           }
-          content={currsched.length}
+          content={populationperyear.population}
         />
       }
       card4={

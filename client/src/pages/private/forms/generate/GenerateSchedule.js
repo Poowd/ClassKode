@@ -14,16 +14,11 @@ export function GenerateSchedule() {
   const [get, post, data_get, data_post] = useDatabase();
   const [convertMinutes] = useTimeFormat();
 
-  const LocalStorage = [JSON.parse(localStorage.getItem("semester_selector"))];
-
-  const [sched, setSched] = useState([]);
-
-  useEffect(() => {
-    data_post("sel-sched", sched, setSched);
-  }, [sched]);
-
+  const SessionStorage = [
+    JSON.parse(sessionStorage.getItem("semester_selector")),
+  ];
+  
   var classes = [];
-
   const [expected, setExpected] = useState([]);
   const [room, setRoom] = useState([]);
   const [coach, setCoach] = useState([]);
@@ -46,13 +41,14 @@ export function GenerateSchedule() {
   ]);
 
   useEffect(() => {
+    data_get("room-list", setRoom);
+    data_get("project-list", setSection);
+    data_get("current-academic-year", setAY);
+    data_get("assign-list", setCoach);
+    data_get("coach-type-list", setCoachType);
+
     data_post("sel-exp-class", expected, setExpected);
-    data_post("sel-rom", room, setRoom);
-    data_post("sel-proj", section, setSection);
-    data_post("sel-asgn", coach, setCoach);
-    data_post("sel-coach-type", coachtype, setCoachType);
     data_post("sel-wke-evt", weekly, setWeekly);
-    data_post("sel-cur-ay", ay, setAY);
     data_post("sel-spl-crs", specialize, setSpecialize);
   }, []);
 
@@ -93,14 +89,14 @@ export function GenerateSchedule() {
   useEffect(() => {
     if (data.currentSemester === "") {
     } else {
-      localStorage.setItem("semester_selector", JSON.stringify(data));
+      sessionStorage.setItem("semester_selector", JSON.stringify(data));
     }
   }, [data]);
 
   useEffect(() => {
-    if (LocalStorage[0] === null) {
+    if (SessionStorage[0] === null) {
     } else {
-      setData(LocalStorage[0]);
+      setData(SessionStorage[0]);
     }
   }, []);
 

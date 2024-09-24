@@ -26,7 +26,7 @@
 
 .solid-background-1 {
   background-image: linear-gradient(180deg, #e58c02, #fe9c02);
-  color: darkslategray;
+  color: #083d6d;
   font-weight: 700;
   filter: drop-shadow(10px);
 }

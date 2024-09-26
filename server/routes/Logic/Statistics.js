@@ -12,8 +12,24 @@ const pool = new Pool({
 
 router.get("/total-population-check", (req, res) => {
   try {
-    pool.query(`SELECT SUM("Population"::int) as Population FROM projection`, (err, rslt) =>
-      res.json(rslt.rows[0])
+    pool.query(
+      `SELECT SUM("Population"::int) as Population FROM projection`,
+      (err, rslt) => res.json(rslt.rows[0])
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/population-per-term", (req, res) => {
+  const clientData = JSON.parse(req.body);
+  var data = clientData.Code;
+  console.log(clientData);
+  try {
+    pool.query(
+      `SELECT SUM("Population"::int) as Population1 FROM projection WHERE "AcademicYear"='${data}' LIMIT 1`,
+      (err, rslt) => res.json(rslt.rows[0])
     );
   } catch (err) {
     console.error(err);

@@ -13,7 +13,7 @@ export class Sidebar extends React.Component {
         id={this.props.id}
       >
         <main className="h-100 w-100 position-relative p-2 m-0">
-          <div className="w-100 position-absolute top-0 start-0 m-0 p-0 d-flex justify-content-start">
+          <div className="position-absolute top-0 start-0 m-0 p-0 d-flex justify-content-start">
             <Link to={"/"} className="">
               <div className="">
                 <img

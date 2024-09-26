@@ -4,15 +4,20 @@ import { Link } from "react-router-dom";
 export class SidebarDropdownItem extends React.Component {
   render() {
     return (
-      <li className="w-100">
-        <button className="text-start btn py-0 m-0 d-flex align-items-center">
-          <span className="fs-3">{this.props.icon}</span>
-          <Link to={this.props.navigate} className="w-100 nav-link px-3 py-2">
-            <span className="text-dark">
-              {this.props.text}
-            </span>
-          </Link>
-        </button>
+      <li className="">
+        <Link to={this.props.navigate} className="w-100">
+          <button
+            className="btn p-0 m-0 ratio ratio-1x1"
+            style={{ width: "10em" }}
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          >
+            <div className="d-flex flex-column align-items-center justify-content-center p-0 m-0">
+              <div className="fs-1">{this.props.icon}</div>
+              <div className="text-dark fw-semibold">{this.props.text}</div>
+            </div>
+          </button>
+        </Link>
       </li>
     );
   }

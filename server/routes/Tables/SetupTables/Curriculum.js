@@ -34,10 +34,10 @@ router.get("/current-curriculum", (req, res) => {
   }
 });
 
-router.get("/department-list-archived", (req, res) => {
+router.get("/curriculum-list-archived", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM department WHERE "Status"='ARCHIVE'`,
+      `SELECT * FROM curriculum WHERE "Status"='ARCHIVE'`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -91,7 +91,7 @@ router.post("/curriculum-insert", (req, res) => {
   }
 });
 
-router.post("/department-edit", (req, res) => {
+router.post("/curriculum-edit", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.DPTID;
@@ -145,12 +145,12 @@ router.post("/curriculum-archive", (req, res) => {
   }
 });
 
-router.post("/department-restore", (req, res) => {
+router.post("/curriculum-restore", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `UPDATE department SET "Status"='ACTIVE' WHERE "DPTID"='${id}'`,
+      `UPDATE curriculum SET "Status"='ACTIVE' WHERE "DPTID"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

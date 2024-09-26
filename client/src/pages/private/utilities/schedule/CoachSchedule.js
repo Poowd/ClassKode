@@ -21,8 +21,8 @@ export function CoachSchedule() {
   const [schedule, setSchedule] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
-  const [section, setSection] = useState([]);
-  const [currsection, setCurrentSection] = useState(
+  const [coach, setCoach] = useState([]);
+  const [currcoach, setCurrentCoach] = useState(
     search.Search === "" ? "n/a" : search.Search
   );
 
@@ -39,56 +39,53 @@ export function CoachSchedule() {
   ]);
 
   useEffect(() => {
-    data_post("sel-sched", search, setSchedule);
-    data_post("sel-proj", section, setSection);
+    data_get("class-schedule-list", setSchedule);
+    data_get("assign-list", setCoach);
     if (search.Search === "") {
-      for (var i = 0; i < section.length; i++) {
-        setCurrentSection(section[0].Section);
+      for (var i = 0; i < coach.length; i++) {
+        setCurrentCoach(coach[0].SCHLID);
       }
     } else {
-      setCurrentSection(search.Search);
+      setCurrentCoach(search.Search);
     }
   }, [search]);
 
   useEffect(() => {
-    section.map((section, i) =>
-      i === 0 && currsection === "n/a"
-        ? setCurrentSection(section.Section)
-        : null
+    coach.map((coach, i) =>
+      i === 0 && currcoach === "n/a" ? setCurrentCoach(coach.SCHLID) : null
     );
-  }, [section]);
+  }, [coach]);
 
   function resetSearch() {
     setSearch({ Search: "" });
   }
   function previousSection() {
-    for (var i = 0; i < section.length; i++) {
-      if (section[i].Section === currsection) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === currcoach) {
         if (i - 1 >= 0) {
-          setCurrentSection(section[i - 1].Section);
+          setCurrentCoach(coach[i - 1].SCHLID);
         }
       }
-      if (currsection === "n/a") {
-        setCurrentSection(section[0].Section);
+      if (currcoach === "n/a") {
+        setCurrentCoach(coach[0].SCHLID);
       }
     }
   }
   function nextSection() {
-    for (var i = 0; i < section.length; i++) {
-      if (section[i].Section === currsection) {
-        if (i + 1 < section.length) {
-          setCurrentSection(section[i + 1].Section);
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === currcoach) {
+        if (i + 1 < coach.length) {
+          setCurrentCoach(coach[i + 1].SCHLID);
         }
       }
-      if (currsection === "n/a") {
-        setCurrentSection(section[0].Section);
+      if (currcoach === "n/a") {
+        setCurrentCoach(coach[0].SCHLID);
       }
     }
   }
-
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-8 h-100 p-0 m-0 pe-2">
+      <section className="col-lg-8 h-100 p-0 m-0 pe-2 overflow-y-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -99,20 +96,20 @@ export function CoachSchedule() {
               }}
             />
           </main>
-          <main className="row m-0 p-0 flex-fill">
+          <main className="h-100 row m-0 p-0 py-2 flex-fill">
             <section className="col m-0 p-0">
               <table className="w-100">
                 <thead>
                   <tr>
                     <td className="text-center fw-semibold pb-2 custom-text-gradient">
-                      {currsection}
+                      {currcoach}
                     </td>
                   </tr>
                 </thead>
                 <tbody>
                   {time.map((time, i) => (
                     <tr>
-                      <td className="border fw-light px-3">
+                      <td className="border fw-light p-2">
                         {convertMinutes(time)}
                       </td>
                     </tr>
@@ -135,16 +132,16 @@ export function CoachSchedule() {
                     {time.map((time, j) => (
                       <tr>
                         <td
-                          className="border border-white"
+                          className="border border-white py-2"
                           style={{ width: "0" }}
                         >
                           &nbsp;
                         </td>
                         {schedule.length > 0
                           ? schedule.map((schedule, k) =>
-                              schedule.Section === currsection ? (
+                              schedule.Coach === currcoach ? (
                                 schedule.Day === day ? (
-                                  schedule.StartTime === time ? (
+                                  +schedule.StartTime === time ? (
                                     <td
                                       rowSpan={
                                         (schedule.EndTime -
@@ -153,31 +150,18 @@ export function CoachSchedule() {
                                       }
                                       className={
                                         schedule.Component.includes("General")
-                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded align-middle text-center"
-                                          : "border border-white gradient-bg-light-blue rounded align-middle text-center"
+                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center"
+                                          : "border border-white gradient-bg-light-blue rounded text-center"
                                       }
+                                      onClick={() => {
+                                        alert(schedule.Course);
+                                      }}
                                     >
-                                      <small>
-                                        <main className="p-2">
-                                          <header>
-                                            <h6 className="m-0 p-0">
-                                              {schedule.Course}
-                                            </h6>
-                                          </header>
-                                          <main>
-                                            <p className="m-0 p-0">
-                                              {convertMinutes(
-                                                schedule.StartTime
-                                              )}{" "}
-                                              -{" "}
-                                              {convertMinutes(schedule.EndTime)}
-                                            </p>
-                                            <p className="m-0 p-0">
-                                              {schedule.Coach}
-                                            </p>
-                                          </main>
-                                        </main>
-                                      </small>
+                                      <main className="p-1">
+                                        <p className="fw-semibold m-0 p-0">
+                                          {`${schedule.Course} ( ${schedule.Section} )`}
+                                        </p>
+                                      </main>
                                     </td>
                                   ) : (
                                     ""
@@ -223,7 +207,7 @@ export function CoachSchedule() {
           <section>
             {schedule.length > 0
               ? schedule.map((schedule, i) =>
-                  schedule.Section === currsection ? (
+                  schedule.Coach === currcoach ? (
                     <>
                       <main className="p-3 shadow-sm rounded mb-2">
                         <main className="row m-0 p-0">

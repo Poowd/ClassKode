@@ -61,6 +61,10 @@ import host from "./../assets/imgs/misc/Host.png";
 
 export default function useConfiguration() {
   const [info, setInfo] = useState({
+    conn: {
+      server: "http://localhost:8081/",
+      client: "",
+    },
     details: {
       app_name: "Class Kode",
       sub_name: "Scheduling and Faculty Locator",

@@ -29,13 +29,13 @@ import { ImagetoDB } from "./pages/testing/ImagetoDB";
 import { Login } from "./pages/public/Login";
 import { Homepage } from "./pages/public/Homepage";
 import useConfiguration from "./hook/useConfiguration";
-import { DefaultInput } from "./component/input/DefaultInput";
 import useHandleChange from "./hook/useHandleChange";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
-import { DefaultButton } from "./component/button/DefaultButton";
 import FileInput from "./pages/testing/FileInput";
 import { Setup } from "./pages/private/miscellaneous/Setup";
+import { SuperAdminTopbar } from "./component/topbar/SuperAdminTopbar";
+import { CoachSchedule } from "./pages/private/utilities/schedule/CoachSchedule";
 
 function App() {
   const navigate = useNavigate();
@@ -102,33 +102,10 @@ function App() {
             {loggeduser.UserType === "Manager" ||
             loggeduser.UserType === "Developer" ? (
               <Route
-                path={"/*"}
+                path={"*"}
                 element={
                   <MainLayout
-                    usericon={info.icons.hiddenuser}
-                    helpicon={info.icons.help}
-                    quicknav={info.icons.quicknav}
-                    quicknavaction={
-                      <main>
-                        <section className="d-flex gap-1">
-                          <DefaultInput
-                            label="inputs"
-                            id="Input"
-                            name="Input"
-                            trigger={dataChange}
-                          />
-                          <DefaultButton
-                            class="btn-danger py-2 px-2"
-                            reversed={true}
-                            text="Enter"
-                            function={quicknav}
-                          />
-                        </section>
-                      </main>
-                    }
-                    menuicon={info.icons.menu}
-                    logout={handleLogout}
-                    user={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
+                    topbar={<SuperAdminTopbar />}
                     content={
                       <Routes>
                         <Route
@@ -162,27 +139,18 @@ function App() {
                             path={"/institution/coach"}
                             element={<Coach />}
                           ></Route>
-                          <Route path={"*"} element={<Error404 />}></Route>
                         </Route>
 
                         <Route path={"/utilities"}>
                           <Route path={"/utilities/curriculum"}>
-                            <Route
-                              path={"/utilities/curriculum/"}
-                              element={<Curriculum />}
-                            ></Route>
+                            <Route index element={<Curriculum />}></Route>
                             <Route
                               path={"/utilities/curriculum/setup/:id"}
                               element={<CourseSetup />}
                             ></Route>
-                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
-
                           <Route path={"/utilities/academicyear"}>
-                            <Route
-                              path={"/utilities/academicyear/"}
-                              element={<AcademicYear />}
-                            ></Route>
+                            <Route index element={<AcademicYear />}></Route>
                             <Route
                               path={"/utilities/academicyear/assigment"}
                               element={<CoachAssignment />}
@@ -191,14 +159,9 @@ function App() {
                               path={"/utilities/academicyear/projection"}
                               element={<SectionProjection />}
                             ></Route>
-                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
-
                           <Route path={"/utilities/schedule"}>
-                            <Route
-                              path={"/utilities/schedule/"}
-                              element={<Schedule />}
-                            ></Route>
+                            <Route index element={<Schedule />}></Route>
                             <Route
                               path={"/utilities/schedule/room"}
                               element={<RoomSchedule />}
@@ -207,19 +170,18 @@ function App() {
                               path={"/utilities/schedule/section"}
                               element={<SectionSchedule />}
                             ></Route>
-                            <Route path={"*"} element={<Error404 />}></Route>
-                          </Route>
-
-                          <Route path={"/utilities"}>
                             <Route
-                              path={"/utilities/locator/"}
-                              element={<Locator />}
+                              path={"/utilities/schedule/coach"}
+                              element={<CoachSchedule />}
                             ></Route>
-                            <Route path={"*"} element={<Error404 />}></Route>
                           </Route>
+                          <Route
+                            path={"/utilities/locator"}
+                            element={<Locator />}
+                          ></Route>
                         </Route>
 
-                        <Route path={"/miscellaneous/"}>
+                        <Route path={"/miscellaneous"}>
                           <Route
                             path={"/miscellaneous/archive"}
                             element={<Archives />}
@@ -236,7 +198,6 @@ function App() {
                             path={"/miscellaneous/setup"}
                             element={<Setup />}
                           ></Route>
-                          <Route path={"*"} element={<Error404 />}></Route>
                         </Route>
 
                         <Route
@@ -244,24 +205,18 @@ function App() {
                           element={<DataController />}
                         ></Route>
 
-                        <Route path={"*"} element={<Error404 />}></Route>
+                        <Route path={"/*"} element={<Error404 />}></Route>
                       </Routes>
                     }
                   />
                 }
-              >
-                <Route path={"/*"} element={<Error404 />}></Route>
-              </Route>
+              ></Route>
             ) : loggeduser.UserType === "Admin" ? (
               <Route
                 path={"*"}
                 element={
                   <MainLayout
-                    usericon={info.icons.hiddenuser}
-                    helpicon={info.icons.help}
-                    menuicon={info.icons.menu}
-                    logout={handleLogout}
-                    user={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
+                    topbar={<SuperAdminTopbar />}
                     content={
                       <Routes>
                         <Route index element={<Dashboard />}></Route>

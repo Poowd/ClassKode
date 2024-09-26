@@ -39,8 +39,8 @@ export function SectionSchedule() {
   ]);
 
   useEffect(() => {
-    data_post("sel-sched", search, setSchedule);
-    data_post("sel-proj", section, setSection);
+    data_get("class-schedule-list", setSchedule);
+    data_get("project-list", setSection);
     if (search.Search === "") {
       for (var i = 0; i < section.length; i++) {
         setCurrentSection(section[0].Section);
@@ -88,7 +88,7 @@ export function SectionSchedule() {
 
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-8 h-100 p-0 m-0 pe-2">
+      <section className="col-lg-8 h-100 p-0 m-0 pe-2 overflow-y-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -99,7 +99,7 @@ export function SectionSchedule() {
               }}
             />
           </main>
-          <main className="row m-0 p-0 flex-fill">
+          <main className="h-100 row m-0 p-0 py-3 flex-fill">
             <section className="col m-0 p-0">
               <table className="w-100">
                 <thead>
@@ -112,7 +112,7 @@ export function SectionSchedule() {
                 <tbody>
                   {time.map((time, i) => (
                     <tr>
-                      <td className="border fw-light px-3">
+                      <td className="border fw-light p-2">
                         {convertMinutes(time)}
                       </td>
                     </tr>
@@ -135,7 +135,7 @@ export function SectionSchedule() {
                     {time.map((time, j) => (
                       <tr>
                         <td
-                          className="border border-white"
+                          className="border border-white py-2"
                           style={{ width: "0" }}
                         >
                           &nbsp;
@@ -144,7 +144,7 @@ export function SectionSchedule() {
                           ? schedule.map((schedule, k) =>
                               schedule.Section === currsection ? (
                                 schedule.Day === day ? (
-                                  schedule.StartTime === time ? (
+                                  +schedule.StartTime === time ? (
                                     <td
                                       rowSpan={
                                         (schedule.EndTime -
@@ -153,31 +153,18 @@ export function SectionSchedule() {
                                       }
                                       className={
                                         schedule.Component.includes("General")
-                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded align-middle text-center"
-                                          : "border border-white gradient-bg-light-blue rounded align-middle text-center"
+                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center"
+                                          : "border border-white gradient-bg-light-blue rounded text-center"
                                       }
+                                      onClick={() => {
+                                        alert(schedule.Course);
+                                      }}
                                     >
-                                      <small>
-                                        <main className="p-2">
-                                          <header>
-                                            <h6 className="m-0 p-0">
-                                              {schedule.Course}
-                                            </h6>
-                                          </header>
-                                          <main>
-                                            <p className="m-0 p-0">
-                                              {convertMinutes(
-                                                schedule.StartTime
-                                              )}{" "}
-                                              -{" "}
-                                              {convertMinutes(schedule.EndTime)}
-                                            </p>
-                                            <p className="m-0 p-0">
-                                              {schedule.Coach}
-                                            </p>
-                                          </main>
-                                        </main>
-                                      </small>
+                                      <main className="p-1">
+                                        <p className="fw-semibold m-0 p-0">
+                                          {`${schedule.Course} ( ${schedule.Room} )`}
+                                        </p>
+                                      </main>
                                     </td>
                                   ) : (
                                     ""

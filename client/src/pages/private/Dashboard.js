@@ -21,7 +21,7 @@ export function Dashboard() {
   const [coach, setCoach] = useState([]);
   const [currentacademicyear, setCurrentAcademicYear] = useState([]);
   const [currentcurriculum, setCurrentCurriculum] = useState([]);
-  const [currsched, setCurrentSched] = useState([]);
+  const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
     data_get("department-list", setDepartment);
@@ -32,7 +32,7 @@ export function Dashboard() {
     data_get("coach-list", setCoach);
     data_get("current-academic-year", setCurrentAcademicYear);
     data_get("current-curriculum", setCurrentCurriculum);
-
+    data_get("class-schedule-list", setSchedule);
     data_get("total-population-check", setPopulationPerYear);
   }, []);
 
@@ -74,7 +74,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/schedule")}
             />
           }
-          content={populationperyear.population}
+          content={`${schedule.length} classes`}
         />
       }
       card4={
@@ -89,7 +89,7 @@ export function Dashboard() {
       chart1={useChart(
         ["a", "a", "a", "a", "a"],
         "My Chart",
-        [0, 59, 80, 81, 56, 55, 40],
+        [populationperyear.population],
         "line",
         "x",
         "auto",

@@ -22,6 +22,18 @@ router.get("/academic-year-list", (req, res) => {
   }
 });
 
+router.get("/last-five-terms", (req, res) => {
+  try {
+    pool.query(
+      `SELECT * FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 5`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/current-academic-year", (req, res) => {
   try {
     pool.query(

@@ -21,7 +21,7 @@ export function Schedule() {
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
-    data_post("sel-sched", sched, setSched);
+    data_get("class-schedule-list", setSched);
   }, [sched]);
   return (
     <>
@@ -50,7 +50,7 @@ export function Schedule() {
                       />
                       <DefaultDropdownItem
                         title={"Coach"}
-                        trigger={() => navigate("/utilities/schedule/section")}
+                        trigger={() => navigate("/utilities/schedule/coach")}
                       />
                       <DefaultDropdownItem
                         title={"Section"}
@@ -92,7 +92,7 @@ export function Schedule() {
                         ? "Court"
                         : sc.Room + " " + sc.Population + "/" + sc.Capacity
                     }
-                    slot5={sc.LastName}
+                    slot5={sc.Coach}
                     slot6={sc.Component + " ( " + sc.Units + " )"}
                     link={null}
                     state={null}

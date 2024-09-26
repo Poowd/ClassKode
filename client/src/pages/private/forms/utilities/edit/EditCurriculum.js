@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { FormInput } from "../../../../component/input/FormInput";
-import { DefaultButton } from "../../../../component/button/DefaultButton";
+import { FormInput } from "../../../../../component/input/FormInput";
+import { DefaultButton } from "../../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
-import useHandleChange from "../../../../hook/useHandleChange";
-import useDatabase from "../../../../hook/useDatabase";
+import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
+import useHandleChange from "../../../../../hook/useHandleChange";
+import useDatabase from "../../../../../hook/useDatabase";
 
 export function EditCurriculum() {
   const params = useParams();

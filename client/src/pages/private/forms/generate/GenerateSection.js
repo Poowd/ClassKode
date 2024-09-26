@@ -94,7 +94,7 @@ export function GenerateSection() {
         do {
           try {
             const response = await fetch(
-              "http://localhost:8081/section-generate",
+              `${info.conn.server}section-generate`,
               {
                 method: "POST",
                 body: JSON.stringify(sectionlist[i]),

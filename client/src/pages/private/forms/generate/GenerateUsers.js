@@ -12,7 +12,7 @@ import sheetTemplate from "../../../../assets/template/BatchUploadTemplate.xlsx"
 import useDatabase from "../../../../hook/useDatabase";
 import { useNavigate } from "react-router-dom";
 
-export default function GenerateUsers() {
+export function GenerateUsers() {
   //const bootstrap = require("bootstrap");
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();

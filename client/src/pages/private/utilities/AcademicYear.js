@@ -27,12 +27,7 @@ export function AcademicYear() {
     data_get("current-academic-year", setCurrAY);
   }, [ay, curray]);
 
-  useEffect(() => {
-    data_post("total-coach", totalcoach, setTotalCoach);
-    data_post("total-coach-type", { type: "Fulltime" }, setTotalFulltime);
-    data_post("total-coach-type", { type: "Parttime" }, setTotalParttime);
-    data_post("total-section", { semester: "First Semester" }, setTotalSection);
-  }, []);
+  useEffect(() => {}, []);
 
   // useEffect(() => {
   //   curray.map((ay, i) => setCurrent(ay));

@@ -32,23 +32,35 @@
 }
 
 /*
-    #005483,
-    #007a9a,
-    #008da1,
-    #00a1a4,
-    #00ca9a
-  
+GOLD FOR DARK MODE
+    #a67c00,
+    #bf9b30,
+    #ffbf00,
+    #ffcf40,
+    #ffdc73
   */
 
 .custom-text-gradient {
   background: linear-gradient(
     to right,
-    #f97a05,
-    #f55d0c,
-    #f97a05,
-    #e58c02,
-    #fe9c02,
-    #f97a05
+    #083d6d,
+    #0a4b84,
+    #0c589c,
+    #0e65b4,
+    #1073cb
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-text-gradient-dark {
+  background: linear-gradient(
+    to right,
+    #a67c00,
+    #bf9b30,
+    #ffbf00,
+    #ffcf40,
+    #ffdc73
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

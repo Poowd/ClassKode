@@ -31,14 +31,15 @@ import { ViewAcademicYear } from "./utilities/view/ViewAcademicYear";
 import { CreateSetup } from "./utilities/create/CreateSetup";
 import { CreateAssignment } from "./utilities/create/CreateAssignment";
 import { CreateProjection } from "./utilities/create/CreateProjection";
+import { EditCurriculum } from "./utilities/edit/EditCurriculum";
 
 import { GenerateSection } from "./generate/GenerateSection";
-import { EditCurriculum } from "./edit/EditCurriculum";
-import { ViewSetup } from "./view/ViewSetup";
 import { GenerateSchedule } from "./generate/GenerateSchedule";
+import { GenerateUsers } from "./generate/GenerateUsers";
+
+import { ViewSetup } from "./view/ViewSetup";
 import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
-import GenerateUsers from "./generate/GenerateUsers";
 
 export function DataController() {
   const navigate = useNavigate();

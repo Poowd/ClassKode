@@ -3,6 +3,7 @@ const Curriculum = require("./routes/Tables/SetupTables/Curriculum.js");
 const Setup = require("./routes/Tables/SetupTables/Setup.js");
 const Assignment = require("./routes/Tables/SetupTables/Assignment.js");
 const Projection = require("./routes/Tables/SetupTables/Projection.js");
+const Specialization = require("./routes/Tables/SetupTables/Specialization.js");
 
 const AcademicLevel = require("./routes/Tables/Additional/AcademicLevel.js");
 const Semester = require("./routes/Tables/Additional/Semester.js");
@@ -12,6 +13,8 @@ const Floor = require("./routes/Tables/Additional/Floor.js");
 const YearLevel = require("./routes/Tables/Additional/YearLevel.js");
 const Component = require("./routes/Tables/Additional/Component.js");
 const CoachType = require("./routes/Tables/Additional/CoachType.js");
+const WeeklyEvent = require("./routes/Tables/Additional/WeeklyEvent.js");
+const ExpectedClass = require("./routes/Tables/Additional/ExpectedClass.js");
 
 const Department = require("./routes/Tables/Department.js");
 const Program = require("./routes/Tables/Program.js");
@@ -19,6 +22,7 @@ const Coach = require("./routes/Tables/Coach.js");
 const Course = require("./routes/Tables/Course.js");
 const Room = require("./routes/Tables/Room.js");
 const Section = require("./routes/Tables/Section.js");
+const Schedules = require("./routes/Tables/Schedules.js");
 
 const _User = require("./routes/Tables/_User.js");
 
@@ -77,6 +81,7 @@ router.use("/", Curriculum);
 router.use("/", Setup);
 router.use("/", Assignment);
 router.use("/", Projection);
+router.use("/", Specialization);
 
 router.use("/", Department);
 router.use("/", Program);
@@ -84,6 +89,7 @@ router.use("/", Coach);
 router.use("/", Course);
 router.use("/", Room);
 router.use("/", Section);
+router.use("/", Schedules);
 
 router.use("/", _User);
 
@@ -95,6 +101,8 @@ router.use("/", AcademicLevel);
 router.use("/", Semester);
 router.use("/", Component);
 router.use("/", CoachType);
+router.use("/", WeeklyEvent);
+router.use("/", ExpectedClass);
 
 // = = >
 app.listen(8081, () => {

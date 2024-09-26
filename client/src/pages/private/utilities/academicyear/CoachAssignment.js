@@ -23,7 +23,7 @@ export function CoachAssignment() {
   useEffect(() => {
     data_get("current-academic-year", setCurrentAcademicYear);
     data_get("assign-list", setAssignment);
-  }, [assignment]);
+  }, []);
 
   // useEffect(() => {
   //   currentacademicyear.map((ay, i) => setCurrent(ay));
@@ -63,7 +63,6 @@ export function CoachAssignment() {
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
-
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
@@ -84,12 +83,12 @@ export function CoachAssignment() {
             <ListCard
               key={i}
               slot1={item.CoachType}
-              slot2={item.Coach}
+              slot2={item.LastName}
               slot3={item.Created}
               slot4={item.AcademicYear}
-              slot5={`${item.Coach} units - ${item.Coach} units`}
+              slot5={`${item.MAX} units`}
               view={info.icons.view}
-              link={`/coach/view/${item.Coach}`}
+              link={`/coach/view/${item.SCHLID}`}
               state={{ data: item }}
             />
           ) : null

@@ -61,7 +61,7 @@ export function CreateProjection() {
         do {
           try {
             const response = await fetch(
-              "http://localhost:8081/projection-insert",
+              `${info.conn.server}projection-insert`,
               {
                 method: "POST",
                 body: JSON.stringify(selectedValues[i]),
@@ -165,7 +165,8 @@ export function CreateProjection() {
                                                   document.getElementById(
                                                     "SCT" + k
                                                   ).value,
-                                                AcademicYear: currentacademicyear.Code,
+                                                AcademicYear:
+                                                  currentacademicyear.Code,
                                               },
                                             ]);
                                           }}

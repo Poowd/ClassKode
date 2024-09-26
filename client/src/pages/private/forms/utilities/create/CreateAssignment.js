@@ -10,6 +10,7 @@ import { MainSelect } from "../../../../../component/dropdown/select/MainSelect"
 import useHandleChange from "../../../../../hook/useHandleChange";
 import useDatabase from "../../../../../hook/useDatabase";
 import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
+import useConfiguration from "../../../../../hook/useConfiguration";
 
 export function CreateAssignment() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export function CreateAssignment() {
   const [get, post, data_get, data_post] = useDatabase();
   const [selectedValues, setSelectedValues] = useState([]);
   const coursecheckbox = document.querySelectorAll(".course-checkbox");
+  const [info] = useConfiguration();
 
   const [coach, setCoach] = useState([]);
   const [assignment, setAssignment] = useState([]);
@@ -72,13 +74,27 @@ export function CreateAssignment() {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (true) {
       data_post("assignment-insert", data, setData);
-      // selectedValues.map((item, i) => {
-      //   data_post("ins-spec", item, setSelectedValues);
-      // });
+      for (var i in selectedValues) {
+        do {
+          try {
+            const response = await fetch(
+              `${info.conn.server}specialization-insert`,
+              {
+                method: "POST",
+                body: JSON.stringify(selectedValues[i]),
+              }
+            );
+            const data = await response.json();
+            console.log(data);
+          } catch (error) {
+            console.log(error);
+          }
+        } while (data.Status === "Success");
+      }
       navigate(-1);
     }
   };
@@ -135,7 +151,7 @@ export function CreateAssignment() {
               option={
                 <>
                   <SelectButtonItemSelected
-                    content={coach.map((option, i) => (
+                    content={coach.map((option) => (
                       <>
                         {option.SCHLID === data.SCHLID ? option.LastName : ""}
                       </>
@@ -145,6 +161,7 @@ export function CreateAssignment() {
                     <>
                       {data.SCHLID !== option.SCHLID ? (
                         <SelectButtonItem
+                          key={i}
                           value={option.SCHLID}
                           content={option.LastName}
                         />
@@ -195,7 +212,7 @@ export function CreateAssignment() {
                   {data.SCHLID !== ""
                     ? course.map((crs, j) =>
                         crs.Department === data.Department ? (
-                          <div className={"form-check p-0"}>
+                          <div key={j} className={"form-check p-0"}>
                             <label
                               className="form-check-label px-5 py-2 w-100 rounded shadow-sm mb-2"
                               htmlFor={j}
@@ -213,7 +230,7 @@ export function CreateAssignment() {
                                         {
                                           id: j,
                                           SCHLID: data.SCHLID,
-                                          CRS_Code: crs.CRS_Code,
+                                          Course: crs.Code,
                                           AcademicYear: data.AcademicYear,
                                         },
                                       ]);

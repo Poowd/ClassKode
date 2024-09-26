@@ -81,7 +81,7 @@ router.post("/setup-insert", (req, res) => {
   }
 });
 
-router.post("/department-edit", (req, res) => {
+router.post("/setup-edit", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.DPTID;
@@ -115,7 +115,7 @@ router.post("/department-edit", (req, res) => {
   }
 });
 
-router.post("/curriculum-archive", (req, res) => {
+router.post("/setup-archive", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
@@ -135,7 +135,7 @@ router.post("/curriculum-archive", (req, res) => {
   }
 });
 
-router.post("/department-restore", (req, res) => {
+router.post("/setup-restore", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;

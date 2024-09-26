@@ -21,6 +21,7 @@ export function RoomSchedule() {
   const [placement, setPlacement] = useState([]);
   const [floor, setFloor] = useState([]);
   const [building, setBuilding] = useState([]);
+  const [room, setRoom] = useState([]);
   const [floorstatus, setFloorStatus] = useState(true);
   const [location, setLocation] = useState([
     { Floor: "First Floor", Building: "Main", Map: info.maps.m1 },
@@ -38,12 +39,13 @@ export function RoomSchedule() {
   const [currbuilding, setCurrentBuilding] = useState(location[0].Building);
   useEffect(() => {
     data_post("sel-place", placement, setPlacement);
-    data_post("sel-flor", floor, setFloor);
-    data_post("sel-buil", building, setBuilding);
+    data_get("floor-list", setFloor);
+    data_get("building-list", setBuilding);
+    data_get("room-list", setRoom);
   }, []);
 
   useEffect(() => {
-    data_post("sel-sched", schedule, setSchedule);
+    data_get("class-schedule-list", setSchedule);
   }, []);
 
   function previousLocation() {
@@ -160,44 +162,39 @@ export function RoomSchedule() {
             </div>
           </section>
           <section>
-            {schedule.map((sc, i) =>
-              sc.Building === currbuilding && sc.Floor === currfloor ? (
-                <>
-                  <main className="p-3 shadow-sm rounded mb-2">
-                    <main className="row m-0 p-0">
-                      <section className="col-3 p-0 m-0">
-                        <section>
-                          <h6 className="p-0 m-0">
-                            {sc.Room === null ? "Court" : sc.Room}
-                          </h6>
-                        </section>
-                      </section>
-                      <section className="col-9 p-0 m-0">
-                        <section>
-                          <h6 className="p-0 m-0">
-                            {sc.Section === null ? sc.CRS_Code : sc.Course}
-                          </h6>
-                        </section>
-                        <section>
-                          <small>
-                            <p className="p-0 m-0 text-secondary fst-italic">
-                              <span>
-                                {" "}
-                                {sc.Day +
-                                  " " +
-                                  convertMinutes(sc.StartTime) +
-                                  " - " +
-                                  convertMinutes(sc.EndTime)}
-                              </span>
-                            </p>
-                          </small>
-                        </section>
-                      </section>
-                    </main>
-                  </main>
-                </>
-              ) : null
-            )}
+            {room &&
+              room.map((room, a) =>
+                room.Building === currbuilding && room.Floor === currfloor
+                  ? schedule &&
+                    schedule.map((schedule, i) =>
+                      room.Room === schedule.Room ? (
+                        <main key={i} className="p-3 shadow-sm rounded mb-2">
+                          <main className="row m-0 p-0">
+                            <section className="col-3 p-0 m-0">
+                              <section>
+                                <h6 className="p-0 m-0">{schedule.Room}</h6>
+                              </section>
+                            </section>
+                            <section className="col-9 p-0 m-0">
+                              <section>
+                                <h6 className="p-0 m-0">{schedule.Course}</h6>
+                              </section>
+                              <section>
+                                <small>
+                                  <p className="p-0 m-0 text-secondary fst-italic">
+                                    {`${schedule.Day} - ${convertMinutes(
+                                      schedule.StartTime
+                                    )} : ${convertMinutes(schedule.EndTime)}`}
+                                  </p>
+                                </small>
+                              </section>
+                            </section>
+                          </main>
+                        </main>
+                      ) : null
+                    )
+                  : null
+              )}
           </section>
         </main>
       </section>

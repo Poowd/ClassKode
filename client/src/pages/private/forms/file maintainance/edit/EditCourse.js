@@ -49,7 +49,7 @@ export function EditCourse() {
     if (true) {
       data_post("course-edit", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Course",
         `Course ${data.Course} is updated!`
       );

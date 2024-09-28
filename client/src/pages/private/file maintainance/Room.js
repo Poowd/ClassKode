@@ -101,14 +101,14 @@ export function Room() {
         <>
           <DefaultButton
             class=""
-            icon={info.icons.back}
+            icon={info.icons.navigation.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={info.icons.filter}
+            icon={info.icons.forms.filter}
             dropdownitems={
               <main className="d-flex gap-2 p-3">
                 <section>
@@ -166,7 +166,7 @@ export function Room() {
             to={"/room/create/0"}
             class="btn-primary"
             textclass="text-white"
-            icon={info.icons.add}
+            icon={info.icons.forms.add}
           />
         </>
       }
@@ -245,7 +245,7 @@ export function Room() {
                         slot3={item.Created}
                         slot4={item.Facility}
                         slot5={`${item.Building} - ${item.Floor}`}
-                        view={info.icons.view}
+                        view={info.icons.forms.view}
                         link={`/room/view/${item.ROMID}`}
                         state={{ data: item }}
                       />

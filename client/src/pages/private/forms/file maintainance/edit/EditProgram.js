@@ -50,7 +50,7 @@ export function EditProgram() {
     if (true) {
       data_post("program-edit", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Program",
         `Program ${data.Program} is updated!`
       );

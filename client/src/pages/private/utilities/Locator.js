@@ -166,7 +166,7 @@ export function Locator() {
             </main>
             <main className="border rounded py-1 px-2 text-secondary">
               <small className="d-flex align-items-center gap-2">
-                {info.icons.schedule}
+                {info.icons.pages.utilities.schedule}
                 <span>{`${days[d.getDay()]} - ${time} ${
                   d.getHours() < 12 ? "AM" : "PM"
                 }`}</span>
@@ -180,14 +180,14 @@ export function Locator() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={info.icons.back}
+                  icon={info.icons.navigation.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
                 <DefaultDropdown
                   class="border p-2"
                   reversed={true}
-                  icon={info.icons.filter}
+                  icon={info.icons.forms.filter}
                   dropdownitems={
                     <>
                       <DefaultDropdownItem
@@ -251,7 +251,7 @@ export function Locator() {
                   <DefaultButton
                     class="btn-outline-primary px-2"
                     reversed={true}
-                    icon={info.icons.close}
+                    icon={info.icons.navigation.close}
                     text={filter.setbyClass}
                     function={() =>
                       setFilter((prev) => ({
@@ -265,7 +265,7 @@ export function Locator() {
                   <DefaultButton
                     class="btn-outline-primary px-2"
                     reversed={true}
-                    icon={info.icons.close}
+                    icon={info.icons.navigation.close}
                     text={filter.setbyDepartment}
                     function={() =>
                       setFilter((prev) => ({
@@ -312,7 +312,7 @@ export function Locator() {
                                 <section className="d-flex gap-1">
                                   <DefaultButton
                                     class="w-100 btn-info text-white"
-                                    icon={info.icons.schedule}
+                                    icon={info.icons.pages.utilities.schedule}
                                     text={
                                       checkClassStatus(coach.SCHLID) ===
                                       "On Going"
@@ -348,7 +348,7 @@ export function Locator() {
                                   <DefaultButton
                                     class="border px-2"
                                     reversed={true}
-                                    icon={info.icons.schedule}
+                                    icon={info.icons.pages.utilities.schedule}
                                     function={() => {
                                       setSelCoach(coach);
                                     }}

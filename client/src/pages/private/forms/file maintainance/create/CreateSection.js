@@ -92,7 +92,7 @@ export function CreateSection() {
     if (true) {
       data_post("section-insert", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Section",
         `Section ${data.Section} is saved!`
       );
@@ -112,7 +112,7 @@ export function CreateSection() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

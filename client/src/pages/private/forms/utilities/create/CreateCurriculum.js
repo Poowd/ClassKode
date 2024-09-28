@@ -35,7 +35,7 @@ export function CreateCurriculum() {
     if (true) {
       data_post("curriculum-insert", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Curriculum",
         `Curriculum ${data.Curriculum} is updated!`
       );

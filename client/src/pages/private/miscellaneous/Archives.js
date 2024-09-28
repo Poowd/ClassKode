@@ -163,7 +163,7 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         post(
                           "department-restore",
@@ -171,7 +171,7 @@ export function Archives() {
                           setData
                         );
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Department",
                           `Department ${department.Department} is set to active!`
                         );
@@ -193,7 +193,7 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
                           "program/restore",
@@ -201,7 +201,7 @@ export function Archives() {
                           setData
                         );
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Program",
                           `Program ${prog.Program} is set to active!`
                         );
@@ -223,11 +223,11 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-crs", { CRSID: cors.CRSID }, setData);
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Course",
                           `Course ${cors.Course} is set to active!`
                         );
@@ -253,7 +253,7 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
                           "coach/restore",
@@ -261,7 +261,7 @@ export function Archives() {
                           setData
                         );
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Coach",
                           `Coach ${coach.FirstName} ${
                             coach.MiddleInitial !== null
@@ -287,11 +287,11 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-sect", { SCTID: sect.SCTID }, setData);
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Section",
                           `Section ${sect.Section} is set to active!`
                         );
@@ -313,11 +313,11 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-rom", { ROMID: rom.ROMID }, setData);
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Room",
                           `Room ${rom.Room} is set to active!`
                         );
@@ -339,11 +339,11 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-curr", { CRRID: crr.CRRID }, setData);
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Curriculum",
                           `Curriculum ${crr.Curriculum} is set to active!`
                         );
@@ -365,11 +365,11 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-acy", { ACYID: acy.ACYID }, setData);
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "AcademicYear",
                           `AcademicYear ${acy.AcademicYear} is set to active!`
                         );
@@ -391,11 +391,11 @@ export function Archives() {
                   custom={
                     <DefaultButton
                       class="btn-warning"
-                      icon={info.icons.restore}
+                      icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-sched", { SCDID: sched.SCDID }, setData);
                         showToast(
-                          info.icons.calendar,
+                          info.icons.others.info,
                           "Schedules",
                           `Schedules ${sched.Schedules} is set to active!`
                         );

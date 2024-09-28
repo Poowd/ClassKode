@@ -44,7 +44,7 @@ export function ViewSection() {
     if (code === confirmCode.Confirm) {
       data_post("section-archive", { data: params.id }, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Section",
         `Section ${data[0].Section} is set to archive!`
       );
@@ -74,7 +74,7 @@ export function ViewSection() {
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <LinkButton
@@ -86,7 +86,7 @@ export function ViewSection() {
             />
             <DefaultButton
               class="btn-danger px-2"
-              icon={info.icons.archive}
+              icon={info.icons.forms.archive}
               function={() =>
                 showModal(
                   "Modal",

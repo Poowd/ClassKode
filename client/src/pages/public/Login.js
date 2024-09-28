@@ -158,7 +158,7 @@ export function Login() {
                       class="text-white rounded-pill px-3 py-2"
                       type="button"
                       text="Back"
-                      icon={info.icons.back}
+                      icon={info.icons.navigation.back}
                       function={() => navigate("/")}
                     />
                   </div>

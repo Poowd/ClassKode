@@ -107,7 +107,7 @@ export function GenerateSection() {
           }
         } while (data.Status === "Success");
       }
-      showToast(info.icons.calendar, "Sections", `Sections are saved!`);
+      showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
         navigate(-1);
       }, 2500); // 2 second delay
@@ -124,7 +124,7 @@ export function GenerateSection() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

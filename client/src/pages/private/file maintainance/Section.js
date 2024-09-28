@@ -63,14 +63,14 @@ export function Section() {
         <>
           <DefaultButton
             class=""
-            icon={info.icons.back}
+            icon={info.icons.navigation.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={info.icons.filter}
+            icon={info.icons.forms.filter}
             dropdownitems={
               <main className="d-flex gap-2 p-3">
                 <section>
@@ -96,13 +96,13 @@ export function Section() {
             class="btn-outline-primary"
             textclass="text-primary"
             to={"/section/generate/0"}
-            icon={info.icons.generate}
+            icon={info.icons.forms.generate}
           />
           <LinkButton
             class="btn-primary"
             textclass="text-white"
             to={"/section/create/0"}
-            icon={info.icons.add}
+            icon={info.icons.forms.add}
           />
         </>
       }
@@ -164,7 +164,7 @@ export function Section() {
                         )
                       }
                       slot5={`${item.YearLevel}`}
-                      view={info.icons.view}
+                      view={info.icons.forms.view}
                       link={`/section/view/${item.SCTID}`}
                       state={{ data: item }}
                     />

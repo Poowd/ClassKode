@@ -44,7 +44,7 @@ export function Dashboard() {
           button={
             <DefaultButton
               class="border text-light"
-              icon={info.icons.calendar}
+              icon={info.icons.others.calendar}
               function={() => navigate("/utilities/academicyear")}
             />
           }
@@ -57,7 +57,7 @@ export function Dashboard() {
           button={
             <DefaultButton
               class="border text-light"
-              icon={info.icons.curriculum}
+              icon={info.icons.pages.institution.curriculum}
               function={() => navigate("/utilities/curriculum")}
             />
           }
@@ -70,7 +70,7 @@ export function Dashboard() {
           button={
             <DefaultButton
               class="border text-light"
-              icon={info.icons.schedule}
+              icon={info.icons.pages.utilities.schedule}
               function={() => navigate("/utilities/schedule")}
             />
           }
@@ -81,7 +81,7 @@ export function Dashboard() {
         <DashboardCardContent
           title={"Events"}
           button={
-            <DefaultButton class="border text-light" icon={info.icons.events} />
+            <DefaultButton class="border text-light" icon={info.icons.others.events} />
           }
           content={"0"}
         />

@@ -42,7 +42,7 @@ export function CoachAssignment() {
               to={`/academic-year/view/${currentacademicyear.ACYID}`}
               state={{ data: current }}
               text={`Current Academic Year`}
-              icon={info.icons.view}
+              icon={info.icons.forms.view}
             />
           </header>
           <section>
@@ -59,7 +59,7 @@ export function CoachAssignment() {
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
                 class=""
-                icon={info.icons.back}
+                icon={info.icons.navigation.back}
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -70,7 +70,7 @@ export function CoachAssignment() {
                 state={{
                   academicyear: currentacademicyear,
                 }}
-                icon={info.icons.add}
+                icon={info.icons.forms.add}
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export function CoachAssignment() {
               slot3={item.Created}
               slot4={item.AcademicYear}
               slot5={`${item.MAX} units`}
-              view={info.icons.view}
+              view={info.icons.forms.view}
               link={`/coach/view/${item.SCHLID}`}
               state={{ data: item }}
             />

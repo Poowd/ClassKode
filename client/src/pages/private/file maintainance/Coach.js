@@ -62,14 +62,14 @@ export function Coach() {
         <>
           <DefaultButton
             class=""
-            icon={info.icons.back}
+            icon={info.icons.navigation.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={info.icons.filter}
+            icon={info.icons.forms.filter}
             dropdownitems={
               <main className="d-flex gap-2 p-3">
                 <section>
@@ -95,7 +95,7 @@ export function Coach() {
             to={"/coach/create/0"}
             class="btn-primary"
             textclass="text-white"
-            icon={info.icons.add}
+            icon={info.icons.forms.add}
           />
         </>
       }
@@ -163,7 +163,7 @@ export function Coach() {
                         slot3={item.CCH_Created}
                         slot4={item.Department}
                         slot5={item.Email}
-                        view={info.icons.view}
+                        view={info.icons.forms.view}
                         link={`/coach/view/${item.CCHID}`}
                         state={{ data: item }}
                       />

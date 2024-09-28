@@ -88,7 +88,7 @@ export function CourseSetup() {
                 data: current,
               }}
               text={`Current Curriculum`}
-              icon={info.icons.view}
+              icon={info.icons.forms.view}
             />
           </header>
           <section>
@@ -105,7 +105,7 @@ export function CourseSetup() {
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
                 class=""
-                icon={info.icons.back}
+                icon={info.icons.navigation.back}
                 function={() => navigate(-1)}
               />{" "}
               <DefaultInput
@@ -116,7 +116,7 @@ export function CourseSetup() {
               <DefaultDropdown
                 class="border px-2 btn-primary"
                 reversed={true}
-                icon={info.icons.view}
+                icon={info.icons.forms.view}
                 text={
                   data.Department !== ""
                     ? dept.map((item, i) =>
@@ -147,7 +147,7 @@ export function CourseSetup() {
               <DefaultDropdown
                 class="border px-2 btn-primary"
                 reversed={true}
-                icon={info.icons.view}
+                icon={info.icons.forms.view}
                 text={
                   data.Program !== ""
                     ? prg.map((item, i) =>
@@ -179,7 +179,7 @@ export function CourseSetup() {
                   department: data.Department,
                   curriculum: current.Code,
                 }}
-                icon={info.icons.add}
+                icon={info.icons.forms.add}
               />
             </div>
           </div>
@@ -218,7 +218,7 @@ export function CourseSetup() {
                       slot3={item.Created}
                       slot4={item.Curriculum}
                       slot5={item.Program}
-                      view={info.icons.view}
+                      view={info.icons.forms.view}
                       link={`/course/view/${item.Course}`}
                       state={{ data: item }}
                     />

@@ -135,7 +135,7 @@ export function GenerateSchedule() {
           }
         } while (data.Status === "Success");
       }
-      //showToast(info.icons.calendar, "Sections", `Sections are saved!`);
+      //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
         navigate(-1);
       }, 2500); // 2 second delay

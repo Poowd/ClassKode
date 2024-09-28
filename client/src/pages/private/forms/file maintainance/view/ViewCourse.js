@@ -47,7 +47,7 @@ export function ViewCourse() {
     if (code === confirmCode.Confirm) {
       data_post("course-archive", { data: params.id }, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Course",
         `Course ${data[0].Course} is set to archive!`
       );
@@ -81,14 +81,14 @@ export function ViewCourse() {
             />
             <LinkButton
               class="btn-warning px-2"
-              icon={info.icons.edit}
+              icon={info.icons.forms.edit}
               to={"/course/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
               class="btn-danger px-2"
-              icon={info.icons.archive}
+              icon={info.icons.forms.archive}
               function={() =>
                 showModal(
                   "Modal",

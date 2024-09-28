@@ -76,7 +76,11 @@ export function CreateRoom() {
     e.preventDefault();
     if (true) {
       data_post("room-insert", data, setData);
-      showToast(info.icons.calendar, "Room", `Room ${data.Room} is updated!`);
+      showToast(
+        info.icons.others.info,
+        "Room",
+        `Room ${data.Room} is updated!`
+      );
       setTimeout(() => {
         navigate(-1);
       }, 2500); // 2 second delay
@@ -92,7 +96,7 @@ export function CreateRoom() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

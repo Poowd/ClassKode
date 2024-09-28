@@ -50,7 +50,7 @@ export function CreateSetup() {
     if (true) {
       data_post("setup-insert", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Setup",
         `Setup ${data.Course} is updated!`
       );
@@ -70,7 +70,7 @@ export function CreateSetup() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1, { data: "COSC" })}
             />
             <DefaultButton

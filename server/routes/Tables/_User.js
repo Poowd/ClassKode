@@ -45,15 +45,16 @@ router.post("/user-generate", (req, res) => {
         (err, rslt) => {
           if (err) {
             console.error("Query error:", err);
-            return;
+            return res.json({ Status: "Failed", data: err });
           }
-          res.json(rslt.rows);
+          res.json({ Status: "Success", data: rslt.rows });
         }
       );
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Internal Server Error");
+    res.json({ Status: "Failed", data: err });
+    //res.status(500).send("Internal Server Error");
   }
 });
 

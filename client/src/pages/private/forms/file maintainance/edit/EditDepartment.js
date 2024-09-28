@@ -38,7 +38,7 @@ export function EditDepartment() {
     if (true) {
       data_post("department-edit", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Department",
         `Department ${data.Department} is updated!`
       );
@@ -58,7 +58,7 @@ export function EditDepartment() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

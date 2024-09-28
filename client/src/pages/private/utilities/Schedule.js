@@ -33,14 +33,14 @@ export function Schedule() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={info.icons.back}
+                  icon={info.icons.navigation.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
                 <DefaultDropdown
                   class="border px-2 btn-primary"
                   reversed={true}
-                  icon={info.icons.schedule}
+                  icon={info.icons.pages.utilities.schedule}
                   text={"Load"}
                   dropdownitems={
                     <>
@@ -62,11 +62,14 @@ export function Schedule() {
                 <Link to={"/schedule/generate/0"}>
                   <DefaultButton
                     class="btn-primary"
-                    icon={info.icons.generate}
+                    icon={info.icons.forms.generate}
                   />
                 </Link>
                 <Link to={"/schedule/create/0"}>
-                  <DefaultButton class="btn-primary" icon={info.icons.add} />
+                  <DefaultButton
+                    class="btn-primary"
+                    icon={info.icons.forms.add}
+                  />
                 </Link>
               </div>
             </div>

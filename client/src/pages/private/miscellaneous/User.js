@@ -27,14 +27,14 @@ export function User() {
         <>
           <DefaultButton
             class=""
-            icon={info.icons.back}
+            icon={info.icons.navigation.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={info.icons.filter}
+            icon={info.icons.forms.filter}
             dropdownitems={
               <>
                 <DefaultDropdownItem title={"Profile"} />
@@ -45,14 +45,14 @@ export function User() {
           />
           <DefaultButton
             class="btn-primary"
-            icon={info.icons.generate}
+            icon={info.icons.forms.generate}
             function={() => {
               navigate("/user/generate/0");
             }}
           />
           <DefaultButton
             class="btn-primary"
-            icon={info.icons.add}
+            icon={info.icons.forms.add}
             function={() => {
               navigate("");
             }}

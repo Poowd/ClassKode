@@ -39,7 +39,7 @@ export function ViewDepartment() {
     if (code === confirmCode.Confirm) {
       data_post("department-archive", { data: params.id }, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Department",
         `Department ${data[0].Department} is set to archive!`
       );
@@ -69,7 +69,7 @@ export function ViewDepartment() {
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <LinkButton

@@ -43,7 +43,7 @@ export function CreateAcademicYear() {
     if (true) {
       data_post("academic-year-insert", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "AcademicYear",
         `AcademicYear ${data.AcademicYear} is updated!`
       );

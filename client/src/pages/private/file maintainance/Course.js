@@ -61,14 +61,14 @@ export function Course() {
         <>
           <DefaultButton
             class=""
-            icon={info.icons.back}
+            icon={info.icons.navigation.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={info.icons.filter}
+            icon={info.icons.forms.filter}
             dropdownitems={
               <main className="d-flex gap-2 p-3">
                 <section>
@@ -94,7 +94,7 @@ export function Course() {
             to={"/course/create/0"}
             class="btn-primary"
             textclass="text-white"
-            icon={info.icons.add}
+            icon={info.icons.forms.add}
           />
         </>
       }
@@ -158,7 +158,7 @@ export function Course() {
                       )
                     }
                     slot5={item.Status}
-                    view={info.icons.view}
+                    view={info.icons.forms.view}
                     link={`/course/view/${item.CRSID}`}
                     state={{ data: item }}
                   />

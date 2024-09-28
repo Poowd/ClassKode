@@ -39,93 +39,93 @@ export function SuperAdminTopbar() {
   const [items, setItems] = useState({
     Institution: [
       <SidebarDropdownItem
-        icon={<FcDepartment />}
+        icon={info.icons.modules.department}
         navigate={"/institution/department"}
         text={"Department"}
       />,
       <SidebarDropdownItem
-        icon={<FcDiploma1 />}
+        icon={info.icons.modules.program}
         navigate={"/institution/program"}
         text={"Program"}
       />,
       <SidebarDropdownItem
-        icon={<FcSportsMode />}
+        icon={info.icons.modules.course}
         navigate={"/institution/course"}
         text={"Course"}
       />,
       <SidebarDropdownItem
-        icon={<FcManager />}
+        icon={info.icons.modules.coach}
         navigate={"/institution/coach"}
         text={"Coach"}
       />,
       <SidebarDropdownItem
-        icon={<FcReading />}
+        icon={info.icons.modules.section}
         navigate={"/institution/section"}
         text={"Section"}
       />,
       <SidebarDropdownItem
-        icon={<FcHome />}
+        icon={info.icons.modules.room}
         navigate={"/institution/room"}
         text={"Room"}
       />,
       <SidebarDropdownItem
-        icon={<FcGraduationCap />}
+        icon={info.icons.modules.curriculum}
         navigate={"/utilities/curriculum"}
         text={"Curriculum"}
       />,
       <SidebarDropdownItem
-        icon={<FcPlanner />}
+        icon={info.icons.modules.academicyear}
         navigate={"/utilities/academicyear"}
         text={"Academic Year"}
       />,
     ],
     Scheduler: [
       <SidebarDropdownItem
-        icon={<FcTimeline />}
+        icon={info.icons.modules.schedules}
         navigate={"/utilities/schedule"}
         text={"Schedule"}
       />,
       <SidebarDropdownItem
-        icon={<FcTimeline />}
+        icon={info.icons.modules.room}
         navigate={"/utilities/schedule/room"}
         text={"Room Schedules"}
       />,
       <SidebarDropdownItem
-        icon={<FcTimeline />}
+        icon={info.icons.modules.section}
         navigate={"/utilities/schedule/section"}
         text={"Section Schedules"}
       />,
       <SidebarDropdownItem
-        icon={<FcTimeline />}
-        navigate={"/utilities/schedule/section"}
+        icon={info.icons.modules.coach}
+        navigate={"/utilities/schedule/coach"}
         text={"Coach Schedules"}
       />,
     ],
     Locator: [
       <SidebarDropdownItem
-        icon={<FcSurvey />}
+        icon={info.icons.modules.locator}
         navigate={"/utilities/locator"}
         text={"Faculty Locator"}
       />,
     ],
     Misc: [
       <SidebarDropdownItem
-        icon={<FcPackage />}
+        icon={info.icons.modules.archives}
         navigate={"/miscellaneous/archive"}
         text={"Archive"}
       />,
       <SidebarDropdownItem
-        icon={<FcViewDetails />}
+        icon={info.icons.modules.logs}
         navigate={"/miscellaneous/log"}
         text={"Log"}
       />,
       <SidebarDropdownItem
-        icon={<FcBusinessman />}
+        icon={info.icons.modules.users}
         navigate={"/miscellaneous/user"}
         text={"User"}
       />,
       <SidebarDropdownItem
-        icon={<FcOpenedFolder />}
+        icon={info.icons.modules.settings}
         navigate={"/miscellaneous/setup"}
         text={"Setup"}
       />,
@@ -172,7 +172,7 @@ export function SuperAdminTopbar() {
         <div>
           <DefaultButton
             class="text-white"
-            icon={info.icons.menu}
+            icon={info.icons.navigation.menu}
             toggle={"offcanvas"}
             target={"#sidebar"}
           />
@@ -182,7 +182,9 @@ export function SuperAdminTopbar() {
               <SidebarItemList
                 items={
                   itemlist && itemlist === "Default" ? (
-                    <main className="w-100 text-center p-3">Select a Category</main>
+                    <main className="w-100 text-center p-3">
+                      Select a Category
+                    </main>
                   ) : itemlist === "Institution" ? (
                     items.Institution.map((item) => (
                       <div className="bg-white rounded shadow-sm">{item}</div>
@@ -212,7 +214,7 @@ export function SuperAdminTopbar() {
                         data-bs-dismiss="offcanvas"
                         aria-label="Close"
                       >
-                        <h3 className="">{info.icons.package}</h3>
+                        <h3 className="">{info.icons.modules.dashboard}</h3>
                         <h6 className="text-start flex-grow-1">Dashboard</h6>
                       </button>
                     </li>
@@ -223,7 +225,7 @@ export function SuperAdminTopbar() {
                           setItemList("Institution");
                         }}
                       >
-                        <h3 className="">{info.icons.package}</h3>
+                        <h3 className="">{info.icons.modules.institution}</h3>
                         <h6 className="text-start flex-grow-1">Institution</h6>
                       </button>
                     </li>
@@ -234,7 +236,7 @@ export function SuperAdminTopbar() {
                           setItemList("Scheduler");
                         }}
                       >
-                        <h3 className="">{info.icons.package}</h3>
+                        <h3 className="">{info.icons.modules.scheduler}</h3>
                         <h6 className="text-start flex-grow-1">Scheduler</h6>
                       </button>
                     </li>
@@ -245,7 +247,7 @@ export function SuperAdminTopbar() {
                           setItemList("Locator");
                         }}
                       >
-                        <h3 className="">{info.icons.package}</h3>
+                        <h3 className="">{info.icons.modules.locator}</h3>
                         <h6 className="text-start flex-grow-1">Locator</h6>
                       </button>
                     </li>
@@ -256,7 +258,7 @@ export function SuperAdminTopbar() {
                           setItemList("Misc");
                         }}
                       >
-                        <h3 className="">{info.icons.package}</h3>
+                        <h3 className="">{info.icons.modules.misc}</h3>
                         <h6 className="text-start flex-grow-1">Misc</h6>
                       </button>
                     </li>
@@ -279,7 +281,7 @@ export function SuperAdminTopbar() {
           <DefaultButton
             class="text-white"
             reversed={false}
-            icon={info.icons.quicknav}
+            icon={info.icons.navigation.quicknav}
             text={"Commands"}
             function={() => {}}
             toggle="modal"
@@ -311,7 +313,7 @@ export function SuperAdminTopbar() {
         <div>
           <DefaultButton
             class="text-white"
-            icon={info.icons.help}
+            icon={info.icons.others.help}
             text={"Guide"}
           />
         </div>
@@ -319,7 +321,7 @@ export function SuperAdminTopbar() {
         <div>
           <DefaultButton
             class="text-white"
-            icon={info.icons.hiddenuser}
+            icon={info.icons.others.hiddenuser}
             text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
             function={() => {}}
             toggle="modal"

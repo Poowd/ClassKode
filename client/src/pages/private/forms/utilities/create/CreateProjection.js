@@ -74,7 +74,7 @@ export function CreateProjection() {
           }
         } while (data.Status === "Success");
       }
-      //showToast(info.icons.calendar, "Sections", `Sections are saved!`);
+      //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
         navigate(-1);
       }, 2500); // 2 second delay
@@ -186,7 +186,7 @@ export function CreateProjection() {
                                               <DefaultButton
                                                 class="btn-success"
                                                 type="submit"
-                                                icon={info.icons.set}
+                                                icon={info.icons.forms.set}
                                               />
                                             ) : null
                                           ) : null}
@@ -199,7 +199,7 @@ export function CreateProjection() {
                                             <DefaultButton
                                               class="btn-danger"
                                               type="button"
-                                              icon={info.icons.reset}
+                                              icon={info.icons.forms.reset}
                                               function={() => {
                                                 removeItem(section.Section);
                                                 document.getElementById(

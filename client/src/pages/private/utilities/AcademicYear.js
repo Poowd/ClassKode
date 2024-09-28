@@ -46,7 +46,7 @@ export function AcademicYear() {
               to={`/academic-year/view/${curray.ACYID}`}
               state={{ data: current }}
               text={`Current Academic Year`}
-              icon={info.icons.view}
+              icon={info.icons.forms.view}
             />
           </header>
           <section>
@@ -63,7 +63,7 @@ export function AcademicYear() {
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
                 class=""
-                icon={info.icons.back}
+                icon={info.icons.navigation.back}
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -71,7 +71,7 @@ export function AcademicYear() {
                 class="btn-primary px-2"
                 textclass="text-white"
                 to={"/academic-year/create/0"}
-                icon={info.icons.add}
+                icon={info.icons.forms.add}
               />
             </div>
           </div>
@@ -93,14 +93,14 @@ export function AcademicYear() {
                     <>
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
-                        icon={info.icons.user}
+                        icon={info.icons.pages.institution.coach}
                         function={() =>
                           navigate("/utilities/academicyear/assigment")
                         }
                       />
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
-                        icon={info.icons.users}
+                        icon={info.icons.pages.institution.section}
                         function={() =>
                           navigate("/utilities/academicyear/projection")
                         }

@@ -39,7 +39,7 @@ export function CreateCourse() {
     if (true) {
       data_post("course-insert", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Course",
         `Course ${data.Course} is updated!`
       );

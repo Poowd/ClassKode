@@ -33,6 +33,27 @@ import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import { FaHighlighter } from "react-icons/fa6";
 import { FaUserGraduate } from "react-icons/fa";
+import { FcComboChart } from "react-icons/fc";
+import { FcPrint } from "react-icons/fc";
+import { IoAlertCircle } from "react-icons/io5";
+import { FcOrganization } from "react-icons/fc";
+import { FcOvertime } from "react-icons/fc";
+import { FcBusinessman } from "react-icons/fc";
+import { FcBriefcase } from "react-icons/fc";
+import { FcDepartment } from "react-icons/fc";
+import { FcSearch } from "react-icons/fc";
+import { FcGraduationCap } from "react-icons/fc";
+import { FcFolder } from "react-icons/fc";
+import { FcManager } from "react-icons/fc";
+import { FcConferenceCall } from "react-icons/fc";
+import { FcPodiumWithoutSpeaker } from "react-icons/fc";
+import { FcPlanner } from "react-icons/fc";
+import { FcViewDetails } from "react-icons/fc";
+import { FcClock } from "react-icons/fc";
+import { FcPackage } from "react-icons/fc";
+import { FcList } from "react-icons/fc";
+import { FcReadingEbook } from "react-icons/fc";
+import { FcServices } from "react-icons/fc";
 
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
@@ -97,14 +118,14 @@ export default function useConfiguration() {
       ],
       special_thanks: [
         {
-          Name: "Joshua Oliveros",
-          Role: "Thesis Adviser",
-          Image: oliveros,
-        },
-        {
           Name: "Jerome Silverio",
           Role: "Thesis Coordinator",
           Image: silverio,
+        },
+        {
+          Name: "Joshua Oliveros",
+          Role: "Thesis Adviser",
+          Image: oliveros,
         },
         {
           Name: "Cristelyn Esporsado",
@@ -159,21 +180,21 @@ export default function useConfiguration() {
     icons: {
       pages: {
         institution: {
-          department: null,
-          program: null,
-          course: null,
-          section: null,
-          coach: null,
+          department: <FaRegBuilding />,
+          program: <FaBook />,
+          course: <FaBookOpen />,
+          section: <HiOutlineUserGroup />,
+          coach: <HiOutlineUser />,
           room: null,
+          curriculum: <LuNewspaper />,
+          academicyear: null,
         },
         utilities: {
-          curriculum: null,
-          academicyear: null,
-          schedule: null,
+          schedule: <RiCalendarScheduleLine />,
           locator: null,
         },
         misc: {
-          archive: null,
+          archive: <MdFolderDelete />,
           user: null,
           setup: null,
           log: null,
@@ -198,39 +219,56 @@ export default function useConfiguration() {
         generate: <VscSettingsGear />,
         reset: <GrPowerReset />,
         set: <VscSettings />,
+        filter: <FaFilter />,
+        search: <FaSearch />,
+        restore: <MdRestore />,
+        reset: <GrPowerReset />,
+        set: <VscSettings />,
       },
       navigation: {
         menu: <BsMenuButtonWideFill />,
         back: <IoArrowBackOutline />,
         next: <GrNext />,
         previous: <GrPrevious />,
+        quicknav: <MdOutlineQuickreply />,
+        close: <IoIosClose />,
       },
-      add: <GrChapterAdd />,
-      generate: <VscSettingsGear />,
-      edit: <TbEdit />,
-      archive: <MdFolderDelete />,
-      view: <TbListDetails />,
-      search: <FaSearch />,
-      filter: <FaFilter />,
-      users: <HiOutlineUserGroup />,
-      user: <HiOutlineUser />,
-      calendar: <FaRegCalendarAlt />,
-      curriculum: <LuNewspaper />,
-      schedule: <RiCalendarScheduleLine />,
-      events: <MdOutlineEmojiEvents />,
-      package: <LuPackageOpen />,
-      program: <FaBook />,
-      course: <FaBookOpen />,
-      department: <FaRegBuilding />,
-      menu: <BsMenuButtonWideFill />,
-      back: <IoArrowBackOutline />,
-      hiddenuser: <FaUserSecret />,
-      help: <LuHelpCircle />,
-      restore: <MdRestore />,
-      quicknav: <MdOutlineQuickreply />,
-      close: <IoIosClose />,
-      reset: <GrPowerReset />,
-      set: <VscSettings />,
+      modules: {
+        dashboard: <FcComboChart />,
+        institution: <FcOrganization />,
+        scheduler: <FcOvertime />,
+        locator: <FcSearch />,
+        misc: <FcBriefcase />,
+
+        department: <FcDepartment />,
+        program: <FcGraduationCap />,
+        course: <FcFolder />,
+        coach: <FcManager />,
+        section: <FcConferenceCall />,
+        room: <FcPodiumWithoutSpeaker />,
+
+        curriculum: <FcViewDetails />,
+        academicyear: <FcPlanner />,
+
+        schedules: <FcClock />,
+
+        facultylocator: <FcBusinessman />,
+
+        archives: <FcPackage />,
+        logs: <FcList />,
+        users: <FcReadingEbook />,
+        settings: <FcServices />,
+        reports: <FcPrint />,
+      },
+      others: {
+        calendar: <FaRegCalendarAlt />,
+        package: <LuPackageOpen />,
+        events: <MdOutlineEmojiEvents />,
+        menu: <BsMenuButtonWideFill />,
+        hiddenuser: <FaUserSecret />,
+        help: <LuHelpCircle />,
+        info: <IoAlertCircle />,
+      },
     },
     maps: {
       m1: (

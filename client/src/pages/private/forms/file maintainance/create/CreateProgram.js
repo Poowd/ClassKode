@@ -42,7 +42,7 @@ export function CreateProgram() {
     if (true) {
       data_post("program-insert", data, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Program",
         `Program ${data.Program} is updated!`
       );
@@ -62,7 +62,7 @@ export function CreateProgram() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

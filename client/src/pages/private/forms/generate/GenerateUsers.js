@@ -29,7 +29,7 @@ export function GenerateUsers() {
   useEffect(() => {
     sheets &&
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Sheet Upload",
         `${file} is successfully uploaded!`
       );
@@ -37,11 +37,11 @@ export function GenerateUsers() {
   }, [sheets]);
   console.log(data);
 
-  const saveUserData = (e) => {
+  const saveUserData = async (e) => {
     e.preventDefault();
     if (sheets === null) {
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Users",
         "No Data Found. Try uploading a sheet file!"
       );
@@ -50,14 +50,19 @@ export function GenerateUsers() {
       try {
         for (var i in data) {
           console.log(data[i]);
-          data_post("user-generate", data[i], setSaveStatus);
+          const response = await fetch(`${info.conn.server}user-generate`, {
+            method: "POST",
+            body: JSON.stringify(data[i]),
+          });
+          const entry = await response.json();
+          console.log(entry);
         }
-        showToast(info.icons.calendar, "Users", "User Data are saved!");
+        showToast(info.icons.others.info, "Users", "User Data are saved!");
         setTimeout(() => {
           navigate(-1);
         }, 2500); // 2 second delay
       } catch (err) {
-        showToast(info.icons.calendar, "Users", "Error Encountered!");
+        showToast(info.icons.others.info, "Users", err);
       }
     }
   };
@@ -123,10 +128,10 @@ export function GenerateUsers() {
               >
                 <DefaultButton
                   class="ms-2 bg-primary text-white"
-                  icon={info.icons.program}
+                  icon={info.icons.others.package}
                   function={() => {
                     showToast(
-                      info.icons.calendar,
+                      info.icons.others.info,
                       "Upload Sheet Template",
                       "Upload Sheet Template has been downloaded!"
                     );
@@ -135,7 +140,7 @@ export function GenerateUsers() {
               </a>
               <DefaultButton
                 class="ms-2 bg-primary text-white"
-                icon={info.icons.add}
+                icon={info.icons.forms.add}
                 function={saveUserData}
                 disabled={file !== null ? false : true}
               />
@@ -145,7 +150,7 @@ export function GenerateUsers() {
                 type="button"
                 onClick={() => {
                   CopyClipboard(text);
-                  showToast(info.icons.calendar, "Clipboard", "Copied!");
+                  showToast(info.icons.others.info, "Clipboard", "Copied!");
                 }}
               >
                 Copy
@@ -168,7 +173,7 @@ export function GenerateUsers() {
                     slot3={item.Email}
                     slot4={item.Type}
                     slot5={item.PermissionLevel}
-                    view={info.icons.view}
+                    view={info.icons.forms.view}
                     link={null}
                     state={null}
                   />

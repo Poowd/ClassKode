@@ -70,7 +70,7 @@ export function CreateCoach() {
         setData
       );
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Coach",
         `Coach ${data.FirstName} ${data.LastName} is saved!`
       );
@@ -90,7 +90,7 @@ export function CreateCoach() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

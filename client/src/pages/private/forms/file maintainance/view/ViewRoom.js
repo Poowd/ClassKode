@@ -48,7 +48,7 @@ export function ViewRoom() {
     if (code === confirmCode.Confirm) {
       data_post("room-archive", { data: params.id }, setData);
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Room",
         `Room ${data[0].Room} is set to archive!`
       );
@@ -78,7 +78,7 @@ export function ViewRoom() {
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={info.icons.back}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <LinkButton

@@ -48,7 +48,7 @@ export function Curriculum() {
                   data: current,
                 }}
                 text={`Current Curriculum`}
-                icon={info.icons.view}
+                icon={info.icons.forms.view}
               />
             </header>
             <section>
@@ -65,7 +65,7 @@ export function Curriculum() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={info.icons.back}
+                  icon={info.icons.navigation.back}
                   function={() => navigate(-1)}
                 />{" "}
                 <DefaultInput
@@ -80,7 +80,7 @@ export function Curriculum() {
                   state={{
                     curriculum: current,
                   }}
-                  icon={info.icons.add}
+                  icon={info.icons.forms.add}
                 />
               </div>
             </div>
@@ -118,7 +118,7 @@ export function Curriculum() {
                         slot3={item.Created}
                         slot4={item.Status}
                         slot5={"n/a"}
-                        view={info.icons.package}
+                        view={info.icons.others.package}
                         link={
                           current.Code === item.Code
                             ? `/utilities/curriculum/setup/${item.Code}`

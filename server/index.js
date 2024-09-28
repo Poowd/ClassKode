@@ -39,7 +39,6 @@ const path = require("path");
 const { Pool } = require("pg");
 const express = require("express");
 const cors = require("cors");
-const router = express.Router();
 const pool = new Pool({
   user: "postgres.pgcztzkowuxixfyiqera",
   password: "Clskde_#5*Ths2",
@@ -47,28 +46,42 @@ const pool = new Pool({
   port: 6543,
   database: "postgres",
 });
-
 const app = express();
-// = = >
-app.use(express.json());
-app.use(express.text());
-app.use(express.static("public"));
-app.use(
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "https://http://localhost:3000");
+  res.header("Access-Control-Allow-Methods", "GET, POST");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Allow-Methods"
+  );
+  res.header("Content-Type", "application/json");
+  next();
+});
+
+app.options(
+  "*",
   cors({
-    origin: ["http://localhost:3000"],
-    methods: ["POST, GET, OPTIONS"],
-    allowedHeaders: "*",
+    methods: ["GET", "POST", "OPTIONS"],
+    origin: "https://http://localhost:3000",
+    allowedHeaders: "Content-Type, Accept",
     credentials: true,
     optionsSuccessStatus: 204,
   })
 );
+// = = >
+app.use(express.json());
+app.use(express.text());
+app.use(express.static("public"));
 
 // = = >
+const router = express.Router();
 pool.connect();
 // = = >
 
-// = = >
 global.router = router;
+// = = >
 
 router.use("/", RandomCode);
 router.use("/", Generate);

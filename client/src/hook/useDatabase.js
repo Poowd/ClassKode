@@ -35,12 +35,6 @@ export default function useDatabase() {
     try {
       const response = await fetch(origin.concat(link), {
         method: "GET",
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET, POST",
-          "Access-Control-Allow-Headers": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
       });
       const data = await response.json();
       try {
@@ -53,12 +47,6 @@ export default function useDatabase() {
       const response = await fetch(origin.concat(link), {
         method: "POST",
         body: JSON.stringify(values),
-        headers: {
-          "Access-Control-Allow-Origin": "http://localhost:3000",
-          "Access-Control-Allow-Methods": "GET, POST",
-          "Access-Control-Allow-Headers": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
       });
       const data = await response.json();
       try {

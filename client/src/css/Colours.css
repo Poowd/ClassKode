@@ -34,3 +34,8 @@
   font-weight: 700;
   filter: drop-shadow(10px);
 }
+
+.tinted-black {
+  background-image: linear-gradient(to top, #0a4b8485, #0c589c95);
+  backdrop-filter: blur(2px);
+}

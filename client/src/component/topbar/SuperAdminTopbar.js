@@ -8,22 +8,8 @@ import useConfiguration from "../../hook/useConfiguration";
 import { Link, useNavigate } from "react-router-dom";
 import useHandleChange from "../../hook/useHandleChange";
 import { DefaultInput } from "../input/DefaultInput";
-import { FcSurvey } from "react-icons/fc";
-import { FcReading } from "react-icons/fc";
-import { FcManager } from "react-icons/fc";
-import { FcDepartment } from "react-icons/fc";
-import { FcHome } from "react-icons/fc";
-import { FcPackage } from "react-icons/fc";
-import { FcTimeline } from "react-icons/fc";
-import { FcPlanner } from "react-icons/fc";
-import { FcGraduationCap } from "react-icons/fc";
-import { FcSportsMode } from "react-icons/fc";
-import { FcOpenedFolder } from "react-icons/fc";
-import { FcBusinessman } from "react-icons/fc";
-import { FcDiploma1 } from "react-icons/fc";
-import { FcViewDetails } from "react-icons/fc";
 import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
-import { NoDisplay } from "../placeholder/NoDisplay";
+import owie from "../../assets/imgs/misc/owie.png";
 
 export function SuperAdminTopbar() {
   const navigate = useNavigate();
@@ -140,27 +126,27 @@ export function SuperAdminTopbar() {
   };
 
   const quicknav = () => {
-    switch (`${data.Input}`) {
-      case "list department":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list program":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list course":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list coach":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list section":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list room":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      default:
-        navigate("/");
+    if (/list department/g.test(data.Input)) {
+      navigate(`/institution/department`);
+    }
+    if (/list program/g.test(data.Input)) {
+      navigate(`/institution/program`);
+    }
+    if (/list course/g.test(data.Input)) {
+      navigate(`/institution/course`);
+    }
+    if (/list coach/g.test(data.Input)) {
+      navigate(`/institution/coach`);
+    }
+    if (/list section/g.test(data.Input)) {
+      navigate(`/institution/section`);
+    }
+    if (/list room/g.test(data.Input)) {
+      navigate(`/institution/room`);
+    }
+    //=>
+    if (/coach [0-9]{11}/g.test(data.Input)) {
+      navigate(`/coach/view/${data.Input.slice(6)}`);
     }
     document.getElementById("Input").value = "";
     setData({ Input: "" });
@@ -169,7 +155,7 @@ export function SuperAdminTopbar() {
   return (
     <nav className="main-top-bar gradient-bg-blue">
       <div className="d-flex align-items-center gap-2">
-        <div>
+        <div className="">
           <DefaultButton
             class="text-white"
             icon={info.icons.navigation.menu}
@@ -182,9 +168,7 @@ export function SuperAdminTopbar() {
               <SidebarItemList
                 items={
                   itemlist && itemlist === "Default" ? (
-                    <main className="w-100 text-center p-3">
-                      Select a Category
-                    </main>
+                    <main className="w-100 h-100 text-center p-3"></main>
                   ) : itemlist === "Institution" ? (
                     items.Institution.map((item) => (
                       <div className="bg-white rounded shadow-sm">{item}</div>
@@ -289,7 +273,7 @@ export function SuperAdminTopbar() {
           />
           <ViewModal
             id={"QuickNav"}
-            title={<h6 className="text-center text-black">Quick Navigation</h6>}
+            title={<h6 className="text-center text-black">Kwa-Go</h6>}
             content={
               <main>
                 <section className="d-flex gap-1">
@@ -300,12 +284,36 @@ export function SuperAdminTopbar() {
                     trigger={dataChange}
                   />
                   <DefaultButton
-                    class="btn-danger py-2 px-2"
+                    class="btn-primary py-2 px-2"
                     reversed={true}
                     text="Enter"
                     function={quicknav}
+                    dismiss={"modal"}
                   />
                 </section>
+                <main className="w-100 bottom-0 end-0 d-flex align-items-center justify-content-end">
+                  <section className="w-100 p-0 m-0 border rounded p-2 px-3 text-dark">
+                    <p className="p-0 m-0 fw-semibold">Commands</p>
+                    <p className="p-0 m-0">
+                      list
+                      <span className="text-secondary fst-italic">
+                        {" "}
+                        {`< module >`}
+                      </span>
+                    </p>
+                    <p className="p-0 m-0">
+                      <span className="text-secondary fst-italic">
+                        {`< module >`} {`< id >`}
+                      </span>
+                    </p>
+                  </section>
+                  <img
+                    src={owie}
+                    alt="..."
+                    className=""
+                    style={{ height: "10em" }}
+                  />
+                </main>
               </main>
             }
           />
@@ -315,6 +323,7 @@ export function SuperAdminTopbar() {
             class="text-white"
             icon={info.icons.others.help}
             text={"Guide"}
+            function={() => {}}
           />
         </div>
         <span>|</span>

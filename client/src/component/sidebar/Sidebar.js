@@ -37,7 +37,7 @@ export class Sidebar extends React.Component {
             </div>
           </div>
 
-          <div className="offcanvas-body m-0 h-100 w-100">
+          <div className="offcanvas-body m-0 h-100 w-100 ">
             {this.props.content}
           </div>
         </main>

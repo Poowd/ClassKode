@@ -63,3 +63,20 @@ STYLE FOCUSED - GRADIENT
 .sheep:hover {
   opacity: 0.75;
 }
+
+.login-background {
+  background-image: linear-gradient(to top, #0a4b8495, #0c589c95),
+    url("./assets/imgs/background/sti-bg-campus.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.back-blur {
+  backdrop-filter: blur(5px);
+}
+
+.local-campus-bg {
+  background-image: url("./assets/imgs/background/sti-bg-campus-2.jpg");
+  background-size: cover;
+  background-position: center;
+}

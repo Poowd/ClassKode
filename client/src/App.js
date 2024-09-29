@@ -286,7 +286,14 @@ function App() {
           </>
         ) : (
           <>
-            <Route path={"*"} element={<Homepage />}></Route>
+            <Route
+              path={"/"}
+              element={
+                <main className="vh-100 overflow-hidden">
+                  <Homepage />
+                </main>
+              }
+            ></Route>
             <Route path={"/login"} element={<Login />}></Route>
             <Route path={"/*"} element={<Error404 />}></Route>
           </>

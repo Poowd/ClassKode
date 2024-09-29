@@ -67,7 +67,7 @@ import b3 from "./../assets/imgs/stimap/b3.png";
 import temp_dp from "./../assets/imgs/misc/char.png";
 
 import carou_item1 from "./../assets/imgs/background/sti-bg-campus.jpg";
-import carou_item2 from "./../assets/imgs/background/sti-wallpaper-1.png";
+import carou_item2 from "./../assets/imgs/background/sti-bg-campus-2.jpg";
 import carou_item3 from "./../assets/imgs/background/sti-wallpaper-2.jpg";
 
 import lape from "./../assets/imgs/misc/lape.jpg";
@@ -79,8 +79,10 @@ import scheduler from "./../assets/imgs/misc/Scheduler.png";
 import locator from "./../assets/imgs/misc/Locator.png";
 import team from "./../assets/imgs/misc/Team.png";
 import host from "./../assets/imgs/misc/Host.png";
+import { useNavigate } from "react-router-dom";
 
 export default function useConfiguration() {
+  const navigate = useNavigate();
   const [info, setInfo] = useState({
     conn: {
       server: "http://localhost:8081/",
@@ -135,19 +137,55 @@ export default function useConfiguration() {
       ],
       carousel: {
         item1: {
-          Title: "",
-          Subtitle: "",
+          Title: "Effortless Class Scheduling",
+          Subtitle: "Streamline Your Academic Journey",
+          Description:
+            "Say goodbye to scheduling conflicts! Our intuitive platform allows you to easily book classes, manage your timetable, and stay organized throughout the semester.",
           Image: carou_item1,
+          Button: (
+            <button
+              className="ms-3 rounded-pill btn btn-danger px-3"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login Now
+            </button>
+          ),
         },
         item2: {
-          Title: "",
-          Subtitle: "",
+          Title: "Connect with Faculty",
+          Subtitle: "Your Professors, Just a Click Away",
+          Description:
+            "Locate your faculty members with ease. Access their office hours, contact information, and more to ensure you get the guidance you need for your studies.",
           Image: carou_item2,
+          Button: (
+            <button
+              className="ms-3 rounded-pill btn btn-danger px-3"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login Now
+            </button>
+          ),
         },
         item3: {
-          Title: "",
-          Subtitle: "",
+          Title: "Stay Updated",
+          Subtitle: "Real-Time Notifications",
+          Description:
+            "Never miss an update again! Receive instant notifications about class changes, events, and important announcements directly to your device.",
           Image: carou_item3,
+          Button: (
+            <button
+              className="ms-3 rounded-pill btn btn-danger px-3"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login Now
+            </button>
+          ),
         },
       },
       content: {

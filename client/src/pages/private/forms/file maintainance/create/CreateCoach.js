@@ -121,7 +121,7 @@ export function CreateCoach() {
               id="MiddleInitial"
               trigger={dataChange}
               value={data.MiddleInitial}
-              required={true}
+              required={false}
             />
             <MainInput
               label="LastName"

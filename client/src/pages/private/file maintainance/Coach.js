@@ -156,7 +156,7 @@ export function Coach() {
                         key={i}
                         slot1={item.SCHLID}
                         slot2={`${item.FirstName} ${
-                          item.MiddleInitial !== null
+                          item.MiddleInitial !== (null || "")
                             ? " " + item.MiddleInitial + ". "
                             : " "
                         } ${item.LastName}`}

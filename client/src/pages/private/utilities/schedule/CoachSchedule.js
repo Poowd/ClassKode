@@ -150,8 +150,8 @@ export function CoachSchedule() {
                                       }
                                       className={
                                         schedule.Component.includes("General")
-                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center"
-                                          : "border border-white gradient-bg-light-blue rounded text-center"
+                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center p-2"
+                                          : "border border-white gradient-bg-light-blue rounded text-center p-2"
                                       }
                                       onClick={() => {
                                         alert(schedule.Course);

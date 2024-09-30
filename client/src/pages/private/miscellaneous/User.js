@@ -65,7 +65,7 @@ export function User() {
           <ListCard
             slot1={item.SCHLID}
             slot2={`${item.FirstName} ${item.LastName}`}
-            slot3={item.UUID_Created}
+            slot3={item.Created}
             slot4={`${item.UserType} : ${item.PermissionLevel}`}
             slot5={item.Email}
             view={info.icons.details}

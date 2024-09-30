@@ -10,25 +10,25 @@ export class DashboardTemplate extends React.Component {
             <section className="col-lg-3 col-md-4 p-2">
               <DefaultCard
                 content={this.props.card1}
-                class="gradient-bg-light-blue"
+                class={this.props.cardcolor}
               />
             </section>
             <section className="col-lg-3 col-md-4 p-2">
               <DefaultCard
                 content={this.props.card2}
-                class="gradient-bg-light-blue"
+                class={this.props.cardcolor}
               />
             </section>
             <section className="col-lg-3 col-md-4 p-2">
               <DefaultCard
                 content={this.props.card3}
-                class="gradient-bg-light-blue"
+                class={this.props.cardcolor}
               />
             </section>
             <section className="col-lg-3 col-md-4 p-2">
               <DefaultCard
                 content={this.props.card4}
-                class="gradient-bg-light-blue"
+                class={this.props.cardcolor}
               />
             </section>
           </main>

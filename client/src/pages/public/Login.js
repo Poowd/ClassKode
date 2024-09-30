@@ -100,7 +100,7 @@ export function Login() {
                       required
                     />
                     <DefaultButton
-                      class="solid-background-1 mt-5 mb-3 w-100 p-2 rounded-pill text-white"
+                      class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-2 rounded-pill"
                       type="submit"
                       text="Login"
                     />
@@ -202,7 +202,7 @@ export function Login() {
                           required
                         />
                         <DefaultButton
-                          class="solid-background-1 mt-5 mb-3 w-100 p-2 rounded-pill text-white"
+                          class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-2 rounded-pill"
                           type="submit"
                           text="Login"
                         />

@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import "../../css/CustomColours.css";
 import logo from "../../../src/assets/imgs/logo/ClassKode Logo (3).png";
 import useConfiguration from "../../hook/useConfiguration";
+import { LinkButton } from "../../component/button/LinkButton";
 
 export function Homepage() {
   const [info] = useConfiguration();
   return (
     <main className="h-100 overflow-y-auto my-0 py-0">
-      <nav className="navbar navbar-expand-lg gradient-background-1 text-white d-flex justify-content-between px-5">
+      <nav className="navbar navbar-expand-lg gradient-bg-blue text-white d-flex justify-content-between px-5">
         <div className="container-fluid">
           <a className="navbar-brand text-white" href="#">
             Class Kode
@@ -67,12 +68,11 @@ export function Homepage() {
               </ul>
               <ul className="navbar-nav">
                 <li>
-                  <Link
+                  <LinkButton
                     to={"/login"}
-                    className="btn solid-background-1 btn-sm rounded-pill px-4"
-                  >
-                    Login
-                  </Link>
+                    textclass="btn-warning text-dark px-3 py-1 rounded-pill fw-bold"
+                    text={"Login"}
+                  />
                 </li>
               </ul>
             </main>

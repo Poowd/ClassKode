@@ -19,6 +19,7 @@ export function GenerateSection() {
   const [toasty, showToast] = useToasty();
 
   const [sectionlist, setSectionList] = useState([]);
+  const [semester, setSemester] = useState([]);
   const [section, setSection] = useState([]);
   const [program, setProgram] = useState([]);
   const [yearlevel, setYearLevel] = useState([]);
@@ -32,6 +33,7 @@ export function GenerateSection() {
     data_get("section-list", setSection);
     data_get("program-list", setProgram);
     data_get("year-level-list", setYearLevel);
+    data_get("semester-list", setSemester);
   }, [section]);
 
   var counter = 0;
@@ -57,7 +59,7 @@ export function GenerateSection() {
   useEffect(() => {
     program.forEach((prg) => {
       yearlevel.forEach((yrl) => {
-        for (var i = 0; i < 2; i++) {
+        semester.forEach((sem) => {
           if (prg.Code === data.Code) {
             counter++;
             generated_phase1.push({
@@ -66,9 +68,10 @@ export function GenerateSection() {
               )}`,
               YearLevel: yrl.YearLevel,
               Program: prg.Code,
+              Semester: sem.Semester
             });
           }
-        }
+        });
       });
     });
 

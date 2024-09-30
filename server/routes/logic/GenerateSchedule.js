@@ -27,7 +27,7 @@ router.post("/gen-class", (req, res) => {
       Component: data.Component,
       Section: data.Section,
       Population: data.Population,
-      Units: +data.MaxUnits, //converting text.json to float
+      Units: parseInt(data.MaxUnits), //converting text.json to float
       YearLevel: data.YearLevel,
     });
   });
@@ -121,7 +121,7 @@ router.post("/gen-class", (req, res) => {
                     ROM_UNT: "None",
                     PPL: classes[j].Population,
                     CCH_UNT:
-                      ADD_COACH(classes[j].Course).Units + classes[j].Units,
+                      ADD_COACH(classes[j].CRS_Code).Units + classes[j].Units,
                   });
                   ADD_UNITS_TO_COACH(coach, classes[j].Units);
                 }

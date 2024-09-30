@@ -35,7 +35,9 @@ import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSched
 import FileInput from "./pages/testing/FileInput";
 import { Setup } from "./pages/private/miscellaneous/Setup";
 import { SuperAdminTopbar } from "./component/topbar/SuperAdminTopbar";
+import { AdminTopbar } from "./component/topbar/AdminTopbar";
 import { CoachSchedule } from "./pages/private/utilities/schedule/CoachSchedule";
+import { UserTopbar } from "./component/topbar/UserTopbar";
 
 function App() {
   const navigate = useNavigate();
@@ -61,33 +63,6 @@ function App() {
     sessionStorage.removeItem("loggedin");
     navigate("/");
     window.location.reload(true);
-  };
-
-  const quicknav = () => {
-    switch (`${data.Input}`) {
-      case "list department":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list program":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list course":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list coach":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list section":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      case "list room":
-        navigate(`/institution/${data.Input.slice(5)}`);
-        break;
-      default:
-        navigate("/");
-    }
-    document.getElementById("Input").value = "";
-    setData({ Input: "" });
   };
 
   return (
@@ -216,57 +191,128 @@ function App() {
                 path={"*"}
                 element={
                   <MainLayout
-                    topbar={<SuperAdminTopbar />}
+                    topbar={<AdminTopbar />}
                     content={
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
                         <>
                           {loggeduser.PermissionLevel >= 0 ? (
-                            <>
+                            <Route path={"/institution"}>
                               <Route
-                                path={"/a"}
-                                element={<h1>Hello 2</h1>}
+                                path={"/institution/department"}
+                                element={<Department />}
                               ></Route>
                               <Route
-                                path={"/e"}
-                                element={<h1>Hello 25</h1>}
+                                path={"/institution/program"}
+                                element={<Program />}
                               ></Route>
-                            </>
+                              <Route
+                                path={"/institution/course"}
+                                element={<Course />}
+                              ></Route>
+                              <Route
+                                path={"/institution/section"}
+                                element={<Section />}
+                              ></Route>
+                              <Route
+                                path={"/institution/room"}
+                                element={<Room />}
+                              ></Route>
+                              <Route
+                                path={"/institution/coach"}
+                                element={<Coach />}
+                              ></Route>
+                            </Route>
                           ) : null}
                         </>
                         <>
                           {loggeduser.PermissionLevel >= 1 ? (
-                            <>
+                            <Route path={"/utilities"}>
+                              <Route path={"/utilities/curriculum"}>
+                                <Route index element={<Curriculum />}></Route>
+                                <Route
+                                  path={"/utilities/curriculum/setup/:id"}
+                                  element={<CourseSetup />}
+                                ></Route>
+                              </Route>
+                              <Route path={"/utilities/academicyear"}>
+                                <Route index element={<AcademicYear />}></Route>
+                                <Route
+                                  path={"/utilities/academicyear/assigment"}
+                                  element={<CoachAssignment />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/academicyear/projection"}
+                                  element={<SectionProjection />}
+                                ></Route>
+                              </Route>
+                              <Route path={"/utilities/schedule"}>
+                                <Route index element={<Schedule />}></Route>
+                                <Route
+                                  path={"/utilities/schedule/room"}
+                                  element={<RoomSchedule />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/schedule/section"}
+                                  element={<SectionSchedule />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/schedule/coach"}
+                                  element={<CoachSchedule />}
+                                ></Route>
+                              </Route>
                               <Route
-                                path={"/b"}
-                                element={<h1>Hello 2</h1>}
+                                path={"/utilities/locator"}
+                                element={<Locator />}
                               ></Route>
-                              <Route
-                                path={"/d"}
-                                element={<h1>Hello 3</h1>}
-                              ></Route>
-                            </>
+                            </Route>
                           ) : null}
                         </>
                         <>
                           {loggeduser.PermissionLevel >= 2 ? (
                             <Route
-                              path={"/c"}
-                              element={<h1>Hello 3</h1>}
+                              path={"/:module/:form/:id"}
+                              element={<DataController />}
                             ></Route>
                           ) : null}
                         </>
+                        <Route path={"/*"} element={<Error404 />}></Route>
                       </Routes>
                     }
                   />
                 }
-              >
-                <Route path={"/*"} element={<Error404 />}></Route>
-              </Route>
+              ></Route>
             ) : loggeduser.UserType === "User" ? (
-              <Route path={"*"}>
-                <Route path={"/*"} element={<Error404 />}></Route>
-              </Route>
+              <Route
+                path={"*"}
+                element={
+                  <MainLayout
+                    topbar={<UserTopbar />}
+                    content={
+                      <Routes>
+                        <Route index element={<Dashboard />}></Route>
+                        <Route path={"/utilities"}>
+                          <Route path={"/utilities/schedule"}>
+                            <Route index element={<Schedule />}></Route>
+                            <Route
+                              path={"/utilities/schedule/room"}
+                              element={<RoomSchedule />}
+                            ></Route>
+                            <Route
+                              path={"/utilities/schedule/section"}
+                              element={<SectionSchedule />}
+                            ></Route>
+                          </Route>
+                          <Route
+                            path={"/utilities/locator"}
+                            element={<Locator />}
+                          ></Route>
+                        </Route>
+                      </Routes>
+                    }
+                  />
+                }
+              ></Route>
             ) : loggeduser.UserType === "Developer" ? (
               <Route path={"/testing"}>
                 <Route

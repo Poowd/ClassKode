@@ -45,7 +45,7 @@ export function GenerateSchedule() {
 
   useEffect(() => {
     data_get("current-academic-year", setAY);
-  }, []);
+  }, [ay]);
 
   useEffect(() => {
     data_get("room-list", setRoom);
@@ -54,8 +54,9 @@ export function GenerateSchedule() {
     data_get("coach-type-list", setCoachType);
     data_get("weekly-event-list", setWeekly);
     data_get("specialization-list", setSpecialize);
+    console.log(ay.Code);
     data_post("expected-class-list", { data: ay.Code }, setExpected);
-  }, []);
+  }, [ay]);
 
   useEffect(() => {
     //schedule.splice(0, 1);

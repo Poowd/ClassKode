@@ -1,36 +1,3 @@
-.gradient-bg-blue {
-  background-image: linear-gradient(
-    to bottom right,
-    #083d6d,
-    #0a4b84,
-    #0c589c,
-    #0e65b4,
-    #1073cb
-  );
-  color: white;
-}
-
-.gradient-bg-light-blue {
-  background-image: linear-gradient(to bottom right, #44aff5, #0d7eb7);
-  color: white;
-}
-
-.gradient-bg-yellow {
-  background-image: linear-gradient(
-    to bottom right,
-    #f24a17,
-    #f55d0c,
-    #f97a05,
-    #ffbf00,
-    #feca74,
-    #ffbf00,
-    #f97a05,
-    #f55d0c,
-    #f24a17
-  );
-  color: #ffffed;
-}
-
 /*
 GOLD FOR DARK MODE
     #a67c00,

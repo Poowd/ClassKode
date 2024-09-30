@@ -11,7 +11,7 @@ import { DefaultInput } from "../input/DefaultInput";
 import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
 import owie from "../../assets/imgs/misc/owie.png";
 
-export function SuperAdminTopbar() {
+export function UserTopbar() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [data, setData] = useState({
@@ -23,49 +23,7 @@ export function SuperAdminTopbar() {
 
   const [itemlist, setItemList] = useState("Default");
   const [items, setItems] = useState({
-    Institution: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.department}
-        navigate={"/institution/department"}
-        text={"Department"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.program}
-        navigate={"/institution/program"}
-        text={"Program"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.course}
-        navigate={"/institution/course"}
-        text={"Course"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.coach}
-        navigate={"/institution/coach"}
-        text={"Coach"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.section}
-        navigate={"/institution/section"}
-        text={"Section"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.room}
-        navigate={"/institution/room"}
-        text={"Room"}
-      />,
-    ],
     Scheduler: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.curriculum}
-        navigate={"/utilities/curriculum"}
-        text={"Curriculum"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.academicyear}
-        navigate={"/utilities/academicyear"}
-        text={"Academic Year"}
-      />,
       <SidebarDropdownItem
         icon={info.icons.modules.schedules}
         navigate={"/utilities/schedule"}
@@ -81,39 +39,12 @@ export function SuperAdminTopbar() {
         navigate={"/utilities/schedule/section"}
         text={"Section Schedules"}
       />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.coach}
-        navigate={"/utilities/schedule/coach"}
-        text={"Coach Schedules"}
-      />,
     ],
     Locator: [
       <SidebarDropdownItem
         icon={info.icons.modules.locator}
         navigate={"/utilities/locator"}
         text={"Faculty Locator"}
-      />,
-    ],
-    Misc: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.archives}
-        navigate={"/miscellaneous/archive"}
-        text={"Archive"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.logs}
-        navigate={"/miscellaneous/log"}
-        text={"Log"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.users}
-        navigate={"/miscellaneous/user"}
-        text={"User"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.settings}
-        navigate={"/miscellaneous/setup"}
-        text={"Setup"}
       />,
     ],
   });
@@ -126,28 +57,10 @@ export function SuperAdminTopbar() {
   };
 
   const quicknav = () => {
-    if (/list department/g.test(data.Input)) {
-      navigate(`/institution/department`);
-    }
-    if (/list program/g.test(data.Input)) {
-      navigate(`/institution/program`);
-    }
-    if (/list course/g.test(data.Input)) {
-      navigate(`/institution/course`);
-    }
-    if (/list coach/g.test(data.Input)) {
-      navigate(`/institution/coach`);
-    }
-    if (/list section/g.test(data.Input)) {
-      navigate(`/institution/section`);
-    }
-    if (/list room/g.test(data.Input)) {
-      navigate(`/institution/room`);
-    }
     //=>
-    if (/coach [0-9]{11}/g.test(data.Input)) {
-      navigate(`/coach/view/${data.Input.slice(6)}`);
-    }
+    // if (/coach [0-9]{11}/g.test(data.Input)) {
+    //   navigate(`/coach/view/${data.Input.slice(6)}`);
+    // }
     document.getElementById("Input").value = "";
     setData({ Input: "" });
   };
@@ -169,10 +82,6 @@ export function SuperAdminTopbar() {
                 items={
                   itemlist && itemlist === "Default" ? (
                     <main className="w-100 h-100 text-center p-3"></main>
-                  ) : itemlist === "Institution" ? (
-                    items.Institution.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
                   ) : itemlist === "Scheduler" ? (
                     items.Scheduler.map((item) => (
                       <div className="bg-white rounded shadow-sm">{item}</div>
@@ -181,38 +90,10 @@ export function SuperAdminTopbar() {
                     items.Locator.map((item) => (
                       <div className="bg-white rounded shadow-sm">{item}</div>
                     ))
-                  ) : itemlist === "Misc" ? (
-                    items.Misc.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
                   ) : null
                 }
                 list={
                   <>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                      >
-                        <h3 className="">{info.icons.modules.dashboard}</h3>
-                        <h6 className="text-start flex-grow-1">Dashboard</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Institution");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.institution}</h3>
-                        <h6 className="text-start flex-grow-1">Institution</h6>
-                      </button>
-                    </li>
                     <li>
                       <button
                         className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
@@ -224,6 +105,7 @@ export function SuperAdminTopbar() {
                         <h6 className="text-start flex-grow-1">Scheduler</h6>
                       </button>
                     </li>
+
                     <li>
                       <button
                         className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
@@ -233,17 +115,6 @@ export function SuperAdminTopbar() {
                       >
                         <h3 className="">{info.icons.modules.locator}</h3>
                         <h6 className="text-start flex-grow-1">Locator</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Misc");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.misc}</h3>
-                        <h6 className="text-start flex-grow-1">Misc</h6>
                       </button>
                     </li>
                   </>
@@ -258,7 +129,7 @@ export function SuperAdminTopbar() {
           </h5>
           <div>
             <p className="p-0 m-0">
-              <span className="fw-semibold gradient-text-3">Manager</span>
+              <span className="fw-semibold gradient-text-1">User</span>
             </p>
           </div>
         </div>

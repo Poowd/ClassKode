@@ -11,7 +11,7 @@ import { DefaultInput } from "../input/DefaultInput";
 import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
 import owie from "../../assets/imgs/misc/owie.png";
 
-export function SuperAdminTopbar() {
+export function AdminTopbar() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [data, setData] = useState({
@@ -94,28 +94,6 @@ export function SuperAdminTopbar() {
         text={"Faculty Locator"}
       />,
     ],
-    Misc: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.archives}
-        navigate={"/miscellaneous/archive"}
-        text={"Archive"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.logs}
-        navigate={"/miscellaneous/log"}
-        text={"Log"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.users}
-        navigate={"/miscellaneous/user"}
-        text={"User"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.settings}
-        navigate={"/miscellaneous/setup"}
-        text={"Setup"}
-      />,
-    ],
   });
 
   const handleLogout = () => {
@@ -181,71 +159,83 @@ export function SuperAdminTopbar() {
                     items.Locator.map((item) => (
                       <div className="bg-white rounded shadow-sm">{item}</div>
                     ))
-                  ) : itemlist === "Misc" ? (
-                    items.Misc.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
                   ) : null
                 }
                 list={
                   <>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                      >
-                        <h3 className="">{info.icons.modules.dashboard}</h3>
-                        <h6 className="text-start flex-grow-1">Dashboard</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Institution");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.institution}</h3>
-                        <h6 className="text-start flex-grow-1">Institution</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Scheduler");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.scheduler}</h3>
-                        <h6 className="text-start flex-grow-1">Scheduler</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Locator");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.locator}</h3>
-                        <h6 className="text-start flex-grow-1">Locator</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Misc");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.misc}</h3>
-                        <h6 className="text-start flex-grow-1">Misc</h6>
-                      </button>
-                    </li>
+                    <>
+                      {loggeduser.PermissionLevel >= 0 ? (
+                        <>
+                          <li>
+                            <button
+                              className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
+                              onClick={() => {
+                                navigate("/");
+                              }}
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                            >
+                              <h3 className="">
+                                {info.icons.modules.dashboard}
+                              </h3>
+                              <h6 className="text-start flex-grow-1">
+                                Dashboard
+                              </h6>
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
+                              onClick={() => {
+                                setItemList("Institution");
+                              }}
+                            >
+                              <h3 className="">
+                                {info.icons.modules.institution}
+                              </h3>
+                              <h6 className="text-start flex-grow-1">
+                                Institution
+                              </h6>
+                            </button>
+                          </li>
+                        </>
+                      ) : null}
+                    </>
+                    <>
+                      {loggeduser.PermissionLevel >= 1 ? (
+                        <>
+                          <li>
+                            <button
+                              className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
+                              onClick={() => {
+                                setItemList("Scheduler");
+                              }}
+                            >
+                              <h3 className="">
+                                {info.icons.modules.scheduler}
+                              </h3>
+                              <h6 className="text-start flex-grow-1">
+                                Scheduler
+                              </h6>
+                            </button>
+                          </li>
+
+                          <li>
+                            <button
+                              className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
+                              onClick={() => {
+                                setItemList("Locator");
+                              }}
+                            >
+                              <h3 className="">{info.icons.modules.locator}</h3>
+                              <h6 className="text-start flex-grow-1">
+                                Locator
+                              </h6>
+                            </button>
+                          </li>
+                        </>
+                      ) : null}
+                    </>
                   </>
                 }
               />
@@ -258,7 +248,7 @@ export function SuperAdminTopbar() {
           </h5>
           <div>
             <p className="p-0 m-0">
-              <span className="fw-semibold gradient-text-3">Manager</span>
+              <span className="fw-semibold gradient-text-2">Admin</span>
             </p>
           </div>
         </div>

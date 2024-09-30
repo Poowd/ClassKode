@@ -38,6 +38,7 @@ export function Dashboard() {
 
   return (
     <DashboardTemplate
+      cardcolor={"gradient-bg-light-blue"}
       card1={
         <DashboardCardContent
           title={"Academic Year"}
@@ -81,7 +82,10 @@ export function Dashboard() {
         <DashboardCardContent
           title={"Events"}
           button={
-            <DefaultButton class="border text-light" icon={info.icons.others.events} />
+            <DefaultButton
+              class="border text-light"
+              icon={info.icons.others.events}
+            />
           }
           content={"0"}
         />

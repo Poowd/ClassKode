@@ -16,7 +16,7 @@ export function Locator() {
   const [info] = useConfiguration();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
-  const d = new Date();
+  const daytoday = new Date();
   const days = [
     "Sunday",
     "Monday",
@@ -57,10 +57,12 @@ export function Locator() {
 
   function checkClassStatus(coach) {
     for (var i = 0; i < schedules.length; i++) {
-      if (schedules[i].Day === days[d.getDay()]) {
+      if (schedules[i].Day === days[daytoday.getDay()]) {
         if (
-          schedules[i].StartTime < d.getHours() * 60 + d.getMinutes() &&
-          d.getHours() * 60 + d.getMinutes() < schedules[i].EndTime
+          schedules[i].StartTime <
+            daytoday.getHours() * 60 + daytoday.getMinutes() &&
+          daytoday.getHours() * 60 + daytoday.getMinutes() <
+            schedules[i].EndTime
         ) {
           if (schedules[i].Coach === coach) {
             return "On Going";
@@ -82,10 +84,10 @@ export function Locator() {
                   ? schedules.map((schedule, i) =>
                       schedule.Coach === currcoach ? (
                         schedule.StartTime <
-                          d.getHours() * 60 + d.getMinutes() &&
-                        d.getHours() * 60 + d.getMinutes() <
+                          daytoday.getHours() * 60 + daytoday.getMinutes() &&
+                        daytoday.getHours() * 60 + daytoday.getMinutes() <
                           schedule.EndTime ? (
-                          schedule.Day === days[d.getDay()] ? (
+                          schedule.Day === days[daytoday.getDay()] ? (
                             <main className="border rounded p-3">
                               <header>
                                 <h6 className="fw-bold text-success">
@@ -167,8 +169,8 @@ export function Locator() {
             <main className="border rounded py-1 px-2 text-secondary">
               <small className="d-flex align-items-center gap-2">
                 {info.icons.pages.utilities.schedule}
-                <span>{`${days[d.getDay()]} - ${time} ${
-                  d.getHours() < 12 ? "AM" : "PM"
+                <span>{`${days[daytoday.getDay()]} - ${time} ${
+                  daytoday.getHours() < 12 ? "AM" : "PM"
                 }`}</span>
               </small>
             </main>
@@ -320,13 +322,13 @@ export function Locator() {
                                           ? schedules.map((schedule, i) =>
                                               schedule.Coach === coach.SCHLID
                                                 ? schedule.StartTime <
-                                                    d.getHours() * 60 +
-                                                      d.getMinutes() &&
-                                                  d.getHours() * 60 +
-                                                    d.getMinutes() <
+                                                    daytoday.getHours() * 60 +
+                                                      daytoday.getMinutes() &&
+                                                  daytoday.getHours() * 60 +
+                                                    daytoday.getMinutes() <
                                                     schedule.EndTime
                                                   ? schedule.Day ===
-                                                    days[d.getDay()]
+                                                    days[daytoday.getDay()]
                                                     ? schedule.Room
                                                     : null
                                                   : null
@@ -384,14 +386,16 @@ export function Locator() {
               {schedules.length > 0
                 ? schedules.map((item, i) =>
                     item.Coach === selcoach.SCHLID ? (
-                      <RoomCard
-                        key={i}
-                        section={item.Section}
-                        course={item.Course}
-                        time={`${item.Day} - ${convertMinutes(
-                          item.StartTime
-                        )} - ${convertMinutes(item.EndTime)}`}
-                      />
+                      item.Day === days[daytoday.getDay()] ? (
+                        <RoomCard
+                          key={i}
+                          section={item.Section}
+                          course={item.Course}
+                          time={`${item.Day} - ${convertMinutes(
+                            item.StartTime
+                          )} - ${convertMinutes(item.EndTime)}`}
+                        />
+                      ) : null
                     ) : null
                   )
                 : null}

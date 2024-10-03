@@ -16,11 +16,11 @@ export class DataViewerTemplate extends React.Component {
                 <div className="d-flex gap-2 my-2">{this.props.control}</div>
                 <section className="">
                   <main className="row m-0">
-                    <section className="col-7 p-0">
+                    <section className="col-lg-7 p-0">
                       <main>{this.props.content}</main>
                     </section>
 
-                    <section className="col-5 p-0">
+                    <section className="col-lg-5 p-0">
                       <main className="">{this.props.additional}</main>
                     </section>
                   </main>

@@ -1,6 +1,5 @@
-import "./App.css";
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
 import { Error404 } from "./component/placeholder/Error404";
@@ -28,8 +27,6 @@ import { TimeProblem } from "./pages/testing/TimeProblem";
 import { ImagetoDB } from "./pages/testing/ImagetoDB";
 import { Login } from "./pages/public/Login";
 import { Homepage } from "./pages/public/Homepage";
-import useConfiguration from "./hook/useConfiguration";
-import useHandleChange from "./hook/useHandleChange";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
 import FileInput from "./pages/testing/FileInput";
@@ -40,30 +37,17 @@ import { CoachSchedule } from "./pages/private/utilities/schedule/CoachSchedule"
 import { UserTopbar } from "./component/topbar/UserTopbar";
 
 function App() {
-  const navigate = useNavigate();
-  const [info] = useConfiguration();
-  const [data, setData] = useState({
-    Input: "",
-  });
-  const [dataChange] = useHandleChange(setData);
-
   const [isLoading, setIsLoading] = useState(true);
+
+  const status = JSON.parse(sessionStorage.getItem("loggedin"));
+  const loggeduser = JSON.parse(sessionStorage.getItem("user"));
+
   useEffect(() => {
     // Simulate an API call
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
   }, []);
-
-  const status = JSON.parse(sessionStorage.getItem("loggedin"));
-  const loggeduser = JSON.parse(sessionStorage.getItem("user"));
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("loggedin");
-    navigate("/");
-    window.location.reload(true);
-  };
 
   return (
     <main className="overflow-hidden">
@@ -83,10 +67,6 @@ function App() {
                     topbar={<SuperAdminTopbar />}
                     content={
                       <Routes>
-                        <Route
-                          path="/testing/excel"
-                          element={<FileInput />}
-                        ></Route>
                         <Route index element={<Dashboard />}></Route>
 
                         <Route path={"/institution"}>
@@ -124,6 +104,7 @@ function App() {
                               element={<CourseSetup />}
                             ></Route>
                           </Route>
+
                           <Route path={"/utilities/academicyear"}>
                             <Route index element={<AcademicYear />}></Route>
                             <Route
@@ -135,6 +116,7 @@ function App() {
                               element={<SectionProjection />}
                             ></Route>
                           </Route>
+
                           <Route path={"/utilities/schedule"}>
                             <Route index element={<Schedule />}></Route>
                             <Route
@@ -150,10 +132,10 @@ function App() {
                               element={<CoachSchedule />}
                             ></Route>
                           </Route>
-                          <Route
-                            path={"/utilities/locator"}
-                            element={<Locator />}
-                          ></Route>
+
+                          <Route path={"/utilities/locator"}>
+                            <Route index element={<Locator />}></Route>
+                          </Route>
                         </Route>
 
                         <Route path={"/miscellaneous"}>

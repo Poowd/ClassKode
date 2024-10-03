@@ -11,6 +11,9 @@ export class Error404 extends React.Component {
           <Link to={-1} className="btn btn-primary">
             Back
           </Link>
+          <Link to={"/"} className="btn btn-primary">
+            Home
+          </Link>
         </main>
       </main>
     );

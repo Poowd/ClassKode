@@ -20,11 +20,13 @@ import { NoDisplay } from "../../../../../component/placeholder/NoDisplay";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
+import { useRoomUsage } from "../../../../../hook/useRoomUsage";
 
 export function ViewRoom() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const params = useParams();
+  const [getRoomUsage, getRoomUsageWeek] = useRoomUsage();
   const [get, post, data_get, data_post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
@@ -32,6 +34,12 @@ export function ViewRoom() {
   const [toasty, showToast] = useToasty();
 
   const [data, setData] = useState([]);
+  const [roomusage, setRoomUsage] = useState([]);
+  const [roomMonday, setRoomMonday] = useState([]);
+  const [roomTuesday, setRoomTuesday] = useState([]);
+  const [roomWednesday, setRoomWednesday] = useState([]);
+  const [roomThursday, setRoomThursday] = useState([]);
+  const [roomFriday, setRoomFriday] = useState([]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
@@ -41,6 +49,32 @@ export function ViewRoom() {
   useEffect(() => {
     data_get("random-code-generator", setCode);
     data_post("room-target", { data: params.id }, setData);
+    data_post("room-units", { data: params.id }, setRoomUsage);
+    data_post(
+      "room-units-day",
+      { room: params.id, day: "Monday" },
+      setRoomMonday
+    );
+    data_post(
+      "room-units-day",
+      { room: params.id, day: "Tuesday" },
+      setRoomTuesday
+    );
+    data_post(
+      "room-units-day",
+      { room: params.id, day: "Wednesday" },
+      setRoomWednesday
+    );
+    data_post(
+      "room-units-day",
+      { room: params.id, day: "Thursday" },
+      setRoomThursday
+    );
+    data_post(
+      "room-units-day",
+      { room: params.id, day: "Friday" },
+      setRoomFriday
+    );
   }, []);
 
   const archiveEntry = (e) => {
@@ -107,6 +141,7 @@ export function ViewRoom() {
             />
           </>
         }
+        extradata={<main className="h-100"></main>}
         content={
           <>
             {data &&
@@ -124,6 +159,122 @@ export function ViewRoom() {
                       <h6>
                         {item.Building} - {item.Floor}
                       </h6>
+                      <main>
+                        <main className="w-100 bg-white rounded shadow-sm p-2 mb-3">
+                          <section className="d-flex justify-content-between align-items-center">
+                            <h6 className="m-0">Total Room Usage</h6>
+                            <h3
+                              className={`m-0 ${
+                                getRoomUsageWeek(roomusage.sum) > 60
+                                  ? "text-success"
+                                  : getRoomUsageWeek(roomusage.sum) < 60 &&
+                                    getRoomUsageWeek(roomusage.sum) > 40
+                                  ? "text-warning"
+                                  : "text-danger"
+                              }`}
+                            >
+                              {`${getRoomUsageWeek(roomusage.sum)}%`}
+                            </h3>
+                          </section>
+                        </main>
+                        <main className="row m-0 p-2 row-cols-5 bg-white rounded shadow-sm">
+                          <section className="col p-1">
+                            <main className="bg-white rounded shadow-sm p-2 text-center">
+                              <h6>Monday</h6>
+                              <p
+                                className={`m-0 ${
+                                  getRoomUsage(roomMonday.sum) > 60
+                                    ? "text-success"
+                                    : getRoomUsage(roomMonday.sum) < 60 &&
+                                      getRoomUsage(roomMonday.sum) > 40
+                                    ? "text-warning"
+                                    : "text-danger"
+                                }`}
+                              >
+                                {roomMonday.sum !== null
+                                  ? `${getRoomUsage(roomMonday.sum)}%`
+                                  : 0}
+                              </p>
+                            </main>
+                          </section>
+                          <section className="col p-1">
+                            <main className="bg-white rounded shadow-sm p-2 text-center">
+                              <h6>Tuesday</h6>
+                              <p
+                                className={`m-0 ${
+                                  getRoomUsage(roomTuesday.sum) > 60
+                                    ? "text-success"
+                                    : getRoomUsage(roomTuesday.sum) < 60 &&
+                                      getRoomUsage(roomTuesday.sum) > 40
+                                    ? "text-warning"
+                                    : "text-danger"
+                                }`}
+                              >
+                                {roomTuesday.sum !== null
+                                  ? `${getRoomUsage(roomTuesday.sum)}%`
+                                  : 0}
+                              </p>
+                            </main>
+                          </section>
+                          <section className="col p-1">
+                            <main className="bg-white rounded shadow-sm p-2 text-center">
+                              <h6>Wednesday</h6>
+                              <p
+                                className={`m-0 ${
+                                  getRoomUsage(roomWednesday.sum) > 60
+                                    ? "text-success"
+                                    : getRoomUsage(roomWednesday.sum) < 60 &&
+                                      getRoomUsage(roomWednesday.sum) > 40
+                                    ? "text-warning"
+                                    : "text-danger"
+                                }`}
+                              >
+                                {roomWednesday.sum !== null
+                                  ? `${getRoomUsage(roomWednesday.sum)}%`
+                                  : 0}
+                              </p>
+                            </main>
+                          </section>
+                          <section className="col p-1">
+                            <main className="bg-white rounded shadow-sm p-2 text-center">
+                              <h6>Thursday</h6>
+                              <p
+                                className={`m-0 ${
+                                  getRoomUsage(roomThursday.sum) > 60
+                                    ? "text-success"
+                                    : getRoomUsage(roomThursday.sum) < 60 &&
+                                      getRoomUsage(roomThursday.sum) > 40
+                                    ? "text-warning"
+                                    : "text-danger"
+                                }`}
+                              >
+                                {roomThursday.sum !== null
+                                  ? `${getRoomUsage(roomThursday.sum)}%`
+                                  : 0}
+                              </p>
+                            </main>
+                          </section>
+                          <section className="col p-1">
+                            <main className="bg-white rounded shadow-sm p-2 text-center">
+                              <h6>Friday</h6>
+                              <p
+                                className={`m-0 ${
+                                  getRoomUsage(roomFriday.sum) > 60
+                                    ? "text-success"
+                                    : getRoomUsage(roomFriday.sum) < 60 &&
+                                      getRoomUsage(roomFriday.sum) > 40
+                                    ? "text-warning"
+                                    : "text-danger"
+                                }`}
+                              >
+                                {roomFriday.sum !== null
+                                  ? `${getRoomUsage(roomFriday.sum)}%`
+                                  : 0}
+                              </p>
+                            </main>
+                          </section>
+                        </main>
+                      </main>
                       <footer className="mt-5">
                         <small>
                           <p className="text-secondary">

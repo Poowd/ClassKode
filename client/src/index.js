@@ -6,6 +6,7 @@ import bootstrap from "bootstrap"; //do not remove -- will disable some frontend
 import "./css/CustomColours.css";
 import "./css/Colours.css";
 import "./css/Animation.css";
+import "./App.css";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

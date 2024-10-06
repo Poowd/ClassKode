@@ -12,6 +12,16 @@ import useConfiguration from "../../../../../hook/useConfiguration";
 import { DataViewerTemplate } from "../../../../../layout/grid/DataViewerTemplate";
 import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
+import { createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
+
+const supabase = createClient(
+  "https://pgcztzkowuxixfyiqera.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnY3p0emtvd3V4aXhmeWlxZXJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU0ODQ0MTUsImV4cCI6MjA0MTA2MDQxNX0.ryLXhP4sBBhO5_JVgQ4YJ9BlpdlD2NQM2mjDRbkc3NY"
+);
+
+const CDNURL =
+  "https://pgcztzkowuxixfyiqera.supabase.co/storage/v1/object/public/images/";
 
 export function ViewCoach() {
   const navigate = useNavigate();
@@ -22,6 +32,7 @@ export function ViewCoach() {
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
 
+  const [images, setImages] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
   const [department, setDepartment] = useState([]);
@@ -42,6 +53,22 @@ export function ViewCoach() {
       setCurrentImage(data[0].Image);
     } catch (error) {}
   }, [data]);
+
+  // useEffect(() => {
+  //   getImages();
+  //   //console.log(images);
+  // }, []);
+
+  // async function getImages() {
+  //   const { data, error } = await supabase.storage.from("images").list("");
+
+  //   if (data !== null) {
+  //     setImages(data);
+  //   } else {
+  //     console.log(error);
+  //     alert("Error");
+  //   }
+  // }
 
   const archiveEntry = (e) => {
     e.preventDefault();
@@ -161,7 +188,7 @@ export function ViewCoach() {
           <figure className="p-5">
             <img
               className="h-100 w-100 rounded object-fit-cover"
-              src={`http://localhost:8081/images/${currentImage}`}
+              src={`${CDNURL}${currentImage}`}
             ></img>
           </figure>
         }

@@ -34,8 +34,8 @@ export function CoachSchedule() {
     "Friday",
   ]);
   const [time, setTime] = useState([
-    480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870, 900,
-    930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1200,
+    420, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870,
+    900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1200, 1260,
   ]);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export function CoachSchedule() {
               }}
             />
           </main>
-          <main className="h-100 row m-0 p-0 py-2 flex-fill">
+          {/* <main className="h-100 row m-0 p-0 py-2 flex-fill">
             <section className="col m-0 p-0">
               <table className="w-100">
                 <thead>
@@ -109,7 +109,7 @@ export function CoachSchedule() {
                 <tbody>
                   {time.map((time, i) => (
                     <tr>
-                      <td className="border fw-light p-2">
+                      <td className="border fw-light px-1">
                         {convertMinutes(time)}
                       </td>
                     </tr>
@@ -118,7 +118,7 @@ export function CoachSchedule() {
               </table>
             </section>
             {day.map((day, i) => (
-              <section className="col m-0 p-0 ">
+              <section className="col m-0 p-0">
                 <table className="w-100">
                   <thead>
                     <tr>
@@ -131,12 +131,7 @@ export function CoachSchedule() {
                   <tbody>
                     {time.map((time, j) => (
                       <tr>
-                        <td
-                          className="border border-white py-2"
-                          style={{ width: "0" }}
-                        >
-                          &nbsp;
-                        </td>
+                        <td>&nbsp;</td>
                         {schedule.length > 0
                           ? schedule.map((schedule, k) =>
                               schedule.Coach === currcoach ? (
@@ -150,18 +145,18 @@ export function CoachSchedule() {
                                       }
                                       className={
                                         schedule.Component.includes("General")
-                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center p-2"
-                                          : "border border-white gradient-bg-light-blue rounded text-center p-2"
+                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center"
+                                          : "border border-white gradient-bg-light-blue rounded text-center"
                                       }
                                       onClick={() => {
                                         alert(schedule.Course);
                                       }}
                                     >
-                                      <main className="p-1">
+                                      <small>
                                         <p className="fw-semibold m-0 p-0">
-                                          {`${schedule.Course} ( ${schedule.Section} )`}
+                                          {schedule.Section}
                                         </p>
-                                      </main>
+                                      </small>
                                     </td>
                                   ) : (
                                     ""
@@ -175,6 +170,63 @@ export function CoachSchedule() {
                   </tbody>
                 </table>
               </section>
+            ))}
+          </main> */}
+          <main className="h-100 flex-fill py-2">
+            <header className="p-2 bg-white rounded shadow-sm">
+              {coach.map((coach, o) =>
+                coach.SCHLID === currcoach ? (
+                  <>
+                    <h3>{`${coach.LastName}, ${coach.FirstName}`}</h3>
+                    <p className="m-0">{coach.SCHLID}</p>
+                  </>
+                ) : null
+              )}
+            </header>
+            {day.map((day, i) => (
+              <main className="p-2">
+                <section>{day}</section>
+                <section className="w-100 d-flex">
+                  {time.map((time, j) =>
+                    schedule.length > 0
+                      ? schedule.map((schedule, k) =>
+                          schedule.Coach === currcoach ? (
+                            schedule.Day === day ? (
+                              +schedule.StartTime === time ? (
+                                <section
+                                  className={
+                                    schedule.Component.includes("General")
+                                      ? "border border-white bg-secondary-subtle custom-text-blue rounded px-3 p-2 w-100"
+                                      : "border border-white gradient-bg-light-blue rounded px-3 p-2 w-100"
+                                  }
+                                  onClick={() => {
+                                    alert(schedule.Course);
+                                  }}
+                                >
+                                  <small>
+                                    <p className="fw-semibold m-0 p-0">
+                                      {schedule.Section}
+                                    </p>
+                                    <p className="fw-semibold m-0 p-0">
+                                      {schedule.Course}
+                                    </p>
+                                    <p className="fw-semibold m-0 p-0">
+                                      {`${convertMinutes(
+                                        schedule.StartTime
+                                      )} : ${convertMinutes(schedule.EndTime)}`}
+                                    </p>
+                                  </small>
+                                </section>
+                              ) : (
+                                ""
+                              )
+                            ) : null
+                          ) : null
+                        )
+                      : null
+                  )}
+                </section>
+              </main>
             ))}
           </main>
           <main>

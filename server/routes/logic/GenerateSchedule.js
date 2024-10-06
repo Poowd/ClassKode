@@ -4,7 +4,7 @@ const router = express.Router();
 router.post("/gen-class", (req, res) => {
   const clientData = JSON.parse(req.body);
 
-  const startofday = 480;
+  const startofday = 420;
 
   var classes = [];
   var rooms = [];
@@ -134,48 +134,56 @@ router.post("/gen-class", (req, res) => {
         for (var j = 0; j < rooms.length; j++) {
           for (var k = 0; k < schedules.length; k++) {
             if (
-              schedules[k].CPT.includes(rooms[j].Facility) &&
-              schedules[k].PPL <= rooms[j].Capacity &&
-              rooms[j].Units <= 13
+              (!IS_LAB(schedules[k].CPT) &&
+                schedules[k].CPT.includes(rooms[j].Facility)) ||
+              (IS_LAB(schedules[k].CPT) &&
+                schedules[k].CPT === rooms[j].Facility)
             ) {
               if (
-                conflictSection(
-                  rooms[j].Units * 60 + startofday,
-                  (rooms[j].Units + schedules[k].UNT) * 60 + startofday,
-                  schedules[k].SCT,
-                  rooms[j].Day
-                )
+                schedules[k].PPL <= rooms[j].Capacity &&
+                rooms[j].Units <= 14
               ) {
-                class_schedules.push({
-                  ACY: schedules[k].ACY,
-                  CRR: schedules[k].CRR,
-                  SCT: schedules[k].SCT,
-                  CRS_CODE: schedules[k].CRS_CODE,
-                  CRS: schedules[k].CRS,
-                  SCHLID: schedules[k].SCHLID,
-                  CCH: schedules[k].CCH,
-                  CPT: schedules[k].CPT,
-                  UNT: schedules[k].UNT,
-                  YRLVL: schedules[k].YRLVL,
-                  ROM: rooms[j].Room,
-                  DAY: rooms[j].Day,
-                  STR_TME: rooms[j].Units * 60 + startofday,
-                  END_TME:
-                    rooms[j].Units * 60 + startofday + schedules[k].UNT * 60,
-                  CPC: rooms[j].Capacity,
-                  ROM_UNT: rooms[j].Units + schedules[k].UNT,
-                  PPL: schedules[k].PPL,
-                  CCH_UNT: schedules[k].CCH_UNT,
-                  CONFLICT: !conflictSection(
+                if (
+                  conflictSection(
                     rooms[j].Units * 60 + startofday,
                     (rooms[j].Units + schedules[k].UNT) * 60 + startofday,
                     schedules[k].SCT,
-                    rooms[j].Day
-                  ),
-                });
-                ADD_UNITS_TO_ROOM(rooms[j].Room, schedules[k].UNT);
-                schedules.splice(k, 1);
-                k--;
+                    rooms[j].Day,
+                    schedules[k].CCH
+                  )
+                ) {
+                  class_schedules.push({
+                    ACY: schedules[k].ACY,
+                    CRR: schedules[k].CRR,
+                    SCT: schedules[k].SCT,
+                    CRS_CODE: schedules[k].CRS_CODE,
+                    CRS: schedules[k].CRS,
+                    SCHLID: schedules[k].SCHLID,
+                    CCH: schedules[k].CCH,
+                    CPT: schedules[k].CPT,
+                    UNT: schedules[k].UNT,
+                    YRLVL: schedules[k].YRLVL,
+                    ROM: rooms[j].Room,
+                    DAY: rooms[j].Day,
+                    STR_TME: rooms[j].Units * 60 + startofday,
+                    END_TME:
+                      rooms[j].Units * 60 + startofday + schedules[k].UNT * 60,
+                    CPC: rooms[j].Capacity,
+                    ROM_UNT: rooms[j].Units + schedules[k].UNT,
+                    PPL: schedules[k].PPL,
+                    CCH_UNT: schedules[k].CCH_UNT,
+                    CONFLICT: !conflictSection(
+                      rooms[j].Units * 60 + startofday,
+                      (rooms[j].Units + schedules[k].UNT) * 60 + startofday,
+                      schedules[k].SCT,
+                      rooms[j].Day,
+                      schedules[k].CCH
+                    ),
+                  });
+                  ADD_UNITS_TO_ROOM(rooms[j].Room, schedules[k].UNT);
+                  schedules.splice(k, 1);
+                  k--;
+                }
               }
             }
           }
@@ -184,7 +192,13 @@ router.post("/gen-class", (req, res) => {
     },
   };
 
-  function conflictSection(start_time, end_time, target_section, target_day) {
+  function conflictSection(
+    start_time,
+    end_time,
+    target_section,
+    target_day,
+    target_coach
+  ) {
     for (var i = 0; i < class_schedules.length; i++) {
       if (
         class_schedules[i].SCT === target_section &&
@@ -199,7 +213,9 @@ router.post("/gen-class", (req, res) => {
               class_schedules[i].et <= start_time)
           )
         ) {
-          return false;
+          if (class_schedules[i].CCH === target_coach) {
+            return false;
+          }
         }
       }
     }
@@ -209,7 +225,7 @@ router.post("/gen-class", (req, res) => {
   function ADD_UNITS_TO_ROOM(target_room, course_units) {
     for (var i = 0; i < rooms.length; i++) {
       if (rooms[i].Room === target_room) {
-        return (rooms[i].Units += course_units);
+        rooms[i].Units += course_units;
       }
     }
   }
@@ -217,7 +233,7 @@ router.post("/gen-class", (req, res) => {
   function ADD_UNITS_TO_COACH(target_coach, course_units) {
     for (var i = 0; i < coaches.length; i++) {
       if (coaches[i].LastName === target_coach) {
-        return (coaches[i].Units += course_units);
+        coaches[i].Units += course_units;
       }
     }
   }
@@ -265,7 +281,7 @@ router.post("/gen-class", (req, res) => {
   SHUFFLE(classes);
   GenerateSchedule.Phases.coach();
   GenerateSchedule.Phases.room();
-  //console.log(class_schedules);
+  //console.log(rooms);
 
   return res.json(class_schedules);
 });

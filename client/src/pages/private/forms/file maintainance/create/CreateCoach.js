@@ -13,6 +13,16 @@ import { SelectButtonItem } from "../../../../../component/dropdown/select/Selec
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { RadioGroup } from "../../../../../component/radiogroup/RadioGroup";
 import { RadioButton } from "../../../../../component/radiogroup/RadioButton";
+import { createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
+
+const supabase = createClient(
+  "https://pgcztzkowuxixfyiqera.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnY3p0emtvd3V4aXhmeWlxZXJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU0ODQ0MTUsImV4cCI6MjA0MTA2MDQxNX0.ryLXhP4sBBhO5_JVgQ4YJ9BlpdlD2NQM2mjDRbkc3NY"
+);
+
+const CDNURL =
+  "https://pgcztzkowuxixfyiqera.supabase.co/storage/v1/object/public/images/";
 
 export function CreateCoach() {
   const navigate = useNavigate();
@@ -36,23 +46,54 @@ export function CreateCoach() {
   const [dataChange] = useHandleChange(setData);
   const [department, setDepartment] = useState([]);
   const [file, setFile] = useState([]);
+  const [previewUrl, setPreviewUrl] = useState("");
   const [retrieve, setRetrieved] = useState([]);
+  const [images, setImages] = useState([]);
+  const [currentUUID, setCurrentUUID] = useState(null);
 
   useEffect(() => {
     data_get("department-list", setDepartment);
     data_get("coach-list", setCoach);
   }, [coach]);
 
+  // useEffect(() => {
+  //   const formdata = new FormData();
+  //   formdata.append("image", file);
+  //   console.log(formdata);
+  //   post("upload", formdata, setRetrieved);
+  // }, [file]);
+
   useEffect(() => {
-    const formdata = new FormData();
-    formdata.append("image", file);
-    console.log(formdata);
-    post("upload", formdata, setRetrieved);
-  }, [file]);
+    setCurrentUUID(uuidv4());
+  }, [images]);
+
+  // async function getImages() {
+  //   const { data, error } = await supabase.storage.from("images").list("");
+
+  //   if (data !== null) {
+  //     setImages(data);
+  //   } else {
+  //     console.log(error);
+  //     alert("Error");
+  //   }
+  // }
+
+  async function uploadFile(e) {
+    const imageFile = file;
+    console.log("Upload");
+    const { error } = await supabase.storage
+      .from("images")
+      .upload(currentUUID + ".jpg", imageFile);
+    if (error) {
+      console.log(error);
+      alert("Error");
+    }
+  }
 
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
+      uploadFile();
       data_post(
         "coach-insert",
         {
@@ -65,7 +106,7 @@ export function CreateCoach() {
           Email: data.Email,
           Phone: data.Phone,
           Link: data.Link,
-          Image: retrieve,
+          Image: `${currentUUID}.jpg`,
         },
         setData
       );
@@ -200,6 +241,15 @@ export function CreateCoach() {
               value={data.Link}
               required={true}
             />
+
+            {/* <MainInput
+              label="Image"
+              id="Image"
+              trigger={dataChange}
+              value={data.Image}
+              required={true}
+            /> */}
+
             <main className="w-100 row mb-2 ms-0">
               <section className="col-2 p-0 m-0 ">
                 <label htmlFor="what">
@@ -211,7 +261,17 @@ export function CreateCoach() {
                   type="file"
                   className="form-control"
                   id="what"
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setFile(file);
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        setPreviewUrl(reader.result);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
                   accept="image/png, image/jpeg"
                 />
               </section>
@@ -223,7 +283,7 @@ export function CreateCoach() {
           <figure className="p-5">
             <img
               className="h-100 w-100 rounded object-fit-cover"
-              src={`http://localhost:8081/images/${retrieve && retrieve}`}
+              src={previewUrl}
             ></img>
           </figure>
         }

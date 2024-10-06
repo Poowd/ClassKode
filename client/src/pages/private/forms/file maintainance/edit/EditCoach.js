@@ -190,6 +190,14 @@ export function EditCoach() {
               value={data.Link}
               required={true}
             />
+
+            <MainInput
+              label="Image"
+              id="Image"
+              trigger={dataChange}
+              value={data.Image}
+              required={true}
+            />
             {/* <main className="w-100 row mb-2 ms-0">
               <section className="col-2 p-0 m-0 ">
                 <label htmlFor="what">

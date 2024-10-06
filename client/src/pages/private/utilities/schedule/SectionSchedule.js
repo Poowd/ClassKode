@@ -34,8 +34,8 @@ export function SectionSchedule() {
     "Friday",
   ]);
   const [time, setTime] = useState([
-    480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870, 900,
-    930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1200,
+    420, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870,
+    900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1200, 1260,
   ]);
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export function SectionSchedule() {
                 <tbody>
                   {time.map((time, i) => (
                     <tr>
-                      <td className="border fw-light p-2">
+                      <td className="border fw-light">
                         {convertMinutes(time)}
                       </td>
                     </tr>
@@ -135,7 +135,7 @@ export function SectionSchedule() {
                     {time.map((time, j) => (
                       <tr>
                         <td
-                          className="border border-white py-2"
+                          className="border border-white"
                           style={{ width: "0" }}
                         >
                           &nbsp;

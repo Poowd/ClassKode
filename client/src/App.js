@@ -29,15 +29,17 @@ import { Login } from "./pages/public/Login";
 import { Homepage } from "./pages/public/Homepage";
 import { RoomSchedule } from "./pages/private/utilities/schedule/RoomSchedule";
 import { SectionSchedule } from "./pages/private/utilities/schedule/SectionSchedule";
-import FileInput from "./pages/testing/FileInput";
+import { FileInput } from "./pages/testing/FileInput";
 import { Setup } from "./pages/private/miscellaneous/Setup";
 import { SuperAdminTopbar } from "./component/topbar/SuperAdminTopbar";
 import { AdminTopbar } from "./component/topbar/AdminTopbar";
 import { CoachSchedule } from "./pages/private/utilities/schedule/CoachSchedule";
 import { UserTopbar } from "./component/topbar/UserTopbar";
+import useConfiguration from "./hook/useConfiguration";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [info] = useConfiguration();
 
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
@@ -68,6 +70,11 @@ function App() {
                     content={
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
+
+                        <Route
+                          path={"/testing"}
+                          element={<FileInput />}
+                        ></Route>
 
                         <Route path={"/institution"}>
                           <Route
@@ -295,19 +302,6 @@ function App() {
                   />
                 }
               ></Route>
-            ) : loggeduser.UserType === "Developer" ? (
-              <Route path={"/testing"}>
-                <Route
-                  path="/testing/bgcolour"
-                  element={<BackgroundColours />}
-                ></Route>
-                <Route path="/testing/imgtodb" element={<ImagetoDB />}></Route>
-                <Route path="/testing/time" element={<TimeProblem />}></Route>
-                <Route
-                  path="/testing/gensched"
-                  element={<GeneratingSchedules />}
-                ></Route>
-              </Route>
             ) : (
               ""
             )}

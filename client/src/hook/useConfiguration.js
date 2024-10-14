@@ -144,7 +144,7 @@ export default function useConfiguration() {
           Image: carou_item1,
           Button: (
             <button
-              className="ms-3 rounded-pill btn btn-danger px-3"
+              className="ms-3 rounded-pill btn btn-danger px-5 py-2"
               onClick={() => {
                 navigate("/login");
               }}
@@ -161,7 +161,7 @@ export default function useConfiguration() {
           Image: carou_item2,
           Button: (
             <button
-              className="ms-3 rounded-pill btn btn-danger px-3"
+              className="ms-3 rounded-pill btn btn-danger px-5 py-2"
               onClick={() => {
                 navigate("/login");
               }}
@@ -178,7 +178,7 @@ export default function useConfiguration() {
           Image: carou_item3,
           Button: (
             <button
-              className="ms-3 rounded-pill btn btn-danger px-3"
+              className="ms-3 rounded-pill btn btn-danger px-5 py-2"
               onClick={() => {
                 navigate("/login");
               }}

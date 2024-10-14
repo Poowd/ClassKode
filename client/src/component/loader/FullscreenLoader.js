@@ -8,6 +8,7 @@ export class FullscreenLoader extends React.Component {
       <main
         className={`d-flex justify-content-center align-items-center gradient-bg-blue flex-column ${this.props.class}`}
         style={{ width: "100%", height: "100vh" }}
+        data-bs-backdrop="static"
       >
         <main className="row m-0 p-0">
           <figure

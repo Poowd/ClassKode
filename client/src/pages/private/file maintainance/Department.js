@@ -40,9 +40,9 @@ export function Department() {
           </header>
           <section>
             <section>
-              <h6>Academic Level</h6>
+              <h6>Details</h6>
               <ul className="list-group list-group-flush">
-                {academiclevel &&
+                {/* {academiclevel &&
                   academiclevel.map((item, i) => (
                     <li key={i} className="list-group-item">
                       <TextFormat1
@@ -54,7 +54,7 @@ export function Department() {
                         }
                       />
                     </li>
-                  ))}
+                  ))} */}
               </ul>
             </section>
           </section>
@@ -75,7 +75,7 @@ export function Department() {
             dropdownitems={
               <main className="d-flex gap-2 p-3">
                 <section>
-                  <h6>Academic Level</h6>
+                  {/* <h6>Academic Level</h6>
                   {academiclevel &&
                     academiclevel.map((item, i) => (
                       <DefaultDropdownItem
@@ -88,7 +88,7 @@ export function Department() {
                           }))
                         }
                       />
-                    ))}
+                    ))} */}
                 </section>
               </main>
             }
@@ -142,20 +142,17 @@ export function Department() {
                 item.Department.toLowerCase().includes(
                   search.search.toLowerCase()
                 ) || search.search === "" ? (
-                  item.AcademicLevel.includes(search.setbyAcadLevel) ||
-                  search.setbyAcadLevel === "" ? (
-                    <ListCard
-                      key={i}
-                      slot1={item.Code}
-                      slot2={item.Department}
-                      slot3={item.Created}
-                      slot4={item.Abbrev}
-                      slot5={item.AcademicLevel}
-                      view={info.icons.forms.view}
-                      link={`/department/view/${item.DPTID}`}
-                      state={{ data: item }}
-                    />
-                  ) : null
+                  <ListCard
+                    key={i}
+                    slot1={item.Code}
+                    slot2={item.Department}
+                    slot3={item.Created}
+                    slot4={item.Abbrev}
+                    slot5={item.AcademicLevel}
+                    view={info.icons.forms.view}
+                    link={`/department/view/${item.DPTID}`}
+                    state={{ data: item }}
+                  />
                 ) : null
               )}
           </section>

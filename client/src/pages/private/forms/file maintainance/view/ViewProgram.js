@@ -117,7 +117,7 @@ export function ViewProgram() {
                     <section>
                       <h6>{item.Code}</h6>
                       <p>{item.Description && item.Description}</p>
-                      <ul className="m-0 mt-3 p-0 d-flex">
+                      <ul className="m-0 mt-3 p-0 d-flex gap-2">
                         <li className="border m-0 p-2 rounded">
                           <p className="m-0 p-0">
                             {department &&
@@ -127,6 +127,9 @@ export function ViewProgram() {
                                   : null
                               )}
                           </p>
+                        </li>
+                        <li className="border m-0 p-2 rounded">
+                          <p className="m-0 p-0">{item.AcademicLevel}</p>
                         </li>
                       </ul>
                       <footer className="mt-5">

@@ -36,6 +36,7 @@ import { AdminTopbar } from "./component/topbar/AdminTopbar";
 import { CoachSchedule } from "./pages/private/utilities/schedule/CoachSchedule";
 import { UserTopbar } from "./component/topbar/UserTopbar";
 import useConfiguration from "./hook/useConfiguration";
+import { LandingPage } from "./pages/private/LandingPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -279,24 +280,27 @@ function App() {
                     topbar={<UserTopbar />}
                     content={
                       <Routes>
-                        <Route index element={<Dashboard />}></Route>
-                        <Route path={"/utilities"}>
-                          <Route path={"/utilities/schedule"}>
-                            <Route index element={<Schedule />}></Route>
+                        <Route index element={<LandingPage />}></Route>
+                        {loggeduser.PermissionLevel >= 0 ? (
+                          <Route path={"/"}>
                             <Route
-                              path={"/utilities/schedule/room"}
-                              element={<RoomSchedule />}
+                              path={"/section-schedules"}
+                              element={"Section Schedules"}
                             ></Route>
                             <Route
-                              path={"/utilities/schedule/section"}
-                              element={<SectionSchedule />}
+                              path={"/faculty-locator"}
+                              element={<Locator />}
                             ></Route>
                           </Route>
-                          <Route
-                            path={"/utilities/locator"}
-                            element={<Locator />}
-                          ></Route>
-                        </Route>
+                        ) : null}
+                        {loggeduser.PermissionLevel >= 1 ? (
+                          <Route path={"/"}>
+                            <Route
+                              path={"/my-schedules"}
+                              element={"my Schedules"}
+                            ></Route>
+                          </Route>
+                        ) : null}
                       </Routes>
                     }
                   />

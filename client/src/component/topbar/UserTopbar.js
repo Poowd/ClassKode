@@ -25,25 +25,20 @@ export function UserTopbar() {
   const [items, setItems] = useState({
     Scheduler: [
       <SidebarDropdownItem
-        icon={info.icons.modules.schedules}
-        navigate={"/utilities/schedule"}
-        text={"Schedule"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.room}
-        navigate={"/utilities/schedule/room"}
-        text={"Room Schedules"}
-      />,
-      <SidebarDropdownItem
         icon={info.icons.modules.section}
-        navigate={"/utilities/schedule/section"}
+        navigate={"/section-schedules"}
         text={"Section Schedules"}
+      />,
+      <SidebarDropdownItem
+        icon={info.icons.modules.coach}
+        navigate={"/my-schedules"}
+        text={"My Schedules"}
       />,
     ],
     Locator: [
       <SidebarDropdownItem
         icon={info.icons.modules.locator}
-        navigate={"/utilities/locator"}
+        navigate={"/faculty-locator"}
         text={"Faculty Locator"}
       />,
     ],
@@ -140,7 +135,6 @@ export function UserTopbar() {
             class="text-light"
             reversed={false}
             icon={info.icons.navigation.quicknav}
-            text={"Commands"}
             function={() => {}}
             toggle="modal"
             target="#QuickNav"
@@ -196,7 +190,6 @@ export function UserTopbar() {
           <DefaultButton
             class="text-light"
             icon={info.icons.others.help}
-            text={"Guide"}
             function={() => {}}
           />
         </div>

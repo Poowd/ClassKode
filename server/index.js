@@ -32,8 +32,6 @@ const SaveImage = require("./routes/Logic/SaveImage.js");
 const Login = require("./routes/Logic/Login.js");
 const Statistics = require("./routes/Logic/Statistics.js");
 // = = >
-
-const port = 3000;
 const multer = require("multer");
 const path = require("path");
 const { Pool } = require("pg");

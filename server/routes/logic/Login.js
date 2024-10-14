@@ -26,10 +26,9 @@ router.post("/ldasdaogin-now", (req, res) => {
         if (err) {
           console.error("Verification error:", err);
         } else if (resu) {
-          return res.json({ Status: "Success", data: JSON.parse(req.body) });
+          //return res.json({ Status: "Success", data: JSON.parse(req.body) });
         } else {
           console.log("Password does not match");
-          console.log(pass);
           return res.json({ Status: "Account doesn't exist", data: null });
         }
       });

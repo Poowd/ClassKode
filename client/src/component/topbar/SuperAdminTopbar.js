@@ -10,6 +10,9 @@ import useHandleChange from "../../hook/useHandleChange";
 import { DefaultInput } from "../input/DefaultInput";
 import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
 import owie from "../../assets/imgs/misc/owie.png";
+import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
+import { SidebarDropdown } from "../sidebar/SidebarDropdown";
+import { SidebarItem } from "../sidebar/SidebarItem";
 
 export function SuperAdminTopbar() {
   const navigate = useNavigate();
@@ -23,99 +26,10 @@ export function SuperAdminTopbar() {
 
   const [itemlist, setItemList] = useState("Default");
   const [items, setItems] = useState({
-    Institution: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.department}
-        navigate={"/institution/department"}
-        text={"Department"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.program}
-        navigate={"/institution/program"}
-        text={"Program"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.course}
-        navigate={"/institution/course"}
-        text={"Course"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.coach}
-        navigate={"/institution/coach"}
-        text={"Coach"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.section}
-        navigate={"/institution/section"}
-        text={"Section"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.room}
-        navigate={"/institution/room"}
-        text={"Room"}
-      />,
-    ],
-    Scheduler: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.curriculum}
-        navigate={"/utilities/curriculum"}
-        text={"Curriculum"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.academicyear}
-        navigate={"/utilities/academicyear"}
-        text={"Academic Year"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.schedules}
-        navigate={"/utilities/schedule"}
-        text={"Schedule"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.room}
-        navigate={"/utilities/schedule/room"}
-        text={"Room Schedules"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.section}
-        navigate={"/utilities/schedule/section"}
-        text={"Section Schedules"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.coach}
-        navigate={"/utilities/schedule/coach"}
-        text={"Coach Schedules"}
-      />,
-    ],
-    Locator: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.locator}
-        navigate={"/utilities/locator"}
-        text={"Faculty Locator"}
-      />,
-    ],
-    Misc: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.archives}
-        navigate={"/miscellaneous/archive"}
-        text={"Archive"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.logs}
-        navigate={"/miscellaneous/log"}
-        text={"Log"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.users}
-        navigate={"/miscellaneous/user"}
-        text={"User"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.settings}
-        navigate={"/miscellaneous/setup"}
-        text={"Setup"}
-      />,
-    ],
+    Institution: [],
+    Scheduler: [],
+    Locator: [],
+    Misc: [],
   });
 
   const handleLogout = () => {
@@ -166,86 +80,148 @@ export function SuperAdminTopbar() {
             id={"sidebar"}
             content={
               <SidebarItemList
-                items={
-                  itemlist && itemlist === "Default" ? (
-                    <main className="w-100 h-100 text-center p-3"></main>
-                  ) : itemlist === "Institution" ? (
-                    items.Institution.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
-                  ) : itemlist === "Scheduler" ? (
-                    items.Scheduler.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
-                  ) : itemlist === "Locator" ? (
-                    items.Locator.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
-                  ) : itemlist === "Misc" ? (
-                    items.Misc.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
-                  ) : null
-                }
                 list={
                   <>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close"
-                      >
-                        <h3 className="">{info.icons.modules.dashboard}</h3>
-                        <h6 className="text-start flex-grow-1">Dashboard</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Institution");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.institution}</h3>
-                        <h6 className="text-start flex-grow-1">Institution</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Scheduler");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.scheduler}</h3>
-                        <h6 className="text-start flex-grow-1">Scheduler</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Locator");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.locator}</h3>
-                        <h6 className="text-start flex-grow-1">Locator</h6>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Misc");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.misc}</h3>
-                        <h6 className="text-start flex-grow-1">Misc</h6>
-                      </button>
-                    </li>
+                    <div className="m-0 p-0 d-flex justify-content-between">
+                      <Link to={"/"} className="">
+                        <div className="">
+                          <img
+                            src={Logo}
+                            alt="..."
+                            className="img-fluid"
+                            style={{ height: "5em" }}
+                          />
+                        </div>
+                      </Link>
+                      <div className="d-flex align-items-center py-2">
+                        <DefaultButton
+                          type="button"
+                          class="bg-white rounded-pill py-2 border border-dark"
+                          icon={info.icons.navigation.close}
+                          dismiss="offcanvas"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+
+                    <SidebarItem
+                      class={"fw-medium w-100 py-2"}
+                      icon={info.icons.modules.dashboard}
+                      navigate={"/"}
+                      text={"Dashboard"}
+                    />
+                    <SidebarDropdown
+                      icon={info.icons.modules.institution}
+                      reference={"#institution"}
+                      text={"Institution"}
+                      referenced={"institution"}
+                      parent={"#menu"}
+                      itemlist={
+                        <>
+                          <SidebarItem
+                            icon={info.icons.modules.department}
+                            navigate={"/institution/department"}
+                            text={"Department"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.program}
+                            navigate={"/institution/program"}
+                            text={"Program"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.course}
+                            navigate={"/institution/course"}
+                            text={"Course"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.coach}
+                            navigate={"/institution/coach"}
+                            text={"Coach"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.section}
+                            navigate={"/institution/section"}
+                            text={"Section"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.room}
+                            navigate={"/institution/room"}
+                            text={"Room"}
+                          />
+                        </>
+                      }
+                    />
+                    <SidebarItem
+                      class={"fw-medium w-100 py-2"}
+                      icon={info.icons.modules.curriculum}
+                      navigate={"/utilities/curriculum"}
+                      text={"Curriculum"}
+                    />
+                    <SidebarItem
+                      class={"fw-medium w-100 py-2"}
+                      icon={info.icons.modules.academicyear}
+                      navigate={"/utilities/academicyear"}
+                      text={"Academic Year"}
+                    />
+                    <SidebarDropdown
+                      class={"fw-medium w-100 py-1"}
+                      icon={info.icons.modules.schedules}
+                      reference={"#schedule"}
+                      text={"Schedule"}
+                      referenced={"schedule"}
+                      parent={"#menu"}
+                      itemlist={
+                        <>
+                          <SidebarItem
+                            icon={info.icons.modules.schedules}
+                            navigate={"/utilities/schedule"}
+                            text={"Class Schedules"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.schedules}
+                            navigate={"/utilities/schedule"}
+                            text={"Examination Schedules"}
+                          />
+                        </>
+                      }
+                    />
+                    <SidebarItem
+                      class={"fw-medium w-100 py-2"}
+                      icon={info.icons.modules.locator}
+                      navigate={"/utilities/locator"}
+                      text={"Faculty Locator"}
+                    />
+                    <SidebarDropdown
+                      icon={info.icons.modules.misc}
+                      reference={"#misc"}
+                      text={"Misc"}
+                      referenced={"misc"}
+                      parent={"#menu"}
+                      itemlist={
+                        <>
+                          <SidebarItem
+                            icon={info.icons.modules.archives}
+                            navigate={"/miscellaneous/archive"}
+                            text={"Archive"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.logs}
+                            navigate={"/miscellaneous/log"}
+                            text={"Log"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.users}
+                            navigate={"/miscellaneous/user"}
+                            text={"User"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.settings}
+                            navigate={"/miscellaneous/setup"}
+                            text={"Setup"}
+                          />
+                        </>
+                      }
+                    />
                   </>
                 }
               />

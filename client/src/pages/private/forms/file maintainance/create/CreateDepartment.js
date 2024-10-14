@@ -22,16 +22,10 @@ export function CreateDepartment() {
     Code: "",
     Department: "",
     Abbrev: "",
-    AcademicLevel: "",
     Description: "",
   });
 
   const [dataChange] = useHandleChange(setData);
-  const [academiclevel, setAcademicLevel] = useState([]);
-
-  useEffect(() => {
-    data_get("academic-level-list", setAcademicLevel);
-  }, []);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -90,31 +84,6 @@ export function CreateDepartment() {
               trigger={dataChange}
               value={data.Abbrev}
               required={true}
-            />
-            <MainSelect
-              label="AcademicLevel"
-              id="AcademicLevel"
-              trigger={dataChange}
-              required={true}
-              option={
-                <>
-                  <SelectButtonItemSelected
-                    content={academiclevel.map((option, i) =>
-                      option.AcademicLevel === data.AcademicLevel
-                        ? option.AcademicLevel
-                        : null
-                    )}
-                  />
-                  {academiclevel.map((option, i) =>
-                    data.AcademicLevel !== option.AcademicLevel ? (
-                      <SelectButtonItem
-                        value={option.AcademicLevel}
-                        content={option.AcademicLevel}
-                      />
-                    ) : null
-                  )}
-                </>
-              }
             />
             <MainInput
               label="Description"

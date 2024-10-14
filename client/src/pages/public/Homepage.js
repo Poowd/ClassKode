@@ -70,7 +70,7 @@ export function Homepage() {
                 <li>
                   <LinkButton
                     to={"/login"}
-                    textclass="btn-warning text-dark px-3 py-1 rounded-pill fw-bold"
+                    textclass="btn-warning text-dark px-3 py-2 rounded-pill fw-bold"
                     text={"Login"}
                   />
                 </li>

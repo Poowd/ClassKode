@@ -42,7 +42,6 @@ import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
 
 export function DataController() {
-  const navigate = useNavigate();
   const params = useParams();
 
   return (

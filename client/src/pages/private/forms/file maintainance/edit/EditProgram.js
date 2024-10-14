@@ -30,11 +30,17 @@ export function EditProgram() {
     Program: null,
     Abbrev: null,
     Department: null,
+    AcademicLevel: null,
     Description: "",
   });
 
   const [dataChange] = useHandleChange(setData);
   const [department, setDepartment] = useState([]);
+  const [academiclevel, setAcademicLevel] = useState([]);
+
+  useEffect(() => {
+    data_get("academic-level-list", setAcademicLevel);
+  }, [academiclevel]);
 
   useEffect(() => {
     data_get("department-list", setDepartment);
@@ -125,6 +131,31 @@ export function EditProgram() {
                       ) : null}
                     </>
                   ))}
+                </>
+              }
+            />
+            <MainSelect
+              label="AcademicLevel"
+              id="AcademicLevel"
+              trigger={dataChange}
+              required={true}
+              option={
+                <>
+                  <SelectButtonItemSelected
+                    content={academiclevel.map((option, i) =>
+                      option.AcademicLevel === data.AcademicLevel
+                        ? option.AcademicLevel
+                        : null
+                    )}
+                  />
+                  {academiclevel.map((option, i) =>
+                    data.AcademicLevel !== option.AcademicLevel ? (
+                      <SelectButtonItem
+                        value={option.AcademicLevel}
+                        content={option.AcademicLevel}
+                      />
+                    ) : null
+                  )}
                 </>
               }
             />

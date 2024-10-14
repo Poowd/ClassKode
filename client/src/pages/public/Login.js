@@ -100,7 +100,7 @@ export function Login() {
                       required
                     />
                     <DefaultButton
-                      class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-2 rounded-pill"
+                      class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-3 rounded-pill"
                       type="submit"
                       text="Login"
                     />
@@ -133,16 +133,14 @@ export function Login() {
           </section>
           <main className="h-100 w-75 position-relative mx-auto">
             <section className="d-none d-lg-block h-100 w-100 position-absolute p-3">
-              <main className="h-100 w-100 bg-primary shadow-lg rounded p-2">
-                <main className="h-100 w-100 local-campus-bg rounded"></main>
-              </main>
+              <main className="h-100 w-100 bg-primary shadow-lg rounded p-2"></main>
             </section>
             <section className="h-100 w-100 d-flex justify-content-end position-absolute p-3">
               <section
                 className="h-100 d-flex justify-content-end py-3 ps-0 pe-4"
                 style={{ width: "60%" }}
               >
-                <main className="h-100 w-100 position-relative  d-flex align-items-center">
+                <main className="h-100 w-100 position-relative py-5 text-white overflow-y-auto">
                   <section className="position-absolute top-0 end-0">
                     <div className="d-flex justify-content-end">
                       <DefaultButton
@@ -154,12 +152,50 @@ export function Login() {
                       />
                     </div>
                   </section>
-                  <section className="position-absolute bottom-0 left-0">
-                    <img
-                      src={reader}
-                      className="ratio ratio-1x1"
-                      style={{ height: "15em" }}
-                    />
+                  <section className="px-3">
+                    <h1>Patch Notes:</h1>
+                    <h6 className="ms-5">as of Date Today</h6>
+                    <hr />
+                    <section className="px-5">
+                      <h5>Title</h5>
+                      <ul>
+                        <li>Item #1</li>
+                        <li>Item #2</li>
+                        <li>Item #3</li>
+                        <li>Item #4</li>
+                        <li>Item #5</li>
+                      </ul>
+                    </section>
+                    <hr />
+                    <section className="px-5">
+                      <h5>Title</h5>
+                      <ul>
+                        <li>Item #1</li>
+                        <li>Item #2</li>
+                        <li>Item #3</li>
+                        <li>Item #4</li>
+                        <li>Item #5</li>
+                      </ul>
+                    </section>
+                    <hr />
+                    <section className="px-5">
+                      <h5>Title</h5>
+                      <ul>
+                        <li>Item #1</li>
+                        <li>Item #2</li>
+                        <li>Item #3</li>
+                        <li>Item #4</li>
+                        <li>Item #5</li>
+                      </ul>
+                    </section>
+                    <hr />
+                    <section className="d-flex justify-content-end">
+                      <img
+                        src={reader}
+                        className="ratio ratio-1x1"
+                        style={{ height: "15em", width: "15em" }}
+                      />
+                    </section>
                   </section>
                 </main>
               </section>
@@ -202,7 +238,7 @@ export function Login() {
                           required
                         />
                         <DefaultButton
-                          class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-2 rounded-pill"
+                          class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-3 rounded-pill"
                           type="submit"
                           text="Login"
                         />

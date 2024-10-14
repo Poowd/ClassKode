@@ -10,6 +10,16 @@ import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDrop
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
 import { ViewModal } from "../../../component/modal/ViewModal";
 import { RoomCard } from "../../../component/card/RoomCard";
+import { createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
+
+const supabase = createClient(
+  "https://pgcztzkowuxixfyiqera.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnY3p0emtvd3V4aXhmeWlxZXJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU0ODQ0MTUsImV4cCI6MjA0MTA2MDQxNX0.ryLXhP4sBBhO5_JVgQ4YJ9BlpdlD2NQM2mjDRbkc3NY"
+);
+
+const CDNURL =
+  "https://pgcztzkowuxixfyiqera.supabase.co/storage/v1/object/public/images/";
 
 export function Locator() {
   const [convertMinutes] = useTimeFormat();
@@ -295,7 +305,7 @@ export function Locator() {
                             <header className="h-100 w-100 d-flex justify-content-center">
                               <figure className="h-100">
                                 <img
-                                  src={`http://localhost:8081/images/${coach.Image}`}
+                                  src={`${CDNURL}${coach.Image}`}
                                   alt="..."
                                   className="w-100 h-100 object-fit-cover rounded"
                                   style={{ objectPosition: "top" }}

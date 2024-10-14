@@ -60,12 +60,11 @@ router.post("/department-insert", (req, res) => {
     var code = clientData.Code;
     var department = clientData.Department;
     var abbrev = clientData.Abbrev;
-    var academiclevel = clientData.AcademicLevel;
     var description =
       clientData.Description === null ? null : clientData.Description;
     pool.query(
-      `INSERT INTO department ("DPTID", "Code", "Department", "Abbrev", "AcademicLevel", "Description")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from department), '${code}', '${department}', '${abbrev}', '${academiclevel}', '${description}')`,
+      `INSERT INTO department ("DPTID", "Code", "Department", "Abbrev",  "Description")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from department), '${code}', '${department}', '${abbrev}',  '${description}')`,
 
       (err, rslt) => {
         if (err) {

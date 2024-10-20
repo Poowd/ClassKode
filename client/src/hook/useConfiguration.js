@@ -80,6 +80,7 @@ import locator from "./../assets/imgs/misc/Locator.png";
 import team from "./../assets/imgs/misc/Team.png";
 import host from "./../assets/imgs/misc/Host.png";
 import { useNavigate } from "react-router-dom";
+import { HiLightningBolt } from "react-icons/hi";
 
 export default function useConfiguration() {
   const navigate = useNavigate();
@@ -99,12 +100,12 @@ export default function useConfiguration() {
         },
         {
           Name: "Yranimez Repil",
-          Role: "Backend Developer",
+          Role: "Backend / Manager Assistant",
           Image: temp_dp,
         },
         {
           Name: "James Gereña",
-          Role: "Backend / Manager Assistant",
+          Role: "Backend / Assistant",
           Image: temp_dp,
         },
         {
@@ -114,7 +115,7 @@ export default function useConfiguration() {
         },
         {
           Name: "Aeron Pagaoa",
-          Role: "Documentation Support",
+          Role: "Documentation",
           Image: temp_dp,
         },
       ],
@@ -268,7 +269,7 @@ export default function useConfiguration() {
         back: <IoArrowBackOutline />,
         next: <GrNext />,
         previous: <GrPrevious />,
-        quicknav: <MdOutlineQuickreply />,
+        quicknav: <HiLightningBolt />,
         close: <IoIosClose />,
       },
       modules: {

@@ -7,10 +7,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 import useHandleChange from "../../../../hook/useHandleChange";
+import useConfiguration from "../../../../hook/useConfiguration";
 
 export function SectionSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
 
   const [search, setSearch] = useState({
@@ -22,6 +24,7 @@ export function SectionSchedule() {
   const [convertMinutes] = useTimeFormat();
 
   const [section, setSection] = useState([]);
+  const [course, setCourse] = useState([]);
   const [currsection, setCurrentSection] = useState(
     search.Search === "" ? "n/a" : search.Search
   );
@@ -41,6 +44,7 @@ export function SectionSchedule() {
   useEffect(() => {
     data_get("class-schedule-list", setSchedule);
     data_get("project-list", setSection);
+    data_get("course-list", setCourse);
     if (search.Search === "") {
       for (var i = 0; i < section.length; i++) {
         setCurrentSection(section[0].Section);
@@ -87,8 +91,156 @@ export function SectionSchedule() {
   }
 
   return (
-    <main className="h-100 row m-0 p-0">
-      <section className="col-lg-8 h-100 p-0 m-0 pe-2 overflow-y-auto">
+    <main className="h-100 row m-0 p-2">
+      <section className="col-9 h-100 p-0 m-0 pe-2 overflow-y-auto">
+        <main className="h-100 w-100 d-flex align-items-center">
+          <main>
+            <DefaultButton
+              class="border"
+              icon={info.icons.navigation.previous}
+              function={() => {
+                previousSection();
+              }}
+            />
+          </main>
+          <main className="h-100 flex-fill py-2">
+            <header className="p-2">
+              {section.map((section, o) =>
+                section.Section === currsection ? (
+                  <>
+                    <h3>{`${section.Section}`}</h3>
+                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
+                  </>
+                ) : null
+              )}
+              <hr />
+            </header>
+            {day.map((day, i) => (
+              <main className="p-2">
+                <section>
+                  <h6>{day}</h6>
+                </section>
+                <section className="w-100 d-flex">
+                  {time.map((time, j) =>
+                    schedule.length > 0
+                      ? schedule.map((schedule, k) =>
+                          schedule.Section === currsection ? (
+                            schedule.Day === day ? (
+                              +schedule.StartTime === time ? (
+                                <section
+                                  className={
+                                    schedule.Component.includes("Minor")
+                                      ? "border border-white gradient-bg-yellow custom-text-blue rounded p-3 w-100"
+                                      : "border border-white gradient-bg-light-blue rounded p-3 w-100"
+                                  }
+                                  onClick={() => {
+                                    alert(schedule.Course);
+                                  }}
+                                >
+                                  <small>
+                                    <h6 className="fw-bold m-0 p-0">
+                                      {course.map((course, i) =>
+                                        course.Code === schedule.Course ? (
+                                          <span key={i}>{course.Course}</span>
+                                        ) : null
+                                      )}
+                                    </h6>
+                                    <p className="fw-semibold m-0 p-0">
+                                      {`${convertMinutes(
+                                        schedule.StartTime
+                                      )} : ${convertMinutes(schedule.EndTime)}`}
+                                    </p>
+                                    <p className="fw-semibold m-0 p-0">
+                                      {schedule.Room}
+                                    </p>
+                                  </small>
+                                </section>
+                              ) : (
+                                ""
+                              )
+                            ) : null
+                          ) : null
+                        )
+                      : null
+                  )}
+                </section>
+              </main>
+            ))}
+          </main>
+          <main>
+            <DefaultButton
+              class="border"
+              icon={info.icons.navigation.next}
+              function={() => nextSection()}
+            />
+          </main>
+        </main>
+      </section>
+      <section className="col-3 h-100 p-0 ps-2 m-0">
+        <main className="h-100 overflow-y-auto px-1">
+          <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
+            <div className="d-flex justify-content-between gap-2">
+              <div className="d-flex w-100">
+                <DefaultButton
+                  class=""
+                  icon={info.icons.navigation.back}
+                  function={() => navigate(-1)}
+                />
+                <DefaultInput
+                  name="Search"
+                  placeholder="Search"
+                  trigger={dataChange}
+                />
+              </div>
+            </div>
+          </section>
+          <section>
+            {schedule.length > 0
+              ? schedule.map((schedule, i) =>
+                  schedule.Section === currsection ? (
+                    <>
+                      <main className="p-3 shadow-sm rounded mb-2">
+                        <main className="row m-0 p-0">
+                          <section className="col-12 p-0 m-0">
+                            <section>
+                              <h6 className="p-0 m-0">
+                                {course.map((course, i) =>
+                                  course.Code === schedule.Course ? (
+                                    <span key={i}>{course.Course}</span>
+                                  ) : null
+                                )}
+                              </h6>
+                            </section>
+                            <section>
+                              <small>
+                                <p className="p-0 m-0 text-secondary fst-italic">
+                                  {schedule.Room}
+                                </p>
+                                <p className="p-0 m-0 text-secondary fst-italic">
+                                  <span>
+                                    {`${schedule.Day} - ${convertMinutes(
+                                      schedule.StartTime
+                                    )} : ${convertMinutes(schedule.EndTime)}`}
+                                  </span>
+                                </p>
+                              </small>
+                            </section>
+                          </section>
+                        </main>
+                      </main>
+                    </>
+                  ) : null
+                )
+              : null}
+          </section>
+        </main>
+      </section>
+    </main>
+  );
+}
+
+{
+  /* <section className="col-lg-12 h-100 p-0 m-0 pe-2 overflow-y-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -99,7 +251,7 @@ export function SectionSchedule() {
               }}
             />
           </main>
-          <main className="h-100 row m-0 p-0 py-3 flex-fill">
+          <main className="w-100 h-100 row m-0 p-0 py-3 flex-fill">
             <section className="col m-0 p-0">
               <table className="w-100">
                 <thead>
@@ -133,7 +285,7 @@ export function SectionSchedule() {
                   </thead>
                   <tbody>
                     {time.map((time, j) => (
-                      <tr>
+                      <tr className="border">
                         <td
                           className="border border-white"
                           style={{ width: "0" }}
@@ -149,22 +301,21 @@ export function SectionSchedule() {
                                       rowSpan={
                                         (schedule.EndTime -
                                           schedule.StartTime) /
-                                        30
+                                          30 -
+                                        1
                                       }
                                       className={
                                         schedule.Component.includes("General")
-                                          ? "border border-white bg-secondary-subtle custom-text-blue rounded text-center p-2"
-                                          : "border border-white gradient-bg-light-blue rounded text-center p-2"
+                                          ? "my-0 border border-white bg-secondary-subtle custom-text-blue rounded text-center p-2"
+                                          : "my-0 border border-white gradient-bg-light-blue rounded text-center p-2"
                                       }
                                       onClick={() => {
                                         alert(schedule.Course);
                                       }}
                                     >
-                                      <main className="p-1">
-                                        <p className="fw-semibold m-0 p-0">
-                                          {`${schedule.Course} ( ${schedule.Room} )`}
-                                        </p>
-                                      </main>
+                                      <p className="fw-semibold m-0 p-0">
+                                        {`${schedule.Section}`}
+                                      </p>
                                     </td>
                                   ) : (
                                     ""
@@ -188,69 +339,5 @@ export function SectionSchedule() {
             />
           </main>
         </main>
-      </section>
-      <section className="col-lg-4 h-100 p-0 ps-2 m-0 border-start">
-        <main className="h-100 position-relative overflow-y-auto px-1">
-          <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
-            <div className="d-flex justify-content-between gap-2">
-              <div className="d-flex w-100">
-                <DefaultButton
-                  class=""
-                  icon={<MdArrowBackIosNew />}
-                  function={() => navigate(-1)}
-                />
-                <DefaultInput
-                  name="Search"
-                  placeholder="Search"
-                  trigger={dataChange}
-                />
-              </div>
-            </div>
-          </section>
-          <section>
-            {schedule.length > 0
-              ? schedule.map((schedule, i) =>
-                  schedule.Section === currsection ? (
-                    <>
-                      <main className="p-3 shadow-sm rounded mb-2">
-                        <main className="row m-0 p-0">
-                          <section className="col-3 p-0 m-0">
-                            <section>
-                              <h6 className="p-0 m-0">{schedule.Section}</h6>
-                            </section>
-                          </section>
-                          <section className="col-9 p-0 m-0">
-                            <section>
-                              <h6 className="p-0 m-0">
-                                {schedule.Section === null
-                                  ? schedule.CRS_Code
-                                  : schedule.Course}
-                              </h6>
-                            </section>
-                            <section>
-                              <small>
-                                <p className="p-0 m-0 text-secondary fst-italic">
-                                  <span>
-                                    {" "}
-                                    {schedule.Day +
-                                      " " +
-                                      convertMinutes(schedule.StartTime) +
-                                      " - " +
-                                      convertMinutes(schedule.EndTime)}
-                                  </span>
-                                </p>
-                              </small>
-                            </section>
-                          </section>
-                        </main>
-                      </main>
-                    </>
-                  ) : null
-                )
-              : null}
-          </section>
-        </main>
-      </section>
-    </main>
-  );
+      </section> */
 }

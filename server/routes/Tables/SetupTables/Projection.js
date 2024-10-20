@@ -13,7 +13,7 @@ const pool = new Pool({
 router.get("/project-list", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM projection WHERE "Status"='ACTIVE'`,
+      `SELECT * FROM projection WHERE "Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {

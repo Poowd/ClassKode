@@ -3,17 +3,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../../css/CustomColours.css";
 import logo from "../../../src/assets/imgs/logo/ClassKode Logo (3).png";
+import mainlogo from "../../../src/assets/imgs/logo/ClassKode Logo (1).png";
 import useConfiguration from "../../hook/useConfiguration";
 import { LinkButton } from "../../component/button/LinkButton";
+import { LoginCanvas } from "./LoginCanvas";
+import { DefaultButton } from "../../component/button/DefaultButton";
+import reader from "../../assets/imgs/misc/owie.png";
 
 export function Homepage() {
   const [info] = useConfiguration();
   return (
-    <main className="h-100 overflow-y-auto my-0 py-0">
-      <nav className="navbar navbar-expand-lg gradient-bg-blue text-white d-flex justify-content-between px-5">
+    <main className="h-100 overflow-y-auto my-0 py-0 position-relative">
+      <nav className="navbar navbar-expand-lg position-absolute top-0 start-0 z-2 w-100 text-white d-flex justify-content-between px-5">
         <div className="container-fluid">
-          <a className="navbar-brand text-white" href="#">
-            Class Kode
+          <a className="navbar-brand" href="#">
+            <h5 className="fs-4 fw-bold gradient-text-golden">Class Kode</h5>
           </a>
           <button
             className="navbar-toggler"
@@ -68,11 +72,11 @@ export function Homepage() {
               </ul>
               <ul className="navbar-nav">
                 <li>
-                  <LinkButton
+                  {/* <LinkButton
                     to={"/login"}
                     textclass="btn-warning text-dark px-3 py-2 rounded-pill fw-bold"
                     text={"Login"}
-                  />
+                  /> */}
                 </li>
               </ul>
             </main>
@@ -80,117 +84,87 @@ export function Homepage() {
         </div>
       </nav>
       <main className="overflow-hidden">
-        <div
-          id="carouselExampleAutoplaying"
-          className="carousel slide"
-          data-bs-ride="carousel"
-        >
-          <div className="carousel-inner">
-            <div
-              className="carousel-item active position-relative"
-              style={{ height: "85vh" }}
-            >
+        <main className="w-100 tinted-black" style={{ height: "70vh" }}>
+          <section className="container w-100 h-100 d-flex gap-5 align-items-center justify-content-center">
+            <figure>
               <img
-                src={info.details.carousel.item1.Image}
-                className="d-block w-100 object-fit-cover h-100"
-                alt="..."
-              ></img>
-              <main className="position-absolute top-0 left-0 w-100 h-100 tinted-black">
-                <section className="container w-100 h-100 d-flex align-items-center p-5 p-lg-0">
-                  <main className="text-white">
-                    <h1 className="display-3 fw-bold">
-                      {info.details.carousel.item1.Title}
-                    </h1>
-                    <h3 className="w-50 ms-3">
-                      {info.details.carousel.item1.Subtitle}
-                    </h3>
-                    <p className="w-50 ms-3">
-                      {info.details.carousel.item1.Description}
-                    </p>
-                    {info.details.carousel.item1.Button}
-                  </main>
-                </section>
-              </main>
-            </div>
-            <div
-              className="carousel-item active position-relative"
-              style={{ height: "85vh" }}
+                src={mainlogo}
+                className="ratio ratio-1x1"
+                style={{ height: "15em", width: "15em" }}
+              />
+            </figure>
+            <main>
+              <section className="gradient-text-golden">
+                <h3 className="m-0 fw-semibold">
+                  <span>STI College</span>
+                </h3>
+                <h1 className="m-0 fw-bold display-3">
+                  <span>Munoz-EDSA</span>
+                </h1>
+              </section>
+            </main>
+          </section>
+        </main>
+        {/* Content */}
+        <main className="container my-5">
+          <section className="p-3 position-relative">
+            <main
+              className="w-100 rounded shadow-sm d-flex gap-2 align-items-center"
+              style={{ height: "10em", backgroundColor: "#FBFBF9" }}
             >
-              <img
-                src={info.details.carousel.item2.Image}
-                className="d-block w-100 object-fit-cover h-100"
-                alt="..."
-              ></img>
-              <main className="position-absolute top-0 left-0 w-100 h-100 tinted-black">
-                <section className="container w-100 h-100 d-flex align-items-center p-5 p-lg-0">
-                  <main className="text-white">
-                    <h1 className="display-3 fw-bold">
-                      {info.details.carousel.item2.Title}
-                    </h1>
-                    <h3 className="w-50 ms-3">
-                      {info.details.carousel.item2.Subtitle}
-                    </h3>
-                    <p className="w-50 ms-3">
-                      {info.details.carousel.item2.Description}
-                    </p>
-                    {info.details.carousel.item2.Button}
-                  </main>
-                </section>
-              </main>
-            </div>
-            <div
-              className="carousel-item active position-relative"
-              style={{ height: "85vh" }}
-            >
-              <img
-                src={info.details.carousel.item3.Image}
-                className="d-block w-100 object-fit-cover h-100"
-                alt="..."
-              ></img>
-              <main className="position-absolute top-0 left-0 w-100 h-100 tinted-black">
-                <section className="container w-100 h-100 d-flex align-items-center p-5 p-lg-0">
-                  <main className="text-white">
-                    <h1 className="display-3 fw-bold">
-                      {info.details.carousel.item3.Title}
-                    </h1>
-                    <h3 className="w-50 ms-3">
-                      {info.details.carousel.item3.Subtitle}
-                    </h3>
-                    <p className="w-50 ms-3">
-                      {info.details.carousel.item3.Description}
-                    </p>
-                    {info.details.carousel.item3.Button}
-                  </main>
-                </section>
-              </main>
-            </div>
-          </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="prev"
-          >
-            <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleAutoplaying"
-            data-bs-slide="next"
-          >
-            <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div>
-        <main className="container my-5 py-5">
+              <figure>
+                <img
+                  src={reader}
+                  className="ratio ratio-1x1"
+                  style={{ height: "15em", width: "15em" }}
+                />
+              </figure>
+              <section>
+                <h3 className="m-0 fw-bold gradient-text-blue-golden">
+                  Welcome to Class Kode!
+                </h3>
+                <p className="m-0">
+                  Login to utilize our Scheduling and Locator System.
+                </p>
+              </section>
+            </main>
+            <main className="position-absolute top-0 end-0 px-3">
+              <section className="px-3">
+                <DefaultButton
+                  class="gradient-background-2 rounded px-5 py-3 z-3"
+                  type="button"
+                  text={<h6 className="m-0">Login</h6>}
+                  icon={info.icons.navigation.back}
+                  toggle="offcanvas"
+                  target="#offcanvasExample"
+                  function={() => {}}
+                />
+
+                {/* Off Canvas */}
+                <div
+                  class="offcanvas offcanvas-end login-off-canvas gradient-background-1"
+                  tabindex="-1"
+                  id="offcanvasExample"
+                  aria-labelledby="offcanvasExampleLabel"
+                >
+                  <div class="offcanvas-header">
+                    <DefaultButton
+                      class="text-white"
+                      type="button"
+                      text="Back"
+                      icon={info.icons.navigation.back}
+                      dismiss="offcanvas"
+                      function={() => {}}
+                    />
+                  </div>
+                  <div class="offcanvas-body">
+                    <LoginCanvas />
+                  </div>
+                </div>
+                {/* Off Canvas */}
+              </section>
+            </main>
+          </section>
           <section>
             <main className="row m-0 p-3">
               <section className="col-lg-6 p-3 m-0">

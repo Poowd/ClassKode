@@ -36,12 +36,12 @@ export function Locator() {
     "Friday",
     "Saturday",
   ];
-
   const [department, setDepartment] = useState([]);
   const [coaches, setCoaches] = useState([]);
   const [schedules, setSchedules] = useState([]);
   const [selcoach, setSelCoach] = useState([]);
   const [currcoach, setCurrCoach] = useState("n/a");
+  const [coachStatus, setCoachStatus] = useState([]);
   const [time, setTime] = useState();
   const [filter, setFilter] = useState({
     setbyDepartment: "",
@@ -52,6 +52,7 @@ export function Locator() {
     data_get("assign-list", setCoaches);
     data_get("department-list", setDepartment);
     data_get("class-schedule-list", setSchedules);
+    data_get("all-coach-status", setCoachStatus);
   }, []);
 
   useEffect(() => {
@@ -82,6 +83,28 @@ export function Locator() {
     }
     return "No Class";
   }
+
+  const [classStatus, setClassStatus] = useState([
+    "ONCLASS",
+    "NOTINCLASS",
+    "OFFHOURS",
+    "ABSENT",
+  ]);
+
+  const checkStatusHours = (status) => {
+    if (status === "ONCLASS") {
+      return "bg-success";
+    }
+    if (status === "NOTINCLASS") {
+      return "bg-warning";
+    }
+    if (status === "ABSENT") {
+      return "bg-danger";
+    }
+    if (status === "OFFHOURS") {
+      return "bg-secondary";
+    }
+  };
 
   return (
     <>
@@ -314,11 +337,39 @@ export function Locator() {
                             </header>
                           </section>
                           <section className="col-6">
-                            <main className="h-100 w-100 d-flex flex-column align-items-between justify-content-center py-3">
+                            <main className="h-100 w-100 d-flex flex-column align-items-between justify-content-center py-3 overflow-hidden">
                               <small className="h-100">
+                                {coachStatus.map((status, q) =>
+                                  status.SCHLID === coach.SCHLID ? (
+                                    <main className="d-flex">
+                                      <section
+                                        className={`px-3 py-0 rounded-pill ${checkStatusHours(
+                                          status.ClassStatus
+                                        )}`}
+                                      >
+                                        <small>
+                                          <p
+                                            className={`p-0 m-0 fw-semibold text-white`}
+                                          >
+                                            {status.ClassStatus}
+                                          </p>
+                                        </small>
+                                      </section>
+                                    </main>
+                                  ) : null
+                                )}
                                 <h4 className="w-100 text-truncate custom-text-gradient fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
                                 <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
-                                <p className="p-0 pt-1 m-0 fw-normal text-secondary">{`${coach.Department}`}</p>
+                                <p className="p-0 pt-1 m-0 fw-normal text-secondary">{`${coach.departmentabbrev}`}</p>
+                                {coachStatus.map((status, q) =>
+                                  status.SCHLID === coach.SCHLID ? (
+                                    <main>
+                                      <quote className="p-0 pt-1 m-0 fw-normal text-secondary fst-italic">
+                                        "{status.Description}"
+                                      </quote>
+                                    </main>
+                                  ) : null
+                                )}
                               </small>
                               <main>
                                 <section className="d-flex gap-1">

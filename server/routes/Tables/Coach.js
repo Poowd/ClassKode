@@ -75,6 +75,27 @@ router.post("/coach-insert", (req, res) => {
           console.error("Query error:", err);
           return;
         }
+        res.json({ Status: "Success", id: id, data: rslt.rows[0] });
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/coach-status-insert", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    console.log(clientData);
+    var id = clientData.data;
+    pool.query(
+      `INSERT INTO coach_status ("SCHLID") VALUES ('${id}')`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
         res.json(rslt.rows);
       }
     );

@@ -10,6 +10,9 @@ import useHandleChange from "../../hook/useHandleChange";
 import { DefaultInput } from "../input/DefaultInput";
 import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
 import owie from "../../assets/imgs/misc/owie.png";
+import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
+import { SidebarItem } from "../sidebar/SidebarItem";
+import { SidebarDropdown } from "../sidebar/SidebarDropdown";
 
 export function UserTopbar() {
   const navigate = useNavigate();
@@ -22,27 +25,6 @@ export function UserTopbar() {
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
   const [itemlist, setItemList] = useState("Default");
-  const [items, setItems] = useState({
-    Scheduler: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.section}
-        navigate={"/section-schedules"}
-        text={"Section Schedules"}
-      />,
-      <SidebarDropdownItem
-        icon={info.icons.modules.coach}
-        navigate={"/my-schedules"}
-        text={"My Schedules"}
-      />,
-    ],
-    Locator: [
-      <SidebarDropdownItem
-        icon={info.icons.modules.locator}
-        navigate={"/faculty-locator"}
-        text={"Faculty Locator"}
-      />,
-    ],
-  });
 
   const handleLogout = () => {
     sessionStorage.removeItem("user");
@@ -74,44 +56,71 @@ export function UserTopbar() {
             id={"sidebar"}
             content={
               <SidebarItemList
-                items={
-                  itemlist && itemlist === "Default" ? (
-                    <main className="w-100 h-100 text-center p-3"></main>
-                  ) : itemlist === "Scheduler" ? (
-                    items.Scheduler.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
-                  ) : itemlist === "Locator" ? (
-                    items.Locator.map((item) => (
-                      <div className="bg-white rounded shadow-sm">{item}</div>
-                    ))
-                  ) : null
-                }
                 list={
                   <>
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Scheduler");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.scheduler}</h3>
-                        <h6 className="text-start flex-grow-1">Scheduler</h6>
-                      </button>
-                    </li>
+                    <div className="m-0 p-0 d-flex justify-content-between">
+                      <Link to={"/"} className="">
+                        <div className="">
+                          <img
+                            src={Logo}
+                            alt="..."
+                            className="img-fluid"
+                            style={{ height: "5em" }}
+                          />
+                        </div>
+                      </Link>
+                      <div className="d-flex align-items-center py-2">
+                        <DefaultButton
+                          type="button"
+                          class="bg-white rounded-pill py-2 border border-dark"
+                          icon={info.icons.navigation.close}
+                          dismiss="offcanvas"
+                        />
+                      </div>
+                    </div>
+                    <hr />
 
-                    <li>
-                      <button
-                        className="w-100 btn border-0 d-flex align-items-center gap-2 p-3 bg-white m-0 text-dark fw-medium rounded shadow-sm"
-                        onClick={() => {
-                          setItemList("Locator");
-                        }}
-                      >
-                        <h3 className="">{info.icons.modules.locator}</h3>
-                        <h6 className="text-start flex-grow-1">Locator</h6>
-                      </button>
-                    </li>
+                    <SidebarItem
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
+                      icon={info.icons.modules.dashboard}
+                      navigate={"/"}
+                      text={"Homepage"}
+                    />
+                    <SidebarDropdown
+                      class={"fw-medium w-100 py-1"}
+                      icon={info.icons.modules.schedules}
+                      reference={"#schedule"}
+                      text={"Schedule"}
+                      referenced={"schedule"}
+                      parent={"#menu"}
+                      itemlist={
+                        <>
+                          <SidebarItem
+                            icon={info.icons.modules.schedules}
+                            navigate={"/my-schedules"}
+                            text={"My Schedules"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.schedules}
+                            navigate={"/section-schedules"}
+                            text={"Class Schedules"}
+                          />
+                          <SidebarItem
+                            icon={info.icons.modules.schedules}
+                            navigate={"/schedule"}
+                            text={"Examination Schedules"}
+                          />
+                        </>
+                      }
+                    />
+                    <SidebarItem
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
+                      icon={info.icons.modules.locator}
+                      navigate={"/faculty-locator"}
+                      text={"Faculty Locator"}
+                    />
                   </>
                 }
               />
@@ -129,12 +138,30 @@ export function UserTopbar() {
           </div>
         </div>
       </div>
-      <div className="d-flex align-items-center gap-2">
-        <div>
+      <div className="d-flex align-items-center">
+        <section className="d-flex gap-1 border-end px-1">
+          <DefaultInput
+            class="bg-transparent border-0"
+            autocomplete={false}
+            label="inputs"
+            id="Input"
+            name="Input"
+            placeholder="Quick Navigation"
+            trigger={dataChange}
+          />
+          <DefaultButton
+            class="text-light"
+            reversed={true}
+            icon={info.icons.navigation.quicknav}
+            function={quicknav}
+          />
+        </section>
+        {/* <div>
           <DefaultButton
             class="text-light"
             reversed={false}
             icon={info.icons.navigation.quicknav}
+            text={""}
             function={() => {}}
             toggle="modal"
             target="#QuickNav"
@@ -185,16 +212,15 @@ export function UserTopbar() {
               </main>
             }
           />
-        </div>
-        <div>
+        </div> */}
+        <div className="px-1 border-end">
           <DefaultButton
             class="text-light"
             icon={info.icons.others.help}
             function={() => {}}
           />
         </div>
-        <span>|</span>
-        <div>
+        <div className="px-1">
           <DefaultButton
             class="text-light"
             icon={info.icons.others.hiddenuser}

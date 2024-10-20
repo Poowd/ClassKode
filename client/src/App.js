@@ -37,13 +37,32 @@ import { CoachSchedule } from "./pages/private/utilities/schedule/CoachSchedule"
 import { UserTopbar } from "./component/topbar/UserTopbar";
 import useConfiguration from "./hook/useConfiguration";
 import { LandingPage } from "./pages/private/LandingPage";
+import { SectionStudentSchedule } from "./pages/private/user view/SectionStudentSchedule";
+import { StudentSchedule } from "./pages/private/user view/StudentSchedule";
+import { CoachViewSchedule } from "./pages/private/user view/CoachViewSchedule";
+import useDatabase from "./hook/useDatabase";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [info] = useConfiguration();
+  const [get, post, data_get, data_post] = useDatabase();
+
+  const [test, setTest] = useState([]);
 
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
+
+  const resetStatus = () => {
+    data_post("reset-status", { data: null }, setTest);
+  };
+
+  useEffect(() => {
+    const dateObject = new Date();
+    console.log();
+    if (dateObject.getHours() === 21) {
+      resetStatus();
+    }
+  }, []);
 
   useEffect(() => {
     // Simulate an API call
@@ -281,11 +300,19 @@ function App() {
                     content={
                       <Routes>
                         <Route index element={<LandingPage />}></Route>
+                        {loggeduser.PermissionLevel == 0 ? (
+                          <Route path={"/"}>
+                            <Route
+                              path={"/my-schedules"}
+                              element={<StudentSchedule />}
+                            ></Route>
+                          </Route>
+                        ) : null}
                         {loggeduser.PermissionLevel >= 0 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/section-schedules"}
-                              element={"Section Schedules"}
+                              element={<SectionStudentSchedule />}
                             ></Route>
                             <Route
                               path={"/faculty-locator"}
@@ -293,14 +320,15 @@ function App() {
                             ></Route>
                           </Route>
                         ) : null}
-                        {loggeduser.PermissionLevel >= 1 ? (
+                        {loggeduser.PermissionLevel == 1 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/my-schedules"}
-                              element={"my Schedules"}
+                              element={<CoachViewSchedule />}
                             ></Route>
                           </Route>
                         ) : null}
+                        <Route path={"/*"} element={<Error404 />}></Route>
                       </Routes>
                     }
                   />

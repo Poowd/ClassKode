@@ -13,7 +13,7 @@ const pool = new Pool({
 router.get("/class-schedule-list", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM class_schedules WHERE "Status"='ACTIVE'`,
+      `SELECT * FROM class_schedules WHERE "Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -42,6 +42,24 @@ router.post("/class-schedule-insert", (req, res) => {
       `INSERT INTO class_schedules ("CLSID", "Course", "Section", "YearLevel", "Day", "StartTime", "EndTime", "Room", "Component", "Coach", "Population", "Units", "Capacity", "AcademicYear")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from class_schedules), '${course}', '${section}', '${yearlevel}', '${day}', '${starttime}', '${endtime}', '${room}', '${component}', '${coach}', '${population}', '${units}', '${capacity}', '${academicyear}')`,
 
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/reset-status", (req, res) => {
+  try {
+    pool.query(
+      `UPDATE coach_status SET "ClassStatus"='OFFHOURS'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

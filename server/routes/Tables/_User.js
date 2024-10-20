@@ -25,6 +25,114 @@ router.get("/user-list", (req, res) => {
   }
 });
 
+router.post("/student-section", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    const id = clientData.data;
+    pool.query(
+      `SELECT * FROM student_section WHERE "SCHLID"='${id}' LIMIT 1`,
+      (err, rslt) => {
+        res.json(rslt.rows[0]);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/all-coach-status", (req, res) => {
+  try {
+    pool.query(`SELECT * FROM coach_status`, (err, rslt) => {
+      res.json(rslt.rows);
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/coach-status", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    const id = clientData.data;
+    pool.query(
+      `SELECT * FROM coach_status WHERE "SCHLID"='${id}' LIMIT 1`,
+      (err, rslt) => {
+        res.json(rslt.rows[0]);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/coach-status-update", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.id;
+    var status = clientData.status;
+    var description = clientData.description;
+    pool.query(
+      `UPDATE coach_status SET "ClassStatus"='${status}', "Description"='${description}'  WHERE "SCHLID"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows[0]);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/student-section-edit", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var data = clientData.data;
+    var section = clientData.section;
+    var id = clientData.id;
+    pool.query(
+      `UPDATE student_section SET "Section"='${data}' WHERE "SCHLID"='${id}' AND "Section"='${section}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/student-section-add", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var section = clientData.section;
+    var id = clientData.id;
+    pool.query(
+      `INSERT INTO student_section ("SCHLID", "Section") VALUES ('${id}', '${section}')`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 const saltRounds = 10;
 router.post("/user-generate", (req, res) => {
   const clientData = JSON.parse(req.body);

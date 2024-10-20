@@ -10,6 +10,12 @@
   color: white;
 }
 
+.gradient-background-2 {
+  background-image: linear-gradient(to right, #39ace7, #02dbff, #39ace7);
+  border: #02dbff 2px solid;
+  color: white;
+}
+
 .gradient-bg-blue {
   background-image: linear-gradient(
     to bottom right,
@@ -45,6 +51,12 @@
 }
 
 /*  */
+.gradient-text-blue-golden {
+  background: linear-gradient(to right, #39ace7, #02dbff, #39ace7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .gradient-text-golden {
   background: linear-gradient(to right, #ffdf00, #ffcc00, #ecbd00, #cc9900);
   -webkit-background-clip: text;
@@ -84,6 +96,8 @@
 } */
 
 .tinted-black {
-  background-image: linear-gradient(to top, #0a4b8485, #0c589c95);
+  background-image: linear-gradient(to top, #fff, #0a4b8485, #0c589c95),
+    url("../assets/imgs/background/sti-bg-campus-2.jpg");
+  background-size: cover;
   backdrop-filter: blur(2px);
 }

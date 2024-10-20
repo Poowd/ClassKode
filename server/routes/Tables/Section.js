@@ -81,9 +81,10 @@ router.post("/section-generate", (req, res) => {
     var section = clientData.Section;
     var yearlevel = clientData.YearLevel;
     var program = clientData.Program;
+    var semester = clientData.Semester;
     pool.query(
-      `INSERT INTO section ("SCTID", "Section", "YearLevel", "Program")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from section), '${section}', '${yearlevel}', '${program}')`,
+      `INSERT INTO section ("SCTID", "Section", "YearLevel", "Semester", "Program")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from section), '${section}', '${semester}', '${yearlevel}', '${program}')`,
 
       (err, rslt) => {
         if (err) {

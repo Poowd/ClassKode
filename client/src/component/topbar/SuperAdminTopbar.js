@@ -105,7 +105,8 @@ export function SuperAdminTopbar() {
                     <hr />
 
                     <SidebarItem
-                      class={"fw-medium w-100 py-2"}
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
                       icon={info.icons.modules.dashboard}
                       navigate={"/"}
                       text={"Dashboard"}
@@ -152,13 +153,15 @@ export function SuperAdminTopbar() {
                       }
                     />
                     <SidebarItem
-                      class={"fw-medium w-100 py-2"}
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
                       icon={info.icons.modules.curriculum}
                       navigate={"/utilities/curriculum"}
                       text={"Curriculum"}
                     />
                     <SidebarItem
-                      class={"fw-medium w-100 py-2"}
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
                       icon={info.icons.modules.academicyear}
                       navigate={"/utilities/academicyear"}
                       text={"Academic Year"}
@@ -186,7 +189,8 @@ export function SuperAdminTopbar() {
                       }
                     />
                     <SidebarItem
-                      class={"fw-medium w-100 py-2"}
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
                       icon={info.icons.modules.locator}
                       navigate={"/utilities/locator"}
                       text={"Faculty Locator"}
@@ -239,13 +243,30 @@ export function SuperAdminTopbar() {
           </div>
         </div>
       </div>
-      <div className="d-flex align-items-center gap-2">
-        <div>
+      <div className="d-flex align-items-center">
+        <section className="d-flex gap-1 border-end px-1">
+          <DefaultInput
+            class="bg-transparent border-0"
+            autocomplete={false}
+            label="inputs"
+            id="Input"
+            name="Input"
+            placeholder="Quick Navigation"
+            trigger={dataChange}
+          />
+          <DefaultButton
+            class="text-light"
+            reversed={true}
+            icon={info.icons.navigation.quicknav}
+            function={quicknav}
+          />
+        </section>
+        {/* <div>
           <DefaultButton
             class="text-light"
             reversed={false}
             icon={info.icons.navigation.quicknav}
-            text={"Commands"}
+            text={""}
             function={() => {}}
             toggle="modal"
             target="#QuickNav"
@@ -296,17 +317,15 @@ export function SuperAdminTopbar() {
               </main>
             }
           />
-        </div>
-        <div>
+        </div> */}
+        <div className="px-1 border-end">
           <DefaultButton
             class="text-light"
             icon={info.icons.others.help}
-            text={"Guide"}
             function={() => {}}
           />
         </div>
-        <span>|</span>
-        <div>
+        <div className="px-1">
           <DefaultButton
             class="text-light"
             icon={info.icons.others.hiddenuser}

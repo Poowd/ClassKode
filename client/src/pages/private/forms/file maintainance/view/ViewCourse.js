@@ -3,17 +3,13 @@ import { FormInput } from "../../../../../component/input/FormInput";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { DefaultButton } from "../../../../../component/button/DefaultButton";
-import { LuFileEdit } from "react-icons/lu";
-import { LuFolderArchive } from "react-icons/lu";
 import { LinkButton } from "../../../../../component/button/LinkButton";
 import useModal from "../../../../../hook/useModal";
 import { PassiveModal } from "../../../../../component/modal/PassiveModal";
 import useHandleChange from "../../../../../hook/useHandleChange";
-import useValidation from "../../../../../hook/useValidation";
 import useArchiveEntry from "../../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../../hook/useDatabase";
 import { DataViewerTemplate } from "../../../../../layout/grid/DataViewerTemplate";
-import { CollapseButton } from "../../../../../component/button/CollapsButton";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
@@ -76,7 +72,7 @@ export function ViewCourse() {
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <LinkButton

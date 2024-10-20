@@ -80,3 +80,13 @@ STYLE FOCUSED - GRADIENT
   background-size: cover;
   background-position: center;
 }
+
+.login-off-canvas {
+  width: 35% !important;
+}
+
+@media screen and (max-width: 720px) {
+  .login-off-canvas {
+    width: 100% !important;
+  }
+}

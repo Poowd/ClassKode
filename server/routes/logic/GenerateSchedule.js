@@ -96,6 +96,12 @@ router.post("/gen-class", (req, res) => {
               PPL: classes[i].Population,
               CCH_UNT: coach.Units + classes[i].Units,
             });
+            for (var p = 0; p < sct_classes.length; p++) {
+              if (sct_classes[p].section === classes[i].Section) {
+                sct_classes[p].units += classes[i].Units;
+                sct_classes[p].classes.push(classes[i].CRS_Code);
+              }
+            }
             ADD_UNITS_TO_COACH(coach, classes[i].Units);
             for (var j = 0; j < classes.length; j++) {
               if (IS_LAB(classes[j].Component)) {
@@ -141,7 +147,7 @@ router.post("/gen-class", (req, res) => {
             ) {
               if (
                 schedules[k].PPL <= rooms[j].Capacity &&
-                rooms[j].Units <= 14
+                rooms[j].Units <= 14 - 3
               ) {
                 if (
                   conflictSection(
@@ -200,21 +206,21 @@ router.post("/gen-class", (req, res) => {
     target_coach
   ) {
     for (var i = 0; i < class_schedules.length; i++) {
-      if (
-        class_schedules[i].SCT === target_section &&
-        class_schedules[i].DAY === target_day
-      ) {
-        if (
-          !(
-            (start_time < class_schedules[i].st &&
-              end_time <= class_schedules[i].st) ||
-            (start_time > class_schedules[i].st &&
-              end_time >= class_schedules[i].st &&
-              class_schedules[i].et <= start_time)
-          )
-        ) {
-          if (class_schedules[i].CCH === target_coach) {
+      if (class_schedules[i].SCT === target_section) {
+        if (class_schedules[i].DAY === target_day) {
+          if (
+            !(
+              (start_time < class_schedules[i].STR_TME &&
+                end_time <= class_schedules[i].STR_TME) ||
+              (start_time > class_schedules[i].STR_TME &&
+                end_time >= class_schedules[i].STR_TME &&
+                class_schedules[i].END_TME <= start_time)
+            )
+          ) {
+            //if (class_schedules[i].CCH === target_coach) {
+            console.log("conflict");
             return false;
+            //}
           }
         }
       }
@@ -250,6 +256,14 @@ router.post("/gen-class", (req, res) => {
         }
       }
     }
+    return {
+      SCHLID: "0",
+      LastName: "n/a",
+      Department: "n/a",
+      CoachType: "n/a",
+      MaxUnits: "0",
+      Units: 0,
+    };
   }
 
   function IS_SPECIALIZED(target_coach, target_course) {
@@ -281,6 +295,7 @@ router.post("/gen-class", (req, res) => {
   SHUFFLE(classes);
   GenerateSchedule.Phases.coach();
   GenerateSchedule.Phases.room();
+  console.log(sct_classes);
   //console.log(rooms);
 
   return res.json(class_schedules);

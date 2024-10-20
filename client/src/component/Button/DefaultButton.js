@@ -27,9 +27,7 @@ export class DefaultButton extends React.Component {
         >
           {this.props.icon}
           {this.props.text != null ? (
-            <small>
-              <span className="fw-semibold">{this.props.text}</span>
-            </small>
+            <small className="fw-semibold">{this.props.text}</small>
           ) : (
             ""
           )}

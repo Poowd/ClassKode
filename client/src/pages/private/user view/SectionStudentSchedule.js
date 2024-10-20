@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { DefaultButton } from "../../../../component/button/DefaultButton";
-import "../Map.css";
-import useDatabase from "../../../../hook/useDatabase";
-import { MdArrowBackIosNew } from "react-icons/md";
+import { DefaultButton } from "../../../component/button/DefaultButton";
+import useDatabase from "../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
-import useTimeFormat from "../../../../hook/useTimeFormat";
-import { DefaultInput } from "../../../../component/input/DefaultInput";
-import useHandleChange from "../../../../hook/useHandleChange";
+import useTimeFormat from "../../../hook/useTimeFormat";
+import { DefaultInput } from "../../../component/input/DefaultInput";
+import useHandleChange from "../../../hook/useHandleChange";
+import useConfiguration from "../../../hook/useConfiguration";
 
-export function CoachSchedule() {
+export function SectionStudentSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
 
   const [search, setSearch] = useState({
@@ -21,9 +21,9 @@ export function CoachSchedule() {
   const [schedule, setSchedule] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
-  const [coach, setCoach] = useState([]);
+  const [section, setSection] = useState([]);
   const [course, setCourse] = useState([]);
-  const [currcoach, setCurrentCoach] = useState(
+  const [currsection, setCurrentSection] = useState(
     search.Search === "" ? "n/a" : search.Search
   );
 
@@ -41,58 +41,61 @@ export function CoachSchedule() {
 
   useEffect(() => {
     data_get("class-schedule-list", setSchedule);
-    data_get("assign-list", setCoach);
+    data_get("project-list", setSection);
     data_get("course-list", setCourse);
     if (search.Search === "") {
-      for (var i = 0; i < coach.length; i++) {
-        setCurrentCoach(coach[0].SCHLID);
+      for (var i = 0; i < section.length; i++) {
+        setCurrentSection(section[0].Section);
       }
     } else {
-      setCurrentCoach(search.Search);
+      setCurrentSection(search.Search);
     }
   }, [search]);
 
   useEffect(() => {
-    coach.map((coach, i) =>
-      i === 0 && currcoach === "n/a" ? setCurrentCoach(coach.SCHLID) : null
+    section.map((section, i) =>
+      i === 0 && currsection === "n/a"
+        ? setCurrentSection(section.Section)
+        : null
     );
-  }, [coach]);
+  }, [section]);
 
   function resetSearch() {
     setSearch({ Search: "" });
   }
   function previousSection() {
-    for (var i = 0; i < coach.length; i++) {
-      if (coach[i].SCHLID === currcoach) {
+    for (var i = 0; i < section.length; i++) {
+      if (section[i].Section === currsection) {
         if (i - 1 >= 0) {
-          setCurrentCoach(coach[i - 1].SCHLID);
+          setCurrentSection(section[i - 1].Section);
         }
       }
-      if (currcoach === "n/a") {
-        setCurrentCoach(coach[0].SCHLID);
+      if (currsection === "n/a") {
+        setCurrentSection(section[0].Section);
       }
     }
   }
   function nextSection() {
-    for (var i = 0; i < coach.length; i++) {
-      if (coach[i].SCHLID === currcoach) {
-        if (i + 1 < coach.length) {
-          setCurrentCoach(coach[i + 1].SCHLID);
+    for (var i = 0; i < section.length; i++) {
+      if (section[i].Section === currsection) {
+        if (i + 1 < section.length) {
+          setCurrentSection(section[i + 1].Section);
         }
       }
-      if (currcoach === "n/a") {
-        setCurrentCoach(coach[0].SCHLID);
+      if (currsection === "n/a") {
+        setCurrentSection(section[0].Section);
       }
     }
   }
+
   return (
-    <main className="h-100 row m-0 p-0">
-      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto">
+    <main className="h-100 row m-0 p-2">
+      <section className="col-9 h-100 p-0 m-0 pe-2 overflow-y-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
-              class=""
-              icon={<MdArrowBackIosNew />}
+              class="border"
+              icon={info.icons.navigation.previous}
               function={() => {
                 previousSection();
               }}
@@ -100,11 +103,11 @@ export function CoachSchedule() {
           </main>
           <main className="h-100 flex-fill py-2">
             <header className="p-2">
-              {coach.map((coach, o) =>
-                coach.SCHLID === currcoach ? (
+              {section.map((section, o) =>
+                section.Section === currsection ? (
                   <>
-                    <h3>{`${coach.LastName}, ${coach.FirstName}`}</h3>
-                    <p className="m-0">{`${coach.Department}`}</p>
+                    <h3>{`${section.Section}`}</h3>
+                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
                   </>
                 ) : null
               )}
@@ -119,12 +122,12 @@ export function CoachSchedule() {
                   {time.map((time, j) =>
                     schedule.length > 0
                       ? schedule.map((schedule, k) =>
-                          schedule.Coach === currcoach ? (
+                          schedule.Section === currsection ? (
                             schedule.Day === day ? (
                               +schedule.StartTime === time ? (
                                 <section
                                   className={
-                                    schedule.Component.includes("General")
+                                    schedule.Component.includes("Minor")
                                       ? "border border-white gradient-bg-yellow custom-text-blue rounded p-3 w-100"
                                       : "border border-white gradient-bg-light-blue rounded p-3 w-100"
                                   }
@@ -133,9 +136,6 @@ export function CoachSchedule() {
                                   }}
                                 >
                                   <small>
-                                    <p className="fw-semibold m-0 p-0">
-                                      {schedule.Section}
-                                    </p>
                                     <h6 className="fw-bold m-0 p-0">
                                       {course.map((course, i) =>
                                         course.Code === schedule.Course ? (
@@ -167,21 +167,21 @@ export function CoachSchedule() {
           </main>
           <main>
             <DefaultButton
-              class=""
-              icon={<MdArrowBackIosNew />}
+              class="border"
+              icon={info.icons.navigation.next}
               function={() => nextSection()}
             />
           </main>
         </main>
       </section>
-      <section className="col-lg-3 h-100 p-0 ps-2 m-0">
-        <main className="h-100 position-relative overflow-y-auto px-1">
+      <section className="col-3 h-100 p-0 ps-2 m-0">
+        <main className="h-100 overflow-y-auto px-1">
           <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
             <div className="d-flex justify-content-between gap-2">
               <div className="d-flex w-100">
                 <DefaultButton
                   class=""
-                  icon={<MdArrowBackIosNew />}
+                  icon={info.icons.navigation.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput
@@ -195,7 +195,7 @@ export function CoachSchedule() {
           <section>
             {schedule.length > 0
               ? schedule.map((schedule, i) =>
-                  schedule.Coach === currcoach ? (
+                  schedule.Section === currsection ? (
                     <>
                       <main className="p-3 shadow-sm rounded mb-2">
                         <main className="row m-0 p-0">
@@ -235,4 +235,107 @@ export function CoachSchedule() {
       </section>
     </main>
   );
+}
+
+{
+  /* <section className="col-lg-12 h-100 p-0 m-0 pe-2 overflow-y-auto">
+        <main className="h-100 w-100 d-flex align-items-center">
+          <main>
+            <DefaultButton
+              class=""
+              icon={<MdArrowBackIosNew />}
+              function={() => {
+                previousSection();
+              }}
+            />
+          </main>
+          <main className="w-100 h-100 row m-0 p-0 py-3 flex-fill">
+            <section className="col m-0 p-0">
+              <table className="w-100">
+                <thead>
+                  <tr>
+                    <td className="text-center fw-semibold pb-2 custom-text-gradient">
+                      {currsection}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {time.map((time, i) => (
+                    <tr>
+                      <td className="border fw-light">
+                        {convertMinutes(time)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+            {day.map((day, i) => (
+              <section className="col m-0 p-0 ">
+                <table className="w-100">
+                  <thead>
+                    <tr>
+                      <td></td>
+                      <td className="text-center fw-semibold text-secondary pb-2">
+                        {day}
+                      </td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {time.map((time, j) => (
+                      <tr className="border">
+                        <td
+                          className="border border-white"
+                          style={{ width: "0" }}
+                        >
+                          &nbsp;
+                        </td>
+                        {schedule.length > 0
+                          ? schedule.map((schedule, k) =>
+                              schedule.Section === currsection ? (
+                                schedule.Day === day ? (
+                                  +schedule.StartTime === time ? (
+                                    <td
+                                      rowSpan={
+                                        (schedule.EndTime -
+                                          schedule.StartTime) /
+                                          30 -
+                                        1
+                                      }
+                                      className={
+                                        schedule.Component.includes("General")
+                                          ? "my-0 border border-white bg-secondary-subtle custom-text-blue rounded text-center p-2"
+                                          : "my-0 border border-white gradient-bg-light-blue rounded text-center p-2"
+                                      }
+                                      onClick={() => {
+                                        alert(schedule.Course);
+                                      }}
+                                    >
+                                      <p className="fw-semibold m-0 p-0">
+                                        {`${schedule.Section}`}
+                                      </p>
+                                    </td>
+                                  ) : (
+                                    ""
+                                  )
+                                ) : null
+                              ) : null
+                            )
+                          : null}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
+            ))}
+          </main>
+          <main>
+            <DefaultButton
+              class=""
+              icon={<MdArrowBackIosNew />}
+              function={() => nextSection()}
+            />
+          </main>
+        </main>
+      </section> */
 }

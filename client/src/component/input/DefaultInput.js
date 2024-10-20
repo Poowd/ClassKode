@@ -10,9 +10,11 @@ export class DefaultInput extends React.Component {
             ? "text"
             : this.props.type
         }
+        autoComplete="off"
         id={this.props.id}
         name={this.props.id}
         onChange={this.props.trigger}
+        value={this.props.value}
         placeholder={this.props.placeholder}
       />
     );

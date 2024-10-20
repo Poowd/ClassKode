@@ -41,6 +41,7 @@ export function CreateCoach() {
     Phone: "",
     Image: "",
     Link: "",
+    Status: "",
   });
 
   const [dataChange] = useHandleChange(setData);
@@ -90,26 +91,33 @@ export function CreateCoach() {
     }
   }
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     if (true) {
-      uploadFile();
-      data_post(
-        "coach-insert",
-        {
-          SCHLID: data.SCHLID,
-          FirstName: data.FirstName,
-          MiddleInitial: data.MiddleInitial,
-          LastName: data.LastName,
-          Gender: data.Gender,
-          Department: data.Department,
-          Email: data.Email,
-          Phone: data.Phone,
-          Link: data.Link,
-          Image: `${currentUUID}.jpg`,
-        },
-        setData
-      );
+      try {
+        const response = await fetch(`${info.conn.server}coach-insert`, {
+          method: "POST",
+          body: JSON.stringify({
+            SCHLID: data.SCHLID,
+            FirstName: data.FirstName,
+            MiddleInitial: data.MiddleInitial,
+            LastName: data.LastName,
+            Gender: data.Gender,
+            Department: data.Department,
+            Email: data.Email,
+            Phone: data.Phone,
+            Link: data.Link,
+            Image: `${currentUUID}.jpg`,
+          }),
+        });
+        const entry = await response.json();
+        if (entry.Status === "Success") {
+          uploadFile();
+          data_post("coach-status-insert", { data: entry.id }, setData);
+        }
+      } catch (error) {
+        console.log(error);
+      }
       showToast(
         info.icons.others.info,
         "Coach",

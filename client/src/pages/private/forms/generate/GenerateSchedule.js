@@ -54,7 +54,6 @@ export function GenerateSchedule() {
     data_get("coach-type-list", setCoachType);
     data_get("weekly-event-list", setWeekly);
     data_get("specialization-list", setSpecialize);
-    console.log(ay.Code);
     data_post("expected-class-list", { data: ay.Code }, setExpected);
   }, [ay]);
 
@@ -64,30 +63,25 @@ export function GenerateSchedule() {
   }, [schedule]);
 
   function conflictChecker() {
-    var st1 = 660;
-    var et1 = 780;
+    var a = 1;
+    var b = 10;
 
     var test = [
       {
-        st: 480,
-        et: 660,
-      },
-      {
-        st: 780,
-        et: 840,
+        c: 11,
+        d: 15,
       },
     ];
 
     for (var i = 0; i < test.length; i++) {
       if (
-        !(
-          (st1 < test[i].st && et1 <= test[i].st) ||
-          (st1 > test[i].st && et1 >= test[i].st && test[i].et <= st1)
-        )
+        (!(a < test[i].c && b < test[i].c) &&
+          !(a > test[i].c && b > test[i].c)) ||
+        (a > test[i].c && b < test[i].d)
       ) {
-        console.log("no conflict");
+        return console.log(`conflict : ${test[i].c} - ${test[i].d}`);
       } else {
-        console.log("conflict");
+        return console.log(`no conflict : ${test[i].c} - ${test[i].d}`);
       }
     }
   }

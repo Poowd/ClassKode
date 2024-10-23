@@ -146,8 +146,8 @@ export function Department() {
                     key={i}
                     slot1={item.Code}
                     slot2={item.Department}
-                    slot3={item.Created}
-                    slot4={item.Abbrev}
+                    slot3={item.Abbrev}
+                    slot4={null}
                     slot5={item.AcademicLevel}
                     view={info.icons.forms.view}
                     link={`/department/view/${item.DPTID}`}

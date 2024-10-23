@@ -85,6 +85,10 @@ STYLE FOCUSED - GRADIENT
   width: 35% !important;
 }
 
+.hover-darken:hover {
+  background-color: #fff487 !important;
+}
+
 @media screen and (max-width: 720px) {
   .login-off-canvas {
     width: 100% !important;

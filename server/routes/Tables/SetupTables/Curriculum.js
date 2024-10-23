@@ -25,8 +25,8 @@ router.get("/curriculum-list", (req, res) => {
 router.get("/current-curriculum", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM curriculum WHERE "Status"='ACTIVE' ORDER BY "CRRID" DESC LIMIT 1`,
-      (err, rslt) => res.json(rslt.rows)
+      `SELECT academic_year."Code" as academiccode, academic_year."AcademicYear", curriculum."Curriculum", curriculum."Code", curriculum."CRRID", curriculum."Description", curriculum."Created", curriculum."Status"  FROM academic_year INNER JOIN curriculum ON curriculum."Code" = academic_year."Curriculum" WHERE academic_year."Status"='ACTIVE' ORDER BY academic_year."ACYID" DESC LIMIT 1`,
+      (err, rslt) => res.json(rslt.rows[0])
     );
   } catch (err) {
     console.error(err);
@@ -130,7 +130,7 @@ router.post("/curriculum-archive", (req, res) => {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `UPDATE curriculum SET "Status"='ARCHIVE' WHERE "CRRID"='${id}'`,
+      `UPDATE curriculum SET "Status"='ARCHIVE' WHERE "ACYID"='${id}' OR "Code"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

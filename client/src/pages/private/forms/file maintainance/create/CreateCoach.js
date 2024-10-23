@@ -15,6 +15,7 @@ import { RadioGroup } from "../../../../../component/radiogroup/RadioGroup";
 import { RadioButton } from "../../../../../component/radiogroup/RadioButton";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
+import useValidation from "../../../../../hook/useValidation";
 
 const supabase = createClient(
   "https://pgcztzkowuxixfyiqera.supabase.co",
@@ -28,6 +29,7 @@ export function CreateCoach() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
+  const [ValiAI, trueValiAIBool] = useValidation();
   const [info] = useConfiguration();
   const [coach, setCoach] = useState([]);
   const [data, setData] = useState({
@@ -43,7 +45,19 @@ export function CreateCoach() {
     Link: "",
     Status: "",
   });
-
+  const [validation, setValidation] = useState({
+    SCHLID: "",
+    FirstName: "",
+    MiddleInitial: "",
+    LastName: "",
+    Gender: "",
+    Department: "",
+    Email: "",
+    Phone: "",
+    Image: "",
+    Link: "",
+    Status: "",
+  });
   const [dataChange] = useHandleChange(setData);
   const [department, setDepartment] = useState([]);
   const [file, setFile] = useState([]);
@@ -91,16 +105,77 @@ export function CreateCoach() {
     }
   }
 
+  const checkDuplicateSCHLID = (schlid) => {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === schlid) {
+        setValidation((prev) => ({
+          ...prev,
+          SCHLID: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkDuplicateEmail = (email) => {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Email === email) {
+        setValidation((prev) => ({
+          ...prev,
+          Email: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkDuplicatePhone = (phone) => {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].Phone === phone) {
+        setValidation((prev) => ({
+          ...prev,
+          Phone: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
   const submitForm = async (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      SCHLID: ValiAI("SCHLID", data.SCHLID),
+      FirstName: ValiAI("Name", data.FirstName),
+      MiddleInitial: ValiAI("Initial", data.MiddleInitial),
+      LastName: ValiAI("Name", data.LastName),
+      Department: ["is-valid", "valid-feedback", "Looks Good!"],
+      Email: ValiAI("SchoolEmail", data.Email),
+      Phone: ValiAI("Phone", data.Phone),
+      Link: ["is-valid", "valid-feedback", "Looks Good!"],
+      Image: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("SCHLID", data.SCHLID) &&
+      trueValiAIBool("Name", data.FirstName) &&
+      trueValiAIBool("Initial", data.MiddleInitial) &&
+      trueValiAIBool("Name", data.LastName) &&
+      trueValiAIBool("SchoolEmail", data.Email) &&
+      trueValiAIBool("Phone", data.Phone) &&
+      !checkDuplicateSCHLID(data.SCHLID) &&
+      !checkDuplicatePhone(data.Phone) &&
+      !checkDuplicateEmail(data.Email)
+    ) {
       try {
         const response = await fetch(`${info.conn.server}coach-insert`, {
           method: "POST",
           body: JSON.stringify({
             SCHLID: data.SCHLID,
             FirstName: data.FirstName,
-            MiddleInitial: data.MiddleInitial,
+            MiddleInitial: data.MiddleInitial.toUpperCase(),
             LastName: data.LastName,
             Gender: data.Gender,
             Department: data.Department,
@@ -152,31 +227,57 @@ export function CreateCoach() {
         entryform={
           <>
             <MainInput
+              class={`${validation.SCHLID[0]}`}
               label="SCHLID"
               id="SCHLID"
               trigger={dataChange}
               value={data.SCHLID}
+              feedbackstatus={`${validation.SCHLID[1]}`}
+              feedback={`${
+                validation.SCHLID[2] !== undefined ? validation.SCHLID[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.FirstName[0]}`}
               label="FirstName"
               id="FirstName"
               trigger={dataChange}
               value={data.FirstName}
+              feedbackstatus={`${validation.FirstName[1]}`}
+              feedback={`${
+                validation.FirstName[2] !== undefined
+                  ? validation.FirstName[2]
+                  : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.MiddleInitial[0]}`}
               label="MiddleInitial"
               id="MiddleInitial"
               trigger={dataChange}
               value={data.MiddleInitial}
+              feedbackstatus={`${validation.MiddleInitial[1]}`}
+              feedback={`${
+                validation.MiddleInitial[2] !== undefined
+                  ? validation.MiddleInitial[2]
+                  : ""
+              }`}
               required={false}
             />
             <MainInput
+              class={`${validation.LastName[0]}`}
               label="LastName"
               id="LastName"
               trigger={dataChange}
               value={data.LastName}
+              feedbackstatus={`${validation.LastName[1]}`}
+              feedback={`${
+                validation.LastName[2] !== undefined
+                  ? validation.LastName[2]
+                  : ""
+              }`}
               required={true}
             />
             <RadioGroup
@@ -203,10 +304,17 @@ export function CreateCoach() {
               }
             />
             <MainSelect
+              class={`${validation.Department[0]}`}
               label="Department"
               id="Department"
               trigger={dataChange}
               required={true}
+              feedbackstatus={`${validation.Department[1]}`}
+              feedback={`${
+                validation.Department[2] !== undefined
+                  ? validation.Department[2]
+                  : ""
+              }`}
               option={
                 <>
                   <SelectButtonItemSelected
@@ -227,36 +335,39 @@ export function CreateCoach() {
             />
 
             <MainInput
+              class={`${validation.Email[0]}`}
               label="Email"
               id="Email"
               trigger={dataChange}
               value={data.Email}
+              feedbackstatus={`${validation.Email[1]}`}
+              feedback={`${
+                validation.Email[2] !== undefined ? validation.Email[2] : ""
+              }`}
               required={true}
             />
 
             <MainInput
+              class={`${validation.Phone[0]}`}
               label="Phone"
               id="Phone"
               trigger={dataChange}
               value={data.Phone}
+              feedbackstatus={`${validation.Phone[1]}`}
+              feedback={`${
+                validation.Phone[2] !== undefined ? validation.Phone[2] : ""
+              }`}
               required={true}
             />
 
             <MainInput
+              class={`${validation.Link[0]}`}
               label="Link"
               id="Link"
               trigger={dataChange}
               value={data.Link}
               required={true}
             />
-
-            {/* <MainInput
-              label="Image"
-              id="Image"
-              trigger={dataChange}
-              value={data.Image}
-              required={true}
-            /> */}
 
             <main className="w-100 row mb-2 ms-0">
               <section className="col-2 p-0 m-0 ">
@@ -267,7 +378,7 @@ export function CreateCoach() {
               <section className="col-10 p-0 m-0">
                 <input
                   type="file"
-                  className="form-control"
+                  className={`form-control ${validation.Image[0]}`}
                   id="what"
                   onChange={(e) => {
                     const file = e.target.files[0];
@@ -281,6 +392,7 @@ export function CreateCoach() {
                     }
                   }}
                   accept="image/png, image/jpeg"
+                  required="true"
                 />
               </section>
             </main>

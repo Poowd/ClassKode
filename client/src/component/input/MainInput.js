@@ -29,6 +29,9 @@ export class MainInput extends React.Component {
             required={this.props.required}
             disabled={this.props.disabled}
           />
+          <div class={`${this.props.feedbackstatus}`}>
+            {this.props.feedback}
+          </div>
         </div>
       </div>
     );

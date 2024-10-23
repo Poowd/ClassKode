@@ -55,7 +55,7 @@ export function CreateCurriculum() {
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton

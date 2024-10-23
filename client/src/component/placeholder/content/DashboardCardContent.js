@@ -10,7 +10,7 @@ export class DashboardCardContent extends React.Component {
           <div>{this.props.button}</div>
         </header>
         <main>
-          <h2 className="p-0 m-0 fw-bold">{this.props.content}</h2>
+          <h3 className="p-0 pe-4 m-0 fw-bold">{this.props.content}</h3>
         </main>
         <small>
           <footer className="d-flex gap-1 align-items-center fw-semibold fw-light">

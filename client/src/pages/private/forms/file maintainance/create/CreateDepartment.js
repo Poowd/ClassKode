@@ -8,15 +8,14 @@ import { MainInput } from "../../../../../component/input/MainInput";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
-import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
-import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
-import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateDepartment() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
+  const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
     DPTID: "",
     Code: "",
@@ -24,12 +23,64 @@ export function CreateDepartment() {
     Abbrev: "",
     Description: "",
   });
+  const [validation, setValidation] = useState({
+    DPTID: "",
+    Code: "",
+    Department: "",
+    Abbrev: "",
+    Description: "",
+  });
+
+  const [department, setDepartment] = useState([]);
 
   const [dataChange] = useHandleChange(setData);
 
+  useEffect(() => {
+    data_get("department-list", setDepartment);
+  }, []);
+
+  const checkDuplicateCode = (code) => {
+    for (var i = 0; i < department.length; i++) {
+      if (department[i].Code === code) {
+        setValidation((prev) => ({
+          ...prev,
+          Code: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkDuplicateAbbrev = (abbrev) => {
+    for (var i = 0; i < department.length; i++) {
+      if (department[i].Abbrev === abbrev) {
+        setValidation((prev) => ({
+          ...prev,
+          Abbrev: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      Code: ValiAI("Code", data.Code),
+      Department: ValiAI("Name", data.Department),
+      Abbrev: ValiAI("Abbrev", data.Abbrev),
+      Description: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("Code", data.Code) &&
+      trueValiAIBool("Name", data.Department) &&
+      trueValiAIBool("Abbrev", data.Abbrev) &&
+      !checkDuplicateCode(data.Code) &&
+      !checkDuplicateAbbrev(data.Abbrev)
+    ) {
       data_post("department-insert", data, setData);
       showToast(
         info.icons.others.info,
@@ -65,27 +116,45 @@ export function CreateDepartment() {
         entryform={
           <>
             <MainInput
+              class={`${validation.Code[0]}`}
               label="Code"
               id="Code"
               trigger={dataChange}
               value={data.Code}
+              feedbackstatus={`${validation.Code[1]}`}
+              feedback={`${
+                validation.Code[2] !== undefined ? validation.Code[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Department[0]}`}
               label="Department"
               id="Department"
               trigger={dataChange}
               value={data.Department}
+              feedbackstatus={`${validation.Department[1]}`}
+              feedback={`${
+                validation.Department[2] !== undefined
+                  ? validation.Department[2]
+                  : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Abbrev[0]}`}
               label="Abbrev"
               id="Abbrev"
               trigger={dataChange}
               value={data.Abbrev}
+              feedbackstatus={`${validation.Abbrev[1]}`}
+              feedback={`${
+                validation.Abbrev[2] !== undefined ? validation.Abbrev[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Description[0]}`}
               label="Description"
               id="Description"
               trigger={dataChange}

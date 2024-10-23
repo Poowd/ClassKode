@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export class ListCard extends React.Component {
   render() {
     return (
-      <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0">
+      <main className="w-100 bg-white rounded shadow-sm p-3 mb-2 row m-0 hover-darken">
         <section className="col-2 p-0 m-0">
           <h6 className="p-0 m-0">{this.props.slot1}</h6>
         </section>

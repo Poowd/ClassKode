@@ -12,8 +12,9 @@ const pool = new Pool({
 
 router.get("/coach-list", (req, res) => {
   try {
-    pool.query(`SELECT * FROM coach WHERE "Status"='ACTIVE'`, (err, rslt) =>
-      res.json(rslt.rows)
+    pool.query(
+      `SELECT coach."CCHID", coach."SCHLID", coach."FirstName", coach."MiddleInitial", coach."LastName",coach."Gender", coach."Email", coach."Phone",coach."Link", coach."Image", department."Department", department."Code",coach."Created", coach."Status" FROM coach INNER JOIN department ON department."Code" = coach."Department" WHERE coach."Status"='ACTIVE'`,
+      (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
     console.error(err);
@@ -37,7 +38,7 @@ router.post("/coach-target", (req, res) => {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `SELECT * FROM coach WHERE "CCHID"='${id}' OR "SCHLID"='${id}'`,
+      `SELECT coach."CCHID", coach."SCHLID", coach."FirstName", coach."MiddleInitial", coach."LastName",coach."Gender", coach."Email", coach."Phone",coach."Link", coach."Image", department."Department", department."Code",coach."Created", coach."Status" FROM coach INNER JOIN department ON department."Code" = coach."Department" WHERE coach."CCHID"='${id}' OR coach."SCHLID"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

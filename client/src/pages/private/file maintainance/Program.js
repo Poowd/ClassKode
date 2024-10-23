@@ -153,8 +153,8 @@ export function Program() {
                     key={i}
                     slot1={item.Code}
                     slot2={item.Program}
-                    slot3={item.Created}
-                    slot4={item.Abbrev}
+                    slot3={item.Abbrev}
+                    slot4={null}
                     slot5={
                       department &&
                       department.map((dept) =>

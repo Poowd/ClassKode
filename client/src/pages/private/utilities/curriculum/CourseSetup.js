@@ -46,9 +46,9 @@ export function CourseSetup() {
     data_post("setup-target", { data: params.id }, setSetup);
   }, []);
 
-  useEffect(() => {
-    currentcurriculum.map((curr, i) => setCurrent(curr));
-  }, [currentcurriculum]);
+  // useEffect(() => {
+  //   currentcurriculum.map((curr, i) => setCurrent(curr));
+  // }, [currentcurriculum]);
 
   useEffect(() => {
     // if (SessionStorage[0].Department !== null) {
@@ -83,9 +83,9 @@ export function CourseSetup() {
             <LinkButton
               class="btn-primary py-2"
               textclass="text-white"
-              to={`/curriculum/view/${current.CRRID}`}
+              to={`/curriculum/view/${currentcurriculum.CRRID}`}
               state={{
-                data: current,
+                data: currentcurriculum,
               }}
               text={`Current Curriculum`}
               icon={info.icons.forms.view}
@@ -177,7 +177,7 @@ export function CourseSetup() {
                 state={{
                   program: data.Program,
                   department: data.Department,
-                  curriculum: current.Code,
+                  curriculum: currentcurriculum.Code,
                 }}
                 icon={info.icons.forms.add}
               />
@@ -208,7 +208,7 @@ export function CourseSetup() {
             {data.Program !== "" ? (
               setup.map((item, i) =>
                 item.Program === data.Program &&
-                item.Curriculum === current.Code ? (
+                item.Curriculum === currentcurriculum.Code ? (
                   item.Course.toLowerCase().includes(
                     search.search.toLowerCase()
                   ) || search.search === "" ? (

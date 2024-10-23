@@ -165,7 +165,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        post(
+                        data_post(
                           "department-restore",
                           { data: department.DPTID },
                           setData

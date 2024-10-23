@@ -52,15 +52,17 @@ function App() {
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
-  const resetStatus = () => {
-    data_post("reset-status", { data: null }, setTest);
+  const resetStatus = (status) => {
+    data_post("reset-status", { data: status }, setTest);
   };
 
   useEffect(() => {
     const dateObject = new Date();
-    console.log();
-    if (dateObject.getHours() === 21) {
-      resetStatus();
+    if (dateObject.getHours() == 21) {
+      resetStatus("OFFHOURS");
+    }
+    if (dateObject.getHours() == 7) {
+      resetStatus("NOTINCLASS");
     }
   }, []);
 

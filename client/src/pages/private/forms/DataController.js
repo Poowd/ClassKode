@@ -23,6 +23,7 @@ import { EditProgram } from "./file maintainance/edit/EditProgram";
 import { EditRoom } from "./file maintainance/edit/EditRoom";
 import { EditSection } from "./file maintainance/edit/EditSection";
 
+import { CreateSchedule } from "./utilities/create/CreateSchedule";
 import { CreateCurriculum } from "./utilities/create/CreateCurriculum";
 import { CreateAcademicYear } from "./utilities/create/CreateAcademicYear";
 
@@ -40,7 +41,6 @@ import { GenerateUsers } from "./generate/GenerateUsers";
 import { ViewSetup } from "./view/ViewSetup";
 import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
-
 export function DataController() {
   const params = useParams();
 
@@ -167,7 +167,7 @@ export function DataController() {
           ) : null}
           {params.module === "schedule" ? (
             params.form === "create" ? (
-              <h1>temp create</h1>
+              <CreateSchedule />
             ) : params.form === "view" ? (
               <h1>temp view</h1>
             ) : params.form === "generate" ? (

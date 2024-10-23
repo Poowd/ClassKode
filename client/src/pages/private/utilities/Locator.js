@@ -381,7 +381,7 @@ export function Locator() {
                                       "On Going"
                                         ? schedules.length > 0
                                           ? schedules.map((schedule, i) =>
-                                              schedule.Coach === coach.SCHLID
+                                              schedule.SCHLID === coach.SCHLID
                                                 ? schedule.StartTime <
                                                     daytoday.getHours() * 60 +
                                                       daytoday.getMinutes() &&
@@ -446,7 +446,7 @@ export function Locator() {
             <main>
               {schedules.length > 0
                 ? schedules.map((item, i) =>
-                    item.Coach === selcoach.SCHLID ? (
+                    item.SCHLID === selcoach.SCHLID ? (
                       item.Day === days[daytoday.getDay()] ? (
                         <RoomCard
                           key={i}

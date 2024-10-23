@@ -6,12 +6,7 @@ export class MainSelect extends React.Component {
       <div className="row mb-2 align-items-center">
         <section className="col-2">
           <label for={this.props.id}>
-            <span className="fw-semibold">
-              {this.props.label}
-              <span className="text-secondary fw-normal">
-                {this.props.labelextension}
-              </span>
-            </span>
+            <span className="fw-semibold">{this.props.label}</span>
           </label>
         </section>
         <section className="col-10">

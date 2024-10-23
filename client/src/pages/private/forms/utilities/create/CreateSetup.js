@@ -71,7 +71,7 @@ export function CreateSetup() {
               class="btn-outline-secondary"
               type="button"
               icon={info.icons.navigation.back}
-              function={() => navigate(-1, { data: "COSC" })}
+              function={() => navigate(-1)}
             />
             <DefaultButton
               class="btn-success px-2"

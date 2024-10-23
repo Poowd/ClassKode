@@ -22,6 +22,7 @@ export function Dashboard() {
   const [currentacademicyear, setCurrentAcademicYear] = useState([]);
   const [currentcurriculum, setCurrentCurriculum] = useState([]);
   const [schedule, setSchedule] = useState([]);
+  const [totalPopulation, setTotalPopulation] = useState();
 
   useEffect(() => {
     data_get("department-list", setDepartment);
@@ -34,8 +35,8 @@ export function Dashboard() {
     data_get("current-curriculum", setCurrentCurriculum);
     data_get("class-schedule-list", setSchedule);
     data_get("total-population-check", setPopulationPerYear);
+    data_get("project-total-population", setTotalPopulation);
   }, []);
-
   return (
     <DashboardTemplate
       cardcolor={"gradient-bg-light-blue"}
@@ -49,7 +50,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/academicyear")}
             />
           }
-          content={currentacademicyear.Code}
+          content={currentacademicyear.AcademicYear}
         />
       }
       card2={
@@ -62,7 +63,7 @@ export function Dashboard() {
               function={() => navigate("/utilities/curriculum")}
             />
           }
-          content={currentacademicyear.Curriculum}
+          content={currentcurriculum.Curriculum}
         />
       }
       card3={
@@ -91,9 +92,61 @@ export function Dashboard() {
         />
       }
       chart1={useChart(
-        ["a", "a", "a", "a", "a"],
+        [
+          totalPopulation === undefined
+            ? "n/a"
+            : totalPopulation[4] === undefined
+            ? "n/a"
+            : totalPopulation[4].AcademicYear,
+          totalPopulation === undefined
+            ? "n/a"
+            : totalPopulation[3] === undefined
+            ? "n/a"
+            : totalPopulation[3].AcademicYear,
+          totalPopulation === undefined
+            ? "n/a"
+            : totalPopulation[2] === undefined
+            ? "n/a"
+            : totalPopulation[2].AcademicYear,
+          totalPopulation === undefined
+            ? "n/a"
+            : totalPopulation[1] === undefined
+            ? "n/a"
+            : totalPopulation[1].AcademicYear,
+          totalPopulation === undefined
+            ? "n/a"
+            : totalPopulation[0] === undefined
+            ? "n/a"
+            : totalPopulation[0].AcademicYear,
+        ],
         "My Chart",
-        [populationperyear.population],
+        [
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[4] === undefined
+            ? 0
+            : totalPopulation[4].total_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[3] === undefined
+            ? 0
+            : totalPopulation[3].total_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[2] === undefined
+            ? 0
+            : totalPopulation[2].total_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[1] === undefined
+            ? 0
+            : totalPopulation[1].total_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[0] === undefined
+            ? 0
+            : totalPopulation[0].total_population,
+        ],
         "line",
         "x",
         "auto",

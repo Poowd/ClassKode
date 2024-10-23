@@ -11,6 +11,7 @@ import useConfiguration from "../../../../../hook/useConfiguration";
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateSection() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export function CreateSection() {
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
   const [sectionName, setSectionName] = useState("");
+  const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
     Section: "",
     Program: "",
@@ -25,8 +27,14 @@ export function CreateSection() {
     Semester: "",
     Code: "",
   });
+  const [validation, setValidation] = useState({
+    Section: "",
+    Program: "",
+    YearLevel: "",
+    Semester: "",
+    Code: "",
+  });
 
-  const [sectionlist, setSectionList] = useState([]);
   const [section, setSection] = useState([]);
   const [program, setProgram] = useState([]);
   const [yearlevel, setYearLevel] = useState([]);
@@ -87,9 +95,32 @@ export function CreateSection() {
     }));
   }, [sectionName]);
 
+  const checkDuplicateSection = (sect) => {
+    for (var i = 0; i < section.length; i++) {
+      if (section[i].Section === sect) {
+        setValidation((prev) => ({
+          ...prev,
+          Section: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      Section: ValiAI("SectionName", data.Section),
+      Program: ["is-valid", "valid-feedback", "Looks Good!"],
+      YearLevel: ["is-valid", "valid-feedback", "Looks Good!"],
+      Semester: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("SectionName", data.Section) &&
+      !checkDuplicateSection(data.Section)
+    ) {
       data_post("section-insert", data, setData);
       showToast(
         info.icons.others.info,
@@ -125,6 +156,7 @@ export function CreateSection() {
         entryform={
           <>
             <MainSelect
+              class={`${validation.Program[0]}`}
               label="Program"
               id="Program"
               trigger={dataChange}
@@ -148,6 +180,7 @@ export function CreateSection() {
               }
             />
             <MainSelect
+              class={`${validation.YearLevel[0]}`}
               label="YearLevel"
               id="YearLevel"
               trigger={dataChange}
@@ -173,6 +206,7 @@ export function CreateSection() {
               }
             />
             <MainSelect
+              class={`${validation.Semester[0]}`}
               label="Semester"
               id="Semester"
               trigger={dataChange}
@@ -193,10 +227,15 @@ export function CreateSection() {
               }
             />
             <MainInput
+              class={`${validation.Section[0]}`}
               label="Section"
               id="Section"
               trigger={dataChange}
               value={data.Section}
+              feedbackstatus={`${validation.Section[1]}`}
+              feedback={`${
+                validation.Section[2] !== undefined ? validation.Section[2] : ""
+              }`}
               required={true}
             />
           </>

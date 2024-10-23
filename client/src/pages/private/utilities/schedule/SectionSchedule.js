@@ -129,7 +129,8 @@ export function SectionSchedule() {
                               +schedule.StartTime === time ? (
                                 <section
                                   className={
-                                    schedule.Component.includes("Minor")
+                                    schedule.Component.includes("Minor") ||
+                                    schedule.Component.includes("Basic")
                                       ? "border border-white gradient-bg-yellow custom-text-blue rounded p-3 w-100"
                                       : "border border-white gradient-bg-light-blue rounded p-3 w-100"
                                   }
@@ -139,11 +140,7 @@ export function SectionSchedule() {
                                 >
                                   <small>
                                     <h6 className="fw-bold m-0 p-0">
-                                      {course.map((course, i) =>
-                                        course.Code === schedule.Course ? (
-                                          <span key={i}>{course.Course}</span>
-                                        ) : null
-                                      )}
+                                      {schedule.Course}
                                     </h6>
                                     <p className="fw-semibold m-0 p-0">
                                       {`${convertMinutes(
@@ -182,8 +179,9 @@ export function SectionSchedule() {
             <div className="d-flex justify-content-between gap-2">
               <div className="d-flex w-100">
                 <DefaultButton
-                  class=""
+                  class="px-2"
                   icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />
                 <DefaultInput
@@ -199,17 +197,11 @@ export function SectionSchedule() {
               ? schedule.map((schedule, i) =>
                   schedule.Section === currsection ? (
                     <>
-                      <main className="p-3 shadow-sm rounded mb-2">
+                      <main className="p-3 shadow-sm rounded mb-2 hover-darken">
                         <main className="row m-0 p-0">
                           <section className="col-12 p-0 m-0">
                             <section>
-                              <h6 className="p-0 m-0">
-                                {course.map((course, i) =>
-                                  course.Code === schedule.Course ? (
-                                    <span key={i}>{course.Course}</span>
-                                  ) : null
-                                )}
-                              </h6>
+                              <h6 className="p-0 m-0">{schedule.Course}</h6>
                             </section>
                             <section>
                               <small>

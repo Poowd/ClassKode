@@ -22,6 +22,26 @@ router.get("/academic-year-list", (req, res) => {
   }
 });
 
+router.post("/academic-year-target", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `SELECT * FROM academic_year WHERE "ACYID"='${id}' OR "Code"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/last-five-terms", (req, res) => {
   try {
     pool.query(
@@ -61,6 +81,26 @@ router.post("/academic-year-insert", (req, res) => {
       `INSERT INTO academic_year ("ACYID", "Code", "AcademicYear", "Curriculum", "Semester", "StartDate", "EndDate", "Description")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from academic_year), '${code}', '${academicyear}', '${curriculum}', '${semester}', '${startdate}', '${enddate}', '${description}')`,
 
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/academic-year-archive", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `UPDATE academic_year SET "Status"='ARCHIVE' WHERE "ACYID"='${id}' OR "Code"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

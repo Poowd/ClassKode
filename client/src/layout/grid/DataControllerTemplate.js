@@ -22,7 +22,9 @@ export class DataControllerTemplate extends React.Component {
                         <h1 className="fw-bold custom-text-gradient pb-2">
                           {this.props.title}
                         </h1>
-                        <p className="text-secondary">{this.props.description}</p>
+                        <p className="text-secondary">
+                          {this.props.description}
+                        </p>
                         <hr />
                       </header>
                       <section>

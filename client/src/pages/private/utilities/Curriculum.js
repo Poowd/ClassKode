@@ -28,9 +28,9 @@ export function Curriculum() {
     data_get("current-curriculum", setCurrentCurriculum);
   }, []);
 
-  useEffect(() => {
-    currentcurriculum.map((curr, i) => setCurrent(curr));
-  }, [currentcurriculum]);
+  // useEffect(() => {
+  //   currentcurriculum[0].map((curr, i) => setCurrent(curr));
+  // }, [currentcurriculum]);
 
   return (
     <>
@@ -43,9 +43,9 @@ export function Curriculum() {
               <LinkButton
                 class="btn-primary py-2"
                 textclass="text-white"
-                to={`/curriculum/view/${current.CRRID}`}
+                to={`/curriculum/view/${currentcurriculum.CRRID}`}
                 state={{
-                  data: current,
+                  data: currentcurriculum[0],
                 }}
                 text={`Current Curriculum`}
                 icon={info.icons.forms.view}
@@ -78,7 +78,7 @@ export function Curriculum() {
                   textclass="text-white"
                   to={"/curriculum/create/0"}
                   state={{
-                    curriculum: current,
+                    curriculum: currentcurriculum[0],
                   }}
                   icon={info.icons.forms.add}
                 />
@@ -120,7 +120,7 @@ export function Curriculum() {
                         slot5={"n/a"}
                         view={info.icons.others.package}
                         link={
-                          current.Code === item.Code
+                          currentcurriculum.Code === item.Code
                             ? `/utilities/curriculum/setup/${item.Code}`
                             : null
                         }

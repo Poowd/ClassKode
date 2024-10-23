@@ -112,14 +112,15 @@ export function RoomSchedule() {
             <div className="d-flex justify-content-between gap-2">
               <div>
                 <DefaultButton
-                  class=""
-                  icon={<MdArrowBackIosNew />}
+                  class="px-2"
+                  icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />
               </div>
               <div className="d-flex gap-2">
                 <DefaultDropdown
-                  class="border px-2 btn-primary"
+                  class="border px-2 rounded btn-primary"
                   reversed={true}
                   icon={<TbStairs />}
                   text={building.map((item, i) =>
@@ -139,7 +140,7 @@ export function RoomSchedule() {
                   }
                 />
                 <DefaultDropdown
-                  class="border px-2 btn-primary"
+                  class="border px-2 rounded btn-primary"
                   reversed={true}
                   icon={<TbStairs />}
                   text={floor.map((item, i) =>
@@ -168,7 +169,7 @@ export function RoomSchedule() {
                   ? schedule &&
                     schedule.map((schedule, i) =>
                       room.Room === schedule.Room ? (
-                        <main key={i} className="p-3 shadow-sm rounded mb-2">
+                        <main key={i} className="p-3 shadow-sm rounded mb-2 hover-darken">
                           <main className="row m-0 p-0">
                             <section className="col-3 p-0 m-0">
                               <section>

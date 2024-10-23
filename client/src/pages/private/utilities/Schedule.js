@@ -32,13 +32,14 @@ export function Schedule() {
             <div className="w-100">
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
-                  class=""
+                  class="px-2"
                   icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
                 <DefaultDropdown
-                  class="border px-2 btn-primary"
+                  class="border px-2 btn-primary rounded"
                   reversed={true}
                   icon={info.icons.pages.utilities.schedule}
                   text={"Load"}
@@ -84,18 +85,25 @@ export function Schedule() {
                     slot1={sc.Section}
                     slot2={sc.Course}
                     slot3={
-                      sc.Day +
-                      " : " +
-                      convertMinutes(sc.StartTime) +
-                      " - " +
-                      convertMinutes(sc.EndTime)
+                      <main>
+                        <section>
+                          {`${sc.Day}, ${convertMinutes(
+                            sc.StartTime
+                          )} - ${convertMinutes(sc.EndTime)} `}
+                        </section>
+                        <section>
+                          {sc.Room === null
+                            ? "Court"
+                            : `( ${sc.Population}/${sc.Capacity} ) ${sc.Room}`}
+                        </section>
+                      </main>
                     }
-                    slot4={
-                      sc.Room === null
-                        ? "Court"
-                        : sc.Room + " " + sc.Population + "/" + sc.Capacity
+                    slot4={null}
+                    slot5={
+                      sc.FirstName !== null && sc.LastName !== null
+                        ? `${sc.LastName}, ${sc.FirstName}`
+                        : "No Coach"
                     }
-                    slot5={sc.Coach}
                     slot6={sc.Component + " ( " + sc.Units + " )"}
                     link={null}
                     state={null}

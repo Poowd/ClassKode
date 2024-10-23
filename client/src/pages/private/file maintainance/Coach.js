@@ -150,7 +150,7 @@ export function Coach() {
                   item.LastName.toLowerCase().includes(
                     search.search.toLowerCase()
                   ) || search.search === "" ? (
-                    item.Department.includes(search.setbyDepartment) ||
+                    item.Code.includes(search.setbyDepartment) ||
                     search.setbyDepartment === "" ? (
                       <ListCard
                         key={i}
@@ -160,9 +160,9 @@ export function Coach() {
                             ? " " + item.MiddleInitial + ". "
                             : " "
                         } ${item.LastName}`}
-                        slot3={item.CCH_Created}
+                        slot3={item.Email}
                         slot4={item.Department}
-                        slot5={item.Email}
+                        slot5={null}
                         view={info.icons.forms.view}
                         link={`/coach/view/${item.CCHID}`}
                         state={{ data: item }}

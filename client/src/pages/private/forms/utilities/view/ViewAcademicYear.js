@@ -16,6 +16,9 @@ import useArchiveEntry from "../../../../../hook/useArchiveEntry";
 import useDatabase from "../../../../../hook/useDatabase";
 import { DataViewerTemplate } from "../../../../../layout/grid/DataViewerTemplate";
 import { CollapseButton } from "../../../../../component/button/CollapsButton";
+import { DefaultToast } from "../../../../../component/toast/DefaultToast";
+import useConfiguration from "../../../../../hook/useConfiguration";
+import { useToasty } from "../../../../../hook/useToasty";
 
 export function ViewAcademicYear() {
   const navigate = useNavigate();
@@ -24,44 +27,52 @@ export function ViewAcademicYear() {
   const [get, post, data_get, data_post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
-  const [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ] = useValidation();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
-  const [academicyear, setAcademicYear] = useState([]);
-  const [data, setData] = useState([state.data]);
+  const [curriculum, setCurriculum] = useState([]);
+  const [data, setData] = useState([]);
   const [code, setCode] = useState("");
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
-  });
-  const [validation, setValidation] = useState({
-    Confirm: ValidateCode(confirmCode.Confirm),
   });
 
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
     data_get("random-code-generator", setCode);
+    data_get("curriculum-list", setCurriculum);
   }, []);
 
   useEffect(() => {
-    data_post("sel-cur-ay", academicyear, setAcademicYear);
-  }, [academicyear]);
+    data_post("academic-year-target", { data: params.id }, setData);
+  }, []);
 
-  useEffect(() => {
-    setValidation({
-      Confirm: ValidateCode(confirmCode.Confirm, 4, 4, code),
-    });
-  }, [confirmCode]);
+  const archiveEntry = (e) => {
+    e.preventDefault();
+    if (code === confirmCode.Confirm) {
+      data_post("academic-year-archive", { data: params.id }, setData);
+      showToast(
+        info.icons.others.info,
+        "AcademicYear",
+        `AcademicYear ${data[0].AcademicYear} is set to archive!`
+      );
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
+    } else {
+      showModal(
+        "Modal",
+        "Archive Entry",
+        <p>
+          <span>Type the code </span>
+          <span className="fw-bold text-black">{code}</span>
+          <span> to archive </span>
+          <span className="fw-bold text-black">{data[0].AcademicYear}</span>
+        </p>
+      );
+    }
+  };
 
   return (
     <>
@@ -105,61 +116,62 @@ export function ViewAcademicYear() {
         }
         content={
           <>
-            {data.map((item, i) => (
-              <main key={i} className="px-0 py-3 m-0">
-                <header>
-                  <h6>{item.Code}</h6>
-                  <h1 className="fw-bold custom-text-gradient pb-2">
-                    {item.AcademicYear}
-                  </h1>
-                  <hr />
-                  <ul className="m-0 p-0 d-flex gap-2">
-                    <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">{item.CRR_Code}</p>
-                    </li>
-                    <li className="border m-0 p-2 rounded">
-                      <p className="m-0 p-0">{`${item.Semester}`}</p>
-                    </li>
-                  </ul>
-                </header>
-                <main className="p-3">
-                  <section>
-                    <CollapseButton
-                      id="AcademicYearDetails"
-                      title="Academic Year Details"
-                      content={
-                        <DataControlView
-                          content={
-                            <>
-                              <DataControlViewItem
-                                label={"Year Date"}
-                                content={
-                                  <>
-                                    <DataControlViewItem
-                                      label={"Start Year"}
-                                      content={item.StartDate}
-                                    />
-                                    <DataControlViewItem
-                                      label={"End Year"}
-                                      content={item.EndDate}
-                                    />
-                                  </>
-                                }
-                              />
-                            </>
-                          }
-                        />
-                      }
-                    />
-                    <small>
-                      <p className="text-secondary">
-                        Date Created: {item.ACY_Created}
-                      </p>
-                    </small>
-                  </section>
+            {data &&
+              data.map((item, i) => (
+                <main key={i} className="px-0 py-3 m-0">
+                  <header>
+                    <h1 className="fw-bold custom-text-gradient pb-2">
+                      {item.AcademicYear}
+                    </h1>
+                    <hr />
+                  </header>
+                  <main className="p-3">
+                    <section>
+                      <h6>{`${item.Code} - ${item.Semester}`}</h6>
+                      <h6>{`${item.StartDate} - ${item.EndDate}`}</h6>
+                      <h6>
+                        {curriculum.map((curr, q) =>
+                          curr.Code === item.Curriculum ? curr.Curriculum : null
+                        )}
+                      </h6>
+                      <footer className="mt-5">
+                        <small>
+                          <p className="text-secondary">
+                            Date Created: {item.Created}
+                          </p>
+                        </small>
+                      </footer>
+                    </section>
+                  </main>
+                  {/* <CollapseButton
+                        id="AcademicYearDetails"
+                        title="Academic Year Details"
+                        content={
+                          <DataControlView
+                            content={
+                              <>
+                                <DataControlViewItem
+                                  label={"Year Date"}
+                                  content={
+                                    <>
+                                      <DataControlViewItem
+                                        label={"Start Year"}
+                                        content={item.StartDate}
+                                      />
+                                      <DataControlViewItem
+                                        label={"End Year"}
+                                        content={item.EndDate}
+                                      />
+                                    </>
+                                  }
+                                />
+                              </>
+                            }
+                          />
+                        }
+                      /> */}
                 </main>
-              </main>
-            ))}
+              ))}
           </>
         }
       />
@@ -172,24 +184,18 @@ export function ViewAcademicYear() {
             <FormInput
               hidden={true}
               id="Confirm"
-              alert={validation.Confirm[0].Message}
-              class={validation.Confirm[0].State[0]}
-              success={validation.Confirm[0].State[1]}
               trigger={dataChange}
               value={confirmCode.Confirm}
               required={true}
             />
           </>
         }
-        trigger={() =>
-          ArchiveEntry(
-            "archive-existing-academicyear",
-            post,
-            code,
-            confirmCode.Confirm,
-            data[0]
-          )
-        }
+        trigger={archiveEntry}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </>
   );

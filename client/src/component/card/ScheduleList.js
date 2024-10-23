@@ -8,7 +8,7 @@ export class ScheduleList extends React.Component {
     return (
       <main
         className={
-          "w-100 rounded shadow-sm p-3 mb-2 row m-0 " + this.props.class
+          "w-100 rounded shadow-sm p-3 mb-2 row m-0 hover-darken " + this.props.class
         }
       >
         <section className="col-2 p-0 m-0">

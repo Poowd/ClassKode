@@ -210,11 +210,11 @@ router.post("/gen-class", (req, res) => {
         if (class_schedules[i].DAY === target_day) {
           if (
             !(
-              (start_time < class_schedules[i].STR_TME &&
-                end_time <= class_schedules[i].STR_TME) ||
-              (start_time > class_schedules[i].STR_TME &&
-                end_time >= class_schedules[i].STR_TME &&
-                class_schedules[i].END_TME <= start_time)
+              (+start_time < +class_schedules[i].STR_TME &&
+                +end_time <= +class_schedules[i].STR_TME) ||
+              (+start_time > +class_schedules[i].STR_TME &&
+                +end_time >= +class_schedules[i].STR_TME &&
+                +class_schedules[i].END_TME <= +start_time)
             )
           ) {
             //if (class_schedules[i].CCH === target_coach) {

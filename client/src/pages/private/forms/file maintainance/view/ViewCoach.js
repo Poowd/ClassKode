@@ -14,6 +14,7 @@ import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
+import { TextFormat2 } from "../../../../../component/textformat/TextFormat2";
 
 const supabase = createClient(
   "https://pgcztzkowuxixfyiqera.supabase.co",
@@ -35,6 +36,8 @@ export function ViewCoach() {
   const [images, setImages] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
+  const [schedules, setSchedules] = useState("");
+  const [units, setUnits] = useState("");
   const [department, setDepartment] = useState([]);
   const [currentImage, setCurrentImage] = useState("");
   const [confirmCode, setConfirmCode] = useState({
@@ -45,6 +48,8 @@ export function ViewCoach() {
   useEffect(() => {
     data_get("random-code-generator", setCode);
     data_get("department-list", setDepartment);
+    data_get("class-schedule-list", setSchedules);
+    data_post("coach-units", { data: params.id }, setUnits);
     data_post("coach-target", { data: params.id }, setData);
   }, []);
 
@@ -155,21 +160,28 @@ export function ViewCoach() {
                   </header>
                   <main className="p-3">
                     <section>
-                      <h6>{item.SCHLID}</h6>
-                      <h6>
-                        {department &&
-                          department.map((dept) =>
-                            dept.Code === item.Department
-                              ? dept.Department
-                              : null
-                          )}
-                      </h6>
-                      <h6>
-                        {item.Phone} | {item.Email} |{" "}
-                        <Link to={item.Link} target="_blank">
-                          {item.Link}
-                        </Link>
-                      </h6>
+                      <main>
+                        <TextFormat2 header="a" data={item.SCHLID} />
+                        <TextFormat2 header="a" data={item.Department} />
+                        <TextFormat2 header="a" data={item.Phone} />
+                        <TextFormat2 header="a" data={item.Email} />
+                        <TextFormat2
+                          header="a"
+                          data={
+                            <Link to={item.Link} target="_blank">
+                              {item.Link}
+                            </Link>
+                          }
+                        />
+                      </main>
+                      <main className="mt-3">
+                        <section className="w-100 bg-white rounded shadow-sm p-2 px-3 d-flex justify-content-between align-items-center">
+                          <p className="m-0">Total Units</p>
+                          <div className="bg-white rounded-circle shadow-sm px-3 py-2">
+                            <h3 className="m-0">{units.sum}</h3>
+                          </div>
+                        </section>
+                      </main>
                       <footer className="mt-5">
                         <small>
                           <p className="text-secondary">

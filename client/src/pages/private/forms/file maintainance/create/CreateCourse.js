@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormInput } from "../../../../../component/input/FormInput";
 import { DefaultButton } from "../../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButton } from "../../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../../hook/useHandleChange";
 import useDatabase from "../../../../../hook/useDatabase";
 import { useToasty } from "../../../../../hook/useToasty";
@@ -14,13 +12,21 @@ import useConfiguration from "../../../../../hook/useConfiguration";
 import { MainInput } from "../../../../../component/input/MainInput";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateCourse() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
+  const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
+    Code: "",
+    Course: "",
+    Department: "",
+    Description: "",
+  });
+  const [validation, setValidation] = useState({
     Code: "",
     Course: "",
     Department: "",
@@ -29,14 +35,40 @@ export function CreateCourse() {
 
   const [dataChange] = useHandleChange(setData);
   const [department, setDepartment] = useState([]);
+  const [course, setCourse] = useState([]);
 
   useEffect(() => {
     data_get("department-list", setDepartment);
+    data_get("course-list", setCourse);
   }, []);
+
+  const checkDuplicateCode = (code) => {
+    for (var i = 0; i < course.length; i++) {
+      if (course[i].Code === code) {
+        setValidation((prev) => ({
+          ...prev,
+          Code: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
 
   const submitForm = (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      Code: ValiAI("Code", data.Code),
+      Course: ValiAI("Name", data.Course),
+      Department: ["is-valid", "valid-feedback", "Looks Good!"],
+      Description: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("Code", data.Code) &&
+      trueValiAIBool("Name", data.Course) &&
+      !checkDuplicateCode(data.Code)
+    ) {
       data_post("course-insert", data, setData);
       showToast(
         info.icons.others.info,
@@ -72,20 +104,31 @@ export function CreateCourse() {
         entryform={
           <>
             <MainInput
+              class={`${validation.Code[0]}`}
               label="Code"
               id="Code"
               trigger={dataChange}
               value={data.Code}
+              feedbackstatus={`${validation.Code[1]}`}
+              feedback={`${
+                validation.Code[2] !== undefined ? validation.Code[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Course[0]}`}
               label="Course"
               id="Course"
               trigger={dataChange}
               value={data.Course}
+              feedbackstatus={`${validation.Course[1]}`}
+              feedback={`${
+                validation.Course[2] !== undefined ? validation.Course[2] : ""
+              }`}
               required={true}
             />
             <MainSelect
+              class={`${validation.Department[0]}`}
               label="Department"
               id="Department"
               trigger={dataChange}
@@ -111,6 +154,7 @@ export function CreateCourse() {
               }
             />
             <MainInput
+              class={`${validation.Description[0]}`}
               label="Description"
               id="Description"
               trigger={dataChange}

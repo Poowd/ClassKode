@@ -4,7 +4,6 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
-import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
 import { LinkButton } from "../../../component/button/LinkButton";
 import useConfiguration from "../../../hook/useConfiguration";
@@ -156,14 +155,14 @@ export function Section() {
                       key={i}
                       slot1={item.SCTID}
                       slot2={item.Section}
-                      slot3={item.Created}
+                      slot3={item.YearLevel}
                       slot4={
                         program &&
                         program.map((prg) =>
                           prg.Code === item.Program ? prg.Program : null
                         )
                       }
-                      slot5={`${item.YearLevel}`}
+                      slot5={null}
                       view={info.icons.forms.view}
                       link={`/section/view/${item.SCTID}`}
                       state={{ data: item }}

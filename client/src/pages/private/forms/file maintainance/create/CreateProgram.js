@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormInput } from "../../../../../component/input/FormInput";
 import { DefaultButton } from "../../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
-import { MultipleFormInput } from "../../../../../component/input/MultipleFormInput";
-import { MultipleFormInputItem } from "../../../../../component/input/MultipleFormInputItem";
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
-import { SelectButton } from "../../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../../hook/useHandleChange";
 import useDatabase from "../../../../../hook/useDatabase";
 import { MainInput } from "../../../../../component/input/MainInput";
@@ -16,13 +11,23 @@ import { MainSelect } from "../../../../../component/dropdown/select/MainSelect"
 import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateProgram() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
+  const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
+    Code: "",
+    Program: "",
+    Abbrev: "",
+    Department: "",
+    AcademicLevel: "",
+    Description: "",
+  });
+  const [validation, setValidation] = useState({
     Code: "",
     Program: "",
     Abbrev: "",
@@ -33,6 +38,7 @@ export function CreateProgram() {
 
   const [dataChange] = useHandleChange(setData);
   const [department, setDepartment] = useState([]);
+  const [program, setProgram] = useState([]);
   const [academiclevel, setAcademicLevel] = useState([]);
 
   useEffect(() => {
@@ -41,11 +47,53 @@ export function CreateProgram() {
 
   useEffect(() => {
     data_get("department-list", setDepartment);
+    data_get("program-list", setProgram);
   }, [department]);
+
+  const checkDuplicateCode = (code) => {
+    for (var i = 0; i < program.length; i++) {
+      if (program[i].Code === code) {
+        setValidation((prev) => ({
+          ...prev,
+          Code: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const checkDuplicateAbbrev = (abbrev) => {
+    for (var i = 0; i < program.length; i++) {
+      if (program[i].Abbrev === abbrev) {
+        setValidation((prev) => ({
+          ...prev,
+          Abbrev: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
 
   const submitForm = (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      Code: ValiAI("Code", data.Code),
+      Program: ValiAI("Name", data.Program),
+      Abbrev: ValiAI("Abbrev", data.Abbrev),
+      Department: ["is-valid", "valid-feedback", "Looks Good!"],
+      AcademicLevel: ["is-valid", "valid-feedback", "Looks Good!"],
+      Description: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("Code", data.Code) &&
+      trueValiAIBool("Name", data.Program) &&
+      trueValiAIBool("Abbrev", data.Abbrev) &&
+      !checkDuplicateCode(data.Code) &&
+      !checkDuplicateAbbrev(data.Abbrev)
+    ) {
       data_post("program-insert", data, setData);
       showToast(
         info.icons.others.info,
@@ -81,27 +129,43 @@ export function CreateProgram() {
         entryform={
           <>
             <MainInput
+              class={`${validation.Code[0]}`}
               label="Code"
               id="Code"
               trigger={dataChange}
               value={data.Code}
+              feedbackstatus={`${validation.Code[1]}`}
+              feedback={`${
+                validation.Code[2] !== undefined ? validation.Code[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Program[0]}`}
               label="Program"
               id="Program"
               trigger={dataChange}
               value={data.Program}
+              feedbackstatus={`${validation.Program[1]}`}
+              feedback={`${
+                validation.Program[2] !== undefined ? validation.Program[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Abbrev[0]}`}
               label="Abbrev"
               id="Abbrev"
               trigger={dataChange}
               value={data.Abbrev}
+              feedbackstatus={`${validation.Abbrev[1]}`}
+              feedback={`${
+                validation.Abbrev[2] !== undefined ? validation.Abbrev[2] : ""
+              }`}
               required={true}
             />
             <MainSelect
+              class={`${validation.Department[0]}`}
               label="Department"
               id="Department"
               trigger={dataChange}
@@ -127,6 +191,7 @@ export function CreateProgram() {
               }
             />
             <MainSelect
+              class={`${validation.AcademicLevel[0]}`}
               label="AcademicLevel"
               id="AcademicLevel"
               trigger={dataChange}
@@ -152,6 +217,7 @@ export function CreateProgram() {
               }
             />
             <MainInput
+              class={`${validation.Description[0]}`}
               label="Description"
               id="Description"
               trigger={dataChange}

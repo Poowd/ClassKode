@@ -66,4 +66,23 @@ router.post("/room-units-day", (req, res) => {
   }
 });
 
+router.post("/coach-units", (req, res) => {
+  const clientData = JSON.parse(req.body);
+  var coach = clientData.data;
+  try {
+    pool.query(
+      `SELECT  SUM(class_schedules."Units"::int)  FROM class_schedules INNER JOIN coach ON coach."SCHLID" = class_schedules."Coach" WHERE class_schedules."Coach"='${coach}' OR coach."CCHID"='${coach}' AND class_schedules."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      (err, rslt) => {
+        if (rslt !== undefined) {
+          return res.json(rslt.rows[0]);
+        }
+        return res.json({ sum: 0 });
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

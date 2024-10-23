@@ -11,14 +11,23 @@ import useConfiguration from "../../../../../hook/useConfiguration";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { MainInput } from "../../../../../component/input/MainInput";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateRoom() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
+  const [ValiAI, trueValiAIBool] = useValidation();
   const [roomName, setRoomName] = useState("");
   const [data, setData] = useState({
+    Room: "",
+    Capacity: "",
+    Facility: "",
+    Building: "",
+    Floor: "",
+  });
+  const [validation, setValidation] = useState({
     Room: "",
     Capacity: "",
     Facility: "",
@@ -72,9 +81,34 @@ export function CreateRoom() {
     }));
   }, [roomName]);
 
+  const checkDuplicateRoom = (rom) => {
+    for (var i = 0; i < room.length; i++) {
+      if (room[i].Room === rom) {
+        setValidation((prev) => ({
+          ...prev,
+          Room: ["is-invalid", "invalid-feedback", "Looks Bad!"],
+        }));
+        return true;
+      }
+    }
+    return false;
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      Room: ValiAI("RoomName", data.Room),
+      Capacity: ValiAI("Numerical", data.Capacity),
+      Building: ["is-valid", "valid-feedback", "Looks Good!"],
+      Floor: ["is-valid", "valid-feedback", "Looks Good!"],
+      Facility: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("RoomName", data.Room) &&
+      trueValiAIBool("Numerical", data.Capacity) &&
+      !checkDuplicateRoom(data.Room)
+    ) {
       data_post("room-insert", data, setData);
       showToast(
         info.icons.others.info,
@@ -109,6 +143,7 @@ export function CreateRoom() {
         entryform={
           <>
             <MainSelect
+              class={`${validation.Building[0]}`}
               label="Building"
               id="Building"
               trigger={dataChange}
@@ -140,6 +175,7 @@ export function CreateRoom() {
               }
             />
             <MainSelect
+              class={`${validation.Floor[0]}`}
               label="Floor"
               id="Floor"
               trigger={dataChange}
@@ -167,6 +203,7 @@ export function CreateRoom() {
               }
             />
             <MainSelect
+              class={`${validation.Facility[0]}`}
               label="Facility"
               id="Facility"
               trigger={dataChange}
@@ -198,17 +235,29 @@ export function CreateRoom() {
               }
             />
             <MainInput
+              class={`${validation.Capacity[0]}`}
               label="Capacity"
               id="Capacity"
               trigger={dataChange}
               value={data.Capacity}
+              feedbackstatus={`${validation.Capacity[1]}`}
+              feedback={`${
+                validation.Capacity[2] !== undefined
+                  ? validation.Capacity[2]
+                  : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Room[0]}`}
               label="Room"
               id="Room"
               trigger={dataChange}
               value={data.Room}
+              feedbackstatus={`${validation.Room[1]}`}
+              feedback={`${
+                validation.Room[2] !== undefined ? validation.Room[2] : ""
+              }`}
               required={false}
             />
           </>

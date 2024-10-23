@@ -13,7 +13,7 @@ const pool = new Pool({
 router.get("/project-list", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM projection WHERE "Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      `SELECT projection."PRJID", section."Section", section."YearLevel", projection."AcademicYear", projection."Population", projection."Created", projection."Status" FROM projection INNER JOIN section ON projection."Section" = section."Section" WHERE projection."Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -39,6 +39,18 @@ router.post("/projection-insert", (req, res) => {
         }
         res.json(rslt.rows);
       }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/project-total-population", (req, res) => {
+  try {
+    pool.query(
+      `SELECT MAX(projection."PRJID"::int) as order, academic_year."AcademicYear", SUM(projection."Population"::int) as total_population FROM projection FULL JOIN academic_year ON academic_year."Code" = projection."AcademicYear" GROUP BY academic_year."AcademicYear" ORDER BY MAX(projection."PRJID"::int) DESC LIMIT 5`,
+      (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
     console.error(err);

@@ -15,6 +15,7 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import { TextFormat2 } from "../../../../../component/textformat/TextFormat2";
+import { useCoachUnits } from "../../../../../hook/useCoachUnits";
 
 const supabase = createClient(
   "https://pgcztzkowuxixfyiqera.supabase.co",
@@ -30,14 +31,16 @@ export function ViewCoach() {
   const [get, post, data_get, data_post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
+  const [getCoachUnits] = useCoachUnits();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
 
   const [images, setImages] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
-  const [schedules, setSchedules] = useState("");
-  const [units, setUnits] = useState("");
+  const [schedules, setSchedules] = useState([]);
+  const [units, setUnits] = useState([]);
+  const [assign, setAssign] = useState([]);
   const [department, setDepartment] = useState([]);
   const [currentImage, setCurrentImage] = useState("");
   const [confirmCode, setConfirmCode] = useState({
@@ -49,6 +52,7 @@ export function ViewCoach() {
     data_get("random-code-generator", setCode);
     data_get("department-list", setDepartment);
     data_get("class-schedule-list", setSchedules);
+    data_post("assign-list-target", { data: params.id }, setAssign);
     data_post("coach-units", { data: params.id }, setUnits);
     data_post("coach-target", { data: params.id }, setData);
   }, []);
@@ -58,22 +62,6 @@ export function ViewCoach() {
       setCurrentImage(data[0].Image);
     } catch (error) {}
   }, [data]);
-
-  // useEffect(() => {
-  //   getImages();
-  //   //console.log(images);
-  // }, []);
-
-  // async function getImages() {
-  //   const { data, error } = await supabase.storage.from("images").list("");
-
-  //   if (data !== null) {
-  //     setImages(data);
-  //   } else {
-  //     console.log(error);
-  //     alert("Error");
-  //   }
-  // }
 
   const archiveEntry = (e) => {
     e.preventDefault();
@@ -176,12 +164,27 @@ export function ViewCoach() {
                       </main>
                       <main className="mt-3">
                         <section className="w-100 bg-white rounded shadow-sm p-2 px-3 d-flex justify-content-between align-items-center">
-                          <p className="m-0">Total Units</p>
-                          <div className="bg-white rounded-circle shadow-sm px-3 py-2">
-                            <h3 className="m-0">{units.sum}</h3>
+                          <div>
+                            <p className="m-0">Total Units</p>
+                            <p className="m-0">
+                              {units.sum} units / {assign.MAX} units
+                            </p>
                           </div>
+                          <h3
+                            className={`m-0 ${
+                              getCoachUnits(units.sum, assign.MAX) > 60
+                                ? "text-success"
+                                : getCoachUnits(units.sum, assign.MAX) < 60 &&
+                                  getCoachUnits(units.sum, assign.MAX) > 40
+                                ? "text-warning"
+                                : "text-danger"
+                            }`}
+                          >
+                            {getCoachUnits(units.sum, assign.MAX)}%
+                          </h3>
                         </section>
                       </main>
+
                       <footer className="mt-5">
                         <small>
                           <p className="text-secondary">

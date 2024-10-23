@@ -47,9 +47,7 @@ export function Coach() {
                     <li key={i} className="list-group-item">
                       <TextFormat1
                         header={<span>{item.Department}</span>}
-                        data={
-                          coach.filter((x) => x.Department === item.Code).length
-                        }
+                        data={coach.filter((x) => x.Code === item.Code).length}
                       />
                     </li>
                   ))}

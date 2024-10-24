@@ -149,12 +149,14 @@ export function ViewCoach() {
                   <main className="p-3">
                     <section>
                       <main>
-                        <TextFormat2 header="a" data={item.SCHLID} />
-                        <TextFormat2 header="a" data={item.Department} />
-                        <TextFormat2 header="a" data={item.Phone} />
-                        <TextFormat2 header="a" data={item.Email} />
+                        <TextFormat2 header="School ID" data={item.SCHLID} />
                         <TextFormat2
-                          header="a"
+                          header="Department"
+                          data={item.Department}
+                        />
+                        <TextFormat2 header="Email" data={item.Email} />
+                        <TextFormat2
+                          header="Link"
                           data={
                             <Link to={item.Link} target="_blank">
                               {item.Link}

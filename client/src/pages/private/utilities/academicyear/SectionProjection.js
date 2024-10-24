@@ -58,8 +58,9 @@ export function SectionProjection() {
           <div className="w-100">
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
-                class=""
+                class="px-2"
                 icon={info.icons.navigation.back}
+                text="Back"
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -84,9 +85,9 @@ export function SectionProjection() {
             <ListCard
               slot1={`${item.Population} Students`}
               slot2={item.Section}
-              slot3={item.Created}
+              slot3={`${item.Population} Students`}
               slot4={item.AcademicYear}
-              slot5={`${item.Population} Students`}
+              slot5={null}
               view={info.icons.forms.view}
               link={`/section/view/${item.Section}`}
               state={{ data: item }}

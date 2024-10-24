@@ -41,6 +41,7 @@ import { SectionStudentSchedule } from "./pages/private/user view/SectionStudent
 import { StudentSchedule } from "./pages/private/user view/StudentSchedule";
 import { CoachViewSchedule } from "./pages/private/user view/CoachViewSchedule";
 import useDatabase from "./hook/useDatabase";
+import { Register } from "./pages/public/Register";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -351,7 +352,15 @@ function App() {
               }
             ></Route>
             <Route path={"/login"} element={<Login />}></Route>
-            <Route path={"/*"} element={<Error404 />}></Route>
+            <Route path={"/register"} element={<Register />}></Route>
+            <Route
+              path={"/*"}
+              element={
+                <main className="vh-100">
+                  <Error404 />
+                </main>
+              }
+            ></Route>
           </>
         )}
       </Routes>

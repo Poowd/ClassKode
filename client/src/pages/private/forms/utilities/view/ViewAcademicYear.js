@@ -19,6 +19,7 @@ import { CollapseButton } from "../../../../../component/button/CollapsButton";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { useToasty } from "../../../../../hook/useToasty";
+import { TextFormat2 } from "../../../../../component/textformat/TextFormat2";
 
 export function ViewAcademicYear() {
   const navigate = useNavigate();
@@ -38,10 +39,12 @@ export function ViewAcademicYear() {
   });
 
   const [dataChange] = useHandleChange(setConfirmCode);
+  const [academicYearCode, setAYCode] = useState([]);
 
   useEffect(() => {
     data_get("random-code-generator", setCode);
     data_get("curriculum-list", setCurriculum);
+    data_get("current-academic-year-code", setAYCode);
   }, []);
 
   useEffect(() => {
@@ -83,7 +86,7 @@ export function ViewAcademicYear() {
           <>
             <DefaultButton
               class="btn-outline-secondary"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <LinkButton
@@ -114,6 +117,7 @@ export function ViewAcademicYear() {
             />
           </>
         }
+        additional={<main></main>}
         content={
           <>
             {data &&
@@ -127,13 +131,30 @@ export function ViewAcademicYear() {
                   </header>
                   <main className="p-3">
                     <section>
-                      <h6>{`${item.Code} - ${item.Semester}`}</h6>
-                      <h6>{`${item.StartDate} - ${item.EndDate}`}</h6>
-                      <h6>
-                        {curriculum.map((curr, q) =>
-                          curr.Code === item.Curriculum ? curr.Curriculum : null
-                        )}
-                      </h6>
+                      <main>
+                        <TextFormat2 header="Academic Year" data={item.Code} />
+                        <TextFormat2 header="Semester" data={item.Semester} />
+                        <TextFormat2
+                          header="Start-End Date"
+                          data={`${item.StartDate} - ${item.EndDate}`}
+                        />
+                        <TextFormat2
+                          header="Curriculum"
+                          data={curriculum.map((curr, q) =>
+                            curr.Code === item.Curriculum
+                              ? curr.Curriculum
+                              : null
+                          )}
+                        />
+                      </main>
+                      <main className="d-flex gap-2 align-items-center mt-3">
+                        <section className="w-100 p-2 bg-white rounded shadow-sm px-3 d-flex justify-content-between align-items-center">
+                          <p className="m-0">Academic Codepass</p>
+                          <h3 className="m-0 fw-semibold">
+                            {academicYearCode.AcademicCode}
+                          </h3>
+                        </section>
+                      </main>
                       <footer className="mt-5">
                         <small>
                           <p className="text-secondary">

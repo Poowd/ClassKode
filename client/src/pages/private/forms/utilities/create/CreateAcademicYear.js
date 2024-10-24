@@ -22,6 +22,8 @@ export function CreateAcademicYear() {
   const [info] = useConfiguration();
   const [curriculum, setCurriculum] = useState([]);
   const [semester, setSemester] = useState([]);
+  const [academicCode, setAcademicCode] = useState("");
+
   const [data, setData] = useState({
     Code: "",
     AcademicYear: "",
@@ -29,6 +31,7 @@ export function CreateAcademicYear() {
     Semester: "",
     StartDate: "",
     EndDate: "",
+    AcademicCode: "",
     Description: "",
   });
   const [dataChange] = useHandleChange(setData);
@@ -36,12 +39,36 @@ export function CreateAcademicYear() {
   useEffect(() => {
     data_get("curriculum-list", setCurriculum);
     data_get("semester-list", setSemester);
-  }, [curriculum, semester]);
+  }, []);
 
-  const submitForm = (e) => {
+  const generateAcademicCode = (e) => {
+    e.preventDefault();
+    data_get("academic-code-generator", setAcademicCode);
+  };
+
+  useEffect(() => {
+    setData((prev) => ({ ...prev, AcademicCode: academicCode }));
+  }, [academicCode]);
+
+  const submitForm = async (e) => {
     e.preventDefault();
     if (true) {
-      data_post("academic-year-insert", data, setData);
+      try {
+        const response = await fetch(
+          `${info.conn.server}academic-year-insert`,
+          {
+            method: "POST",
+            body: JSON.stringify(data),
+          }
+        );
+        const entry = await response.json();
+        console.log(entry);
+        if (entry.Status === "Success") {
+          data_post("academic-year-code-insert", entry.data, setData);
+        }
+      } catch (error) {
+        console.log(error);
+      }
       showToast(
         info.icons.others.info,
         "AcademicYear",
@@ -155,6 +182,21 @@ export function CreateAcademicYear() {
               value={data.EndDate}
               required={true}
             />
+            <MainInput
+              label="AcademicCode"
+              id="AcademicCode"
+              trigger={dataChange}
+              value={data.AcademicCode}
+              required={true}
+            />
+            <main className="w-100 d-flex justify-content-end mb-2">
+              <DefaultButton
+                class="btn-primary px-2 py-2"
+                type="button"
+                text="Generate Code"
+                function={generateAcademicCode}
+              />
+            </main>
             <MainInput
               label="Description"
               id="Description"

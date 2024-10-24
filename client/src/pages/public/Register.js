@@ -1,46 +1,39 @@
 import "../../App.css";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { json, Link, useNavigate } from "react-router-dom";
-import stiLogo from "../../assets/imgs/logo/sti-logo.png";
-import sticampus from "../../assets/imgs/background/sti-bg-campus-2.jpg";
-import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
+import { Link, useNavigate } from "react-router-dom";
 import "../../css/CustomColours.css";
-import { DefaultInput } from "../../component/input/DefaultInput";
-import { DefaultButton } from "../../component/button/DefaultButton";
-import { RiCloseFill } from "react-icons/ri";
-import useDatabase from "../../hook/useDatabase";
-import reader from "../../assets/imgs/misc/owie.png";
+import stiLogo from "../../assets/imgs/logo/sti-logo.png";
+import logo from "../../../src/assets/imgs/logo/ClassKode Logo (3).png";
+import mainlogo from "../../../src/assets/imgs/logo/ClassKode Logo (1).png";
 import useConfiguration from "../../hook/useConfiguration";
-import useHandleChange from "../../hook/useHandleChange";
+import { LinkButton } from "../../component/button/LinkButton";
+import { LoginCanvas } from "./LoginCanvas";
+import { DefaultButton } from "../../component/button/DefaultButton";
+import reader from "../../assets/imgs/misc/owie.png";
+import { DefaultInput } from "../../component/input/DefaultInput";
+import useDatabase from "../../hook/useDatabase";
+import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 
-export function Login() {
+export function Register() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
+  const [get, post, data_get, data_post] = useDatabase();
+
   const [values, setValues] = useState({
     email: "",
+    academicCode: "",
     password: "",
   });
   const [password, setPassword] = useState(0);
-  const [get, post, data_get, data_post] = useDatabase();
   const [data, setData] = useState(null);
-  const [confirmCode, setConfirmCode] = useState({
-    Confirm: "",
-  });
-  const [dataChange] = useHandleChange(setConfirmCode);
   const [academicYearCode, setAYCode] = useState([]);
 
   useEffect(() => {
     data_get("current-academic-year-code", setAYCode);
   }, []);
 
-  // useEffect(() => {
-  //   console.log(values);
-  // }, [values]);
-
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
-  //get the data from server, if the server response if success -- login
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevents normal function of onsubmit in forms
     try {
@@ -48,26 +41,34 @@ export function Login() {
         method: "POST",
         body: JSON.stringify(values),
       });
-      const data = await response.json();
+      const entry = await response.json();
       try {
-        setData(data);
-        if (data.Status === "Success") {
-          //check if account is existing first
-          if (data.data.AcademicCode === academicYearCode.AcademicCode) {
-            //test wether if that account has academic code
-            sessionStorage.setItem("user", JSON.stringify(data.data));
+        setData(entry);
+        if (entry.Status === "Success") {
+          if (values.academicCode === academicYearCode.AcademicCode) {
+            data_post(
+              "user-registry",
+              {
+                SchoolID: entry.data.SCHLID,
+                AcademicCode: values.academicCode,
+              },
+              setData
+            );
+            sessionStorage.setItem("user", JSON.stringify(entry.data));
             sessionStorage.setItem("loggedin", true);
-            navigate("/");
+            navigate("/"); //to dashboard
+            //alert("Succcess");
           } else {
-            navigate("/register");
+            alert("A problem occurred");
           }
         } else {
-          alert(data.Status === undefined ? "A problem occurred" : data.Status);
+          alert("A problem occurred");
         }
       } catch (error) {}
     } catch (error) {}
   };
 
+  //2SIMTbL
   return (
     <>
       <main className="vh-100 d-block d-lg-none">
@@ -79,7 +80,7 @@ export function Login() {
                 type="button"
                 text="Back"
                 icon={info.icons.navigation.back}
-                function={() => navigate("/")}
+                function={() => navigate(-1)}
               />
             </div>
           </section>
@@ -93,7 +94,7 @@ export function Login() {
                     alt="..."
                   ></img>
                 </div>
-                <h1 className="fw-bold text-center mb-5">Login</h1>
+                <h1 className="fw-bold text-center mb-5">Re-Register Code</h1>
                 <div className="w-100">
                   <div className="w-100 px-lg-3">
                     <DefaultInput
@@ -103,6 +104,15 @@ export function Login() {
                         setValues({ ...values, email: e.target.value })
                       }
                       name={"Email"}
+                      required
+                    />
+                    <DefaultInput
+                      class="bg-light p-2 mb-3"
+                      placeholder="Academic Code"
+                      trigger={(e) =>
+                        setValues({ ...values, academicCode: e.target.value })
+                      }
+                      name={"Academic Code"}
                       required
                     />
                     <main className="d-flex bg-white rounded">
@@ -126,9 +136,9 @@ export function Login() {
                       />
                     </main>
                     <DefaultButton
-                      class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-3 rounded-pill"
+                      class="w-100 gradient-background-2 fw-bold text-dark mt-5 mb-3 py-3 px-5"
                       type="submit"
-                      text="Login"
+                      text={<h6 className="m-0">Login</h6>}
                     />
                   </div>
                 </div>
@@ -162,7 +172,7 @@ export function Login() {
                           type="button"
                           text="Back"
                           icon={info.icons.navigation.back}
-                          function={() => navigate("/")}
+                          function={() => navigate(-1)}
                         />
                       </div>
                     </section>
@@ -174,7 +184,7 @@ export function Login() {
                       ></img>
                     </div>
                     <div className="w-100 px-lg-3">
-                      <h3 className="fw-bold">Login</h3>
+                      <h3 className="fw-bold">Re-Register Code</h3>
                       <div className="w-100">
                         <DefaultInput
                           class="bg-light p-2 mb-3"
@@ -183,6 +193,18 @@ export function Login() {
                             setValues({ ...values, email: e.target.value })
                           }
                           name={"Email"}
+                          required
+                        />
+                        <DefaultInput
+                          class="bg-light p-2 mb-3"
+                          placeholder="Academic Code"
+                          trigger={(e) =>
+                            setValues({
+                              ...values,
+                              academicCode: e.target.value,
+                            })
+                          }
+                          name={"Academic Code"}
                           required
                         />
                         <main className="d-flex bg-white rounded">

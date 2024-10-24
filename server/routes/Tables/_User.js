@@ -90,6 +90,27 @@ router.post("/coach-status-update", (req, res) => {
   }
 });
 
+router.post("/user-registry", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.SchoolID;
+    var code = clientData.AcademicCode;
+    pool.query(
+      `UPDATE _user SET "AcademicCode"='${code}' WHERE "SCHLID"='${id}' AND "UUI_Status"='ACTIVE'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows[0]);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/student-section-edit", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);

@@ -10,7 +10,7 @@ export class PassiveModal extends React.Component {
         className="modal fade"
         id={this.props.id}
         tabIndex="-1"
-        data-bs-backdrop="static"
+        //data-bs-backdrop="static"
       >
         <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div className="modal-content">

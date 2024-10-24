@@ -3,7 +3,7 @@ import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceT
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { DefaultInput } from "../../../component/input/DefaultInput";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import useConfiguration from "../../../hook/useConfiguration";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
@@ -12,6 +12,7 @@ import { ViewModal } from "../../../component/modal/ViewModal";
 import { RoomCard } from "../../../component/card/RoomCard";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
+import { TextFormat2 } from "../../../component/textformat/TextFormat2";
 
 const supabase = createClient(
   "https://pgcztzkowuxixfyiqera.supabase.co",
@@ -36,6 +37,7 @@ export function Locator() {
     "Friday",
     "Saturday",
   ];
+  const [test, setTest] = useState([]);
   const [department, setDepartment] = useState([]);
   const [coaches, setCoaches] = useState([]);
   const [schedules, setSchedules] = useState([]);
@@ -66,6 +68,8 @@ export function Locator() {
     }, 1000);
   }, []);
 
+  const resetStatus = (status) => {};
+
   function checkClassStatus(coach) {
     for (var i = 0; i < schedules.length; i++) {
       if (schedules[i].Day === days[daytoday.getDay()]) {
@@ -75,12 +79,22 @@ export function Locator() {
           daytoday.getHours() * 60 + daytoday.getMinutes() <
             schedules[i].EndTime
         ) {
-          if (schedules[i].Coach === coach) {
+          if (schedules[i].SCHLID === coach) {
+            data_post(
+              "coach-status-update",
+              { id: coach, status: "ONGOING", description: "" },
+              setTest
+            );
             return "On Going";
           }
         }
       }
     }
+    data_post(
+      "coach-status-update",
+      { id: coach, status: "NOTINCLASS", description: "" },
+      setTest
+    );
     return "No Class";
   }
 
@@ -110,25 +124,25 @@ export function Locator() {
     <>
       <FileMaintainanceTemplate
         sidepanel={
-          <main className="h-100 p-1 d-flex flex-column justify-content-between">
+          <main className="h-100 d-flex flex-column justify-content-between">
             <main>
               <section>
                 {schedules.length > 0
                   ? schedules.map((schedule, i) =>
-                      schedule.Coach === currcoach ? (
+                      schedule.SCHLID === currcoach ? (
                         schedule.StartTime <
                           daytoday.getHours() * 60 + daytoday.getMinutes() &&
                         daytoday.getHours() * 60 + daytoday.getMinutes() <
                           schedule.EndTime ? (
                           schedule.Day === days[daytoday.getDay()] ? (
-                            <main className="border rounded p-3">
+                            <main className="border rounded p-2">
                               <header>
                                 <h6 className="fw-bold text-success">
                                   ON GOING
                                 </h6>
                               </header>
                               <main>
-                                <section className="px-3">
+                                <section className="px-2">
                                   <section className="m-0 p-0">
                                     <h6>{" ".concat(schedule.Coach)}</h6>
                                     <h5>
@@ -438,8 +452,20 @@ export function Locator() {
           <main className="p-3">
             <header>
               <section className="m-0 p-0">
-                <h6>{" ".concat(selcoach.SCHLID)}</h6>
                 <h5>{` ${selcoach.LastName}, ${selcoach.FirstName}`}</h5>
+                <main>
+                  <TextFormat2 header="School ID" data={selcoach.SCHLID} />
+                  <TextFormat2 header="Department" data={selcoach.Department} />
+                  <TextFormat2 header="Email" data={selcoach.Email} />
+                  <TextFormat2
+                    header="Link"
+                    data={
+                      <Link to={selcoach.Link} target="_blank">
+                        {selcoach.Link}
+                      </Link>
+                    }
+                  />
+                </main>
               </section>
               <hr />
             </header>

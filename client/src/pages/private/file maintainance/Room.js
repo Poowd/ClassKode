@@ -100,8 +100,9 @@ export function Room() {
       control={
         <>
           <DefaultButton
-            class=""
-            icon={info.icons.navigation.back}
+                class="px-2"
+                icon={info.icons.navigation.back}
+                text="Back"
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
@@ -242,9 +243,9 @@ export function Room() {
                       <ListCard
                         slot1={item.ROMID}
                         slot2={item.Room}
-                        slot3={item.Created}
+                        slot3={`${item.Building} - ${item.Floor}`}
                         slot4={item.Facility}
-                        slot5={`${item.Building} - ${item.Floor}`}
+                        slot5={null}
                         view={info.icons.forms.view}
                         link={`/room/view/${item.ROMID}`}
                         state={{ data: item }}

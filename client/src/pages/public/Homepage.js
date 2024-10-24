@@ -1,6 +1,6 @@
 import "../../App.css";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../css/CustomColours.css";
 import logo from "../../../src/assets/imgs/logo/ClassKode Logo (3).png";
 import mainlogo from "../../../src/assets/imgs/logo/ClassKode Logo (1).png";
@@ -11,6 +11,7 @@ import { DefaultButton } from "../../component/button/DefaultButton";
 import reader from "../../assets/imgs/misc/owie.png";
 
 export function Homepage() {
+  const navigate = useNavigate();
   const [info] = useConfiguration();
   return (
     <main className="h-100 overflow-y-auto my-0 py-0 position-relative">
@@ -135,13 +136,15 @@ export function Homepage() {
                   type="button"
                   text={<h6 className="m-0">Login</h6>}
                   icon={info.icons.navigation.back}
-                  toggle="offcanvas"
-                  target="#offcanvasExample"
-                  function={() => {}}
+                  //toggle="offcanvas"
+                  //target="#offcanvasExample"
+                  function={() => {
+                    navigate("/login");
+                  }}
                 />
 
                 {/* Off Canvas */}
-                <div
+                {/* <div
                   class="offcanvas offcanvas-end login-off-canvas gradient-background-1"
                   tabindex="-1"
                   id="offcanvasExample"
@@ -160,7 +163,7 @@ export function Homepage() {
                   <div class="offcanvas-body">
                     <LoginCanvas />
                   </div>
-                </div>
+                </div> */}
                 {/* Off Canvas */}
               </section>
             </main>

@@ -15,6 +15,7 @@ const Component = require("./routes/Tables/Additional/Component.js");
 const CoachType = require("./routes/Tables/Additional/CoachType.js");
 const WeeklyEvent = require("./routes/Tables/Additional/WeeklyEvent.js");
 const ExpectedClass = require("./routes/Tables/Additional/ExpectedClass.js");
+const Logs = require("./routes/Tables/Additional/Logs.js");
 
 const Department = require("./routes/Tables/Department.js");
 const Program = require("./routes/Tables/Program.js");
@@ -114,6 +115,7 @@ router.use("/", Component);
 router.use("/", CoachType);
 router.use("/", WeeklyEvent);
 router.use("/", ExpectedClass);
+router.use("/", Logs);
 
 // = = >
 app.listen(8081, () => {

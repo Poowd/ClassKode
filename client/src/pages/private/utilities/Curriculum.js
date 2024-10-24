@@ -64,8 +64,9 @@ export function Curriculum() {
             <div className="w-100">
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
-                  class=""
+                  class="px-2"
                   icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />{" "}
                 <DefaultInput
@@ -115,9 +116,9 @@ export function Curriculum() {
                         key={i}
                         slot1={item.Code}
                         slot2={item.Curriculum}
-                        slot3={item.Created}
+                        slot3={"..."}
                         slot4={item.Status}
-                        slot5={"n/a"}
+                        slot5={null}
                         view={info.icons.others.package}
                         link={
                           currentcurriculum.Code === item.Code

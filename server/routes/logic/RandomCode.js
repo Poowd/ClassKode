@@ -19,4 +19,17 @@ router.get("/random-code-generator", (req, res) => {
 
   return res.json(result);
 });
+
+router.get("/academic-code-generator", (req, res) => {
+  let result = "";
+  const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const charactersLength = characters.length;
+
+  for (var i = 0; i < 7; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return res.json(result);
+});
+
 module.exports = router;

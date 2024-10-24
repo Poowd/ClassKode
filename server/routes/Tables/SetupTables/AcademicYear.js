@@ -66,6 +66,18 @@ router.get("/current-academic-year", (req, res) => {
   }
 });
 
+router.get("/current-academic-year-code", (req, res) => {
+  try {
+    pool.query(
+      `SELECT * FROM academic_code WHERE "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      (err, rslt) => res.json(rslt.rows[0])
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/academic-year-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
@@ -80,6 +92,28 @@ router.post("/academic-year-insert", (req, res) => {
     pool.query(
       `INSERT INTO academic_year ("ACYID", "Code", "AcademicYear", "Curriculum", "Semester", "StartDate", "EndDate", "Description")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from academic_year), '${code}', '${academicyear}', '${curriculum}', '${semester}', '${startdate}', '${enddate}', '${description}')`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json({ Status: "Success", data: clientData });
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/academic-year-code-insert", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var code = clientData.Code;
+    var academiccode = clientData.AcademicCode;
+    pool.query(
+      `INSERT INTO academic_code ("AcademicYear", "AcademicCode") VALUES ('${code}', '${academiccode}')`,
 
       (err, rslt) => {
         if (err) {

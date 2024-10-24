@@ -1,6 +1,6 @@
 import "../../App.css";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import "../../css/CustomColours.css";
@@ -8,6 +8,8 @@ import { DefaultInput } from "../../component/input/DefaultInput";
 import { DefaultButton } from "../../component/button/DefaultButton";
 import useDatabase from "../../hook/useDatabase";
 import useConfiguration from "../../hook/useConfiguration";
+import useHandleChange from "../../hook/useHandleChange";
+import { FormInput } from "../../component/input/FormInput";
 
 export function LoginCanvas() {
   const navigate = useNavigate();
@@ -19,6 +21,15 @@ export function LoginCanvas() {
   const [password, setPassword] = useState(0);
   const [get, post, data_get, data_post] = useDatabase();
   const [data, setData] = useState(null);
+  const [confirmCode, setConfirmCode] = useState({
+    Confirm: "",
+  });
+  const [dataChange] = useHandleChange(setConfirmCode);
+  const [academicYearCode, setAYCode] = useState([]);
+
+  useEffect(() => {
+    data_get("current-academic-year-code", setAYCode);
+  }, []);
 
   // useEffect(() => {
   //   console.log(values);
@@ -37,11 +48,16 @@ export function LoginCanvas() {
       const data = await response.json();
       try {
         setData(data);
-        console.log(data);
         if (data.Status === "Success") {
-          sessionStorage.setItem("user", JSON.stringify(data.data));
-          sessionStorage.setItem("loggedin", true);
-          navigate("/"); //to dashboard
+          //check if account is existing first
+          if (data.data.AcademicCode === academicYearCode.AcademicCode) {
+            //test wether if that account has academic code
+            sessionStorage.setItem("user", JSON.stringify(data.data));
+            sessionStorage.setItem("loggedin", true);
+            navigate("/");
+          } else {
+            navigate("/register");
+          }
         } else {
           alert(data.Status === undefined ? "A problem occurred" : data.Status);
         }
@@ -55,10 +71,10 @@ export function LoginCanvas() {
         <section className="h-100 w-100 p-5 position-relative overflow-y-auto">
           <main className="h-100 w-100 p-2">
             <form onSubmit={handleSubmit} autoComplete="off" className="h-100">
-              <div className="h-100 px-lg-5 rounded d-flex flex-column justify-content-between">
+              <div className="h-100 px-lg-5 rounded d-flex flex-column justify-content-center">
                 <div className="d-flex flex-column align-items-center">
                   <img
-                    className="w-75 drop-shadow-lg px-5 py-0"
+                    className="w-100 drop-shadow-lg px-5 py-0"
                     src={classkodelogo}
                     alt="..."
                   ></img>
@@ -96,20 +112,18 @@ export function LoginCanvas() {
                       />
                     </main>
 
-                    <DefaultButton
-                      class="w-100 gradient-background-2 fw-bold text-dark mt-5 mb-3 py-2 px-5 rounded-pill"
-                      type="submit"
-                      text={<h6 className="m-0">Login</h6>}
-                    />
+                    <main className="d-flex align-items-center gap-2 mt-4">
+                      <DefaultButton
+                        class="gradient-background-2 fw-bold text-dark py-2 px-5"
+                        type="submit"
+                        text={<h6 className="m-0">Login</h6>}
+                      />
+                      <Link to={"/termspolicy"} className="text-light btn">
+                        Forgot Password
+                      </Link>
+                    </main>
                   </div>
                 </div>
-                <p className="w-100 m-0 d-flex gap-3 justify-content-center">
-                  <span>
-                    <Link to={"/termspolicy"} className="text-light">
-                      Forgot Password
-                    </Link>
-                  </span>
-                </p>
               </div>
             </form>
           </main>

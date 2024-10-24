@@ -62,8 +62,9 @@ export function Program() {
       control={
         <>
           <DefaultButton
-            class=""
-            icon={info.icons.navigation.back}
+                class="px-2"
+                icon={info.icons.navigation.back}
+                text="Back"
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />

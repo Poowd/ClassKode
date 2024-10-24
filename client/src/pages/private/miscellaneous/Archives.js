@@ -49,13 +49,13 @@ export function Archives() {
   useEffect(() => {
     data_get("department-list-archived", setDepartment);
     data_get("program-list-archived", setProgram);
-    data_post("arch-crs", course, setCourse);
+    data_get("course-list-archived", setCourse);
     data_get("coach-list-archived", setCoach);
-    data_post("arch-sect", section, setSection);
-    data_post("arch-rom", room, setRoom);
-    data_post("arch-acy", academicyear, setAcademicYear);
-    data_post("arch-curr", curriculum, setCurriculum);
-    data_post("arch-sched", schedule, setSchedule);
+    data_get("section-list-archived", setSection);
+    data_get("room-list-archived", setRoom);
+    data_get("academic-year-list-archived", setAcademicYear);
+    data_get("curriculum-list-archived", setCurriculum);
+    data_get("schedules-list-archived", setSchedule);
   }, [department]);
 
   useEffect(() => {
@@ -80,11 +80,10 @@ export function Archives() {
       <FileMaintainanceTemplate
         sidepanel={
           <>
-            <main>
+            <main className="p-2">
               <section>
                 <header className="">
                   <h5 className="p-0 m-0">{`Sheet Details`}</h5>
-                  <p>{``}</p>
                 </header>
                 <main className="mt-2">
                   <small>
@@ -103,6 +102,30 @@ export function Archives() {
                         <section>{`${program.length}`}</section>
                       </main>
                     </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Course`}</section>
+                        <section>{`${course.length}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Coach`}</section>
+                        <section>{`${coach.length}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Section`}</section>
+                        <section>{`${section.length}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Room`}</section>
+                        <section>{`${room.length}`}</section>
+                      </main>
+                    </li>
                   </ul>
                 </main>
               </section>
@@ -112,19 +135,20 @@ export function Archives() {
         control={
           <>
             <DefaultButton
-              class=""
-              icon={<MdArrowBackIosNew />}
+              class="px-2"
+              icon={info.icons.navigation.back}
+              text="Back"
               function={() => navigate(-1)}
             />
             <DefaultInput placeholder="Search" />
             <DefaultDropdown
               class="border px-2 btn-primary"
               reversed={true}
-              icon={<FaFilter />}
+              icon={info.icons.forms.filter}
               text={selection}
               dropdownitems={
                 <>
-                  <main className="p-3 d-flex">
+                  <main className="p-2 d-flex">
                     <section className="p-3">
                       <h6>Institution</h6>
                       {category.institution.map((item, i) => (
@@ -155,9 +179,9 @@ export function Archives() {
                 <ListCard
                   slot1={department.Code}
                   slot2={department.Department}
-                  slot3={department.Created}
-                  slot4={department.Abbrev}
-                  slot5={department.Status}
+                  slot3={department.Abbrev}
+                  slot4={null}
+                  slot5={department.AcademicLevel}
                   link={null}
                   state={null}
                   custom={
@@ -181,13 +205,13 @@ export function Archives() {
                 />
               ))
             : selection === "Program"
-            ? program.map((prog, i) => (
+            ? program.map((program, i) => (
                 <ListCard
-                  slot1={prog.Code}
-                  slot2={prog.Program}
-                  slot3={prog.Created}
-                  slot4={prog.Abbrev}
-                  slot5={prog.Status}
+                  slot1={program.Code}
+                  slot2={program.Program}
+                  slot3={program.Abbrev}
+                  slot4={null}
+                  slot5={null}
                   link={null}
                   state={null}
                   custom={
@@ -197,13 +221,13 @@ export function Archives() {
                       function={() => {
                         data_post(
                           "program/restore",
-                          { data: prog.PRGID },
+                          { data: program.PRGID },
                           setData
                         );
                         showToast(
                           info.icons.others.info,
                           "Program",
-                          `Program ${prog.Program} is set to active!`
+                          `Program ${program.Program} is set to active!`
                         );
                       }}
                     />
@@ -211,13 +235,13 @@ export function Archives() {
                 />
               ))
             : selection === "Course"
-            ? course.map((cors, i) => (
+            ? course.map((course, i) => (
                 <ListCard
-                  slot1={cors.CRS_Code}
-                  slot2={cors.Course}
-                  slot3={cors.CRS_Created}
-                  slot4={cors.Program}
-                  slot5={cors.AcademicLevel}
+                  slot1={course.Code}
+                  slot2={course.Course}
+                  slot3={course.Department}
+                  slot4={null}
+                  slot5={course.Status}
                   link={null}
                   state={null}
                   custom={
@@ -225,11 +249,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-crs", { CRSID: cors.CRSID }, setData);
+                        data_post("res-crs", { CRSID: course.CRSID }, setData);
                         showToast(
                           info.icons.others.info,
                           "Course",
-                          `Course ${cors.Course} is set to active!`
+                          `Course ${course.Course} is set to active!`
                         );
                       }}
                     />
@@ -241,13 +265,13 @@ export function Archives() {
                 <ListCard
                   slot1={coach.SCHLID}
                   slot2={`${coach.FirstName} ${
-                    coach.MiddleInitial !== null
+                    coach.MiddleInitial !== (null || "")
                       ? " " + coach.MiddleInitial + ". "
                       : " "
                   } ${coach.LastName}`}
-                  slot3={coach.Created}
+                  slot3={coach.Email}
                   slot4={coach.Department}
-                  slot5={coach.Email}
+                  slot5={null}
                   link={null}
                   state={null}
                   custom={
@@ -275,13 +299,13 @@ export function Archives() {
                 />
               ))
             : selection === "Section"
-            ? section.map((sect, i) => (
+            ? section.map((section, i) => (
                 <ListCard
-                  slot1={sect.SCTID}
-                  slot2={sect.Section}
-                  slot3={sect.SCT_Created}
-                  slot4={sect.AcademicLevel}
-                  slot5={`${sect.YearLevel} - ${sect.Semester}`}
+                  slot1={section.SCTID}
+                  slot2={section.Section}
+                  slot3={section.Program}
+                  slot4={section.YearLevel}
+                  slot5={section.Semester}
                   link={null}
                   state={null}
                   custom={
@@ -289,11 +313,15 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-sect", { SCTID: sect.SCTID }, setData);
+                        data_post(
+                          "res-sect",
+                          { SCTID: section.SCTID },
+                          setData
+                        );
                         showToast(
                           info.icons.others.info,
                           "Section",
-                          `Section ${sect.Section} is set to active!`
+                          `Section ${section.Section} is set to active!`
                         );
                       }}
                     />
@@ -301,13 +329,13 @@ export function Archives() {
                 />
               ))
             : selection === "Room"
-            ? room.map((rom, i) => (
+            ? room.map((room, i) => (
                 <ListCard
-                  slot1={rom.ROMID}
-                  slot2={rom.Room}
-                  slot3={rom.ROM_Created}
-                  slot4={rom.Facility}
-                  slot5={`${rom.Building} - ${rom.Floor}`}
+                  slot1={room.ROMID}
+                  slot2={room.Room}
+                  slot3={`${room.Building} - ${room.Floor}`}
+                  slot4={room.Facility}
+                  slot5={null}
                   link={null}
                   state={null}
                   custom={
@@ -315,11 +343,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-rom", { ROMID: rom.ROMID }, setData);
+                        data_post("res-rom", { ROMID: room.ROMID }, setData);
                         showToast(
                           info.icons.others.info,
                           "Room",
-                          `Room ${rom.Room} is set to active!`
+                          `Room ${room.Room} is set to active!`
                         );
                       }}
                     />

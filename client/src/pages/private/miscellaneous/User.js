@@ -65,9 +65,11 @@ export function User() {
           <ListCard
             slot1={item.SCHLID}
             slot2={`${item.FirstName} ${item.LastName}`}
-            slot3={item.Created}
-            slot4={`${item.UserType} : ${item.PermissionLevel}`}
-            slot5={item.Email}
+            slot3={item.Email}
+            slot4={`${item.UserType} ${item.PermissionLevel}`}
+            slot5={
+              item.AcademicCode !== null ? item.AcademicCode : "Not Registered"
+            }
             view={info.icons.details}
             link={null}
             state={null}

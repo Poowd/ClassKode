@@ -104,8 +104,9 @@ export function CourseSetup() {
           <div className="w-100">
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
-                class=""
+                class="px-2"
                 icon={info.icons.navigation.back}
+                text="Back"
                 function={() => navigate(-1)}
               />{" "}
               <DefaultInput
@@ -215,9 +216,9 @@ export function CourseSetup() {
                     <ListCard
                       slot1={item.Component}
                       slot2={item.Course}
-                      slot3={item.Created}
+                      slot3={item.Program}
                       slot4={item.Curriculum}
-                      slot5={item.Program}
+                      slot5={null}
                       view={info.icons.forms.view}
                       link={`/course/view/${item.Course}`}
                       state={{ data: item }}

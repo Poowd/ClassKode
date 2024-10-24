@@ -91,6 +91,10 @@ export function CreateSchedule() {
     data_get("class-schedule-list", setSchedules);
   }, [curriculum]);
 
+  useEffect(() => {
+    setData((prev) => ({ ...prev, EndTime: +data.StartTime + data.Units * 60 }));
+  }, [data.StartTime, data.Units]);
+
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {

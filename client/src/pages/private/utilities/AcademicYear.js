@@ -15,23 +15,11 @@ export function AcademicYear() {
 
   const [ay, setAY] = useState([]);
   const [curray, setCurrAY] = useState([]);
-  const [current, setCurrent] = useState([]);
-
-  const [totalcoach, setTotalCoach] = useState(0);
-  const [totalparttime, setTotalParttime] = useState(0);
-  const [totalfulltime, setTotalFulltime] = useState(0);
-  const [totalsection, setTotalSection] = useState(0);
 
   useEffect(() => {
     data_get("academic-year-list", setAY);
     data_get("current-academic-year", setCurrAY);
-  }, [ay, curray]);
-
-  useEffect(() => {}, []);
-
-  // useEffect(() => {
-  //   curray.map((ay, i) => setCurrent(ay));
-  // }, [curray]);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
@@ -44,16 +32,13 @@ export function AcademicYear() {
               class="btn-primary py-2"
               textclass="text-white"
               to={`/academic-year/view/${curray.ACYID}`}
-              state={{ data: current }}
+              state={[]}
               text={`Current Academic Year`}
               icon={info.icons.forms.view}
             />
           </header>
           <section>
-            <section>
-              <h6></h6>
-              <ul className="list-group list-group-flush"></ul>
-            </section>
+            <section></section>
           </section>
         </main>
       }
@@ -62,8 +47,9 @@ export function AcademicYear() {
           <div className="w-100">
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
-                class=""
+                class="px-2"
                 icon={info.icons.navigation.back}
+                text="Back"
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -83,9 +69,9 @@ export function AcademicYear() {
               <ListCard
                 slot1={item.Code}
                 slot2={item.AcademicYear}
-                slot3={item.Created}
-                slot4={item.Code}
-                slot5={`${item.StartDate} : ${item.EndDate}`}
+                slot3={item.Code}
+                slot4={`${item.StartDate} - ${item.EndDate}`}
+                slot5={null}
                 link={null}
                 state={null}
                 custom={
@@ -110,7 +96,7 @@ export function AcademicYear() {
                 }
               />
             ))
-          : "none"
+          : ""
       }
     />
   );

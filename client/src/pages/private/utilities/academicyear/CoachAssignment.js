@@ -58,8 +58,9 @@ export function CoachAssignment() {
           <div className="w-100">
             <div className="d-flex gap-2 justify-content-end">
               <DefaultButton
-                class=""
+                class="px-2"
                 icon={info.icons.navigation.back}
+                text="Back"
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
@@ -84,9 +85,9 @@ export function CoachAssignment() {
               key={i}
               slot1={item.CoachType}
               slot2={item.LastName}
-              slot3={item.Created}
+              slot3={`${item.MAX} units`}
               slot4={item.AcademicYear}
-              slot5={`${item.MAX} units`}
+              slot5={null}
               view={info.icons.forms.view}
               link={`/coach/view/${item.SCHLID}`}
               state={{ data: item }}

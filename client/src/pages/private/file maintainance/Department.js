@@ -63,8 +63,9 @@ export function Department() {
       control={
         <>
           <DefaultButton
-            class=""
+            class="px-2"
             icon={info.icons.navigation.back}
+            text="Back"
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />

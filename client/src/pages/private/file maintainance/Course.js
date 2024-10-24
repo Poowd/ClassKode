@@ -60,8 +60,9 @@ export function Course() {
       control={
         <>
           <DefaultButton
-            class=""
-            icon={info.icons.navigation.back}
+                class="px-2"
+                icon={info.icons.navigation.back}
+                text="Back"
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />
@@ -150,13 +151,13 @@ export function Course() {
                     key={i}
                     slot1={item.Code}
                     slot2={item.Course}
-                    slot3={item.Created}
-                    slot4={
+                    slot3={
                       department &&
                       department.map((dept) =>
                         dept.Code === item.Department ? dept.Department : null
                       )
                     }
+                    slot4={null}
                     slot5={item.Status}
                     view={info.icons.forms.view}
                     link={`/course/view/${item.CRSID}`}

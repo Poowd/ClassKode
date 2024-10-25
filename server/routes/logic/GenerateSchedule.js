@@ -301,4 +301,91 @@ router.post("/gen-class", (req, res) => {
   return res.json(class_schedules);
 });
 
+router.post("/gen-exam", (req, res) => {
+  const clientData = JSON.parse(req.body);
+
+  var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const times = [420, 510, 600, 690, 780, 870, 960, 1050, 1140];
+
+  var schedules = [];
+  var tertiary = [];
+  var shs = [];
+  var TertiaryRoom = [];
+  var SHSRoom = [];
+
+  clientData.schedule.map((data, i) => {
+    schedules.push(data);
+  });
+  clientData.room.map((data, i) => {
+    if (data.Facility.includes("Lecture")) {
+      TertiaryRoom.push({
+        Room: data.Room,
+        Exams: [],
+      });
+      SHSRoom.push({
+        Room: data.Room,
+        Exams: [],
+      });
+    }
+  });
+
+  console.log(schedules.length);
+
+  const GenerateSchedule = {
+    Phases: {
+      getRoomList: function () {
+        rooms.forEach((rom) => {
+          if (rom.Facility.includes("Lecture")) {
+            setAvailRoom((prev) => [
+              ...prev,
+              { Room: rom.Room, ExamUnits: 0, Exams: [] },
+            ]);
+          }
+        });
+      },
+      separateLevels: function () {
+        schedules.forEach((schedule) => {
+          if (schedule.AcademicLevel === "Tertiary") {
+            tertiary.push(schedule);
+          } else {
+            shs.push(schedule);
+          }
+        });
+      },
+      generateExam1: function () {
+        tertiary.forEach((item) => {
+          forExam1(item);
+        });
+      },
+      generateExam2: function () {
+        shs.forEach((item) => {
+          forExam2(item);
+        });
+      },
+    },
+  };
+
+  function forExam1(data) {
+    for (var i = 0; i < TertiaryRoom.length; i++) {
+      if (TertiaryRoom[i].Exams.length < 9) {
+        return TertiaryRoom[i].Exams.push(data);
+      }
+    }
+  }
+
+  function forExam2(data) {
+    for (var i = 0; i < SHSRoom.length; i++) {
+      if (SHSRoom[i].Exams.length < 9) {
+        return SHSRoom[i].Exams.push(data);
+      }
+    }
+  }
+
+  GenerateSchedule.Phases.separateLevels();
+  GenerateSchedule.Phases.generateExam1();
+  GenerateSchedule.Phases.generateExam2();
+
+  return res.json(TertiaryRoom);
+});
+
 module.exports = router;

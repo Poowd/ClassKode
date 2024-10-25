@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import "../Map.css";
 import useDatabase from "../../../../hook/useDatabase";
-import { MdArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import { DefaultInput } from "../../../../component/input/DefaultInput";

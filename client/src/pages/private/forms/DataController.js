@@ -41,6 +41,7 @@ import { GenerateUsers } from "./generate/GenerateUsers";
 import { ViewSetup } from "./view/ViewSetup";
 import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
+import { GenerateExaminations } from "./generate/GenerateExaminations";
 export function DataController() {
   const params = useParams();
 
@@ -172,6 +173,19 @@ export function DataController() {
               <h1>temp view</h1>
             ) : params.form === "generate" ? (
               <GenerateSchedule />
+            ) : params.form === "edit" ? (
+              <h1>temp edit</h1>
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "examinations" ? (
+            params.form === "create" ? (
+              <CreateSchedule />
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "generate" ? (
+              <GenerateExaminations />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

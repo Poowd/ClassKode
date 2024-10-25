@@ -86,7 +86,7 @@ STYLE FOCUSED - GRADIENT
 }
 
 .hover-darken:hover {
-  background-color: #fff487 !important;
+  background-color: #fdf5ae !important;
 }
 
 @media screen and (max-width: 720px) {

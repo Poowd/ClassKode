@@ -35,7 +35,7 @@ a {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 8px;
   height: 2px;
 }
 /* Track */

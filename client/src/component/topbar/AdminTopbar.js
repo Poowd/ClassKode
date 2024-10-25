@@ -174,7 +174,7 @@ export function AdminTopbar() {
                           />
                           <SidebarItem
                             icon={info.icons.modules.schedules}
-                            navigate={"/utilities/schedule"}
+                            navigate={"/utilities/examinations"}
                             text={"Examination Schedules"}
                           />
                         </>

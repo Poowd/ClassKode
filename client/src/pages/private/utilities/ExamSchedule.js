@@ -11,7 +11,7 @@ import useTimeFormat from "../../../hook/useTimeFormat";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import useConfiguration from "../../../hook/useConfiguration";
 
-export function Schedule() {
+export function ExamSchedule() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
@@ -59,13 +59,13 @@ export function Schedule() {
                     </>
                   }
                 />
-                <Link to={"/schedule/generate/0"}>
+                <Link to={"/examinations/generate/0"}>
                   <DefaultButton
                     class="btn-primary"
                     icon={info.icons.forms.generate}
                   />
                 </Link>
-                <Link to={"/schedule/create/0"}>
+                <Link to={"/examinations/create/0"}>
                   <DefaultButton
                     class="btn-primary"
                     icon={info.icons.forms.add}

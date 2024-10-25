@@ -223,25 +223,6 @@ export function GenerateSchedule() {
             <tbody>
               {schedule.length > 0
                 ? schedule.map((sc, i) => (
-                    // <ScheduleList
-                    //   class={sc.CONFLICT === true ? "bg-warning" : "bg-white"}
-                    //   key={i}
-                    //   slot1={sc.SCT}
-                    //   slot2={sc.CRS}
-                    //   slot3={
-                    //     sc.DAY +
-                    //     " : " +
-                    //     convertMinutes(sc.STR_TME) +
-                    //     " - " +
-                    //     convertMinutes(sc.END_TME)
-                    //   }
-                    //   slot4={sc.ROM + " " + sc.PPL + "/" + sc.CPC}
-                    //   slot5={sc.CCH}
-                    //   slot6={sc.CPT + " ( " + sc.UNT + " )"}
-                    //   link={null}
-                    //   state={null}
-                    //   custom={null}
-                    // />
                     <tr key={i}>
                       <td className="py-3">{sc.CRS_CODE}</td>
                       <td className="text-start py-3">{sc.CRS}</td>

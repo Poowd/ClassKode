@@ -42,6 +42,7 @@ import { StudentSchedule } from "./pages/private/user view/StudentSchedule";
 import { CoachViewSchedule } from "./pages/private/user view/CoachViewSchedule";
 import useDatabase from "./hook/useDatabase";
 import { Register } from "./pages/public/Register";
+import { ExamSchedule } from "./pages/private/utilities/ExamSchedule";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -145,6 +146,10 @@ function App() {
                               path={"/utilities/academicyear/projection"}
                               element={<SectionProjection />}
                             ></Route>
+                          </Route>
+
+                          <Route path={"/utilities/examinations"}>
+                            <Route index element={<ExamSchedule />}></Route>
                           </Route>
 
                           <Route path={"/utilities/schedule"}>
@@ -257,6 +262,9 @@ function App() {
                                   path={"/utilities/academicyear/projection"}
                                   element={<SectionProjection />}
                                 ></Route>
+                              </Route>
+                              <Route path={"/utilities/examinations"}>
+                                <Route index element={<ExamSchedule />}></Route>
                               </Route>
                               <Route path={"/utilities/schedule"}>
                                 <Route index element={<Schedule />}></Route>

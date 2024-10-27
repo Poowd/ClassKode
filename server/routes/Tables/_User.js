@@ -154,6 +154,65 @@ router.post("/student-section-add", (req, res) => {
   }
 });
 
+router.post("/user-target", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `SELECT * FROM _user WHERE "UUID"='${id}' OR "SCHLID"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows[0]);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/user-edit", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.UUID;
+    var schoolid = clientData.SCHLID;
+    var first = clientData.FirstName;
+    var last = clientData.LastName;
+    var email = clientData.Email;
+    var pass = clientData.Password;
+    var type = clientData.UserType;
+    var level = clientData.PermissionLevel;
+    pool.query(
+      `UPDATE _user 
+
+      SET 
+      "SCHLID"='${schoolid}', 
+      "FirstName"='${first}', 
+      "LastName"='${last}', 
+      "Email"='${email}', 
+      "Password"='${pass}', 
+      "UserType"='${type}',
+      "PermissionLevel"='${level}' 
+      
+      WHERE "UUID"='${id}'`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 const saltRounds = 10;
 router.post("/user-generate", (req, res) => {
   const clientData = JSON.parse(req.body);

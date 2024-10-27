@@ -213,7 +213,7 @@ export function Locator() {
                 ) : null}
               </section>
             </main>
-            <main className="border rounded py-1 px-2 text-secondary">
+            <main className="border rounded py-1 px-2 text-secondary mt-3">
               <small className="d-flex align-items-center gap-2">
                 {info.icons.pages.utilities.schedule}
                 <span>{`${days[daytoday.getDay()]} - ${time} ${

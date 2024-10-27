@@ -93,4 +93,11 @@ STYLE FOCUSED - GRADIENT
   .login-off-canvas {
     width: 100% !important;
   }
+  .height-auto {
+    height: auto !important;
+  }
+  .column-flex {
+    display: flex;
+    flex-direction: column !important;
+  }
 }

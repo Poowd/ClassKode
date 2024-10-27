@@ -48,6 +48,7 @@ export function Archives() {
   });
 
   useEffect(() => {
+    data_get("archive-count", setArchiveCount);
     data_get("department-list-archived", setDepartment);
     data_get("program-list-archived", setProgram);
     data_get("course-list-archived", setCourse);
@@ -57,7 +58,6 @@ export function Archives() {
     data_get("academic-year-list-archived", setAcademicYear);
     data_get("curriculum-list-archived", setCurriculum);
     data_get("schedules-list-archived", setSchedule);
-    data_get("archive-count", setArchiveCount);
   }, [department]);
 
   useEffect(() => {

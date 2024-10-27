@@ -9,6 +9,7 @@ import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceT
 import { useNavigate } from "react-router-dom";
 import { ListCard } from "../../../component/card/ListCard";
 import useConfiguration from "../../../hook/useConfiguration";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function User() {
   const navigate = useNavigate();
@@ -50,12 +51,11 @@ export function User() {
               navigate("/user/generate/0");
             }}
           />
-          <DefaultButton
+          <LinkButton
+            to={"/user/create/0"}
             class="btn-primary"
+            textclass="text-white"
             icon={info.icons.forms.add}
-            function={() => {
-              navigate("");
-            }}
           />
         </>
       }
@@ -73,6 +73,16 @@ export function User() {
             view={info.icons.details}
             link={null}
             state={null}
+            custom={
+              <>
+                <LinkButton
+                  to={`/user/edit/${item.UUID}`}
+                  class="btn-warning"
+                  textclass=""
+                  icon={info.icons.forms.edit}
+                />
+              </>
+            }
           />
         ))
       }

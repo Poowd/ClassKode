@@ -90,8 +90,8 @@ export function SectionSchedule() {
   }
 
   return (
-    <main className="h-100 row m-0 p-2">
-      <section className="col-9 h-100 p-0 m-0 pe-2 overflow-y-auto">
+    <main className="h-100 w-100 row m-0 p-2">
+      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -172,7 +172,7 @@ export function SectionSchedule() {
           </main>
         </main>
       </section>
-      <section className="col-3 h-100 p-0 ps-2 m-0">
+      <section className="col-lg-3 h-100 p-0 ps-2 m-0 height-auto">
         <main className="h-100 overflow-y-auto px-1">
           <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
             <div className="d-flex justify-content-between gap-2">

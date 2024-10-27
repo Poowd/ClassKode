@@ -77,7 +77,7 @@ export function RoomSchedule() {
 
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-8 h-100 p-0 m-0 pe-2">
+      <section className="col-lg-8 order-2 order-lg-1 h-100 p-0 m-0 pe-2">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -88,7 +88,7 @@ export function RoomSchedule() {
               }}
             />
           </main>
-          <main className="h-100 w-100 p-3">
+          <main className="h-100 w-100 p-3 z-1">
             {location.map((location) =>
               location.Floor === currfloor && location.Building === currbuilding
                 ? location.Map
@@ -106,7 +106,7 @@ export function RoomSchedule() {
           </main>
         </main>
       </section>
-      <section className="col-lg-4 h-100 p-0 ps-2 m-0 border-start">
+      <section className="col-lg-4 order-1 order-lg-2 h-100 p-0 ps-2 m-0 border-start height-auto">
         <main className="h-100 position-relative overflow-y-auto px-1">
           <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
             <div className="d-flex justify-content-between gap-2">
@@ -169,7 +169,10 @@ export function RoomSchedule() {
                   ? schedule &&
                     schedule.map((schedule, i) =>
                       room.Room === schedule.Room ? (
-                        <main key={i} className="p-3 shadow-sm rounded mb-2 hover-darken">
+                        <main
+                          key={i}
+                          className="p-3 shadow-sm rounded mb-2 hover-darken"
+                        >
                           <main className="row m-0 p-0">
                             <section className="col-3 p-0 m-0">
                               <section>

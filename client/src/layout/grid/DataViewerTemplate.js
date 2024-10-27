@@ -4,12 +4,12 @@ export class DataViewerTemplate extends React.Component {
   render() {
     return (
       <main className="row h-100 m-0">
-        <section className="col-lg-3 h-100 p-2">
+        <section className="col-lg-3 h-100 p-2 height-auto">
           <main className="h-100 bg-white rounded shadow-sm p-2">
             {this.props.extradata}
           </main>
         </section>
-        <section className="col-lg-9 p-2 h-100">
+        <section className="col-lg-9 p-2 h-100 height-auto">
           <main className="h-100 position-relative overflow-y-auto">
             <main className="h-100 p-2">
               <main className="">

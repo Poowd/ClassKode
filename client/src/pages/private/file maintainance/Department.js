@@ -40,9 +40,9 @@ export function Department() {
           </header>
           <section>
             <section>
-              <h6>Details</h6>
+              {/*<h6>Details</h6>
               <ul className="list-group list-group-flush">
-                {/* {academiclevel &&
+                 {academiclevel &&
                   academiclevel.map((item, i) => (
                     <li key={i} className="list-group-item">
                       <TextFormat1
@@ -54,8 +54,8 @@ export function Department() {
                         }
                       />
                     </li>
-                  ))} */}
-              </ul>
+                  ))} 
+              </ul>*/}
             </section>
           </section>
         </main>

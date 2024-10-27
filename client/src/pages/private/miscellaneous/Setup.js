@@ -27,8 +27,8 @@ export function Setup() {
 
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-6 p-2 h-100">
-        <main className="h-100 bg-white rounded shadow-sm p-2">
+      <section className="col-lg-6 p-2 h-100 height-auto">
+        <main className="h-100 bg-white rounded shadow-sm p-2 height-auto">
           <section className="h-50 p-2">
             <main className="h-100 bg-white rounded shadow-sm p-2 overflow-y-auto"></main>
           </section>
@@ -65,7 +65,7 @@ export function Setup() {
         </main>
       </section>
       <section className="col-lg-6 p-2 h-100">
-        <main className="h-100 bg-white rounded shadow-sm p-3 overflow-y-auto">
+        <main className="h-100 bg-white rounded shadow-sm p-3 overflow-y-auto height-auto">
           {/* Settings 1 */}
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">

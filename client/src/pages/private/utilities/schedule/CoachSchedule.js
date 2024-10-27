@@ -87,7 +87,7 @@ export function CoachSchedule() {
   }
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto">
+      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -115,7 +115,7 @@ export function CoachSchedule() {
                 <section>
                   <h6>{day}</h6>
                 </section>
-                <section className="w-100 d-flex">
+                <section className="w-100 d-flex height-auto">
                   {time.map((time, j) =>
                     schedule.length > 0
                       ? schedule.map((schedule, k) =>

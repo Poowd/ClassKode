@@ -111,7 +111,15 @@ export function GenerateUsers() {
       <main className="h-100 row m-0 p-0">
         <section className="col-lg-9 h-100 p-1 m-0 overflow-y-auto">
           <main className="p-2 bg-white rounded shadow-sm">
-            <section className="d-flex">
+            <section className="d-flex gap-2">
+              <DefaultButton
+                class="px-2"
+                icon={info.icons.navigation.back}
+                text="Back"
+                function={() => {
+                  navigate(-1);
+                }}
+              />
               <label for="formFile" class="form-label">
                 {sheets && FileUpload}
               </label>
@@ -127,7 +135,7 @@ export function GenerateUsers() {
                 download={`UPLOAD SHEET TEMPLATE ( DO NOT RE-ARRANGE)`}
               >
                 <DefaultButton
-                  class="ms-2 bg-primary text-white"
+                  class="bg-primary text-white"
                   icon={info.icons.others.package}
                   function={() => {
                     showToast(
@@ -139,7 +147,7 @@ export function GenerateUsers() {
                 />
               </a>
               <DefaultButton
-                class="ms-2 bg-primary text-white"
+                class="bg-primary text-white"
                 icon={info.icons.forms.add}
                 function={saveUserData}
                 disabled={file !== null ? false : true}

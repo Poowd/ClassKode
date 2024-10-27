@@ -83,9 +83,6 @@ function App() {
     ) {
       resetStatus("OFFHOURS");
     }
-    if (dateObject.getHours() == 7) {
-      resetStatus("NOTINCLASS");
-    }
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);

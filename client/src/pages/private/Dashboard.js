@@ -13,13 +13,6 @@ export function Dashboard() {
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
-  const [populationperyear, setPopulationPerYear] = useState([]);
-  const [department, setDepartment] = useState([]);
-  const [program, setProgram] = useState([]);
-  const [section, setSection] = useState([]);
-  const [course, setCourse] = useState([]);
-  const [room, setRoom] = useState([]);
-  const [coach, setCoach] = useState([]);
   const [currentacademicyear, setCurrentAcademicYear] = useState([]);
   const [currentcurriculum, setCurrentCurriculum] = useState([]);
   const [schedule, setSchedule] = useState([]);
@@ -27,19 +20,13 @@ export function Dashboard() {
   const [dataEntryCount, setDataEntryCount] = useState([]);
 
   useEffect(() => {
-    data_get("department-list", setDepartment);
-    data_get("program-list", setProgram);
-    data_get("section-list", setSection);
-    data_get("course-list", setCourse);
-    data_get("room-list", setRoom);
-    data_get("coach-list", setCoach);
     data_get("current-academic-year", setCurrentAcademicYear);
     data_get("current-curriculum", setCurrentCurriculum);
     data_get("class-schedule-list", setSchedule);
-    data_get("total-population-check", setPopulationPerYear);
     data_get("project-total-population", setTotalPopulation);
     data_get("data-entry-count", setDataEntryCount);
   }, []);
+
   return (
     <DashboardTemplate
       cardcolor={"gradient-bg-light-blue"}

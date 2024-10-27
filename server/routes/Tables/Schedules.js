@@ -22,6 +22,20 @@ router.get("/class-schedule-list", (req, res) => {
   }
 });
 
+router.post("/class-schedule-target", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `SELECT * FROM class_schedules WHERE "CLSID"='${id}'`,
+      (err, rslt) => res.json(rslt.rows[0])
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/class-schedule-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
@@ -41,6 +55,57 @@ router.post("/class-schedule-insert", (req, res) => {
     pool.query(
       `INSERT INTO class_schedules ("CLSID", "Course", "Section", "YearLevel", "Day", "StartTime", "EndTime", "Room", "Component", "Coach", "Population", "Units", "Capacity", "AcademicYear")
       VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from class_schedules), '${course}', '${section}', '${yearlevel}', '${day}', '${starttime}', '${endtime}', '${room}', '${component}', '${coach}', '${population}', '${units}', '${capacity}', '${academicyear}')`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/class-schedule-edit", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.CLSID;
+    var course = clientData.Course;
+    var section = clientData.Section;
+    var yearlevel = clientData.YearLevel;
+    var day = clientData.Day;
+    var starttime = clientData.StartTime;
+    var endtime = clientData.EndTime;
+    var room = clientData.Room;
+    var component = clientData.Component;
+    var coach = clientData.Coach;
+    var population = clientData.Population;
+    var units = clientData.Units;
+    var capacity = clientData.Capacity;
+    var academicyear = clientData.AcademicYear;
+    pool.query(
+      `UPDATE class_schedules 
+
+      SET 
+      "Course"='${course}', 
+      "Section"='${section}', 
+      "YearLevel"='${yearlevel}', 
+      "Day"='${day}', 
+      "StartTime"='${starttime}', 
+      "EndTime"='${endtime}' , 
+      "Room"='${room}' , 
+      "Component"='${component}' , 
+      "Coach"='${coach}' ,
+      "Population"='${population}'   , 
+      "Units"='${units}'   , 
+      "Capacity"='${capacity}'   , 
+      "AcademicYear"='${academicyear}'  
+      
+      WHERE "CLSID"='${id}'`,
 
       (err, rslt) => {
         if (err) {

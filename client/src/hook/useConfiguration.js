@@ -71,6 +71,8 @@ import carou_item2 from "./../assets/imgs/background/sti-bg-campus-2.jpg";
 import carou_item3 from "./../assets/imgs/background/sti-wallpaper-2.jpg";
 
 import lape from "./../assets/imgs/misc/lape.jpg";
+import gerena from "./../assets/imgs/misc/gerena.jpg";
+import pagaoa from "./../assets/imgs/misc/pagaoa.png";
 import esporsado from "./../assets/imgs/misc/esporsado.JPG";
 import silverio from "./../assets/imgs/misc/silverio.JPG";
 import oliveros from "./../assets/imgs/misc/oliveros.JPG";
@@ -106,7 +108,7 @@ export default function useConfiguration() {
         {
           Name: "James Gereña",
           Role: "Backend / Assistant",
-          Image: temp_dp,
+          Image: gerena,
         },
         {
           Name: "Mia Maddara",
@@ -116,7 +118,7 @@ export default function useConfiguration() {
         {
           Name: "Aeron Pagaoa",
           Role: "Documentation",
-          Image: temp_dp,
+          Image: pagaoa,
         },
       ],
       special_thanks: [
@@ -136,82 +138,71 @@ export default function useConfiguration() {
           Image: esporsado,
         },
       ],
-      carousel: {
-        item1: {
-          Title: "Effortless Class Scheduling",
-          Subtitle: "Streamline Your Academic Journey",
-          Description:
-            "Say goodbye to scheduling conflicts! Our intuitive platform allows you to easily book classes, manage your timetable, and stay organized throughout the semester.",
-          Image: carou_item1,
-          Button: (
-            <button
-              className="ms-3 rounded-pill btn btn-danger px-5 py-2"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              Login Now
-            </button>
-          ),
-        },
-        item2: {
-          Title: "Connect with Faculty",
-          Subtitle: "Your Professors, Just a Click Away",
-          Description:
-            "Locate your faculty members with ease. Access their office hours, contact information, and more to ensure you get the guidance you need for your studies.",
-          Image: carou_item2,
-          Button: (
-            <button
-              className="ms-3 rounded-pill btn btn-danger px-5 py-2"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              Login Now
-            </button>
-          ),
-        },
-        item3: {
-          Title: "Stay Updated",
-          Subtitle: "Real-Time Notifications",
-          Description:
-            "Never miss an update again! Receive instant notifications about class changes, events, and important announcements directly to your device.",
-          Image: carou_item3,
-          Button: (
-            <button
-              className="ms-3 rounded-pill btn btn-danger px-5 py-2"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              Login Now
-            </button>
-          ),
-        },
-      },
       content: {
         content1: {
-          Title: "",
-          SubTitle: "",
-          Content: "",
+          Title: "Effortless Class Scheduling",
+          SubTitle: "Streamline Your Academic Journey",
+          Content:
+            "Say goodbye to scheduling conflicts! Our intuitive platform allows you to easily book classes, manage your timetable, and stay organized throughout the semester.",
+          Additionals: (
+            <button
+              className="rounded-pill btn btn-warning px-3 py-2"
+              onClick={() => {
+                navigate("/about");
+              }}
+            >
+              See Details
+            </button>
+          ),
           Image: scheduler,
         },
         content2: {
-          Title: "",
-          SubTitle: "",
-          Content: "",
+          Title: "Connect with Faculty",
+          SubTitle: "Your Professors, Just a Click Away",
+          Content:
+            "Locate your faculty members with ease. Access their office hours, contact information, and more to ensure you get the guidance you need for your studies.",
+          Additionals: (
+            <button
+              className="rounded-pill btn btn-warning px-3 py-2"
+              onClick={() => {
+                navigate("/about");
+              }}
+            >
+              See Details
+            </button>
+          ),
           Image: locator,
         },
         content3: {
-          Title: "",
-          SubTitle: "",
+          Title: "Team of Developers",
+          SubTitle: "Computer Science Students ( BS2125 )",
           Content: "",
+          Additionals: (
+            <button
+              className="rounded-pill btn btn-warning px-3 py-2"
+              onClick={() => {
+                navigate("/about");
+              }}
+            >
+              See Details
+            </button>
+          ),
           Image: team,
         },
         content4: {
-          Title: "",
-          SubTitle: "",
+          Title: "STI College Muñoz-EDSA",
+          SubTitle: "Quezon City, Philippines",
           Content: "",
+          Additionals: (
+            <button
+              className="rounded-pill btn btn-warning px-3 py-2"
+              onClick={() => {
+                navigate("/about");
+              }}
+            >
+              See Details
+            </button>
+          ),
           Image: host,
         },
       },

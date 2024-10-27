@@ -200,7 +200,10 @@ router.post("/user-login", (req, res) => {
           if (err) {
             console.error("Verification error:", err);
           } else if (resu) {
-            return res.json({ Status: "Success", data: rslt.rows[0] });
+            return res.json({
+              Status: "Success",
+              data: rslt.rows[0],
+            });
           } else {
             console.log("Password does not match");
             return res.json({

@@ -14,7 +14,7 @@ export function Logs() {
       <ul className="list-group list-group-flush">
         {logs.map((log, i) => (
           <li className="list-group-item d-flex w-100">
-            <p className="m-0">{`[ ${log.Created} ] ${log.Action} - ${log.Module} , ${log.User} : ${log.Details}`}</p>
+            <p className="m-0">{`Date: ${log.Date} | Time: ${log.Time} | ${log.Action} | ${log.Module} | ${log.SCHLID}_${log.LastName}, ${log.FirstName} as ${log.UserType} with code ${log.AcademicCode} | ${log.Details}`}</p>
           </li>
         ))}
       </ul>

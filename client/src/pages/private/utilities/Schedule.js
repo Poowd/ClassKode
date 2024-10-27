@@ -10,6 +10,7 @@ import useDatabase from "../../../hook/useDatabase";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import useConfiguration from "../../../hook/useConfiguration";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function Schedule() {
   const navigate = useNavigate();
@@ -59,18 +60,18 @@ export function Schedule() {
                     </>
                   }
                 />
-                <Link to={"/schedule/generate/0"}>
-                  <DefaultButton
-                    class="btn-primary"
-                    icon={info.icons.forms.generate}
-                  />
-                </Link>
-                <Link to={"/schedule/create/0"}>
-                  <DefaultButton
-                    class="btn-primary"
-                    icon={info.icons.forms.add}
-                  />
-                </Link>
+                <LinkButton
+                  to={"/schedule/generate/0"}
+                  class="btn-primary"
+                  textclass="text-white"
+                  icon={info.icons.forms.generate}
+                />
+                <LinkButton
+                  to={"/schedule/create/0"}
+                  class="btn-primary"
+                  textclass="text-white"
+                  icon={info.icons.forms.add}
+                />
               </div>
             </div>
           </>
@@ -93,7 +94,7 @@ export function Schedule() {
                         <section>
                           {sc.Room === null
                             ? "Court"
-                            : `( ${sc.Population}/${sc.Capacity} ) ${sc.Room}`}
+                            : `${sc.Room} ( ${sc.Population}/${sc.Capacity} Students )`}
                         </section>
                       </main>
                     }
@@ -103,10 +104,19 @@ export function Schedule() {
                         ? `${sc.LastName}, ${sc.FirstName}`
                         : "No Coach"
                     }
-                    slot6={sc.Component + " ( " + sc.Units + " )"}
+                    slot6={sc.Component + " ( " + sc.Units + " Units )"}
                     link={null}
                     state={null}
-                    custom={null}
+                    custom={
+                      <>
+                        <LinkButton
+                          to={`/schedule/edit/${sc.CLSID}`}
+                          class="btn-warning"
+                          textclass=""
+                          icon={info.icons.forms.edit}
+                        />
+                      </>
+                    }
                   />
                 ))
               : "none"}

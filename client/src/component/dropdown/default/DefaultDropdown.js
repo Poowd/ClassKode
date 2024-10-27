@@ -8,9 +8,9 @@ export class DefaultDropdown extends React.Component {
         <button
           className={
             this.props.text != null
-              ? "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-1 " +
+              ? "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-1 rounded  " +
                 this.props.class
-              : "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 " +
+              : "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 rounded " +
                 this.props.class
           }
           type={"button"}

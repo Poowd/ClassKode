@@ -88,10 +88,25 @@ export function GenerateExaminations() {
             />
             <DefaultButton
               class="btn-primary px-2"
-              text="Generate"
+              text="Generate Tertiary"
               function={() => {
                 data_post(
-                  "gen-exam",
+                  "gen-exam-ter",
+                  {
+                    schedule: removeDuplicates(schedule),
+                    room: room,
+                  },
+                  setExamSchedule
+                );
+                console.log(examSchedule);
+              }}
+            />
+            <DefaultButton
+              class="btn-primary px-2"
+              text="Generate SHS"
+              function={() => {
+                data_post(
+                  "gen-exam-shs",
                   {
                     schedule: removeDuplicates(schedule),
                     room: room,
@@ -105,7 +120,7 @@ export function GenerateExaminations() {
         </section>
         <section className="h-75">
           <main className="h-100 row m-0 p-0">
-            <section className="col-lg-4 h-100 bg-danger p-2">
+            <section className="col-lg-4 h-100 p-2">
               <main className="h-50 p-1">
                 <main className="h-100  bg-white rounded shadow-sm p-2">
                   <section className="h-100 overflow-y-auto">
@@ -143,7 +158,7 @@ export function GenerateExaminations() {
               <section>
                 {examSchedule.length > 0
                   ? examSchedule.map((item, i) => (
-                      <main className="mb-3 mt-2">
+                      <main className="mb-3 mt-3">
                         {item.Exams.map((tip, i) => (
                           <section className="w-100 bg-white rounded shadow-sm p-2 mb-2">
                             {`${item.Room} - ${tip.Code} - ${convertMinutes(

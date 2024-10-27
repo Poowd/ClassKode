@@ -43,6 +43,9 @@ import { CoachViewSchedule } from "./pages/private/user view/CoachViewSchedule";
 import useDatabase from "./hook/useDatabase";
 import { Register } from "./pages/public/Register";
 import { ExamSchedule } from "./pages/private/utilities/ExamSchedule";
+import { About } from "./pages/public/About";
+import { Features } from "./pages/public/Features";
+import { Team } from "./pages/public/Team";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +53,7 @@ function App() {
   const [get, post, data_get, data_post] = useDatabase();
 
   const [test, setTest] = useState([]);
+  const [account, setAccount] = useState([]);
 
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
@@ -58,18 +62,30 @@ function App() {
     data_post("reset-status", { data: status }, setTest);
   };
 
+  const getCookies = () => {
+    const cookies = document.cookie.split("; ");
+    const cookieMap = {};
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.split("=");
+      cookieMap[name] = value;
+    });
+    const cookieVal = cookieMap["accountCookies"];
+    setAccount(JSON.parse(cookieVal));
+  };
+
   useEffect(() => {
+    // Simulate an API call
+    getCookies();
     const dateObject = new Date();
-    if (dateObject.getHours() == 21) {
+    if (
+      (dateObject.getHours() >= 21 && dateObject.getHours() <= 24) ||
+      (dateObject.getHours() >= 1 && dateObject.getHours() < 7)
+    ) {
       resetStatus("OFFHOURS");
     }
     if (dateObject.getHours() == 7) {
       resetStatus("NOTINCLASS");
     }
-  }, []);
-
-  useEffect(() => {
-    // Simulate an API call
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -351,14 +367,10 @@ function App() {
           </>
         ) : (
           <>
-            <Route
-              path={"/"}
-              element={
-                <main className="vh-100 overflow-hidden">
-                  <Homepage />
-                </main>
-              }
-            ></Route>
+            <Route path={"/"} element={<Homepage />}></Route>
+            <Route path={"/about"} element={<About />}></Route>
+            <Route path={"/features"} element={<Features />}></Route>
+            <Route path={"/team"} element={<Team />}></Route>
             <Route path={"/login"} element={<Login />}></Route>
             <Route path={"/register"} element={<Register />}></Route>
             <Route

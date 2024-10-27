@@ -15,6 +15,7 @@ import useConfiguration from "../../hook/useConfiguration";
 import useHandleChange from "../../hook/useHandleChange";
 
 export function Login() {
+  const dateObject = new Date();
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [values, setValues] = useState({
@@ -29,6 +30,7 @@ export function Login() {
   });
   const [dataChange] = useHandleChange(setConfirmCode);
   const [academicYearCode, setAYCode] = useState([]);
+  const [logs, setLogs] = useState("");
 
   useEffect(() => {
     data_get("current-academic-year-code", setAYCode);
@@ -39,6 +41,10 @@ export function Login() {
   // }, [values]);
 
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
+
+  const setCookies = (data) => {
+    document.cookie = `accountCookies=${data}`;
+  };
 
   //get the data from server, if the server response if success -- login
   const handleSubmit = async (e) => {
@@ -57,6 +63,19 @@ export function Login() {
             //test wether if that account has academic code
             sessionStorage.setItem("user", JSON.stringify(data.data));
             sessionStorage.setItem("loggedin", true);
+            setCookies(JSON.stringify(data.data));
+            data_post(
+              "log-me",
+              {
+                Action: "Login",
+                Module: "Login Module",
+                User: data.data.SCHLID,
+                Details: "A User has Logged-In",
+                Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
+                Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
+              },
+              setLogs
+            );
             navigate("/");
           } else {
             navigate("/register");

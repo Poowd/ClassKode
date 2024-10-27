@@ -6,6 +6,7 @@ import useChart from "../../hook/chart/useChart";
 import useDatabase from "../../hook/useDatabase";
 import { useNavigate } from "react-router-dom";
 import useConfiguration from "../../hook/useConfiguration";
+import useLineChart from "../../hook/chart/useLineChart";
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export function Dashboard() {
   const [currentcurriculum, setCurrentCurriculum] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [totalPopulation, setTotalPopulation] = useState();
+  const [dataEntryCount, setDataEntryCount] = useState([]);
 
   useEffect(() => {
     data_get("department-list", setDepartment);
@@ -36,6 +38,7 @@ export function Dashboard() {
     data_get("class-schedule-list", setSchedule);
     data_get("total-population-check", setPopulationPerYear);
     data_get("project-total-population", setTotalPopulation);
+    data_get("data-entry-count", setDataEntryCount);
   }, []);
   return (
     <DashboardTemplate
@@ -91,7 +94,7 @@ export function Dashboard() {
           content={"0"}
         />
       }
-      chart1={useChart(
+      chart1={useLineChart(
         [
           totalPopulation === undefined
             ? "n/a"
@@ -119,7 +122,10 @@ export function Dashboard() {
             ? "n/a"
             : totalPopulation[0].AcademicYear,
         ],
-        "My Chart",
+        "line",
+        "x",
+        "100%",
+        "Total Class Population",
         [
           totalPopulation === undefined
             ? 0
@@ -147,10 +153,62 @@ export function Dashboard() {
             ? 0
             : totalPopulation[0].total_population,
         ],
-        "line",
-        "x",
-        "auto",
-        "100%"
+        "Tertiary Population",
+        [
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[4] === undefined
+            ? 0
+            : totalPopulation[4].tertiary_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[3] === undefined
+            ? 0
+            : totalPopulation[3].tertiary_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[2] === undefined
+            ? 0
+            : totalPopulation[2].tertiary_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[1] === undefined
+            ? 0
+            : totalPopulation[1].tertiary_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[0] === undefined
+            ? 0
+            : totalPopulation[0].tertiary_population,
+        ],
+        "Senior High School Population",
+        [
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[4] === undefined
+            ? 0
+            : totalPopulation[4].shs_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[3] === undefined
+            ? 0
+            : totalPopulation[3].shs_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[2] === undefined
+            ? 0
+            : totalPopulation[2].shs_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[1] === undefined
+            ? 0
+            : totalPopulation[1].shs_population,
+          totalPopulation === undefined
+            ? 0
+            : totalPopulation[0] === undefined
+            ? 0
+            : totalPopulation[0].shs_population,
+        ]
       )}
       chart2={useChart(
         [
@@ -165,14 +223,46 @@ export function Dashboard() {
         ],
         "My Chart",
         [
-          department.length,
-          program.length,
-          section.length,
-          course.length,
-          room.length,
-          coach.length,
-          5,
-          5,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.department === undefined
+            ? 0
+            : dataEntryCount.department,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.program === undefined
+            ? 0
+            : dataEntryCount.program,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.section === undefined
+            ? 0
+            : dataEntryCount.section,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.course === undefined
+            ? 0
+            : dataEntryCount.course,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.room === undefined
+            ? 0
+            : dataEntryCount.room,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.coach === undefined
+            ? 0
+            : dataEntryCount.coach,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.curriculum === undefined
+            ? 0
+            : dataEntryCount.curriculum,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.academic_year === undefined
+            ? 0
+            : dataEntryCount.academic_year,
         ],
         "bar",
         "y",
@@ -190,7 +280,18 @@ export function Dashboard() {
           "Academic Year",
         ],
         "My Chart",
-        [5, 5, 5, 5, 5, 5, 5, 5],
+        [
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.tertiary_class_schedules === undefined
+            ? 0
+            : dataEntryCount.tertiary_class_schedules,
+          dataEntryCount === undefined
+            ? 0
+            : dataEntryCount.shs_class_schedules === undefined
+            ? 0
+            : dataEntryCount.shs_class_schedules,
+        ],
         "bar",
         "y",
         "100%"

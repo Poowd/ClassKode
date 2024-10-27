@@ -33,6 +33,7 @@ export function Archives() {
   const [schedule, setSchedule] = useState([]);
   const [data, setData] = useState([]);
   const [toasty, showToast] = useToasty();
+  const [archiveCount, setArchiveCount] = useState([]);
 
   const [category, setCategory] = useState({
     institution: [
@@ -56,6 +57,7 @@ export function Archives() {
     data_get("academic-year-list-archived", setAcademicYear);
     data_get("curriculum-list-archived", setCurriculum);
     data_get("schedules-list-archived", setSchedule);
+    data_get("archive-count", setArchiveCount);
   }, [department]);
 
   useEffect(() => {
@@ -87,43 +89,68 @@ export function Archives() {
                 </header>
                 <main className="mt-2">
                   <small>
-                    <p className="fw-semibold p-0 m-0">Pages</p>
+                    <p className="fw-semibold p-0 m-0">Institution</p>
                   </small>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                       <main className="d-flex justify-content-between">
                         <section>{`Department`}</section>
-                        <section>{`${department.length}`}</section>
+                        <section>{`${archiveCount.department}`}</section>
                       </main>
                     </li>
                     <li class="list-group-item">
                       <main className="d-flex justify-content-between">
                         <section>{`Program`}</section>
-                        <section>{`${program.length}`}</section>
+                        <section>{`${archiveCount.program}`}</section>
                       </main>
                     </li>
                     <li class="list-group-item">
                       <main className="d-flex justify-content-between">
                         <section>{`Course`}</section>
-                        <section>{`${course.length}`}</section>
+                        <section>{`${archiveCount.course}`}</section>
                       </main>
                     </li>
                     <li class="list-group-item">
                       <main className="d-flex justify-content-between">
                         <section>{`Coach`}</section>
-                        <section>{`${coach.length}`}</section>
+                        <section>{`${archiveCount.coach}`}</section>
                       </main>
                     </li>
                     <li class="list-group-item">
                       <main className="d-flex justify-content-between">
                         <section>{`Section`}</section>
-                        <section>{`${section.length}`}</section>
+                        <section>{`${archiveCount.section}`}</section>
                       </main>
                     </li>
                     <li class="list-group-item">
                       <main className="d-flex justify-content-between">
                         <section>{`Room`}</section>
-                        <section>{`${room.length}`}</section>
+                        <section>{`${archiveCount.room}`}</section>
+                      </main>
+                    </li>
+                  </ul>
+                </main>
+                <main className="mt-2">
+                  <small>
+                    <p className="fw-semibold p-0 m-0">Utilities</p>
+                  </small>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Curriculum`}</section>
+                        <section>{`${archiveCount.curriculum}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Academic Year`}</section>
+                        <section>{`${archiveCount.academic_year}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Class Schedules`}</section>
+                        <section>{`${archiveCount.class_schedules}`}</section>
                       </main>
                     </li>
                   </ul>
@@ -280,7 +307,7 @@ export function Archives() {
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
-                          "coach/restore",
+                          "coach-restore",
                           { data: coach.CCHID },
                           setData
                         );

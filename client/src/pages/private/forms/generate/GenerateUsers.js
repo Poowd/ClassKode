@@ -10,16 +10,18 @@ import useItemCounter from "../../../../hook/useItemCounter";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/BatchUploadTemplate.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
+import { useNavigate } from "react-router-dom";
 
-export default function GenerateUsers() {
+export function GenerateUsers() {
   //const bootstrap = require("bootstrap");
-  const [get, post] = useDatabase();
+  const navigate = useNavigate();
+  const [get, post, data_get, data_post] = useDatabase();
   const [file, sheets, FileUpload] = useSheetImport();
   const [data, setData] = useState([]);
-  const text = "sdas";
   const [info] = useConfiguration();
 
   const [toasty, showToast] = useToasty();
+  const [details, setDetails] = useState({});
   // const [CopyClipboard] = useClipboard();
   const [itemCounter] = useItemCounter();
   const [savestatus, setSaveStatus] = useState(null);
@@ -27,7 +29,7 @@ export default function GenerateUsers() {
   useEffect(() => {
     sheets &&
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Sheet Upload",
         `${file} is successfully uploaded!`
       );
@@ -35,13 +37,11 @@ export default function GenerateUsers() {
   }, [sheets]);
   console.log(data);
 
-  function saveSingleUser(data) {}
-
-  const saveUserData = (e) => {
+  const saveUserData = async (e) => {
     e.preventDefault();
     if (sheets === null) {
       showToast(
-        info.icons.calendar,
+        info.icons.others.info,
         "Users",
         "No Data Found. Try uploading a sheet file!"
       );
@@ -50,21 +50,76 @@ export default function GenerateUsers() {
       try {
         for (var i in data) {
           console.log(data[i]);
-          post("gen-users", data[i], setSaveStatus);
+          const response = await fetch(`${info.conn.server}user-generate`, {
+            method: "POST",
+            body: JSON.stringify(data[i]),
+          });
+          const entry = await response.json();
+          console.log(entry);
         }
-        showToast(info.icons.calendar, "Users", "User Data are saved!");
+        showToast(info.icons.others.info, "Users", "User Data are saved!");
+        setTimeout(() => {
+          navigate(-1);
+        }, 2500); // 2 second delay
       } catch (err) {
-        showToast(info.icons.calendar, "Users", "Error Encountered!");
+        showToast(info.icons.others.info, "Users", err);
       }
     }
   };
+  const [usertypes, setUserTypes] = useState([
+    {
+      title: "Developer",
+      icon: info.icons.usertypes.developer,
+      shortform: "dev/s",
+    },
+    {
+      title: "Manager",
+      icon: info.icons.usertypes.manager,
+      shortform: "mngr/s",
+    },
+    {
+      title: "Admin",
+      icon: info.icons.usertypes.admin,
+      shortform: "adm/s",
+    },
+    {
+      title: "User",
+      icon: info.icons.usertypes.user,
+      shortform: "usr/s",
+    },
+  ]);
+
+  const temparr = [];
+
+  useEffect(() => {
+    usertypes.map((type, i) => {
+      temparr.push({
+        title: type.title,
+        icon: type.icon,
+        shortform: type.shortform,
+        count:
+          file !== null
+            ? sheets && itemCounter(sheets, type.title, "Type")
+            : "0",
+      });
+    });
+    setDetails(temparr);
+  }, [file]);
 
   return (
     <>
       <main className="h-100 row m-0 p-0">
         <section className="col-lg-9 h-100 p-1 m-0 overflow-y-auto">
           <main className="p-2 bg-white rounded shadow-sm">
-            <section className="d-flex">
+            <section className="d-flex gap-2">
+              <DefaultButton
+                class="px-2"
+                icon={info.icons.navigation.back}
+                text="Back"
+                function={() => {
+                  navigate(-1);
+                }}
+              />
               <label for="formFile" class="form-label">
                 {sheets && FileUpload}
               </label>
@@ -80,11 +135,11 @@ export default function GenerateUsers() {
                 download={`UPLOAD SHEET TEMPLATE ( DO NOT RE-ARRANGE)`}
               >
                 <DefaultButton
-                  class="ms-2 bg-primary text-white"
-                  icon={info.icons.program}
+                  class="bg-primary text-white"
+                  icon={info.icons.others.package}
                   function={() => {
                     showToast(
-                      info.icons.calendar,
+                      info.icons.others.info,
                       "Upload Sheet Template",
                       "Upload Sheet Template has been downloaded!"
                     );
@@ -92,9 +147,10 @@ export default function GenerateUsers() {
                 />
               </a>
               <DefaultButton
-                class="ms-2 bg-primary text-white"
-                icon={info.icons.add}
+                class="bg-primary text-white"
+                icon={info.icons.forms.add}
                 function={saveUserData}
+                disabled={file !== null ? false : true}
               />
 
               {/* <button
@@ -102,7 +158,7 @@ export default function GenerateUsers() {
                 type="button"
                 onClick={() => {
                   CopyClipboard(text);
-                  showToast(info.icons.calendar, "Clipboard", "Copied!");
+                  showToast(info.icons.others.info, "Clipboard", "Copied!");
                 }}
               >
                 Copy
@@ -124,8 +180,8 @@ export default function GenerateUsers() {
                     slot2={`${item.Firstname} ${item.Lastname}`}
                     slot3={item.Email}
                     slot4={item.Type}
-                    slot5={null}
-                    view={info.icons.view}
+                    slot5={item.PermissionLevel}
+                    view={info.icons.forms.view}
                     link={null}
                     state={null}
                   />
@@ -147,77 +203,45 @@ export default function GenerateUsers() {
                     : "No file selected"
                 }`}</p>
               </header>
-              <main className="mt-2">
-                <small>
-                  <p className="fw-semibold p-0 m-0">User Types</p>
-                </small>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Developer</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "Developer", "Type")
-                            : "0"
-                        } dev/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Manager</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "Manager", "Type")
-                            : "0"
-                        } mngr/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Admin</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "Admin", "Type")
-                            : "0"
-                        } adm/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} User</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets && itemCounter(sheets, "User", "Type")
-                            : "0"
-                        } user/s`}
-                      </section>
-                    </main>
-                  </li>
-                  <li class="list-group-item">
-                    <main className="d-flex justify-content-between">
-                      <section>{info.icons.users} Invalid</section>
-                      <section>
-                        {`${
-                          file !== null
-                            ? sheets.length -
-                              (itemCounter(sheets, "Developer", "Type") +
-                                itemCounter(sheets, "Manager", "Type") +
-                                itemCounter(sheets, "Admin", "Type") +
-                                itemCounter(sheets, "User", "Type"))
-                            : "0"
-                        } row/s`}
-                      </section>
-                    </main>
-                  </li>
-                </ul>
-              </main>
+              {file && (
+                <main className="mt-2">
+                  <small>
+                    <p className="fw-semibold p-0 m-0">User Types</p>
+                  </small>
+                  <ul class="list-group list-group-flush">
+                    {details.map((item, i) => (
+                      <li class="list-group-item">
+                        <main className="d-flex justify-content-between">
+                          <section>
+                            {item.icon} {item.title}
+                          </section>
+                          <section>
+                            {item.count} {item.shortform}
+                          </section>
+                        </main>
+                      </li>
+                    ))}
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>
+                          {info.icons.usertypes.invalid} Invalid
+                        </section>
+                        <section>
+                          {`${
+                            file !== null
+                              ? sheets.length -
+                                (itemCounter(sheets, "Developer", "Type") +
+                                  itemCounter(sheets, "Manager", "Type") +
+                                  itemCounter(sheets, "Admin", "Type") +
+                                  itemCounter(sheets, "User", "Type"))
+                              : "0"
+                          } row/s`}
+                        </section>
+                      </main>
+                    </li>
+                  </ul>
+                </main>
+              )}
             </section>
           </main>
         </section>

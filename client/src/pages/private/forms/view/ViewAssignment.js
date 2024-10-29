@@ -20,7 +20,7 @@ export function ViewAssignment() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
   const [
@@ -49,11 +49,11 @@ export function ViewAssignment() {
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    get("random-code-generator", setCode);
+    data_get("random-code-generator", setCode);
   }, []);
 
   useEffect(() => {
-    post("sel-cur-ay", academicyear, setAcademicYear);
+    data_post("sel-cur-ay", academicyear, setAcademicYear);
   }, [academicyear]);
 
   useEffect(() => {

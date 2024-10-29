@@ -1,84 +1,171 @@
-import express from "express";
-import mysql from "mysql";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import jwt from "jsonwebtoken";
+const AcademicYear = require("./routes/Tables/SetupTables/AcademicYear.js");
+const Curriculum = require("./routes/Tables/SetupTables/Curriculum.js");
+const Setup = require("./routes/Tables/SetupTables/Setup.js");
+const Assignment = require("./routes/Tables/SetupTables/Assignment.js");
+const Projection = require("./routes/Tables/SetupTables/Projection.js");
+const Specialization = require("./routes/Tables/SetupTables/Specialization.js");
 
+const AcademicLevel = require("./routes/Tables/Additional/AcademicLevel.js");
+const Semester = require("./routes/Tables/Additional/Semester.js");
+const Facility = require("./routes/Tables/Additional/Facility.js");
+const Building = require("./routes/Tables/Additional/Building.js");
+const Floor = require("./routes/Tables/Additional/Floor.js");
+const YearLevel = require("./routes/Tables/Additional/YearLevel.js");
+const Component = require("./routes/Tables/Additional/Component.js");
+const CoachType = require("./routes/Tables/Additional/CoachType.js");
+const WeeklyEvent = require("./routes/Tables/Additional/WeeklyEvent.js");
+const ExpectedClass = require("./routes/Tables/Additional/ExpectedClass.js");
+const Logs = require("./routes/Tables/Additional/Logs.js");
+
+const Department = require("./routes/Tables/Department.js");
+const Program = require("./routes/Tables/Program.js");
+const Coach = require("./routes/Tables/Coach.js");
+const Course = require("./routes/Tables/Course.js");
+const Room = require("./routes/Tables/Room.js");
+const Section = require("./routes/Tables/Section.js");
+const Schedules = require("./routes/Tables/Schedules.js");
+
+const _User = require("./routes/Tables/_User.js");
+
+const RandomCode = require("./routes/Logic/RandomCode.js");
+const Generate = require("./routes/Logic/GenerateSchedule.js");
+const SaveImage = require("./routes/Logic/SaveImage.js");
+const Login = require("./routes/Logic/Login.js");
+const Statistics = require("./routes/Logic/Statistics.js");
+// = = >
+const multer = require("multer");
+const path = require("path");
+const { Pool } = require("pg");
+const express = require("express");
+const cors = require("cors");
+const pool = new Pool({
+  user: "postgres.pgcztzkowuxixfyiqera",
+  password: "Clskde_#5*Ths2",
+  host: "aws-0-ap-southeast-1.pooler.supabase.com",
+  port: 6543,
+  database: "postgres",
+});
 const app = express();
-app.use(express.json());
-app.use(cookieParser());
-app.use(
-  cors({
-    origin: ["http://localhost:3000"],
-    methods: ["POST, GET"],
-    credentials: true,
-  })
-);
-app.use(express.static("public"));
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "db_classkode",
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Allow-Methods"
+  );
+  res.header("Content-Type", "application/json");
+  next();
 });
 
-//checks of the server is running
+app.options(
+  "*",
+  cors({
+    methods: ["GET", "POST", "OPTIONS"],
+    origin: "*",
+    allowedHeaders: "Content-Type, Accept",
+    credentials: true,
+    optionsSuccessStatus: 204,
+  })
+);
+// = = >
+app.use(express.json());
+app.use(express.text());
+app.use(express.static("public"));
+
+// = = >
+const router = express.Router();
+pool.connect();
+// = = >
+
+global.router = router;
+// = = >
+
+router.use("/", RandomCode);
+router.use("/", Generate);
+router.use("/", SaveImage);
+router.use("/", Login);
+router.use("/", Statistics);
+
+router.use("/", AcademicYear);
+router.use("/", Curriculum);
+router.use("/", Setup);
+router.use("/", Assignment);
+router.use("/", Projection);
+router.use("/", Specialization);
+
+router.use("/", Department);
+router.use("/", Program);
+router.use("/", Coach);
+router.use("/", Course);
+router.use("/", Room);
+router.use("/", Section);
+router.use("/", Schedules);
+
+router.use("/", _User);
+
+router.use("/", Facility);
+router.use("/", Building);
+router.use("/", Floor);
+router.use("/", YearLevel);
+router.use("/", AcademicLevel);
+router.use("/", Semester);
+router.use("/", Component);
+router.use("/", CoachType);
+router.use("/", WeeklyEvent);
+router.use("/", ExpectedClass);
+router.use("/", Logs);
+
+// = = >
 app.listen(8081, () => {
   console.log("Running");
 });
-
 app.get("/status", (req, res) => {
   res.send("server is running");
 });
 
-const router = (global.router = express.Router());
-
-// DATABASE
-import Statistics from "./routes/database/datapacks/Statistics.js";
-app.use(Statistics);
-
-import TotalPopulation from "./routes/database/datapacks/TotalPopulation.js";
-app.use(TotalPopulation);
-
-import Select from "./routes/database/Select.js";
-app.use(Select);
-
-import Insert from "./routes/database/Insert.js";
-app.use(Insert);
-
-import Update from "./routes/database/Update.js";
-app.use(Update);
-
-import Archives from "./routes/database/Archives.js";
-app.use(Archives);
-
-// LOGIC
-import Generate from "./routes/logic/GenerateSchedule.js";
-app.use(Generate);
-
-import RandomCode from "./routes/logic/RandomCode.js";
-app.use(RandomCode);
-
-import SaveImage from "./routes/logic/SaveImage.js";
-app.use(SaveImage);
-
-import Login from "./routes/logic/Login.js";
-app.use(Login);
-
-// new Router(app, db);
-// app.get('/', function(req, res) {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// pool.query(`SELECT * FROM _user`, (err, res) => {
+//   if (!err) {
+//     console.log(res.rows);
+//   } else {
+//     console.log(err.message);
+//   }
 // });
 
-// class Router {
-//   constructor(app, db) {
-//     this.login(app, db);
-//   }
+app.post("/test-data", (req, res) => {
+  try {
+    pool.query(`SELECT * FROM _user`, (err, ris) => res.json(ris.rows));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
-//   login(app, db) {
-//     app.post("/login", (req, res) => {});
-//   }
-// }
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
 
-// module.exports = Router;
+const upload = multer({
+  storage: storage,
+});
+
+app.post("/upload", upload.single("image"), (req, res) => {
+  //const clientData = JSON.parse(req);
+  const image = req.file.filename;
+  return res.json(image);
+});
+
+// = = >
+pool.end;
+// = = >
+
+app.use(global.router);

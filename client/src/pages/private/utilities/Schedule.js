@@ -4,24 +4,24 @@ import { DefaultInput } from "../../../component/input/DefaultInput";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
 import { DefaultButton } from "../../../component/button/DefaultButton";
-import "./Map.css";
 import { Link, useNavigate } from "react-router-dom";
 import { ScheduleList } from "../../../component/card/ScheduleList";
 import useDatabase from "../../../hook/useDatabase";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import useConfiguration from "../../../hook/useConfiguration";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function Schedule() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
 
   const [sched, setSched] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
-    post("sel-sched", sched, setSched);
+    data_get("class-schedule-list", setSched);
   }, [sched]);
   return (
     <>
@@ -32,15 +32,16 @@ export function Schedule() {
             <div className="w-100">
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
-                  class=""
-                  icon={info.icons.back}
+                  class="px-2"
+                  icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
                 <DefaultDropdown
-                  class="border px-2 btn-primary"
+                  class="border px-2 btn-primary rounded"
                   reversed={true}
-                  icon={info.icons.schedule}
+                  icon={info.icons.pages.utilities.schedule}
                   text={"Load"}
                   dropdownitems={
                     <>
@@ -50,7 +51,7 @@ export function Schedule() {
                       />
                       <DefaultDropdownItem
                         title={"Coach"}
-                        trigger={() => navigate("/utilities/schedule/section")}
+                        trigger={() => navigate("/utilities/schedule/coach")}
                       />
                       <DefaultDropdownItem
                         title={"Section"}
@@ -59,15 +60,18 @@ export function Schedule() {
                     </>
                   }
                 />
-                <Link to={"/schedule/generate/0"}>
-                  <DefaultButton
-                    class="btn-primary"
-                    icon={info.icons.generate}
-                  />
-                </Link>
-                <Link to={"/schedule/create/0"}>
-                  <DefaultButton class="btn-primary" icon={info.icons.add} />
-                </Link>
+                <LinkButton
+                  to={"/schedule/generate/0"}
+                  class="btn-primary"
+                  textclass="text-white"
+                  icon={info.icons.forms.generate}
+                />
+                <LinkButton
+                  to={"/schedule/create/0"}
+                  class="btn-primary"
+                  textclass="text-white"
+                  icon={info.icons.forms.add}
+                />
               </div>
             </div>
           </>
@@ -81,22 +85,38 @@ export function Schedule() {
                     slot1={sc.Section}
                     slot2={sc.Course}
                     slot3={
-                      sc.Day +
-                      " : " +
-                      convertMinutes(sc.StartTime) +
-                      " - " +
-                      convertMinutes(sc.EndTime)
+                      <main>
+                        <section>
+                          {`${sc.Day}, ${convertMinutes(
+                            sc.StartTime
+                          )} - ${convertMinutes(sc.EndTime)} `}
+                        </section>
+                        <section>
+                          {sc.Room === null
+                            ? "Court"
+                            : `${sc.Room} ( ${sc.Population}/${sc.Capacity} Students )`}
+                        </section>
+                      </main>
                     }
-                    slot4={
-                      sc.Room === null
-                        ? "Court"
-                        : sc.Room + " " + sc.Population + "/" + sc.Capacity
+                    slot4={null}
+                    slot5={
+                      sc.FirstName !== null && sc.LastName !== null
+                        ? `${sc.LastName}, ${sc.FirstName}`
+                        : "No Coach"
                     }
-                    slot5={sc.LastName}
-                    slot6={sc.Component + " ( " + sc.Units + " )"}
+                    slot6={sc.Component + " ( " + sc.Units + " Units )"}
                     link={null}
                     state={null}
-                    custom={null}
+                    custom={
+                      <>
+                        <LinkButton
+                          to={`/schedule/edit/${sc.CLSID}`}
+                          class="btn-warning"
+                          textclass=""
+                          icon={info.icons.forms.edit}
+                        />
+                      </>
+                    }
                   />
                 ))
               : "none"}

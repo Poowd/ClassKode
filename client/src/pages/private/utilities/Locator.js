@@ -3,20 +3,31 @@ import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceT
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { DefaultInput } from "../../../component/input/DefaultInput";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import useConfiguration from "../../../hook/useConfiguration";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
 import { ViewModal } from "../../../component/modal/ViewModal";
 import { RoomCard } from "../../../component/card/RoomCard";
+import { createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
+import { TextFormat2 } from "../../../component/textformat/TextFormat2";
+
+const supabase = createClient(
+  "https://pgcztzkowuxixfyiqera.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnY3p0emtvd3V4aXhmeWlxZXJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU0ODQ0MTUsImV4cCI6MjA0MTA2MDQxNX0.ryLXhP4sBBhO5_JVgQ4YJ9BlpdlD2NQM2mjDRbkc3NY"
+);
+
+const CDNURL =
+  "https://pgcztzkowuxixfyiqera.supabase.co/storage/v1/object/public/images/";
 
 export function Locator() {
   const [convertMinutes] = useTimeFormat();
   const [info] = useConfiguration();
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
-  const d = new Date();
+  const [get, post, data_get, data_post] = useDatabase();
+  const daytoday = new Date();
   const days = [
     "Sunday",
     "Monday",
@@ -26,12 +37,13 @@ export function Locator() {
     "Friday",
     "Saturday",
   ];
-
+  const [test, setTest] = useState([]);
   const [department, setDepartment] = useState([]);
   const [coaches, setCoaches] = useState([]);
   const [schedules, setSchedules] = useState([]);
   const [selcoach, setSelCoach] = useState([]);
   const [currcoach, setCurrCoach] = useState("n/a");
+  const [coachStatus, setCoachStatus] = useState([]);
   const [time, setTime] = useState();
   const [filter, setFilter] = useState({
     setbyDepartment: "",
@@ -39,70 +51,104 @@ export function Locator() {
   });
 
   useEffect(() => {
-    post("sel-coach", coaches, setCoaches);
-    post("sel-dept", department, setDepartment);
-    post("sel-sched", schedules, setSchedules);
-  }, [coaches, department, schedules]);
+    data_get("assign-list", setCoaches);
+    data_get("department-list", setDepartment);
+    data_get("class-schedule-list", setSchedules);
+    data_get("all-coach-status", setCoachStatus);
+  }, []);
 
   useEffect(() => {
     setInterval(() => {
       const dateObject = new Date();
-
       const hour = dateObject.getHours();
       const minute = dateObject.getMinutes();
       const second = dateObject.getSeconds();
-
       const currentTime = `${hour}:${minute}:${second}`;
-
       setTime(currentTime);
     }, 1000);
   }, []);
 
+  const resetStatus = (status) => {};
+
   function checkClassStatus(coach) {
     for (var i = 0; i < schedules.length; i++) {
-      if (schedules[i].Day === days[d.getDay()]) {
+      if (schedules[i].Day === days[daytoday.getDay()]) {
         if (
-          schedules[i].StartTime < d.getHours() * 60 + d.getMinutes() &&
-          d.getHours() * 60 + d.getMinutes() < schedules[i].EndTime
+          schedules[i].StartTime <
+            daytoday.getHours() * 60 + daytoday.getMinutes() &&
+          daytoday.getHours() * 60 + daytoday.getMinutes() <
+            schedules[i].EndTime
         ) {
           if (schedules[i].SCHLID === coach) {
+            data_post(
+              "coach-status-update",
+              { id: coach, status: "ONGOING", description: "" },
+              setTest
+            );
             return "On Going";
           }
         }
       }
     }
+    data_post(
+      "coach-status-update",
+      { id: coach, status: "NOTINCLASS", description: "" },
+      setTest
+    );
     return "No Class";
   }
+
+  const [classStatus, setClassStatus] = useState([
+    "ONCLASS",
+    "NOTINCLASS",
+    "OFFHOURS",
+    "ABSENT",
+  ]);
+
+  const checkStatusHours = (status) => {
+    if (status === "ONCLASS") {
+      return "bg-success";
+    }
+    if (status === "NOTINCLASS") {
+      return "bg-warning";
+    }
+    if (status === "ABSENT") {
+      return "bg-danger";
+    }
+    if (status === "OFFHOURS") {
+      return "bg-secondary";
+    }
+  };
 
   return (
     <>
       <FileMaintainanceTemplate
         sidepanel={
-          <main className="h-100 p-1 d-flex flex-column justify-content-between">
+          <main className="h-100 d-flex flex-column justify-content-between">
             <main>
               <section>
                 {schedules.length > 0
                   ? schedules.map((schedule, i) =>
                       schedule.SCHLID === currcoach ? (
                         schedule.StartTime <
-                          d.getHours() * 60 + d.getMinutes() &&
-                        d.getHours() * 60 + d.getMinutes() <
+                          daytoday.getHours() * 60 + daytoday.getMinutes() &&
+                        daytoday.getHours() * 60 + daytoday.getMinutes() <
                           schedule.EndTime ? (
-                          schedule.Day === days[d.getDay()] ? (
-                            <main className="border rounded p-3">
+                          schedule.Day === days[daytoday.getDay()] ? (
+                            <main className="border rounded p-2">
                               <header>
                                 <h6 className="fw-bold text-success">
                                   ON GOING
                                 </h6>
                               </header>
                               <main>
-                                <section className="px-3">
+                                <section className="px-2">
                                   <section className="m-0 p-0">
-                                    <h6>{" ".concat(schedule.SCHLID)}</h6>
+                                    <h6>{" ".concat(schedule.Coach)}</h6>
                                     <h5>
                                       {coaches.map((coach, i) =>
                                         coach.SCHLID === currcoach
-                                          ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
+                                          ? ` ${coach.LastName}, ${coach.FirstName}`
                                           : null
                                       )}
                                     </h5>
@@ -159,35 +205,19 @@ export function Locator() {
                 {checkClassStatus(currcoach) === "No Class" ? (
                   <main className="border rounded p-3">
                     <header>
-                      <h6 className="fw-bold text-primary m-0 p-0">NO CLASS</h6>
+                      <h6 className="fw-normal text-secondary m-0 p-0">
+                        Select a Coach
+                      </h6>
                     </header>
-                    {/* <main>
-                      <section className="px-3">
-                        <section className="m-0 p-0">
-                          <h6>{" ".concat(currcoach)}</h6>
-                          <h5 className="">
-                            {coaches.map((coach, i) =>
-                              coach.SCHLID === currcoach
-                                ? ` ${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`
-                                : null
-                            )}
-                          </h5>
-                        </section>
-                        <hr />
-                        <p className="m-0 p-0 text-secondary text-center border p-1 rounded">
-                          No Classes
-                        </p>
-                      </section>
-                    </main> */}
                   </main>
                 ) : null}
               </section>
             </main>
-            <main className="border rounded py-1 px-2 text-secondary">
+            <main className="border rounded py-1 px-2 text-secondary mt-3">
               <small className="d-flex align-items-center gap-2">
-                {info.icons.schedule}
-                <span>{`${days[d.getDay()]} - ${time} ${
-                  d.getHours() < 12 ? "AM" : "PM"
+                {info.icons.pages.utilities.schedule}
+                <span>{`${days[daytoday.getDay()]} - ${time} ${
+                  daytoday.getHours() < 12 ? "AM" : "PM"
                 }`}</span>
               </small>
             </main>
@@ -199,14 +229,14 @@ export function Locator() {
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
                   class=""
-                  icon={info.icons.back}
+                  icon={info.icons.navigation.back}
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
                 <DefaultDropdown
                   class="border p-2"
                   reversed={true}
-                  icon={info.icons.filter}
+                  icon={info.icons.forms.filter}
                   dropdownitems={
                     <>
                       <DefaultDropdownItem
@@ -219,7 +249,7 @@ export function Locator() {
                         }
                       />
                       <hr />
-                      <main className="d-flex">
+                      <main className="d-flex pb-3">
                         <section>
                           <DefaultDropdownItem
                             title={"On Going"}
@@ -243,6 +273,7 @@ export function Locator() {
                         <section>
                           {department.map((item, i) => (
                             <DefaultDropdownItem
+                              key={i}
                               title={item.Department}
                               trigger={() =>
                                 setFilter((prev) => ({
@@ -269,7 +300,7 @@ export function Locator() {
                   <DefaultButton
                     class="btn-outline-primary px-2"
                     reversed={true}
-                    icon={info.icons.close}
+                    icon={info.icons.navigation.close}
                     text={filter.setbyClass}
                     function={() =>
                       setFilter((prev) => ({
@@ -283,7 +314,7 @@ export function Locator() {
                   <DefaultButton
                     class="btn-outline-primary px-2"
                     reversed={true}
-                    icon={info.icons.close}
+                    icon={info.icons.navigation.close}
                     text={filter.setbyDepartment}
                     function={() =>
                       setFilter((prev) => ({
@@ -296,115 +327,119 @@ export function Locator() {
               </section>
             </main>
             {coaches.length > 0
-              ? coaches.map(
-                  (coach, i) =>
-                    filter.setbyClass === "" ||
-                    checkClassStatus(coach.SCHLID) === filter.setbyClass ? (
-                      filter.setbyDepartment === "" ||
-                      coach.Department === filter.setbyDepartment ? (
-                        <section className="col-3 p-1 m-0">
-                          <main className="h-100 bg-white rounded shadow-sm ratio ratio-1x1">
-                            <section className="h-100 d-flex flex-column align-items-center">
-                              <header className="h-50 w-100 d-flex justify-content-center pt-3 px-2">
-                                <figure className="h-100 w-50 ratio ratio-1x1">
-                                  <img
-                                    src={`http://localhost:8081/images/${coach.Photo}`}
-                                    alt="..."
-                                    className="w-100 h-100 object-fit-cover rounded"
-                                    style={{ objectPosition: "top" }}
-                                  />
-                                </figure>
-                              </header>
-                              <main className="h-50 w-50 d-flex flex-column text-center align-items-between py-3">
-                                <small className="h-100">
-                                  <h4 className="w-100 text-truncate custom-text-gradient m-0 p-0">{`${coach.LastName}`}</h4>
-                                  <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
-                                  <p className="p-0 pt-1 m-0 fw-bold text-secondary">{`${coach.DPT_Abbreviation}`}</p>
-                                </small>
-                                <main>
-                                  <section className="d-flex gap-1">
-                                    <DefaultButton
-                                      class="w-100 btn-info text-white"
-                                      icon={info.icons.schedule}
-                                      text={
-                                        checkClassStatus(coach.SCHLID) ===
-                                        "On Going"
-                                          ? schedules.length > 0
-                                            ? schedules.map((schedule, i) =>
-                                                schedule.SCHLID === coach.SCHLID
-                                                  ? schedule.StartTime <
-                                                      d.getHours() * 60 +
-                                                        d.getMinutes() &&
-                                                    d.getHours() * 60 +
-                                                      d.getMinutes() <
-                                                      schedule.EndTime
-                                                    ? schedule.Day ===
-                                                      days[d.getDay()]
-                                                      ? schedule.Room
-                                                      : null
+              ? coaches.map((coach, i) =>
+                  filter.setbyClass === "" ||
+                  checkClassStatus(coach.SCHLID) === filter.setbyClass ? (
+                    filter.setbyDepartment === "" ||
+                    coach.Department === filter.setbyDepartment ? (
+                      <section
+                        className="col-md-6 col-12 col-lg-4 p-1 m-0"
+                        key={i}
+                        style={{ height: "15em" }}
+                      >
+                        <main className="h-100 bg-white rounded shadow-sm row m-0 p-0">
+                          <section className="col-6 h-100 d-flex flex-column align-items-center py-2">
+                            <header className="h-100 w-100 d-flex justify-content-center">
+                              <figure className="h-100">
+                                <img
+                                  src={`${CDNURL}${coach.Image}`}
+                                  alt="..."
+                                  className="w-100 h-100 object-fit-cover rounded"
+                                  style={{ objectPosition: "top" }}
+                                />
+                              </figure>
+                            </header>
+                          </section>
+                          <section className="col-6">
+                            <main className="h-100 w-100 d-flex flex-column align-items-between justify-content-center py-3 overflow-hidden">
+                              <small className="h-100">
+                                {coachStatus.map((status, q) =>
+                                  status.SCHLID === coach.SCHLID ? (
+                                    <main className="d-flex">
+                                      <section
+                                        className={`px-3 py-0 rounded-pill ${checkStatusHours(
+                                          status.ClassStatus
+                                        )}`}
+                                      >
+                                        <small>
+                                          <p
+                                            className={`p-0 m-0 fw-semibold text-white`}
+                                          >
+                                            {status.ClassStatus}
+                                          </p>
+                                        </small>
+                                      </section>
+                                    </main>
+                                  ) : null
+                                )}
+                                <h4 className="w-100 text-truncate custom-text-gradient fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
+                                <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
+                                <p className="p-0 pt-1 m-0 fw-normal text-secondary">{`${coach.departmentabbrev}`}</p>
+                                {coachStatus.map((status, q) =>
+                                  status.SCHLID === coach.SCHLID ? (
+                                    <main>
+                                      <quote className="p-0 pt-1 m-0 fw-normal text-secondary fst-italic">
+                                        "{status.Description}"
+                                      </quote>
+                                    </main>
+                                  ) : null
+                                )}
+                              </small>
+                              <main>
+                                <section className="d-flex gap-1">
+                                  <DefaultButton
+                                    class="w-100 btn-info text-white"
+                                    icon={info.icons.pages.utilities.schedule}
+                                    text={
+                                      checkClassStatus(coach.SCHLID) ===
+                                      "On Going"
+                                        ? schedules.length > 0
+                                          ? schedules.map((schedule, i) =>
+                                              schedule.SCHLID === coach.SCHLID
+                                                ? schedule.StartTime <
+                                                    daytoday.getHours() * 60 +
+                                                      daytoday.getMinutes() &&
+                                                  daytoday.getHours() * 60 +
+                                                    daytoday.getMinutes() <
+                                                    schedule.EndTime
+                                                  ? schedule.Day ===
+                                                    days[daytoday.getDay()]
+                                                    ? schedule.Room
                                                     : null
                                                   : null
-                                              )
-                                            : null
-                                          : "No Class"
-                                      }
-                                      function={() => {
-                                        setCurrCoach(coach.SCHLID);
-                                      }}
-                                      disabled={
-                                        checkClassStatus(coach.SCHLID) ===
-                                        "On Going"
-                                          ? false
-                                          : true
-                                      }
-                                    />
-                                    <DefaultButton
-                                      class="border px-2"
-                                      reversed={true}
-                                      icon={info.icons.schedule}
-                                      function={() => {
-                                        setSelCoach(coach);
-                                      }}
-                                      toggle="modal"
-                                      target="#CoachSchedule"
-                                    />
-                                  </section>
-                                </main>
+                                                : null
+                                            )
+                                          : null
+                                        : "No Class"
+                                    }
+                                    function={() => {
+                                      setCurrCoach(coach.SCHLID);
+                                    }}
+                                    disabled={
+                                      checkClassStatus(coach.SCHLID) ===
+                                      "On Going"
+                                        ? false
+                                        : true
+                                    }
+                                  />
+                                  <DefaultButton
+                                    class="border px-2"
+                                    reversed={true}
+                                    icon={info.icons.pages.utilities.schedule}
+                                    function={() => {
+                                      setSelCoach(coach);
+                                    }}
+                                    toggle="modal"
+                                    target="#CoachSchedule"
+                                  />
+                                </section>
                               </main>
-                            </section>
-                          </main>
-                        </section>
-                      ) : null
+                            </main>
+                          </section>
+                        </main>
+                      </section>
                     ) : null
-                  // <main className={"w-100 rounded shadow-sm p-3 mb-2 row m-0 "}>
-                  //   <section className="col-2 p-0 m-0">
-                  //     <h6 className="p-0 m-0">{coach.DPT_Abbreviation}</h6>
-                  //   </section>
-                  //   <section className="col-5 p-0 m-0">
-                  //     <h6 className="p-0 m-0 custom-text-gradient fw-bold">{`${coach.LastName}, ${coach.FirstName} ${coach.MiddleInitial}`}</h5>
-                  //     <small>
-                  //       <p className="p-0 m-0 text-secondary fst-italic">
-                  //         <span>{coach.Email}</span>
-                  //       </p>
-                  //     </small>
-                  //   </section>
-                  //   <section className="col-4 p-0 m-0">
-                  //     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end border-end px-3">
-                  //       <p className="p-0 m-0">{coach.SCHLID}</p>
-                  //     </div>
-                  //   </section>
-                  //   <section className="col-1 p-0 m-0">
-                  //     <div className="h-100 w-100 d-flex flex-column justify-content-center align-items-end">
-                  //       <DefaultButton
-                  //         class="btn-info text-white"
-                  //         icon={info.icons.schedule}
-                  //         function={() => {
-                  //           setCurrCoach(coach.SCHLID);
-                  //         }}
-                  //       />
-                  //     </div>
-                  //   </section>
-                  // </main>
+                  ) : null
                 )
               : null}
           </main>
@@ -412,13 +447,25 @@ export function Locator() {
       />
       <ViewModal
         id={"CoachSchedule"}
-        title={<h6 className="text-center text-black">Quick Navigation</h6>}
+        title={<h6 className="text-center text-black">Coach's Load</h6>}
         content={
           <main className="p-3">
             <header>
               <section className="m-0 p-0">
-                <h6>{" ".concat(selcoach.SCHLID)}</h6>
-                <h5>{` ${selcoach.LastName}, ${selcoach.FirstName} ${selcoach.MiddleInitial}`}</h5>
+                <h5>{` ${selcoach.LastName}, ${selcoach.FirstName}`}</h5>
+                <main>
+                  <TextFormat2 header="School ID" data={selcoach.SCHLID} />
+                  <TextFormat2 header="Department" data={selcoach.Department} />
+                  <TextFormat2 header="Email" data={selcoach.Email} />
+                  <TextFormat2
+                    header="Link"
+                    data={
+                      <Link to={selcoach.Link} target="_blank">
+                        {selcoach.Link}
+                      </Link>
+                    }
+                  />
+                </main>
               </section>
               <hr />
             </header>
@@ -426,13 +473,16 @@ export function Locator() {
               {schedules.length > 0
                 ? schedules.map((item, i) =>
                     item.SCHLID === selcoach.SCHLID ? (
-                      <RoomCard
-                        section={item.Section}
-                        course={item.Course}
-                        time={`${item.Day} - ${convertMinutes(
-                          item.StartTime
-                        )} - ${convertMinutes(item.EndTime)}`}
-                      />
+                      item.Day === days[daytoday.getDay()] ? (
+                        <RoomCard
+                          key={i}
+                          section={item.Section}
+                          course={item.Course}
+                          time={`${item.Day} - ${convertMinutes(
+                            item.StartTime
+                          )} - ${convertMinutes(item.EndTime)}`}
+                        />
+                      ) : null
                     ) : null
                   )
                 : null}

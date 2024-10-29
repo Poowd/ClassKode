@@ -3,10 +3,17 @@
   padding: 0;
   box-sizing: border-box;
   list-style: none;
+  /* outline: red 1px solid; */
 
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  -user-drag: none;
 }
 
 body {
@@ -28,7 +35,7 @@ a {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 8px;
   height: 2px;
 }
 /* Track */

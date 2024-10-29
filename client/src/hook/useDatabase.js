@@ -1,7 +1,9 @@
 import axios from "axios";
+import { useState } from "react";
 
 export default function useDatabase() {
   const link = "http://localhost:8081/";
+  const origin = "http://localhost:8081/";
 
   function get(target, trigger) {
     axios
@@ -29,5 +31,29 @@ export default function useDatabase() {
       .catch((err) => console.log(err));
   }
 
-  return [get, post];
+  async function data_get(link, target) {
+    try {
+      const response = await fetch(origin.concat(link), {
+        method: "GET",
+      });
+      const data = await response.json();
+      try {
+        target(data);
+      } catch (error) {}
+    } catch (error) {}
+  }
+  async function data_post(link, values, target) {
+    try {
+      const response = await fetch(origin.concat(link), {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+      const data = await response.json();
+      try {
+        target(data);
+      } catch (error) {}
+    } catch (error) {}
+  }
+
+  return [get, post, data_get, data_post];
 }

@@ -9,16 +9,17 @@ import { FileMaintainanceTemplate } from "../../../layout/grid/FileMaintainanceT
 import { useNavigate } from "react-router-dom";
 import { ListCard } from "../../../component/card/ListCard";
 import useConfiguration from "../../../hook/useConfiguration";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function User() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [users, setUsers] = useState([]);
   const [info] = useConfiguration();
 
   useEffect(() => {
-    post("sel-users", users, setUsers);
-  }, [users]);
+    data_get("user-list", setUsers);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
@@ -27,14 +28,14 @@ export function User() {
         <>
           <DefaultButton
             class=""
-            icon={info.icons.back}
+            icon={info.icons.navigation.back}
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" />
           <DefaultDropdown
             class="border p-2"
             reversed={true}
-            icon={info.icons.filter}
+            icon={info.icons.forms.filter}
             dropdownitems={
               <>
                 <DefaultDropdownItem title={"Profile"} />
@@ -45,32 +46,46 @@ export function User() {
           />
           <DefaultButton
             class="btn-primary"
-            icon={info.icons.generate}
+            icon={info.icons.forms.generate}
             function={() => {
               navigate("/user/generate/0");
             }}
           />
-          <DefaultButton
+          <LinkButton
+            to={"/user/create/0"}
             class="btn-primary"
-            icon={info.icons.add}
-            function={() => {
-              navigate("");
-            }}
+            textclass="text-white"
+            icon={info.icons.forms.add}
           />
         </>
       }
-      list={users.map((item) => (
-        <ListCard
-          slot1={item.SCHLID}
-          slot2={`${item.FirstName} ${item.LastName}`}
-          slot3={item.UUID_Created}
-          slot4={item.UserType}
-          slot5={item.Email}
-          view={info.icons.details}
-          link={null}
-          state={null}
-        />
-      ))}
+      list={
+        users &&
+        users.map((item) => (
+          <ListCard
+            slot1={item.SCHLID}
+            slot2={`${item.FirstName} ${item.LastName}`}
+            slot3={item.Email}
+            slot4={`${item.UserType} ${item.PermissionLevel}`}
+            slot5={
+              item.AcademicCode !== null ? item.AcademicCode : "Not Registered"
+            }
+            view={info.icons.details}
+            link={null}
+            state={null}
+            custom={
+              <>
+                <LinkButton
+                  to={`/user/edit/${item.UUID}`}
+                  class="btn-warning"
+                  textclass=""
+                  icon={info.icons.forms.edit}
+                />
+              </>
+            }
+          />
+        ))
+      }
     />
   );
 }

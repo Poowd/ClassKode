@@ -13,11 +13,10 @@ export function useToasty() {
 
   function showToast(targetIcon, targetTitle, setContent) {
     setToasty({ icon: targetIcon, title: targetTitle, content: setContent });
-
+    toastToast.show();
     setTimeout(() => {
-      toastToast.show();
-    }, 1000); // delay in seconds
-    toastToast.hide();
+      toastToast.hide();
+    }, 2500); // delay in seconds
   }
 
   return [toasty, showToast];

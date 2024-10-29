@@ -1,0 +1,103 @@
+.gradient-background-1 {
+  background-image: linear-gradient(
+    45deg,
+    #083d6d,
+    #0a4b84,
+    #0c589c,
+    #0e65b4,
+    #1073cb
+  );
+  color: white;
+}
+
+.gradient-background-2 {
+  background-image: linear-gradient(to right, #39ace7, #02dbff, #39ace7);
+  border: #02dbff 2px solid;
+  color: white;
+}
+
+.gradient-bg-blue {
+  background-image: linear-gradient(
+    to bottom right,
+    #083d6d,
+    #0a4b84,
+    #0c589c,
+    #0e65b4,
+    #1073cb
+  );
+  color: white;
+}
+
+.gradient-bg-light-blue {
+  background-image: linear-gradient(to bottom right, #44aff5, #0d7eb7);
+  color: white;
+}
+
+.gradient-bg-yellow {
+  background-image: linear-gradient(
+    to top right,
+    #ffe642,
+    #fbf300,
+    #ffee00,
+    #ffd900,
+    #ffbf00
+  );
+  color: #083d6d;
+}
+
+.gradient-bg-light-yellow {
+  background-image: linear-gradient(to bottom right, #ffd900, #ffff42);
+  color: #083d6d;
+}
+
+/*  */
+.gradient-text-blue-golden {
+  background: linear-gradient(to right, #39ace7, #02dbff, #39ace7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-golden {
+  background: linear-gradient(to right, #ffdf00, #ffcc00, #ecbd00, #cc9900);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-1 {
+  background: linear-gradient(to right, #a4de02, #acdf87, #68bb59);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-2 {
+  background: linear-gradient(to right, #ff7400, #ffc100, #ff9a00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-3 {
+  background: linear-gradient(to right, #d1193e, #f86e51, #ee3e38);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* 
+
+.custom-text-blue {
+  color: #0a3463;
+}
+
+
+
+.solid-background-1 {
+  background-image: linear-gradient(180deg, #e58c02, #fe9c02);
+  color: #083d6d;
+  font-weight: 700;
+  filter: drop-shadow(10px);
+} */
+
+.tinted-black {
+  background-image: linear-gradient(to top, #fff, #0a4b8485, #0c589c95),
+    url("../assets/imgs/background/sti-bg-campus-2.jpg");
+  background-size: cover;
+  backdrop-filter: blur(2px);
+}

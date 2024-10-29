@@ -8,108 +8,75 @@ import { SelectButtonItem } from "../../../../component/dropdown/select/SelectBu
 import { SelectButton } from "../../../../component/dropdown/select/SelectButton";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useDatabase from "../../../../hook/useDatabase";
+import useConfiguration from "../../../../hook/useConfiguration";
+import { useToasty } from "../../../../hook/useToasty";
+import { DefaultToast } from "../../../../component/toast/DefaultToast";
 
 export function GenerateSection() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
+  const [info] = useConfiguration();
+  const [toasty, showToast] = useToasty();
 
+  const [sectionlist, setSectionList] = useState([]);
+  const [semester, setSemester] = useState([]);
   const [section, setSection] = useState([]);
   const [program, setProgram] = useState([]);
   const [yearlevel, setYearLevel] = useState([]);
-  const [semester, setSemester] = useState([]);
-  const [academiclevel, setAcademicLevel] = useState([]);
-  const [preview, setPreview] = useState([]);
   const [data, setData] = useState({
-    Semester: "",
-    YearLevel: "",
-    PRG_Code: "",
+    Code: "",
   });
 
   const [dataChange] = useHandleChange(setData);
 
   useEffect(() => {
-    post("sel-sect", section, setSection);
-    post("sel-prg", program, setProgram);
-    post("sel-yrlvl", yearlevel, setYearLevel);
-    post("sel-sem", semester, setSemester);
-    post("sel-acyl", academiclevel, setAcademicLevel);
-  }, [section, academiclevel]);
+    data_get("section-list", setSection);
+    data_get("program-list", setProgram);
+    data_get("year-level-list", setYearLevel);
+    data_get("semester-list", setSemester);
+  }, [section]);
 
-  function getAcademicLevel() {
-    for (var k = 0; k < program.length; k++) {
-      if (data.PRG_Code === program[k].PRG_Code) {
-        return program[k].AcademicLevel;
+  var counter = 0;
+  const generated_phase1 = [];
+
+  const getSectionDuplicates = (template) => {
+    var len = 0;
+    section.forEach((sect) => {
+      if (sect.Program === data.Code) {
+        if (sect.Section.includes(template)) {
+          ++len;
+        }
       }
+    });
+
+    if (len < 10) {
+      return `0${++len}`;
+    } else {
+      return ++len;
     }
-  }
-  var testArray = [];
-  var temp = [];
-  var count = 0;
-  var abbrev = "";
-  const anotherarray = [];
-  const [sectionlist, setSectionList] = useState([]);
+  };
+
   useEffect(() => {
-    setSectionList([]);
-
-    for (var k = 0; k < program.length; k++) {
-      for (var i = 0; i < yearlevel.length; i++) {
-        if (
-          program[k].AcademicLevel === yearlevel[i].AcademicLevel &&
-          data.PRG_Code === program[k].PRG_Code
-        ) {
-          for (var j = 0; j < semester.length; j++) {
-            count++;
-            testArray.push([
-              count,
-              yearlevel[i].YearLevel,
-              semester[j].Semester,
-            ]);
+    program.forEach((prg) => {
+      yearlevel.forEach((yrl) => {
+        semester.forEach((sem) => {
+          if (prg.Code === data.Code) {
+            counter++;
+            generated_phase1.push({
+              Section: `${prg.Abbrev}${counter}${getSectionDuplicates(
+                `${prg.Abbrev}${counter}`
+              )}`,
+              YearLevel: yrl.YearLevel,
+              Program: prg.Code,
+              Semester: sem.Semester
+            });
           }
-        }
-      }
-    }
+        });
+      });
+    });
 
-    for (var f = 0; f < section.length; f++) {
-      if (
-        section[f].PRG_Code === data.PRG_Code &&
-        section[f].YearLevel === data.YearLevel &&
-        section[f].Semester === data.Semester
-      ) {
-        temp.push(section[f].Section);
-      }
-    }
-
-    var asx = [];
-    for (var k = 0; k < program.length; k++) {
-      if (program[k].PRG_Code === data.PRG_Code) {
-        abbrev = program[k].PRG_Abbreviation;
-        for (var l = 0; l < 8; l++) {
-          for (var f = 0; f < section.length; f++) {
-            if (
-              section[f].PRG_Code === data.PRG_Code &&
-              section[f].YearLevel === testArray[l][1] &&
-              section[f].Semester === testArray[l][2]
-            ) {
-              asx.push(section[f].Section);
-            }
-          }
-          anotherarray.push({
-            Section:
-              program[k].PRG_Abbreviation +
-              "" +
-              testArray[l][0] +
-              "0" +
-              (asx.length + 1),
-            YearLevel: testArray[l][1],
-            Semester: testArray[l][2],
-            Program: data.PRG_Code,
-          });
-          asx = [];
-        }
-        setSectionList(anotherarray);
-      }
-    }
-  }, [data.PRG_Code]);
+    setSectionList(generated_phase1);
+  }, [data.Code]);
 
   function sleep(time) {
     return new Promise((resolve) => {
@@ -118,29 +85,49 @@ export function GenerateSection() {
   }
 
   async function TestData(data) {
-    post("gen-section", data, setData);
-    sleep(2000);
+    setTimeout(() => {
+      data_post("section-generate", data, setData);
+    }, 1000); // 2 second delay
   }
 
-  const submit = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    for (var i in sectionlist) {
-      TestData(sectionlist[i]);
+    if (true) {
+      for (var i in sectionlist) {
+        do {
+          try {
+            const response = await fetch(
+              `${info.conn.server}section-generate`,
+              {
+                method: "POST",
+                body: JSON.stringify(sectionlist[i]),
+              }
+            );
+            const data = await response.json();
+            console.log(data);
+          } catch (error) {
+            console.log(error);
+          }
+        } while (data.Status === "Success");
+      }
+      showToast(info.icons.others.info, "Sections", `Sections are saved!`);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
     }
-    navigate(-1);
   };
 
   return (
-    <form className="h-100" onSubmit={submit}>
+    <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Generate"}
+        title={"Generates a set of Section"}
         description={"This module creates a generate"}
         control={
           <>
             <DefaultButton
               class="btn-outline-secondary"
               type="button"
-              icon={<IoMdArrowRoundBack />}
+              icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
             <DefaultButton
@@ -154,23 +141,21 @@ export function GenerateSection() {
           <>
             <SelectButton
               label="Program"
-              id="PRG_Code"
+              id="Code"
               trigger={dataChange}
               required={true}
               option={
                 <>
                   <SelectButtonItemSelected
                     content={program.map((option, i) => (
-                      <>
-                        {option.PRG_Code === data.Program ? option.Program : ""}
-                      </>
+                      <>{option.Code === data.Program ? option.Program : ""}</>
                     ))}
                   />
                   {program.map((option, i) => (
                     <>
-                      {data.Program !== option.PRG_Code ? (
+                      {data.Program !== option.Code ? (
                         <SelectButtonItem
-                          value={option.PRG_Code}
+                          value={option.Code}
                           content={option.Program}
                         />
                       ) : (
@@ -184,17 +169,22 @@ export function GenerateSection() {
           </>
         }
         entry={
-          <main className="p-3">
-            <section className="row m-0 p-0">
+          <main className="py-3">
+            <section className="d-flex flex-column gap-2">
               {sectionlist.map((section, i) => (
-                <div className="col-2 p-1 m-0">
-                  <div className="border rounded p-2">{section.Section}</div>
+                <div className="border rounded p-2">
+                  {section.Section} - {section.YearLevel}
                 </div>
               ))}
             </section>
           </main>
         }
         additional={<></>}
+      />
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
       />
     </form>
   );

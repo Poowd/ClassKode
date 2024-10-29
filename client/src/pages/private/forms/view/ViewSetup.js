@@ -21,7 +21,7 @@ export function ViewSetup() {
   const navigate = useNavigate();
   const params = useParams();
   const { state } = useLocation();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [ArchiveEntry] = useArchiveEntry();
   const [
@@ -50,11 +50,11 @@ export function ViewSetup() {
   const [dataChange] = useHandleChange(setConfirmCode);
 
   useEffect(() => {
-    get("random-code-generator", setCode);
+    data_get("random-code-generator", setCode);
   }, []);
 
   useEffect(() => {
-    post("course-mapping", mapping, setMapping);
+    data_post("course-mapping", mapping, setMapping);
   }, [mapping]);
 
   useEffect(() => {

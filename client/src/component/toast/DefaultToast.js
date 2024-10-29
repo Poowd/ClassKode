@@ -4,7 +4,7 @@ import { IoCloseOutline } from "react-icons/io5";
 export class DefaultToast extends React.Component {
   render() {
     return (
-      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div class="toast-container position-fixed top-0 end-0 p-3">
         <div
           id="liveToast"
           class="toast"

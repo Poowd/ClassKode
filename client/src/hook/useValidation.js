@@ -1,375 +1,117 @@
 export default function useValidation() {
-  const valid = ["is-valid", "text-success"];
-  const invalid = ["is-invalid", "text-danger"];
-  const message = ["Looks Good!", "Looks Bad!"];
-  const character = [
-    {
-      lowercase: "abcdefghijklmnopqrstuvwxyz",
-      uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-      special: "!@#$%^&*()_+-=~`{}|:<>?[];',./'",
-      numbers: "1234567890",
-    },
-  ];
+  function ValiAI(type, data) {
+    switch (type) {
+      case "SCHLID":
+        if (/^[0-9]{11}/g.test(data) && data.length == 11) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "Code":
+        if (/^[A-Z]{3,6}-[0-9]{3}/g.test(data) && data.length <= 10) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "Name":
+        if (/^[A-Z]{1}[a-z\s]{2,99}/gi.test(data) && data.length <= 100) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "SectionName":
+        if (/^[A-Z]{2,5}[0-9]{3}/gi.test(data) && data.length <= 8) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "RoomName":
+        if (/^[A-Z0-9]{3,50}/gi.test(data) && data.length <= 50) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "Abbrev":
+        if (/[A-Z]{2,10}/g.test(data) && data.length <= 10) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "Initial":
+        if (/[A-Z]{0,2}/g.test(data) && data.length <= 2) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "Phone":
+        if (/[0-9]{11}/g.test(data) && data.length == 11) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "SchoolEmail":
+        if (data.includes("@munoz.sti.edu") && data.length <= 50) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      case "Numerical":
+        if (/^[0-9{1,2}]/g.test(data) && data.length <= 2 && data <= 50) {
+          return ["is-valid", "valid-feedback", "Looks Good!"];
+        }
+        return ["is-invalid", "invalid-feedback", "Looks Bad!"];
+      default:
+        break;
+    }
+  }
 
-  function Numerical(data) {
-    const characters =
-      character.lowercase + character.uppercase + character.special;
-    for (var i = 0; i <= characters.length - 1; i++) {
-      if (data.length === 0) {
-        return null;
-      }
-      if (data.includes(characters[i])) {
+  function ValiAIBool(type, data) {
+    switch (type) {
+      case "SCHLID":
+        if (/^[0-9]{11}/g.test(data) && data.length == 11) {
+          return true;
+        }
         return false;
-      }
-    }
-    return true;
-  }
-
-  function InvalidCharacter(data, character) {
-    const characters = character;
-
-    for (var i = 0; i <= characters.length - 1; i++) {
-      if (data.length === 0) {
-        return null;
-      }
-      if (data.includes(characters[i])) {
+      case "Code":
+        if (/^[A-Z]{3,6}-[0-9]{3}/g.test(data) && data.length <= 10) {
+          return true;
+        }
         return false;
-      }
+      case "Name":
+        if (/^[A-Z]{1}[a-z\s]{2,99}/gi.test(data) && data.length <= 100) {
+          return true;
+        }
+        return false;
+      case "SectionName":
+        if (/^[A-Z]{2,5}[0-9]{3}/gi.test(data) && data.length <= 8) {
+          return true;
+        }
+        return false;
+      case "RoomName":
+        if (/^[A-Z0-9]{3,50}/gi.test(data) && data.length <= 50) {
+          return true;
+        }
+        return false;
+      case "Abbrev":
+        if (/[A-Z]{2,10}/g.test(data) && data.length <= 10) {
+          return true;
+        }
+        return false;
+      case "Initial":
+        if (/[A-Z]{0,2}/g.test(data) && data.length <= 2) {
+          return true;
+        }
+        return false;
+      case "Phone":
+        if (/[0-9]{11}/g.test(data) && data.length == 11) {
+          return true;
+        }
+        return false;
+      case "SchoolEmail":
+        if (data.includes("@munoz.sti.edu") && data.length <= 50) {
+          return true;
+        }
+        return false;
+      case "Numerical":
+        if (/^[0-9{1,2}]/g.test(data) && data.length <= 2 && data <= 50) {
+          return true;
+        }
+        return false;
+      default:
+        break;
     }
-    return true;
   }
 
-  function Phone(data) {
-    if (data.length === 0) {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (data.substring(0, 2) !== "09") {
-      return [
-        {
-          Result: false,
-          State: invalid,
-          Message: message[1],
-        },
-      ];
-    }
-    return [
-      {
-        Result: true,
-        State: valid,
-        Message: message[0],
-      },
-    ];
-  }
-
-  function Range(data, min, max) {
-    if (Math.floor(parseFloat(data)) === 0) {
-      return null;
-    }
-    if (Math.floor(parseFloat(data)) < min) {
-      return false;
-    }
-    if (Math.floor(parseFloat(data)) > max) {
-      return false;
-    }
-    return true;
-  }
-
-  function Length(data, min, max) {
-    if (data.length === 0) {
-      return null;
-    }
-    if (data.length < min) {
-      return false;
-    }
-    if (data.length > max) {
-      return false;
-    }
-    return true;
-  }
-
-  function ValidateEmpty(data) {
-    if (data === "") {
-      return [
-        {
-          Result: false,
-          State: invalid,
-          Message: message[1],
-        },
-      ];
-    }
-    return [
-      {
-        Result: true,
-        State: valid,
-        Message: message[0],
-      },
-    ];
-  }
-
-  function ValidateID(data, min_len, max_len, min_rng, max_rng, duplicate) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (
-      Length(data, min_len, max_len) === true &&
-      Range(data, min_rng, max_rng) === true &&
-      Numerical(data) &&
-      duplicate &&
-      InvalidCharacter(
-        data,
-        "!@#$%^&*()_+-=~`{}|:<>?[];',./'" +
-          character.uppercase +
-          character.lowercase
-      )
-    ) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidateCodeID(data, min_len, max_len, duplicate) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (Length(data, min_len, max_len) === true && duplicate) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidateName(data, min_len, max_len) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (
-      Length(data, min_len, max_len) &&
-      InvalidCharacter(data, "!@#$%^&*()_+-=~`{}|:<>?[];',./'1234567890")
-    ) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidateEmail(data, min_len, max_len, duplicate) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (Length(data, min_len, max_len) && duplicate) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidatePhone(data, min_len, max_len, duplicate) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (Length(data, min_len, max_len) && Numerical(data) && duplicate) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidateLink(data, min_len, max_len, duplicate) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (Length(data, min_len, max_len) && duplicate) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidateCode(data, min_len, max_len, code) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (Length(data, min_len, max_len) && code === data) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function ValidateTitle(data, min_len, max_len) {
-    if (data === "") {
-      return [
-        {
-          Result: null,
-          State: "",
-          Message: "",
-        },
-      ];
-    }
-    if (Length(data, min_len, max_len)) {
-      return [
-        {
-          Result: true,
-          State: valid,
-          Message: message[0],
-        },
-      ];
-    }
-    return [
-      {
-        Result: false,
-        State: invalid,
-        Message: message[1],
-      },
-    ];
-  }
-
-  function Base() {
-    return [
-      {
-        Result: false,
-        State: "",
-        Message: "",
-      },
-    ];
-  }
-
-  return [
-    Base,
-    ValidateID,
-    ValidateName,
-    ValidateEmail,
-    ValidatePhone,
-    ValidateLink,
-    ValidateCode,
-    ValidateEmpty,
-    ValidateCodeID,
-    ValidateTitle,
-  ];
+  return [ValiAI, ValiAIBool];
 }

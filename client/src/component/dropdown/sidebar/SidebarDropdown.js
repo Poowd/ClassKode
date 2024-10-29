@@ -3,25 +3,24 @@ import React from "react";
 export class SidebarDropdown extends React.Component {
   render() {
     return (
-      <li className="w-100">
+      <section className="w-100 p-3 d-flex">
         <a
           href={this.props.reference}
           data-bs-toggle="collapse"
+          aria-expanded="false"
           className="nav-link px-lg-0 align-middle w-100"
         >
-          <span className="ms-2 d-none d-sm-inline text-dark fw-medium">
-            {this.props.text}
-          </span>
+          <span className="text-dark fw-medium">{this.props.text}</span>
         </a>
 
         <ul
-          className="collapse nav flex-column px-3 w-100"
+          className="collapse collapse-horizontal flex-column gap-2"
           id={this.props.referenced}
           data-bs-parent={this.props.parent}
         >
           {this.props.itemlist}
         </ul>
-      </li>
+      </section>
     );
   }
 }

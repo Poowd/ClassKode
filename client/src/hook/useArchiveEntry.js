@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import useDatabase from "./useDatabase";
 
 export default function useArchiveEntry() {
   const navigate = useNavigate();
+  const [get, post, data_get, data_post] = useDatabase();
 
   function ArchiveEntry(link, trigger, generated, input, data, action) {
     if (generated === input) {
-      trigger(link, data, action);
+      post(link, data, action);
       navigate(-1);
     }
   }

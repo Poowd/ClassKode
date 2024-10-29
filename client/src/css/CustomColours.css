@@ -1,40 +1,33 @@
-.gradient-bg-blue {
-  background-image: linear-gradient(
-    to bottom right,
+/*
+GOLD FOR DARK MODE
+    #a67c00,
+    #bf9b30,
+    #ffbf00,
+    #ffcf40,
+    #ffdc73
+  */
+
+.custom-text-gradient {
+  background: linear-gradient(
+    to right,
     #083d6d,
     #0a4b84,
     #0c589c,
     #0e65b4,
     #1073cb
   );
-  color: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.gradient-bg-light-blue {
-  background-image: linear-gradient(to bottom right, #44aff5, #0d7eb7);
-  color: white;
-}
-
-.gradient-bg-yellow {
-  background-image: linear-gradient(
-    to bottom right,
-    #ffd300,
-    #fcd12a,
-    #ffc30b,
-    #ffbf00,
-    #f2bc34
-  );
-  color: #ffffed;
-}
-
-.custom-text-gradient {
+.custom-text-gradient-dark {
   background: linear-gradient(
     to right,
-    #005483,
-    #007a9a,
-    #008da1,
-    #00a1a4,
-    #00ca9a
+    #a67c00,
+    #bf9b30,
+    #ffbf00,
+    #ffcf40,
+    #ffdc73
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

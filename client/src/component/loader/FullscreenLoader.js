@@ -1,6 +1,6 @@
 import React from "react";
 import "./Loader.css";
-import logo from "../../assets/logo/ClassKode Logo (1).png";
+import logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 
 export class FullscreenLoader extends React.Component {
   render() {
@@ -8,6 +8,7 @@ export class FullscreenLoader extends React.Component {
       <main
         className={`d-flex justify-content-center align-items-center gradient-bg-blue flex-column ${this.props.class}`}
         style={{ width: "100%", height: "100vh" }}
+        data-bs-backdrop="static"
       >
         <main className="row m-0 p-0">
           <figure

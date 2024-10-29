@@ -11,10 +11,12 @@ import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../hook/useDatabase";
 import { ListCard } from "../../../component/card/ListCard";
 import useConfiguration from "../../../hook/useConfiguration";
+import { useToasty } from "../../../hook/useToasty";
+import { DefaultToast } from "../../../component/toast/DefaultToast";
 
 export function Archives() {
   const navigate = useNavigate();
-  const [get, post] = useDatabase();
+  const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const LocalStorage = [JSON.parse(localStorage.getItem("archive_selection"))];
@@ -30,28 +32,33 @@ export function Archives() {
   const [curriculum, setCurriculum] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [data, setData] = useState([]);
+  const [toasty, showToast] = useToasty();
+  const [archiveCount, setArchiveCount] = useState([]);
+
+  const [category, setCategory] = useState({
+    institution: [
+      "Department",
+      "Program",
+      "Course",
+      "Coach",
+      "Section",
+      "Room",
+    ],
+    utilities: ["Curriculum", "Academic Year", "Schedules"],
+  });
 
   useEffect(() => {
-    post("arch-dept", department, setDepartment);
-    post("arch-prg", program, setProgram);
-    post("arch-crs", course, setCourse);
-    post("arch-coach", coach, setCoach);
-    post("arch-sect", section, setSection);
-    post("arch-rom", room, setRoom);
-    post("arch-acy", academicyear, setAcademicYear);
-    post("arch-curr", curriculum, setCurriculum);
-    post("arch-sched", schedule, setSchedule);
-  }, [
-    department,
-    program,
-    course,
-    coach,
-    section,
-    room,
-    academicyear,
-    curriculum,
-    schedule,
-  ]);
+    data_get("archive-count", setArchiveCount);
+    data_get("department-list-archived", setDepartment);
+    data_get("program-list-archived", setProgram);
+    data_get("course-list-archived", setCourse);
+    data_get("coach-list-archived", setCoach);
+    data_get("section-list-archived", setSection);
+    data_get("room-list-archived", setRoom);
+    data_get("academic-year-list-archived", setAcademicYear);
+    data_get("curriculum-list-archived", setCurriculum);
+    data_get("schedules-list-archived", setSchedule);
+  }, [department]);
 
   useEffect(() => {
     // if (selection !== LocalStorage[0].selection) {
@@ -71,268 +78,396 @@ export function Archives() {
   }, []);
 
   return (
-    <FileMaintainanceTemplate
-      sidepanel={<NoDisplay />}
-      control={
-        <>
-          <DefaultButton
-            class=""
-            icon={<MdArrowBackIosNew />}
-            function={() => navigate(-1)}
-          />
-          <DefaultInput placeholder="Search" />
-          <DefaultDropdown
-            class="border px-2 btn-primary"
-            reversed={true}
-            icon={<FaFilter />}
-            text={selection}
-            dropdownitems={
-              <>
-                <main className="p-3 d-flex">
-                  <section className="p-3">
-                    <h6>Institution</h6>
-                    <DefaultDropdownItem
-                      title={"Department"}
-                      trigger={() => setSelection("Department")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Program"}
-                      trigger={() => setSelection("Program")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Course"}
-                      trigger={() => setSelection("Course")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Coach"}
-                      trigger={() => setSelection("Coach")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Section"}
-                      trigger={() => setSelection("Section")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Room"}
-                      trigger={() => setSelection("Room")}
-                    />
-                  </section>
-                  <section className="p-3">
-                    <h6>Utilities</h6>
-                    <DefaultDropdownItem
-                      title={"Curriculum"}
-                      trigger={() => setSelection("Curriculum")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Academic Year"}
-                      trigger={() => setSelection("Academic Year")}
-                    />
-                    <DefaultDropdownItem
-                      title={"Schedules"}
-                      trigger={() => setSelection("Schedules")}
-                    />
-                  </section>
+    <>
+      <FileMaintainanceTemplate
+        sidepanel={
+          <>
+            <main className="p-2">
+              <section>
+                <header className="">
+                  <h5 className="p-0 m-0">{`Sheet Details`}</h5>
+                </header>
+                <main className="mt-2">
+                  <small>
+                    <p className="fw-semibold p-0 m-0">Institution</p>
+                  </small>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Department`}</section>
+                        <section>{`${archiveCount.department}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Program`}</section>
+                        <section>{`${archiveCount.program}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Course`}</section>
+                        <section>{`${archiveCount.course}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Coach`}</section>
+                        <section>{`${archiveCount.coach}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Section`}</section>
+                        <section>{`${archiveCount.section}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Room`}</section>
+                        <section>{`${archiveCount.room}`}</section>
+                      </main>
+                    </li>
+                  </ul>
                 </main>
-              </>
-            }
-          />
-        </>
-      }
-      list={
-        selection === "Department"
-          ? department.map((dept, i) => (
-              <ListCard
-                slot1={dept.DPT_Code}
-                slot2={dept.Department}
-                slot3={dept.DPT_Created}
-                slot4={dept.DPT_Abbreviation}
-                slot5={dept.DPT_Abbreviation}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-dept", { DPTID: dept.DPTID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Program"
-          ? program.map((prog, i) => (
-              <ListCard
-                slot1={prog.PRG_Code}
-                slot2={prog.Program}
-                slot3={prog.PRG_Created}
-                slot4={"Available"}
-                slot5={"2024-2025"}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-prg", { PRGID: prog.PRGID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Course"
-          ? course.map((cors, i) => (
-              <ListCard
-                slot1={cors.CRS_Code}
-                slot2={cors.Course}
-                slot3={cors.CRS_Created}
-                slot4={cors.Program}
-                slot5={cors.AcademicLevel}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-crs", { CRSID: cors.CRSID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Coach"
-          ? coach.map((coach, i) => (
-              <ListCard
-                slot1={coach.SCHLID}
-                slot2={`${coach.FirstName} ${
-                  coach.MiddleInitial !== null
-                    ? " " + coach.MiddleInitial + ". "
-                    : " "
-                } ${coach.LastName}`}
-                slot3={coach.CCH_Created}
-                slot4={coach.Department}
-                slot5={coach.Email}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-coach", { CCHID: coach.CCHID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Section"
-          ? section.map((sect, i) => (
-              <ListCard
-                slot1={sect.SCTID}
-                slot2={sect.Section}
-                slot3={sect.SCT_Created}
-                slot4={sect.AcademicLevel}
-                slot5={`${sect.YearLevel} - ${sect.Semester}`}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-sect", { SCTID: sect.SCTID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Room"
-          ? room.map((rom, i) => (
-              <ListCard
-                slot1={rom.ROMID}
-                slot2={rom.Room}
-                slot3={rom.ROM_Created}
-                slot4={rom.Facility}
-                slot5={`${rom.Building} - ${rom.Floor}`}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-rom", { ROMID: rom.ROMID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Curriculum"
-          ? curriculum.map((crr, i) => (
-              <ListCard
-                slot1={crr.CRR_Code}
-                slot2={crr.Curriculum}
-                slot3={crr.CRR_Created}
-                slot4={null}
-                slot5={null}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-curr", { CRRID: crr.CRRID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Academic Year"
-          ? academicyear.map((acy, i) => (
-              <ListCard
-                slot1={acy.ACY_Code}
-                slot2={acy.AcademicYear}
-                slot3={acy.ACY_Created}
-                slot4={acy.CRR_Code}
-                slot5={`${acy.StartDate} - ${acy.EndDate}`}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-acy", { ACYID: acy.ACYID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : selection === "Schedules"
-          ? schedule.map((sched, i) => (
-              <ListCard
-                slot1={sched.Section}
-                slot2={sched.Course}
-                slot3={sched.SCD_Created}
-                slot4={`${sched.Room} ( ${sched.LastName} )`}
-                slot5={`${sched.StartTime} - ${sched.EndTime}`}
-                link={null}
-                state={null}
-                custom={
-                  <DefaultButton
-                    class="btn-warning"
-                    icon={info.icons.restore}
-                    function={() => {
-                      post("res-sched", { SCDID: sched.SCDID }, setData);
-                    }}
-                  />
-                }
-              />
-            ))
-          : null
-      }
-    />
+                <main className="mt-2">
+                  <small>
+                    <p className="fw-semibold p-0 m-0">Utilities</p>
+                  </small>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Curriculum`}</section>
+                        <section>{`${archiveCount.curriculum}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Academic Year`}</section>
+                        <section>{`${archiveCount.academic_year}`}</section>
+                      </main>
+                    </li>
+                    <li class="list-group-item">
+                      <main className="d-flex justify-content-between">
+                        <section>{`Class Schedules`}</section>
+                        <section>{`${archiveCount.class_schedules}`}</section>
+                      </main>
+                    </li>
+                  </ul>
+                </main>
+              </section>
+            </main>
+          </>
+        }
+        control={
+          <>
+            <DefaultButton
+              class="px-2"
+              icon={info.icons.navigation.back}
+              text="Back"
+              function={() => navigate(-1)}
+            />
+            <DefaultInput placeholder="Search" />
+            <DefaultDropdown
+              class="border px-2 btn-primary"
+              reversed={true}
+              icon={info.icons.forms.filter}
+              text={selection}
+              dropdownitems={
+                <>
+                  <main className="p-2 d-flex">
+                    <section className="p-3">
+                      <h6>Institution</h6>
+                      {category.institution.map((item, i) => (
+                        <DefaultDropdownItem
+                          title={item}
+                          trigger={() => setSelection(item)}
+                        />
+                      ))}
+                    </section>
+                    <section className="p-3">
+                      <h6>Utilities</h6>
+                      {category.utilities.map((item, i) => (
+                        <DefaultDropdownItem
+                          title={item}
+                          trigger={() => setSelection(item)}
+                        />
+                      ))}
+                    </section>
+                  </main>
+                </>
+              }
+            />
+          </>
+        }
+        list={
+          selection === "Department"
+            ? department.map((department, i) => (
+                <ListCard
+                  slot1={department.Code}
+                  slot2={department.Department}
+                  slot3={department.Abbrev}
+                  slot4={null}
+                  slot5={department.AcademicLevel}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post(
+                          "department-restore",
+                          { data: department.DPTID },
+                          setData
+                        );
+                        showToast(
+                          info.icons.others.info,
+                          "Department",
+                          `Department ${department.Department} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Program"
+            ? program.map((program, i) => (
+                <ListCard
+                  slot1={program.Code}
+                  slot2={program.Program}
+                  slot3={program.Abbrev}
+                  slot4={null}
+                  slot5={null}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post(
+                          "program/restore",
+                          { data: program.PRGID },
+                          setData
+                        );
+                        showToast(
+                          info.icons.others.info,
+                          "Program",
+                          `Program ${program.Program} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Course"
+            ? course.map((course, i) => (
+                <ListCard
+                  slot1={course.Code}
+                  slot2={course.Course}
+                  slot3={course.Department}
+                  slot4={null}
+                  slot5={course.Status}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post("res-crs", { CRSID: course.CRSID }, setData);
+                        showToast(
+                          info.icons.others.info,
+                          "Course",
+                          `Course ${course.Course} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Coach"
+            ? coach.map((coach, i) => (
+                <ListCard
+                  slot1={coach.SCHLID}
+                  slot2={`${coach.FirstName} ${
+                    coach.MiddleInitial !== (null || "")
+                      ? " " + coach.MiddleInitial + ". "
+                      : " "
+                  } ${coach.LastName}`}
+                  slot3={coach.Email}
+                  slot4={coach.Department}
+                  slot5={null}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post(
+                          "coach-restore",
+                          { data: coach.CCHID },
+                          setData
+                        );
+                        showToast(
+                          info.icons.others.info,
+                          "Coach",
+                          `Coach ${coach.FirstName} ${
+                            coach.MiddleInitial !== null
+                              ? " " + coach.MiddleInitial + ". "
+                              : " "
+                          } ${coach.LastName} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Section"
+            ? section.map((section, i) => (
+                <ListCard
+                  slot1={section.SCTID}
+                  slot2={section.Section}
+                  slot3={section.Program}
+                  slot4={section.YearLevel}
+                  slot5={section.Semester}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post(
+                          "res-sect",
+                          { SCTID: section.SCTID },
+                          setData
+                        );
+                        showToast(
+                          info.icons.others.info,
+                          "Section",
+                          `Section ${section.Section} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Room"
+            ? room.map((room, i) => (
+                <ListCard
+                  slot1={room.ROMID}
+                  slot2={room.Room}
+                  slot3={`${room.Building} - ${room.Floor}`}
+                  slot4={room.Facility}
+                  slot5={null}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post("res-rom", { ROMID: room.ROMID }, setData);
+                        showToast(
+                          info.icons.others.info,
+                          "Room",
+                          `Room ${room.Room} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Curriculum"
+            ? curriculum.map((crr, i) => (
+                <ListCard
+                  slot1={crr.CRR_Code}
+                  slot2={crr.Curriculum}
+                  slot3={crr.CRR_Created}
+                  slot4={null}
+                  slot5={null}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post("res-curr", { CRRID: crr.CRRID }, setData);
+                        showToast(
+                          info.icons.others.info,
+                          "Curriculum",
+                          `Curriculum ${crr.Curriculum} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Academic Year"
+            ? academicyear.map((acy, i) => (
+                <ListCard
+                  slot1={acy.ACY_Code}
+                  slot2={acy.AcademicYear}
+                  slot3={acy.ACY_Created}
+                  slot4={acy.CRR_Code}
+                  slot5={`${acy.StartDate} - ${acy.EndDate}`}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post("res-acy", { ACYID: acy.ACYID }, setData);
+                        showToast(
+                          info.icons.others.info,
+                          "AcademicYear",
+                          `AcademicYear ${acy.AcademicYear} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Schedules"
+            ? schedule.map((sched, i) => (
+                <ListCard
+                  slot1={sched.Section}
+                  slot2={sched.Course}
+                  slot3={sched.SCD_Created}
+                  slot4={`${sched.Room} ( ${sched.LastName} )`}
+                  slot5={`${sched.StartTime} - ${sched.EndTime}`}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="btn-warning"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post("res-sched", { SCDID: sched.SCDID }, setData);
+                        showToast(
+                          info.icons.others.info,
+                          "Schedules",
+                          `Schedules ${sched.Schedules} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : null
+        }
+      />
+
+      <DefaultToast
+        icon={toasty.icon}
+        title={toasty.title}
+        content={toasty.content}
+      />
+    </>
   );
 }

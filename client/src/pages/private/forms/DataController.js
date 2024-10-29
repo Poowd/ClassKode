@@ -1,41 +1,51 @@
 import React from "react";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
 import { useNavigate, useParams } from "react-router-dom";
-import { CreateCoach } from "./create/CreateCoach";
-import { ViewCoach } from "./view/ViewCoach";
-import { EditCoach } from "./edit/EditCoach";
-import { CreateDepartment } from "./create/CreateDepartment";
-import { ViewDepartment } from "./view/ViewDepartment";
-import { ViewProgram } from "./view/ViewProgram";
-import { ViewCourse } from "./view/ViewCourse";
-import { ViewSection } from "./view/ViewSection";
-import { ViewRoom } from "./view/ViewRoom";
-import { CreateProgram } from "./create/CreateProgram";
-import { CreateCourse } from "./create/CreateCourse";
-import { CreateSection } from "./create/CreateSection";
-import { CreateRoom } from "./create/CreateRoom";
+
+import { CreateCoach } from "./file maintainance/create/CreateCoach";
+import { CreateDepartment } from "./file maintainance/create/CreateDepartment";
+import { CreateProgram } from "./file maintainance/create/CreateProgram";
+import { CreateCourse } from "./file maintainance/create/CreateCourse";
+import { CreateSection } from "./file maintainance/create/CreateSection";
+import { CreateRoom } from "./file maintainance/create/CreateRoom";
+
+import { ViewCoach } from "./file maintainance/view/ViewCoach";
+import { ViewDepartment } from "./file maintainance/view/ViewDepartment";
+import { ViewProgram } from "./file maintainance/view/ViewProgram";
+import { ViewCourse } from "./file maintainance/view/ViewCourse";
+import { ViewSection } from "./file maintainance/view/ViewSection";
+import { ViewRoom } from "./file maintainance/view/ViewRoom";
+
+import { EditCoach } from "./file maintainance/edit/EditCoach";
+import { EditCourse } from "./file maintainance/edit/EditCourse";
+import { EditDepartment } from "./file maintainance/edit/EditDepartment";
+import { EditProgram } from "./file maintainance/edit/EditProgram";
+import { EditRoom } from "./file maintainance/edit/EditRoom";
+import { EditSection } from "./file maintainance/edit/EditSection";
+
+import { CreateSchedule } from "./utilities/create/CreateSchedule";
+import { CreateCurriculum } from "./utilities/create/CreateCurriculum";
+import { CreateAcademicYear } from "./utilities/create/CreateAcademicYear";
+
+import { ViewCurriculum } from "./utilities/view/ViewCurriculum";
+import { ViewAcademicYear } from "./utilities/view/ViewAcademicYear";
+import { CreateSetup } from "./utilities/create/CreateSetup";
+import { CreateAssignment } from "./utilities/create/CreateAssignment";
+import { CreateProjection } from "./utilities/create/CreateProjection";
+import { EditCurriculum } from "./utilities/edit/EditCurriculum";
+
 import { GenerateSection } from "./generate/GenerateSection";
-import { EditCourse } from "./edit/EditCourse";
-import { EditDepartment } from "./edit/EditDepartment";
-import { EditProgram } from "./edit/EditProgram";
-import { EditRoom } from "./edit/EditRoom";
-import { EditSection } from "./edit/EditSection";
-import { CreateCurriculum } from "./create/CreateCurriculum";
-import { ViewCurriculum } from "./view/ViewCurriculum";
-import { EditCurriculum } from "./edit/EditCurriculum";
-import { CreateSetup } from "./create/CreateSetup";
-import { ViewSetup } from "./view/ViewSetup";
-import { ViewAcademicYear } from "./view/ViewAcademicYear";
-import { CreateAcademicYear } from "./create/CreateAcademicYear";
 import { GenerateSchedule } from "./generate/GenerateSchedule";
-import { CreateAssignment } from "./create/CreateAssignment";
-import { CreateProjection } from "./create/CreateProjection";
+import { GenerateUsers } from "./generate/GenerateUsers";
+
+import { ViewSetup } from "./view/ViewSetup";
 import { ViewAssignment } from "./view/ViewAssignment";
 import { ViewProjection } from "./view/ViewProjection";
-import GenerateUsers from "./generate/GenerateUsers";
-
+import { GenerateExaminations } from "./generate/GenerateExaminations";
+import { EditSchedule } from "./utilities/edit/EditSchedule";
+import { CreateUser } from "./misc/create/CreateUser";
+import { EditUser } from "./misc/edit/EditUser";
 export function DataController() {
-  const navigate = useNavigate();
   const params = useParams();
 
   return (
@@ -161,11 +171,24 @@ export function DataController() {
           ) : null}
           {params.module === "schedule" ? (
             params.form === "create" ? (
-              <h1>temp create</h1>
+              <CreateSchedule />
             ) : params.form === "view" ? (
               <h1>temp view</h1>
             ) : params.form === "generate" ? (
               <GenerateSchedule />
+            ) : params.form === "edit" ? (
+              <EditSchedule />
+            ) : params.form === "archive" ? (
+              <h1>Archive</h1>
+            ) : null
+          ) : null}
+          {params.module === "examinations" ? (
+            params.form === "create" ? (
+              <CreateSchedule />
+            ) : params.form === "view" ? (
+              <h1>temp view</h1>
+            ) : params.form === "generate" ? (
+              <GenerateExaminations />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (
@@ -174,13 +197,13 @@ export function DataController() {
           ) : null}
           {params.module === "user" ? (
             params.form === "create" ? (
-              <h1>temp create</h1>
+              <CreateUser />
             ) : params.form === "view" ? (
               <h1>temp view</h1>
             ) : params.form === "generate" ? (
               <GenerateUsers />
             ) : params.form === "edit" ? (
-              <h1>temp edit</h1>
+              <EditUser />
             ) : params.form === "archive" ? (
               <h1>Archive</h1>
             ) : null

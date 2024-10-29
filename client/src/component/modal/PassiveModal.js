@@ -10,7 +10,7 @@ export class PassiveModal extends React.Component {
         className="modal fade"
         id={this.props.id}
         tabIndex="-1"
-        data-bs-backdrop="static"
+        //data-bs-backdrop="static"
       >
         <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered">
           <div className="modal-content">
@@ -31,14 +31,16 @@ export class PassiveModal extends React.Component {
                   <p className="m-0 p-0 text-secondary">{this.props.content}</p>
                 </small>
               </div>
-              <DefaultButton
-                class="btn-primary p-2"
-                type="button"
-                icon={<IoMdArrowRoundBack />}
-                text="Submit"
-                dismiss="modal"
-                function={this.props.trigger}
-              />
+              <div className="w-100 d-flex justify-content-end">
+                <DefaultButton
+                  class="btn-primary p-2"
+                  type="button"
+                  icon={<IoMdArrowRoundBack />}
+                  text="Submit"
+                  dismiss="modal"
+                  function={this.props.trigger}
+                />
+              </div>
             </div>
           </div>
         </div>

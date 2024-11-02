@@ -2,9 +2,35 @@ import React, { useEffect, useState } from "react";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { DefaultInput } from "../../../component/input/DefaultInput";
+import { PassiveModal } from "../../../component/modal/PassiveModal";
+import useModal from "../../../hook/useModal";
+import useHandleChange from "../../../hook/useHandleChange";
+import { FormInput } from "../../../component/input/FormInput";
+import useConfiguration from "../../../hook/useConfiguration";
+import { useToasty } from "../../../hook/useToasty";
+import { useNavigate } from "react-router-dom";
+import { SelectButton } from "../../../component/dropdown/select/SelectButton";
+import { SelectButtonItemSelected } from "../../../component/dropdown/select/SelectButtonItemSelected";
+import { SelectButtonItem } from "../../../component/dropdown/select/SelectButtonItem";
 
 export function Setup() {
+  const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
+  const [info] = useConfiguration([]);
+  const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [data, setData] = useState({
+    ADLID: "",
+    AcademicLevel: "",
+    AcademicAbbrev: "",
+    SMSID: "",
+    Semester: "",
+    SemesterAbbrev: "",
+    YRLID: "",
+    YearLevel: "",
+  });
+
+  const [dataChange] = useHandleChange(setData);
 
   const [academicLevel, setAcademicLevel] = useState([]);
   const [yearLevel, setYearLevel] = useState([]);
@@ -52,7 +78,7 @@ export function Setup() {
                   </section>
                   <section className="h-75 pt-2">
                     <div
-                      class="h-100 alert alert-warning d-flex align-items-center"
+                      className="h-100 alert alert-warning d-flex align-items-center"
                       role="alert"
                     >
                       A simple warning alert—check it out!
@@ -70,44 +96,21 @@ export function Setup() {
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Academic Level</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
                 <main className="bg-white rounded shadow-sm p-3">
-                  <ul class="list-group list-group-flush">
+                  <ul className="list-group list-group-flush">
                     {academicLevel &&
                       academicLevel.map((acadLevel, i) => (
-                        <li key={i} class="list-group-item">
+                        <li key={i} className="list-group-item">
                           <main className="row m-0 p-0">
                             <section className="col-8 p-0">
                               {acadLevel.AcademicLevel}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}
@@ -120,20 +123,12 @@ export function Setup() {
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Semester</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
-                <main className="bg-white rounded shadow-sm p-3">
+                <main>
                   <ul class="list-group list-group-flush">
                     {semester &&
                       semester.map((semester, i) => (
@@ -142,22 +137,7 @@ export function Setup() {
                             <section className="col-8 p-0">
                               {semester.Semester}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}
@@ -170,20 +150,12 @@ export function Setup() {
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Year Level</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
-                <main className="bg-white rounded shadow-sm p-3">
+                <main>
                   <ul class="list-group list-group-flush">
                     {yearLevel &&
                       yearLevel.map((yearLevel, i) => (
@@ -192,22 +164,7 @@ export function Setup() {
                             <section className="col-8 p-0">
                               {yearLevel.YearLevel}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}
@@ -220,20 +177,12 @@ export function Setup() {
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Coach Type</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
-                <main className="bg-white rounded shadow-sm p-3">
+                <main>
                   <ul class="list-group list-group-flush">
                     {coachType &&
                       coachType.map((coachType, i) => (
@@ -242,22 +191,7 @@ export function Setup() {
                             <section className="col-8 p-0">
                               {coachType.Type}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}
@@ -270,20 +204,12 @@ export function Setup() {
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Building</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
-                <main className="bg-white rounded shadow-sm p-3">
+                <main>
                   <ul class="list-group list-group-flush">
                     {building &&
                       building.map((building, i) => (
@@ -292,22 +218,7 @@ export function Setup() {
                             <section className="col-8 p-0">
                               {building.Building}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}
@@ -320,20 +231,12 @@ export function Setup() {
           <section className="bg-white rounded shadow-sm p-2 mb-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Floor</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
-                <main className="bg-white rounded shadow-sm p-3">
+                <main>
                   <ul class="list-group list-group-flush">
                     {floor &&
                       floor.map((floor, i) => (
@@ -342,22 +245,7 @@ export function Setup() {
                             <section className="col-8 p-0">
                               {floor.Floor}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}
@@ -367,23 +255,15 @@ export function Setup() {
             </main>
           </section>
           {/* Settings 7 */}
-          <section className="bg-white rounded shadow-sm p-2 mb-2">
+          <section className="bg-white rounded shadow-sm p-2">
             <main className="row m-0 p-0">
               <section className="col-lg-4 p-2">
-                <main className="bg-white rounded shadow-sm p-2">
+                <main className="bg-white rounded shadow-sm p-2 mb-2">
                   <p className="m-0 fw-semibold">Facility</p>
-                </main>
-                <main className="d-flex justify-content-end">
-                  <DefaultButton
-                    class=""
-                    reversed={true}
-                    text="Add"
-                    function={() => {}}
-                  />
                 </main>
               </section>
               <section className="col-lg-8 p-2">
-                <main className="bg-white rounded shadow-sm p-3">
+                <main>
                   <ul class="list-group list-group-flush">
                     {facility &&
                       facility.map((facility, i) => (
@@ -392,22 +272,7 @@ export function Setup() {
                             <section className="col-8 p-0">
                               {facility.Facility}
                             </section>
-                            <section className="col-4 p-0">
-                              <main className="d-flex gap-1 justify-content-end">
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Edit"
-                                  function={() => {}}
-                                />
-                                <DefaultButton
-                                  class=""
-                                  reversed={true}
-                                  text="Archive"
-                                  function={() => {}}
-                                />
-                              </main>
-                            </section>
+                            <section className="col-4 p-0"></section>
                           </main>
                         </li>
                       ))}

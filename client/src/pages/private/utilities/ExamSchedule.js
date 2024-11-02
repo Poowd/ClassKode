@@ -20,7 +20,7 @@ export function ExamSchedule() {
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
-    data_get("class-schedule-list", setSched);
+    data_get("exam-schedule-list", setSched);
   }, [sched]);
   return (
     <>
@@ -77,6 +77,7 @@ export function ExamSchedule() {
         }
         list={
           <>
+            <div></div>
             {sched.length > 0
               ? sched.map((sc, i) => (
                   <ScheduleList
@@ -98,12 +99,8 @@ export function ExamSchedule() {
                       </main>
                     }
                     slot4={null}
-                    slot5={
-                      sc.FirstName !== null && sc.LastName !== null
-                        ? `${sc.LastName}, ${sc.FirstName}`
-                        : "No Coach"
-                    }
-                    slot6={sc.Component + " ( " + sc.Units + " )"}
+                    slot5={null}
+                    slot6={sc.Component}
                     link={null}
                     state={null}
                     custom={null}

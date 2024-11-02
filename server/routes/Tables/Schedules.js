@@ -21,6 +21,17 @@ router.get("/class-schedule-list", (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+router.get("/exam-schedule-list", (req, res) => {
+  try {
+    pool.query(
+      `SELECT * FROM exam_schedules WHERE "Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 router.post("/class-schedule-target", (req, res) => {
   try {
@@ -29,6 +40,40 @@ router.post("/class-schedule-target", (req, res) => {
     pool.query(
       `SELECT * FROM class_schedules WHERE "CLSID"='${id}'`,
       (err, rslt) => res.json(rslt.rows[0])
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/exam-schedule-insert", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var code = clientData.CourseCode;
+    var course = clientData.Course;
+    var section = clientData.Section;
+    var component = clientData.Component;
+    var time = clientData.Time;
+    var level = clientData.Level;
+    var room = clientData.Room;
+    var day = clientData.Day;
+    var capacity = clientData.Capacity;
+    var population = clientData.Population;
+
+    pool.query(
+      `INSERT INTO exam_schedules ("ELSID", "Code", "Course", "Section", "Day", "StartTime", "EndTime", "Level", "Room", "Population", "Component", "Capacity", "AcademicYear")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from exam_schedules), '${code}', '${course}', '${section}', '${day}', '${time}', '${
+        time + 90
+      }', '${level}', '${room}', '${population}', '${component}', '${capacity}', (SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1))`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
     );
   } catch (err) {
     console.error(err);

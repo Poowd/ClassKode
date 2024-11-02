@@ -91,14 +91,14 @@ export function ViewAcademicYear() {
             />
             <LinkButton
               class="btn-warning px-2"
-              icon={<LuFileEdit />}
+              icon={info.icons.forms.edit}
               to={"/curriculum/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
               class="btn-danger px-2"
-              icon={<LuFolderArchive />}
+              icon={info.icons.forms.archive}
               function={() =>
                 showModal(
                   "Modal",

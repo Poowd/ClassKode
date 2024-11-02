@@ -4,7 +4,7 @@ import "../Dropdown.css";
 export class DefaultDropdown extends React.Component {
   render() {
     return (
-      <div className="btn-group z-3">
+      <div className={`btn-group ${this.props.topclass}`}>
         <button
           className={
             this.props.text != null
@@ -37,7 +37,7 @@ export class DefaultDropdown extends React.Component {
             )}
           </div>
         </button>
-        <ul className="dropdown-menu z-3">{this.props.dropdownitems}</ul>
+        <ul className="dropdown-menu">{this.props.dropdownitems}</ul>
       </div>
     );
   }

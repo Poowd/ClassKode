@@ -43,7 +43,7 @@ export function Login() {
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
   const setCookies = (data) => {
-    document.cookie = `accountCookies=${data}`;
+    document.cookie = `accountCookies=${data};`;
   };
 
   //get the data from server, if the server response if success -- login
@@ -63,7 +63,6 @@ export function Login() {
             //test wether if that account has academic code
             sessionStorage.setItem("user", JSON.stringify(data.data));
             sessionStorage.setItem("loggedin", true);
-            setCookies(JSON.stringify(data.data));
             data_post(
               "log-me",
               {
@@ -76,7 +75,9 @@ export function Login() {
               },
               setLogs
             );
+            setCookies(JSON.stringify(data.data));
             navigate("/");
+            window.location.reload(true);
           } else {
             navigate("/register");
           }

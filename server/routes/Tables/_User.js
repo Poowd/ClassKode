@@ -252,30 +252,33 @@ router.post("/user-login", (req, res) => {
     const pass = clientData.password;
     const email = clientData.email;
 
-    pool.query(`SELECT * FROM _user WHERE "Email"='${email}'`, (err, rslt) => {
-      if (err) return res.json({ Status: "Server Sided Error" });
-      try {
-        bcrypt.compare(pass, rslt.rows[0].Password, (err, resu) => {
-          if (err) {
-            console.error("Verification error:", err);
-          } else if (resu) {
-            return res.json({
-              Status: "Success",
-              data: rslt.rows[0],
-            });
-          } else {
-            console.log("Password does not match");
-            return res.json({
-              Status: "Account Details doesn't match",
-              data: null,
-            });
-          }
-        });
-      } catch (error) {
-        console.log(pass);
-        return res.json({ Status: "Account doesn't exist" });
+    pool.query(
+      `SELECT * FROM _user WHERE "Email"='${email}' AND "UUI_Status"='ACTIVE'`,
+      (err, rslt) => {
+        if (err) return res.json({ Status: "Server Sided Error" });
+        try {
+          bcrypt.compare(pass, rslt.rows[0].Password, (err, resu) => {
+            if (err) {
+              console.error("Verification error:", err);
+            } else if (resu) {
+              return res.json({
+                Status: "Success",
+                data: rslt.rows[0],
+              });
+            } else {
+              console.log("Password does not match");
+              return res.json({
+                Status: "Account Details doesn't match",
+                data: null,
+              });
+            }
+          });
+        } catch (error) {
+          console.log(pass);
+          return res.json({ Status: "Account doesn't exist" });
+        }
       }
-    });
+    );
   } catch (err) {
     return res.json({ Status: "Account doesn't exist" });
   }

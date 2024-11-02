@@ -35,8 +35,9 @@ export function CoachSchedule() {
     "Friday",
   ]);
   const [time, setTime] = useState([
-    420, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870,
-    900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1200, 1260,
+    420, 450, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840,
+    870, 900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1170, 1200, 1230,
+    1260,
   ]);
 
   useEffect(() => {
@@ -85,9 +86,23 @@ export function CoachSchedule() {
       }
     }
   }
+
+  function getAllScheduleOf(day) {
+    var schedules = [];
+    schedule.forEach((scheds) => {
+      if (scheds.SCHLID === currcoach) {
+        if (scheds.Day === day) {
+          schedules.push(scheds);
+        }
+      }
+    });
+    schedules.sort((a, b) => a.Time - b.Time);
+    return schedules;
+  }
+
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
+      <section className="h-100 col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -98,7 +113,86 @@ export function CoachSchedule() {
               }}
             />
           </main>
-          <main className="h-100 flex-fill py-2">
+          <main className="flex-fill h-100 pb-2">
+            <table
+              className="h-100 w-100 rounded border-secondary"
+              style={{ tableLayout: "fixed" }}
+            >
+              <thead>
+                <tr>
+                  <td className="p-1 border" style={{ width: "10%" }}>
+                    Day / Time
+                  </td>
+                  {day.map((daytime, index) => (
+                    <td className="p-1 text-center border">{daytime}</td>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {time.map((timeslot, index) => (
+                  <tr>
+                    <td className="p-1 border">{convertMinutes(timeslot)}</td>
+                    {day.map((daytime, index) => (
+                      <td className="border">
+                        {getAllScheduleOf(daytime).map((schedule, item) =>
+                          schedule.Day === daytime ? (
+                            +schedule.StartTime === timeslot ? (
+                              <div
+                                className={`p-2 h-100 w-100 d-flex align-items-center text-truncate text-start text-break text-wrap ${
+                                  schedule.Component.includes("Minor") ||
+                                  schedule.Component.includes("Basic")
+                                    ? "plotted1-2"
+                                    : "plotted1"
+                                }`}
+                                onClick={() => alert(schedule.Course)}
+                              >
+                                <small className="fw-bold">
+                                  {` ${
+                                    schedule.Room.includes("Laboratory")
+                                      ? "LAB"
+                                      : "LEC"
+                                  } : ${schedule.Course}`}
+                                </small>
+                              </div>
+                            ) : +schedule.StartTime +
+                                60 * (schedule.Units - 0.5) ===
+                              timeslot ? (
+                              <div
+                                className={`h-100 w-100 d-flex align-items-center ${
+                                  schedule.Component.includes("Minor") ||
+                                  schedule.Component.includes("Basic")
+                                    ? "plotted2-2"
+                                    : "plotted2"
+                                }`}
+                                onClick={() => alert(schedule.Course)}
+                              >
+                                <small></small>
+                              </div>
+                            ) : +schedule.StartTime +
+                                60 * (schedule.Units - 0.5) >
+                                timeslot && +schedule.StartTime < timeslot ? (
+                              <div
+                                className={`h-100 w-100 d-flex align-items-center ${
+                                  schedule.Component.includes("Minor") ||
+                                  schedule.Component.includes("Basic")
+                                    ? "plotted2-2"
+                                    : "plotted2"
+                                }`}
+                                onClick={() => alert(schedule.Course)}
+                              >
+                                <small></small>
+                              </div>
+                            ) : null
+                          ) : null
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </main>
+          {/* <main className="h-100 flex-fill py-2">
             <header className="p-2">
               {coach.map((coach, o) =>
                 coach.SCHLID === currcoach ? (
@@ -161,7 +255,7 @@ export function CoachSchedule() {
                 </section>
               </main>
             ))}
-          </main>
+          </main> */}
           <main>
             <DefaultButton
               class=""
@@ -191,6 +285,17 @@ export function CoachSchedule() {
             </div>
           </section>
           <section>
+            <header className="p-2">
+              {coach.map((coach, o) =>
+                coach.SCHLID === currcoach ? (
+                  <>
+                    <h3>{`${coach.LastName}, ${coach.FirstName}`}</h3>
+                    <p className="m-0">{`${coach.Department}`}</p>
+                  </>
+                ) : null
+              )}
+              <hr />
+            </header>
             {schedule.length > 0
               ? schedule.map((schedule, i) =>
                   schedule.SCHLID === currcoach ? (

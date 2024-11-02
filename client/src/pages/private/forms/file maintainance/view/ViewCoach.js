@@ -15,6 +15,7 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import { TextFormat2 } from "../../../../../component/textformat/TextFormat2";
+import { ProgressBar } from "../../../../../component/progressbar/ProgressBar";
 import { useCoachUnits } from "../../../../../hook/useCoachUnits";
 
 const supabase = createClient(
@@ -164,8 +165,8 @@ export function ViewCoach() {
                           }
                         />
                       </main>
-                      <main className="mt-3">
-                        <section className="w-100 bg-white rounded shadow-sm p-2 px-3 d-flex justify-content-between align-items-center">
+                      <main className="mt-3 bg-white rounded shadow-sm p-2 px-3">
+                        <section className="w-100 d-flex justify-content-between align-items-center">
                           <div>
                             <p className="m-0">Total Units</p>
                             <p className="m-0">
@@ -184,6 +185,21 @@ export function ViewCoach() {
                           >
                             {getCoachUnits(units.sum, assign.MAX)}%
                           </h3>
+                        </section>
+                        <section className="mt-2">
+                          <main>
+                            <ProgressBar
+                              state={
+                                getCoachUnits(units.sum, assign.MAX) > 60
+                                  ? "success"
+                                  : getCoachUnits(units.sum, assign.MAX) < 60 &&
+                                    getCoachUnits(units.sum, assign.MAX) > 40
+                                  ? "warning"
+                                  : "danger"
+                              }
+                              progress={getCoachUnits(units.sum, assign.MAX)}
+                            />
+                          </main>
                         </section>
                       </main>
 

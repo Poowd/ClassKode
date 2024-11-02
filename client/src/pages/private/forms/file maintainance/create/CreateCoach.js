@@ -39,6 +39,7 @@ export function CreateCoach() {
     LastName: "",
     Gender: "",
     Department: "",
+    AcademicLevel: "",
     Email: "",
     Phone: "",
     Image: "",
@@ -52,6 +53,7 @@ export function CreateCoach() {
     LastName: "",
     Gender: "",
     Department: "",
+    AcademicLevel: "",
     Email: "",
     Phone: "",
     Image: "",
@@ -65,33 +67,19 @@ export function CreateCoach() {
   const [retrieve, setRetrieved] = useState([]);
   const [images, setImages] = useState([]);
   const [currentUUID, setCurrentUUID] = useState(null);
+  const [academicLevel, setAcademicLevel] = useState([]);
 
   useEffect(() => {
     data_get("department-list", setDepartment);
     data_get("coach-list", setCoach);
-  }, [coach]);
-
-  // useEffect(() => {
-  //   const formdata = new FormData();
-  //   formdata.append("image", file);
-  //   console.log(formdata);
-  //   post("upload", formdata, setRetrieved);
-  // }, [file]);
+    data_get("academic-level-list", setAcademicLevel);
+  }, []);
 
   useEffect(() => {
     setCurrentUUID(uuidv4());
   }, [images]);
 
-  // async function getImages() {
-  //   const { data, error } = await supabase.storage.from("images").list("");
-
-  //   if (data !== null) {
-  //     setImages(data);
-  //   } else {
-  //     console.log(error);
-  //     alert("Error");
-  //   }
-  // }
+  console.log(data);
 
   async function uploadFile(e) {
     const imageFile = file;
@@ -153,6 +141,7 @@ export function CreateCoach() {
       MiddleInitial: ValiAI("Initial", data.MiddleInitial),
       LastName: ValiAI("Name", data.LastName),
       Department: ["is-valid", "valid-feedback", "Looks Good!"],
+      AcademicLevel: ["is-valid", "valid-feedback", "Looks Good!"],
       Email: ValiAI("SchoolEmail", data.Email),
       Phone: ValiAI("Phone", data.Phone),
       Link: ["is-valid", "valid-feedback", "Looks Good!"],
@@ -179,6 +168,7 @@ export function CreateCoach() {
             LastName: data.LastName,
             Gender: data.Gender,
             Department: data.Department,
+            AcademicLevel: data.AcademicLevel,
             Email: data.Email,
             Phone: data.Phone,
             Link: data.Link,
@@ -333,7 +323,46 @@ export function CreateCoach() {
                 </>
               }
             />
-
+            <MainSelect
+              class={`${validation.AcademicLevel[0]}`}
+              label="AcademicLevel"
+              id="AcademicLevel"
+              trigger={dataChange}
+              required={true}
+              feedbackstatus={`${validation.AcademicLevel[1]}`}
+              feedback={`${
+                validation.AcademicLevel[2] !== undefined
+                  ? validation.AcademicLevel[2]
+                  : ""
+              }`}
+              option={
+                <>
+                  <SelectButtonItemSelected
+                    content={
+                      <>
+                        {academicLevel.map((option, i) =>
+                          option.AcademicLevel === data.AcademicLevel
+                            ? option.AcademicLevel
+                            : null
+                        )}
+                        {data.AcademicLevel === "Both" ? "Both" : null}
+                      </>
+                    }
+                  />
+                  {academicLevel.map((option, i) =>
+                    data.AcademicLevel !== option.AcademicLevel ? (
+                      <SelectButtonItem
+                        value={option.AcademicLevel}
+                        content={option.AcademicLevel}
+                      />
+                    ) : null
+                  )}
+                  {data.AcademicLevel !== "Both" ? (
+                    <SelectButtonItem value={"Both"} content={"Both"} />
+                  ) : null}
+                </>
+              }
+            />
             <MainInput
               class={`${validation.Email[0]}`}
               label="Email"

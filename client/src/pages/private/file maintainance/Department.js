@@ -11,11 +11,15 @@ import { DefaultDropdownItem } from "../../../component/dropdown/default/Default
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import useHandleChange from "../../../hook/useHandleChange";
 import { TextFormat1 } from "../../../component/textformat/TextFormat1";
+import { FullscreenLoader } from "../../../component/loader/FullscreenLoader";
+import { Loader } from "../../../component/loader/Loader";
+import { CoffeeLoader } from "../../../component/loader/CoffeeLoader";
 
 export function Department() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState({
     setbyAcadLevel: "",
     search: "",
@@ -28,10 +32,14 @@ export function Department() {
   useEffect(() => {
     data_get("department-list", setDepartment);
     data_get("academic-level-list", setAcademicLevel);
-  }, [department]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
+      loader={isLoading}
       sidepanel={
         <main>
           <header className="">

@@ -21,6 +21,7 @@ import useConfiguration from "../../../../../hook/useConfiguration";
 import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { useRoomUsage } from "../../../../../hook/useRoomUsage";
+import { ProgressBar } from "../../../../../component/progressbar/ProgressBar";
 
 export function ViewRoom() {
   const { state } = useLocation();
@@ -175,6 +176,22 @@ export function ViewRoom() {
                             >
                               {`${getRoomUsageWeek(roomusage.sum)}%`}
                             </h3>
+                          </section>
+
+                          <section className="mt-2">
+                            <main>
+                              <ProgressBar
+                                state={
+                                  getRoomUsageWeek(roomusage.sum) > 60
+                                    ? "success"
+                                    : getRoomUsageWeek(roomusage.sum) < 60 &&
+                                      getRoomUsageWeek(roomusage.sum) > 40
+                                    ? "warning"
+                                    : "danger"
+                                }
+                                progress={getRoomUsageWeek(roomusage.sum)}
+                              />
+                            </main>
                           </section>
                         </main>
                         <main className="row m-0 p-2 row-cols-5 bg-white rounded shadow-sm">

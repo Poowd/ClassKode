@@ -303,17 +303,17 @@ export default function useConfiguration() {
     maps: {
       m1: (
         <figure className="w-100 h-100 d-flex justify-content-center">
-          <img src={m1} alt="m1" className="w-100"></img>
+          <img src={m1} alt="m1" className="h-100"></img>
         </figure>
       ),
       m2: (
         <figure className="w-100 h-100 d-flex justify-content-center">
-          <img src={m2} alt="m2" className="w-100"></img>
+          <img src={m2} alt="m2" className="h-100"></img>
         </figure>
       ),
       m3: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={m3} alt="m3" className="w-100"></img>
+          <img src={m3} alt="m3" className="h-100"></img>
         </figure>
       ),
       a1: (
@@ -333,17 +333,17 @@ export default function useConfiguration() {
       ),
       b1: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={b1} alt="b1" className="w-100"></img>
+          <img src={b1} alt="b1" className="h-75"></img>
         </figure>
       ),
       b2: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={b2} alt="b2" className="w-100"></img>
+          <img src={b2} alt="b2" className="h-75"></img>
         </figure>
       ),
       b3: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={b3} alt="b3" className="w-100"></img>
+          <img src={b3} alt="b3" className="h-75"></img>
         </figure>
       ),
     },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -45,11 +45,19 @@ import { GenerateExaminations } from "./generate/GenerateExaminations";
 import { EditSchedule } from "./utilities/edit/EditSchedule";
 import { CreateUser } from "./misc/create/CreateUser";
 import { EditUser } from "./misc/edit/EditUser";
+
 export function DataController() {
   const params = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
   return (
     <FormsTemplate
+      loader={isLoading}
       content={
         <main className="h-100">
           {params.module === "coach" ? (

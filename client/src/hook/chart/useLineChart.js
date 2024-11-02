@@ -29,7 +29,7 @@ const useLineChart = (
         data: data2,
         fill: false,
         backgroundColor: ["rgba(255, 159, 64, 0.2)"],
-        borderColor: ["rgba(255, 159, 64, 0.75)"],
+        borderColor: ["rgba(255, 159, 64, 0.50)"],
         tension: 0,
       },
       {
@@ -37,7 +37,7 @@ const useLineChart = (
         data: data3,
         fill: false,
         backgroundColor: ["rgba(255, 205, 86, 0.2)"],
-        borderColor: ["rgba(255, 205, 86, 0.75)"],
+        borderColor: ["rgba(255, 205, 86, 0.50)"],
         tension: 0,
       },
     ],

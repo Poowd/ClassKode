@@ -14,6 +14,7 @@ export function Curriculum() {
   const { state } = useLocation();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState({
     search: "",
   });
@@ -26,6 +27,9 @@ export function Curriculum() {
   useEffect(() => {
     data_get("curriculum-list", setCurriculum);
     data_get("current-curriculum", setCurrentCurriculum);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
   // useEffect(() => {
@@ -35,6 +39,7 @@ export function Curriculum() {
   return (
     <>
       <FileMaintainanceTemplate
+        loader={isLoading}
         sidepanel={
           <main>
             <header className="mb-3">

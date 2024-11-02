@@ -39,7 +39,7 @@ router.post("/setup-target", (req, res) => {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `SELECT * FROM curriculum_setup WHERE "Curriculum"='${id}'`,
+      `SELECT curriculum_setup."STPID", curriculum_setup."Program", curriculum_setup."Curriculum", curriculum_setup."Semester", curriculum_setup."YearLevel", curriculum_setup."Component", curriculum_setup."Created", curriculum_setup."Status", course."Code", course."Course" FROM curriculum_setup INNER JOIN course ON course."Code" = curriculum_setup."Course" WHERE curriculum_setup."Curriculum"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

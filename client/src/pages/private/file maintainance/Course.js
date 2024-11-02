@@ -12,11 +12,13 @@ import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDrop
 import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
 import useHandleChange from "../../../hook/useHandleChange";
 import { TextFormat1 } from "../../../component/textformat/TextFormat1";
+import { CoffeeLoader } from "../../../component/loader/CoffeeLoader";
 
 export function Course() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState({
     setbyDepartment: "",
     search: "",
@@ -29,10 +31,14 @@ export function Course() {
   useEffect(() => {
     data_get("course-list", setCourse);
     data_get("department-list", setDepartment);
-  }, [course]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
+      loader={isLoading}
       sidepanel={
         <main>
           <header className="">
@@ -60,9 +66,9 @@ export function Course() {
       control={
         <>
           <DefaultButton
-                class="px-2"
-                icon={info.icons.navigation.back}
-                text="Back"
+            class="px-2"
+            icon={info.icons.navigation.back}
+            text="Back"
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />

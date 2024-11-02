@@ -101,3 +101,21 @@
   background-size: cover;
   backdrop-filter: blur(2px);
 }
+
+.plotted1 {
+  background-color: #9bcbe3;
+  color: #1e1e1e;
+}
+
+.plotted2 {
+  background-color: #b1d9ec;
+}
+
+.plotted1-2 {
+  background-color: #fce6a9;
+  color: #1e1e1e;
+}
+
+.plotted2-2 {
+  background-color: #fff4c7;
+}

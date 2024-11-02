@@ -61,7 +61,7 @@ export function CreateAssignment() {
     });
     coach.map((item, i) =>
       item.SCHLID === data.SCHLID
-        ? setData((prev) => ({ ...prev, Department: item.Department }))
+        ? setData((prev) => ({ ...prev, Department: item.Code }))
         : null
     );
   }, [data.SCHLID]);

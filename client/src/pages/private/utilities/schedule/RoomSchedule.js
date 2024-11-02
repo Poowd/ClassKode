@@ -77,7 +77,7 @@ export function RoomSchedule() {
 
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-8 order-2 order-lg-1 h-100 p-0 m-0 pe-2">
+      <section className="h-100 col-lg-8 order-2 order-lg-1 p-0 m-0 pe-2">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton

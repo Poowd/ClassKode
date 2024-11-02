@@ -16,6 +16,7 @@ export function Section() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState({
     setbyProgram: "",
     search: "",
@@ -28,10 +29,14 @@ export function Section() {
   useEffect(() => {
     data_get("section-list", setSection);
     data_get("program-list", setProgram);
-  }, [section]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
+      loader={isLoading}
       sidepanel={
         <main>
           <header className="">

@@ -21,4 +21,33 @@ router.get("/semester-list", (req, res) => {
   }
 });
 
+router.post("/semester-edit", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.SMSID;
+    var semester = clientData.Semester;
+    var semesterabbrev = clientData.SemesterAbbrev;
+    pool.query(
+      `UPDATE semester 
+
+      SET 
+      "Semester"='${semester}', 
+      "Abbrev"='${semesterabbrev}'
+      
+      WHERE "SMSID"='${id}'`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

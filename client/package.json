@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@coreui/react-chartjs": "^3.0.0",
+    "@devexpress/dx-react-core": "^4.0.9",
+    "@devexpress/dx-react-scheduler": "^4.0.9",
+    "@schedule-x/events-service": "^2.4.1",
+    "@schedule-x/react": "^2.4.1",
+    "@schedule-x/theme-default": "^2.4.1",
     "@supabase/supabase-js": "^2.45.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

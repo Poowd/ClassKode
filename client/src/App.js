@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
 import { Error404 } from "./component/placeholder/Error404";
@@ -46,14 +46,17 @@ import { ExamSchedule } from "./pages/private/utilities/ExamSchedule";
 import { About } from "./pages/public/About";
 import { Features } from "./pages/public/Features";
 import { Team } from "./pages/public/Team";
+import { Timetabling } from "./pages/testing/Timetabling";
 
 function App() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
 
   const [test, setTest] = useState([]);
   const [account, setAccount] = useState([]);
+  const [checkstatus, setCheckStatus] = useState(false);
 
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
@@ -63,14 +66,19 @@ function App() {
   };
 
   const getCookies = () => {
-    const cookies = document.cookie.split("; ");
-    const cookieMap = {};
-    cookies.forEach((cookie) => {
-      const [name, value] = cookie.split("=");
-      cookieMap[name] = value;
-    });
-    const cookieVal = cookieMap["accountCookies"];
-    setAccount(JSON.parse(cookieVal));
+    try {
+      const cookies = document.cookie.split(";");
+      const cookieMap = {};
+      cookies.forEach((cookie) => {
+        const [name, value] = cookie.split("=");
+        cookieMap[name] = value;
+      });
+      const cookieVal = cookieMap["accountCookies"];
+      setAccount(JSON.parse(cookieVal));
+      setCheckStatus(true);
+    } catch (error) {
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -85,8 +93,16 @@ function App() {
     }
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
+
+  // useEffect(() => {
+  //   if (checkstatus === true) {
+  //     navigate("/");
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <main className="overflow-hidden">
@@ -95,10 +111,10 @@ function App() {
         {isLoading ? <FullscreenLoader class="position-fixed z-3" /> : ""}
       </header>
       <Routes>
-        {status === true ? (
+        {checkstatus === true ? (
           <>
-            {loggeduser.UserType === "Manager" ||
-            loggeduser.UserType === "Developer" ? (
+            {account.UserType === "Manager" ||
+            account.UserType === "Developer" ? (
               <Route
                 path={"*"}
                 element={
@@ -109,8 +125,8 @@ function App() {
                         <Route index element={<Dashboard />}></Route>
 
                         <Route
-                          path={"/testing"}
-                          element={<FileInput />}
+                          path="/timetable"
+                          element={<Timetabling />}
                         ></Route>
 
                         <Route path={"/institution"}>
@@ -216,7 +232,7 @@ function App() {
                   />
                 }
               ></Route>
-            ) : loggeduser.UserType === "Admin" ? (
+            ) : account.UserType === "Admin" ? (
               <Route
                 path={"*"}
                 element={
@@ -226,7 +242,7 @@ function App() {
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
                         <>
-                          {loggeduser.PermissionLevel >= 0 ? (
+                          {account.PermissionLevel >= 0 ? (
                             <Route path={"/institution"}>
                               <Route
                                 path={"/institution/department"}
@@ -256,7 +272,7 @@ function App() {
                           ) : null}
                         </>
                         <>
-                          {loggeduser.PermissionLevel >= 1 ? (
+                          {account.PermissionLevel >= 1 ? (
                             <Route path={"/utilities"}>
                               <Route path={"/utilities/curriculum"}>
                                 <Route index element={<Curriculum />}></Route>
@@ -302,7 +318,7 @@ function App() {
                           ) : null}
                         </>
                         <>
-                          {loggeduser.PermissionLevel >= 2 ? (
+                          {account.PermissionLevel >= 2 ? (
                             <Route
                               path={"/:module/:form/:id"}
                               element={<DataController />}
@@ -315,7 +331,7 @@ function App() {
                   />
                 }
               ></Route>
-            ) : loggeduser.UserType === "User" ? (
+            ) : account.UserType === "User" ? (
               <Route
                 path={"*"}
                 element={
@@ -324,7 +340,7 @@ function App() {
                     content={
                       <Routes>
                         <Route index element={<LandingPage />}></Route>
-                        {loggeduser.PermissionLevel == 0 ? (
+                        {account.PermissionLevel == 0 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/my-schedules"}
@@ -332,7 +348,7 @@ function App() {
                             ></Route>
                           </Route>
                         ) : null}
-                        {loggeduser.PermissionLevel >= 0 ? (
+                        {account.PermissionLevel >= 0 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/section-schedules"}
@@ -344,7 +360,7 @@ function App() {
                             ></Route>
                           </Route>
                         ) : null}
-                        {loggeduser.PermissionLevel == 1 ? (
+                        {account.PermissionLevel == 1 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/my-schedules"}

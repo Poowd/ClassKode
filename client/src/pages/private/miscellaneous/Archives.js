@@ -21,6 +21,7 @@ export function Archives() {
 
   const LocalStorage = [JSON.parse(localStorage.getItem("archive_selection"))];
 
+  const [archiveCount, setArchiveCount] = useState([]);
   const [selection, setSelection] = useState("");
   const [department, setDepartment] = useState([]);
   const [program, setProgram] = useState([]);
@@ -33,7 +34,6 @@ export function Archives() {
   const [schedule, setSchedule] = useState([]);
   const [data, setData] = useState([]);
   const [toasty, showToast] = useToasty();
-  const [archiveCount, setArchiveCount] = useState([]);
 
   const [category, setCategory] = useState({
     institution: [
@@ -341,8 +341,8 @@ export function Archives() {
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
-                          "res-sect",
-                          { SCTID: section.SCTID },
+                          "section-restore",
+                          { data: section.SCTID },
                           setData
                         );
                         showToast(
@@ -370,7 +370,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-rom", { ROMID: room.ROMID }, setData);
+                        data_post(
+                          "room-restore",
+                          { data: room.ROMID },
+                          setData
+                        );
                         showToast(
                           info.icons.others.info,
                           "Room",
@@ -384,9 +388,9 @@ export function Archives() {
             : selection === "Curriculum"
             ? curriculum.map((crr, i) => (
                 <ListCard
-                  slot1={crr.CRR_Code}
+                  slot1={crr.Code}
                   slot2={crr.Curriculum}
-                  slot3={crr.CRR_Created}
+                  slot3={null}
                   slot4={null}
                   slot5={null}
                   link={null}
@@ -396,7 +400,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-curr", { CRRID: crr.CRRID }, setData);
+                        data_post(
+                          "curriculum-restore",
+                          { data: crr.CRRID },
+                          setData
+                        );
                         showToast(
                           info.icons.others.info,
                           "Curriculum",
@@ -410,11 +418,11 @@ export function Archives() {
             : selection === "Academic Year"
             ? academicyear.map((acy, i) => (
                 <ListCard
-                  slot1={acy.ACY_Code}
+                  slot1={acy.Code}
                   slot2={acy.AcademicYear}
-                  slot3={acy.ACY_Created}
+                  slot3={`${acy.StartDate} - ${acy.EndDate}`}
                   slot4={acy.CRR_Code}
-                  slot5={`${acy.StartDate} - ${acy.EndDate}`}
+                  slot5={null}
                   link={null}
                   state={null}
                   custom={
@@ -422,7 +430,11 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-acy", { ACYID: acy.ACYID }, setData);
+                        data_post(
+                          "academic-year-restore",
+                          { data: acy.ACYID },
+                          setData
+                        );
                         showToast(
                           info.icons.others.info,
                           "AcademicYear",
@@ -448,7 +460,7 @@ export function Archives() {
                       class="btn-warning"
                       icon={info.icons.forms.restore}
                       function={() => {
-                        data_post("res-sched", { SCDID: sched.SCDID }, setData);
+                        data_post("res-sched", { data: sched.SCDID }, setData);
                         showToast(
                           info.icons.others.info,
                           "Schedules",

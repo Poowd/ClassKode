@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DefaultButton } from "../button/DefaultButton";
 import { PiQuestionMarkBold } from "react-icons/pi";
 import { Sidebar } from "../sidebar/Sidebar";
@@ -8,7 +8,6 @@ import useConfiguration from "../../hook/useConfiguration";
 import { Link, useNavigate } from "react-router-dom";
 import useHandleChange from "../../hook/useHandleChange";
 import { DefaultInput } from "../input/DefaultInput";
-import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
 import owie from "../../assets/imgs/misc/owie.png";
 import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { SidebarDropdown } from "../sidebar/SidebarDropdown";
@@ -21,6 +20,8 @@ export function SuperAdminTopbar() {
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
   const [logs, setLogs] = useState("");
+  const [account, setAccount] = useState([]);
+  const [checkstatus, setCheckStatus] = useState(false);
   const [data, setData] = useState({
     Input: "",
   });
@@ -28,23 +29,49 @@ export function SuperAdminTopbar() {
 
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
+  useEffect(() => {
+    // Simulate an API call
+    getCookies();
+  }, []);
+
+  const unSetCookie = () => {
+    document.cookie = "accountCookies=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  };
+
+  const getCookies = () => {
+    try {
+      const cookies = document.cookie.split(";");
+      const cookieMap = {};
+      cookies.forEach((cookie) => {
+        const [name, value] = cookie.split("=");
+        cookieMap[name] = value;
+      });
+      const cookieVal = cookieMap["accountCookies"];
+      setAccount(JSON.parse(cookieVal));
+      setCheckStatus(true);
+    } catch (error) {
+      return false;
+    }
+  };
+
   const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("loggedin");
     data_post(
       "log-me",
       {
         Action: "Logout",
         Module: "Web-Application",
-        User: loggeduser.SCHLID,
+        User: account.SCHLID,
         Details: "A User has Logged-Out",
         Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
         Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
       },
       setLogs
     );
-    navigate("/");
-    //window.location.reload(true);
+    setTimeout(() => {
+      unSetCookie();
+      navigate("/");
+      window.location.reload(true);
+    }, 1000);
   };
 
   const quicknav = () => {
@@ -70,6 +97,9 @@ export function SuperAdminTopbar() {
     if (/coach [0-9]{11}/g.test(data.Input)) {
       navigate(`/coach/view/${data.Input.slice(6)}`);
     }
+    if (/department [A-Z0-9]{15}/g.test(data.Input)) {
+      navigate(`/coach/view/${data.Input.slice(6)}`);
+    }
     document.getElementById("Input").value = "";
     setData({ Input: "" });
   };
@@ -90,7 +120,7 @@ export function SuperAdminTopbar() {
               <SidebarItemList
                 list={
                   <>
-                    <div className="m-0 p-0 d-flex justify-content-between">
+                    <div className="m-0 p-0 d-flex justify-content-between align-items-start">
                       <Link to={"/"} className="">
                         <div className="">
                           <img
@@ -106,7 +136,7 @@ export function SuperAdminTopbar() {
                       <div className="d-flex align-items-center py-2">
                         <DefaultButton
                           type="button"
-                          class="bg-white rounded-pill py-2 border border-dark"
+                          class="bg-white rounded-pill py-2 "
                           icon={info.icons.navigation.close}
                           dismiss="offcanvas"
                         />
@@ -129,36 +159,38 @@ export function SuperAdminTopbar() {
                       parent={"#menu"}
                       itemlist={
                         <>
-                          <SidebarItem
-                            icon={info.icons.modules.department}
-                            navigate={"/institution/department"}
-                            text={"Department"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.program}
-                            navigate={"/institution/program"}
-                            text={"Program"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.course}
-                            navigate={"/institution/course"}
-                            text={"Course"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.coach}
-                            navigate={"/institution/coach"}
-                            text={"Coach"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.section}
-                            navigate={"/institution/section"}
-                            text={"Section"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.room}
-                            navigate={"/institution/room"}
-                            text={"Room"}
-                          />
+                          <main className="w-100 bg-white rounded shadow-sm p-2">
+                            <SidebarItem
+                              icon={info.icons.modules.department}
+                              navigate={"/institution/department"}
+                              text={"Department"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.program}
+                              navigate={"/institution/program"}
+                              text={"Program"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.course}
+                              navigate={"/institution/course"}
+                              text={"Course"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.coach}
+                              navigate={"/institution/coach"}
+                              text={"Coach"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.section}
+                              navigate={"/institution/section"}
+                              text={"Section"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.room}
+                              navigate={"/institution/room"}
+                              text={"Room"}
+                            />
+                          </main>
                         </>
                       }
                     />
@@ -185,16 +217,18 @@ export function SuperAdminTopbar() {
                       parent={"#menu"}
                       itemlist={
                         <>
-                          <SidebarItem
-                            icon={info.icons.modules.schedules}
-                            navigate={"/utilities/schedule"}
-                            text={"Class Schedules"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.schedules}
-                            navigate={"/utilities/examinations"}
-                            text={"Examination Schedules"}
-                          />
+                          <main className="w-100 bg-white rounded shadow-sm p-2">
+                            <SidebarItem
+                              icon={info.icons.modules.schedules}
+                              navigate={"/utilities/schedule"}
+                              text={"Class Schedules"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.schedules}
+                              navigate={"/utilities/examinations"}
+                              text={"Examination Schedules"}
+                            />
+                          </main>
                         </>
                       }
                     />
@@ -213,26 +247,28 @@ export function SuperAdminTopbar() {
                       parent={"#menu"}
                       itemlist={
                         <>
-                          <SidebarItem
-                            icon={info.icons.modules.archives}
-                            navigate={"/miscellaneous/archive"}
-                            text={"Archive"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.logs}
-                            navigate={"/miscellaneous/log"}
-                            text={"Log"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.users}
-                            navigate={"/miscellaneous/user"}
-                            text={"User"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.settings}
-                            navigate={"/miscellaneous/setup"}
-                            text={"Setup"}
-                          />
+                          <main className="w-100 bg-white rounded shadow-sm p-2">
+                            <SidebarItem
+                              icon={info.icons.modules.archives}
+                              navigate={"/miscellaneous/archive"}
+                              text={"Archive"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.logs}
+                              navigate={"/miscellaneous/log"}
+                              text={"Log"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.users}
+                              navigate={"/miscellaneous/user"}
+                              text={"User"}
+                            />
+                            <SidebarItem
+                              icon={info.icons.modules.settings}
+                              navigate={"/miscellaneous/setup"}
+                              text={"Setup"}
+                            />
+                          </main>
                         </>
                       }
                     />
@@ -339,7 +375,7 @@ export function SuperAdminTopbar() {
           <DefaultButton
             class="text-light"
             icon={info.icons.others.hiddenuser}
-            text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
+            text={`${account.LastName}, ${account.FirstName}`}
             function={() => {}}
             toggle="modal"
             target="#MenuModal"

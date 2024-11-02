@@ -26,6 +26,7 @@ export class FormInput extends React.Component {
           onChange={this.props.trigger}
           value={this.props.value}
           required={this.props.required}
+          disabled={this.props.disabled}
         />
         <small>
           <p className={"p-0 m-0 " + this.props.success}>{this.props.alert}</p>

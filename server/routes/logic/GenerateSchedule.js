@@ -301,178 +301,224 @@ router.post("/gen-class", (req, res) => {
   return res.json(class_schedules);
 });
 
-router.post("/gen-exam-ter", (req, res) => {
-  const clientData = JSON.parse(req.body);
-
-  var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const times = [420, 510, 600, 690, 780, 870, 960, 1050, 1140];
-
-  var schedules = [];
-  var tertiary = [];
-  var shs = [];
-  var TertiaryRoom = [];
-  var SHSRoom = [];
-
-  clientData.schedule.map((data, i) => {
-    schedules.push(data);
-  });
-  clientData.room.map((data, i) => {
-    if (data.Facility.includes("Lecture")) {
-      TertiaryRoom.push({
-        Room: data.Room,
-        Exams: [],
-      });
-      SHSRoom.push({
-        Room: data.Room,
-        Exams: [],
-      });
-    }
-  });
-
-  console.log(schedules.length);
-
-  const GenerateSchedule = {
-    Phases: {
-      getRoomList: function () {
-        rooms.forEach((rom) => {
-          if (rom.Facility.includes("Lecture")) {
-            setAvailRoom((prev) => [
-              ...prev,
-              { Room: rom.Room, ExamUnits: 0, Exams: [] },
-            ]);
-          }
-        });
-      },
-      separateLevels: function () {
-        schedules.forEach((schedule) => {
-          if (schedule.AcademicLevel === "Tertiary") {
-            tertiary.push(schedule);
-          } else {
-            shs.push(schedule);
-          }
-        });
-      },
-      generateExam1: function () {
-        tertiary.forEach((item) => {
-          forExam1(item);
-        });
-      },
-      generateExam2: function () {
-        shs.forEach((item) => {
-          forExam2(item);
-        });
-      },
-    },
-  };
-
-  function forExam1(data) {
-    for (var i = 0; i < TertiaryRoom.length; i++) {
-      if (TertiaryRoom[i].Exams.length < 9) {
-        return TertiaryRoom[i].Exams.push(data);
-      }
-    }
-  }
-
-  function forExam2(data) {
-    for (var i = 0; i < SHSRoom.length; i++) {
-      if (SHSRoom[i].Exams.length < 9) {
-        return SHSRoom[i].Exams.push(data);
-      }
-    }
-  }
-
-  GenerateSchedule.Phases.separateLevels();
-  GenerateSchedule.Phases.generateExam1();
-  GenerateSchedule.Phases.generateExam2();
-
-  return res.json(TertiaryRoom);
-});
-
 router.post("/gen-exam-shs", (req, res) => {
   const clientData = JSON.parse(req.body);
 
-  var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const times = [420, 510, 600, 690, 780, 870, 960, 1050, 1140];
+  var days = ["Thursday", "Friday", "Monday", "Tuesday"];
+  const times = [600, 510, 420];
 
   var schedules = [];
-  var tertiary = [];
   var shs = [];
-  var TertiaryRoom = [];
-  var SHSRoom = [];
+  var rooms = [];
+  var courses = [];
+  var examinationSchedules = [];
+  var examinationRoom = [];
 
   clientData.schedule.map((data, i) => {
     schedules.push(data);
   });
+
+  clientData.section.map((data, i) => {
+    if (data.YearLevel === "Grade 11" || data.YearLevel === "Grade 12") {
+      shs.push(data);
+    }
+  });
+
   clientData.room.map((data, i) => {
-    if (data.Facility.includes("Lecture")) {
-      TertiaryRoom.push({
-        Room: data.Room,
-        Exams: [],
-      });
-      SHSRoom.push({
-        Room: data.Room,
-        Exams: [],
+    days.forEach((day) => {
+      if (data.Facility.includes("Lecture")) {
+        rooms.push({
+          Room: data.Room,
+          Availability: "Free",
+        });
+        examinationRoom.push({
+          Room: data.Room,
+          Day: day,
+          Capacity: data.Capacity,
+          Exams: [],
+        });
+      }
+    });
+  });
+
+  schedules.forEach((schedule) => {
+    if (schedule.AcademicLevel === "Senior High School") {
+      courses.push({
+        CourseCode: schedule.Code,
+        Course: schedule.Course,
+        Section: schedule.Section,
+        AcademicLevel: schedule.AcademicLevel,
+        Component: schedule.Component,
+        Population: schedule.Population,
       });
     }
   });
 
-  console.log(schedules.length);
+  shs.forEach((section) => {
+    var roomSection = getRoom();
+    courses.forEach((exam) => {
+      if (section.Section === exam.Section) {
+        assignRoom(
+          roomSection.Room,
+          exam.CourseCode,
+          exam.Course,
+          section.Section,
+          exam.Component,
+          exam.Population
+        );
+      }
+    });
+    setAvailability(roomSection.Room);
+  });
 
-  const GenerateSchedule = {
-    Phases: {
-      getRoomList: function () {
-        rooms.forEach((rom) => {
-          if (rom.Facility.includes("Lecture")) {
-            setAvailRoom((prev) => [
-              ...prev,
-              { Room: rom.Room, ExamUnits: 0, Exams: [] },
-            ]);
-          }
-        });
-      },
-      separateLevels: function () {
-        schedules.forEach((schedule) => {
-          if (schedule.AcademicLevel === "Tertiary") {
-            tertiary.push(schedule);
-          } else {
-            shs.push(schedule);
-          }
-        });
-      },
-      generateExam1: function () {
-        tertiary.forEach((item) => {
-          forExam1(item);
-        });
-      },
-      generateExam2: function () {
-        shs.forEach((item) => {
-          forExam2(item);
-        });
-      },
-    },
-  };
+  function getRoom() {
+    var room = rooms[Math.floor(Math.random() * rooms.length)];
+    if (room.Availability === "Free") {
+      return room;
+    }
+  }
 
-  function forExam1(data) {
-    for (var i = 0; i < TertiaryRoom.length; i++) {
-      if (TertiaryRoom[i].Exams.length < 9) {
-        return TertiaryRoom[i].Exams.push(data);
+  function setAvailability(targetRoom) {
+    rooms.forEach((room) => {
+      if (targetRoom === room.Room && room.Availability === "Free") {
+        room.Availability = "Not Available";
+      }
+    });
+  }
+  function assignRoom(room, code, course, section, component, population) {
+    for (var i = 0; i < examinationRoom.length; i++) {
+      if (
+        examinationRoom[i].Room === room &&
+        examinationRoom[i].Exams.length < 3
+      ) {
+        return examinationRoom[i].Exams.push({
+          CourseCode: code,
+          Course: course,
+          Section: section,
+          Component: component,
+          Time: times[
+            examinationRoom[i].Exams !== undefined
+              ? examinationRoom[i].Exams.length
+              : 0
+          ],
+          Level: "Senior High School",
+          Population: population,
+        });
       }
     }
   }
 
-  function forExam2(data) {
-    for (var i = 0; i < SHSRoom.length; i++) {
-      if (SHSRoom[i].Exams.length < 9) {
-        return SHSRoom[i].Exams.push(data);
+  //console.log(examinationRoom);
+
+  return res.json(examinationRoom);
+});
+
+router.post("/gen-exam-ter", (req, res) => {
+  const clientData = JSON.parse(req.body);
+
+  var days = ["Friday", "Monday", "Tuesday", "Wednesday"];
+  const times = [420, 510, 600, 690, 780, 870, 960, 1050, 1140];
+
+  var schedules = [];
+  var ter = [];
+  var rooms = [];
+  var courses = [];
+  var examList = [];
+  var examinationRoom = [];
+
+  clientData.schedule.map((data, i) => {
+    schedules.push(data);
+  });
+
+  clientData.section.map((data, i) => {
+    if (data.YearLevel !== "Grade 11" || data.YearLevel !== "Grade 12") {
+      ter.push(data);
+    }
+  });
+
+  clientData.room.map((data, i) => {
+    days.forEach((day) => {
+      if (data.Facility.includes("Lecture")) {
+        examinationRoom.push({
+          Room: data.Room,
+          Day: day,
+          Capacity: data.Capacity,
+          Exams: [],
+        });
+      }
+    });
+  });
+
+  schedules.forEach((schedule) => {
+    if (schedule.AcademicLevel === "Tertiary") {
+      courses.push({
+        CourseCode: schedule.Code,
+        Course: schedule.Course,
+        Section: schedule.Section,
+        AcademicLevel: schedule.AcademicLevel,
+        Component: schedule.Component,
+        Population: schedule.Population,
+      });
+    }
+  });
+
+  function assignRoom(population, code, course, section, component) {
+    for (var i = 0; i < examinationRoom.length; i++) {
+      if (
+        ((examinationRoom[i].Day === "Tuesday" ||
+          examinationRoom[i].Day === "Wednesday") &&
+          (component.includes("Major") || component.includes("Laboratory"))) ||
+        ((examinationRoom[i].Day === "Friday" ||
+          examinationRoom[i].Day === "Monday") &&
+          (component.includes("Basic") || component.includes("Minor")))
+      ) {
+        if (
+          examinationRoom[i].Capacity > population &&
+          examinationRoom[i].Exams.length < 7
+        ) {
+          shuffle(examinationRoom);
+          return examinationRoom[i].Exams.push({
+            CourseCode: code,
+            Course: course,
+            Section: section,
+            Component: component,
+            Time: times[
+              examinationRoom[i].Exams !== undefined
+                ? examinationRoom[i].Exams.length
+                : 0
+            ],
+            Level: "Tertiary",
+            Population: population,
+          });
+        }
       }
     }
   }
 
-  GenerateSchedule.Phases.separateLevels();
-  GenerateSchedule.Phases.generateExam1();
-  GenerateSchedule.Phases.generateExam2();
+  function shuffle(target_array) {
+    for (let i = target_array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [target_array[i], target_array[j]] = [target_array[j], target_array[i]];
+    }
+    return target_array;
+  }
 
-  return res.json(SHSRoom);
+  function combineAlikeCourses() {}
+
+  shuffle(courses);
+
+  courses.forEach((exam) => {
+    assignRoom(
+      exam.Population,
+      exam.CourseCode,
+      exam.Course,
+      exam.Section,
+      exam.Component
+    );
+  });
+
+  console.log(examinationRoom);
+  return res.json(examinationRoom);
 });
 
 module.exports = router;

@@ -15,6 +15,7 @@ import useDatabase from "../../hook/useDatabase";
 import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 
 export function Register() {
+  const dateObject = new Date();
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
@@ -27,12 +28,17 @@ export function Register() {
   const [password, setPassword] = useState(0);
   const [data, setData] = useState(null);
   const [academicYearCode, setAYCode] = useState([]);
+  const [logs, setLogs] = useState("");
 
   useEffect(() => {
     data_get("current-academic-year-code", setAYCode);
   }, []);
 
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
+
+  const setCookies = (data) => {
+    document.cookie = `accountCookies=${data};`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevents normal function of onsubmit in forms
@@ -46,6 +52,8 @@ export function Register() {
         setData(entry);
         if (entry.Status === "Success") {
           if (values.academicCode === academicYearCode.AcademicCode) {
+            sessionStorage.setItem("user", JSON.stringify(entry.data));
+            sessionStorage.setItem("loggedin", true);
             data_post(
               "user-registry",
               {
@@ -54,10 +62,21 @@ export function Register() {
               },
               setData
             );
-            sessionStorage.setItem("user", JSON.stringify(entry.data));
-            sessionStorage.setItem("loggedin", true);
-            navigate("/"); //to dashboard
-            //alert("Succcess");
+            data_post(
+              "log-me",
+              {
+                Action: "Register",
+                Module: "Register Module",
+                User: data.data.SCHLID,
+                Details: "A User has Registered",
+                Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
+                Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
+              },
+              setLogs
+            );
+            setCookies(JSON.stringify(data.data));
+            navigate("/");
+            window.location.reload(true);
           } else {
             alert("A problem occurred");
           }

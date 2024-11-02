@@ -36,8 +36,9 @@ export function SectionSchedule() {
     "Friday",
   ]);
   const [time, setTime] = useState([
-    420, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840, 870,
-    900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1200, 1260,
+    420, 450, 480, 510, 540, 570, 600, 630, 660, 690, 720, 750, 780, 810, 840,
+    870, 900, 930, 960, 990, 1020, 1050, 1080, 1110, 1140, 1170, 1200, 1230,
+    1260,
   ]);
 
   useEffect(() => {
@@ -89,20 +90,112 @@ export function SectionSchedule() {
     }
   }
 
+  function getAllScheduleOf(day) {
+    var schedules = [];
+    schedule.forEach((scheds) => {
+      if (scheds.Section === currsection) {
+        if (scheds.Day === day) {
+          schedules.push(scheds);
+        }
+      }
+    });
+    schedules.sort((a, b) => a.Time - b.Time);
+    return schedules;
+  }
+
   return (
     <main className="h-100 w-100 row m-0 p-2">
       <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
-              class="border"
+              class="border-0"
               icon={info.icons.navigation.previous}
               function={() => {
                 previousSection();
               }}
             />
           </main>
-          <main className="h-100 flex-fill py-2">
+          <main className="flex-fill h-100 pb-2">
+            <table
+              className="h-100 w-100 rounded border-secondary"
+              style={{ tableLayout: "fixed" }}
+            >
+              <thead>
+                <tr>
+                  <td className="p-1 border" style={{ width: "10%" }}>
+                    Day / Time
+                  </td>
+                  {day.map((daytime, index) => (
+                    <td className="p-1 text-center border">{daytime}</td>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {time.map((timeslot, index) => (
+                  <tr>
+                    <td className="p-1 border">{convertMinutes(timeslot)}</td>
+                    {day.map((daytime, index) => (
+                      <td className="border">
+                        {getAllScheduleOf(daytime).map((schedule, item) =>
+                          schedule.Day === daytime ? (
+                            +schedule.StartTime === timeslot ? (
+                              <div
+                                className={`p-2 h-100 w-100 d-flex align-items-center text-truncate text-start text-break text-wrap ${
+                                  schedule.Component.includes("Minor") ||
+                                  schedule.Component.includes("Basic")
+                                    ? "plotted1-2"
+                                    : "plotted1"
+                                }`}
+                                onClick={() => alert(schedule.Course)}
+                              >
+                                <small className="fw-bold">
+                                  {` ${
+                                    schedule.Room.includes("Laboratory")
+                                      ? "LAB"
+                                      : "LEC"
+                                  } : ${schedule.Course}`}
+                                </small>
+                              </div>
+                            ) : +schedule.StartTime +
+                                60 * (schedule.Units - 0.5) ===
+                              timeslot ? (
+                              <div
+                                className={`h-100 w-100 d-flex align-items-center ${
+                                  schedule.Component.includes("Minor") ||
+                                  schedule.Component.includes("Basic")
+                                    ? "plotted2-2"
+                                    : "plotted2"
+                                }`}
+                                onClick={() => alert(schedule.Course)}
+                              >
+                                <small></small>
+                              </div>
+                            ) : +schedule.StartTime +
+                                60 * (schedule.Units - 0.5) >
+                                timeslot && +schedule.StartTime < timeslot ? (
+                              <div
+                                className={`h-100 w-100 d-flex align-items-center ${
+                                  schedule.Component.includes("Minor") ||
+                                  schedule.Component.includes("Basic")
+                                    ? "plotted2-2"
+                                    : "plotted2"
+                                }`}
+                                onClick={() => alert(schedule.Course)}
+                              >
+                                <small></small>
+                              </div>
+                            ) : null
+                          ) : null
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </main>
+          {/* <main className="h-100 flex-fill py-2">
             <header className="p-2">
               {section.map((section, o) =>
                 section.Section === currsection ? (
@@ -162,10 +255,10 @@ export function SectionSchedule() {
                 </section>
               </main>
             ))}
-          </main>
+          </main> */}
           <main>
             <DefaultButton
-              class="border"
+              class="border-0"
               icon={info.icons.navigation.next}
               function={() => nextSection()}
             />
@@ -192,6 +285,17 @@ export function SectionSchedule() {
             </div>
           </section>
           <section>
+            <header className="p-2">
+              {section.map((section, o) =>
+                section.Section === currsection ? (
+                  <>
+                    <h3>{`${section.Section}`}</h3>
+                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
+                  </>
+                ) : null
+              )}
+              <hr />
+            </header>
             {schedule.length > 0
               ? schedule.map((schedule, i) =>
                   schedule.Section === currsection ? (
@@ -228,107 +332,4 @@ export function SectionSchedule() {
       </section>
     </main>
   );
-}
-
-{
-  /* <section className="col-lg-12 h-100 p-0 m-0 pe-2 overflow-y-auto">
-        <main className="h-100 w-100 d-flex align-items-center">
-          <main>
-            <DefaultButton
-              class=""
-              icon={<MdArrowBackIosNew />}
-              function={() => {
-                previousSection();
-              }}
-            />
-          </main>
-          <main className="w-100 h-100 row m-0 p-0 py-3 flex-fill">
-            <section className="col m-0 p-0">
-              <table className="w-100">
-                <thead>
-                  <tr>
-                    <td className="text-center fw-semibold pb-2 custom-text-gradient">
-                      {currsection}
-                    </td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {time.map((time, i) => (
-                    <tr>
-                      <td className="border fw-light">
-                        {convertMinutes(time)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
-            {day.map((day, i) => (
-              <section className="col m-0 p-0 ">
-                <table className="w-100">
-                  <thead>
-                    <tr>
-                      <td></td>
-                      <td className="text-center fw-semibold text-secondary pb-2">
-                        {day}
-                      </td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {time.map((time, j) => (
-                      <tr className="border">
-                        <td
-                          className="border border-white"
-                          style={{ width: "0" }}
-                        >
-                          &nbsp;
-                        </td>
-                        {schedule.length > 0
-                          ? schedule.map((schedule, k) =>
-                              schedule.Section === currsection ? (
-                                schedule.Day === day ? (
-                                  +schedule.StartTime === time ? (
-                                    <td
-                                      rowSpan={
-                                        (schedule.EndTime -
-                                          schedule.StartTime) /
-                                          30 -
-                                        1
-                                      }
-                                      className={
-                                        schedule.Component.includes("General")
-                                          ? "my-0 border border-white bg-secondary-subtle custom-text-blue rounded text-center p-2"
-                                          : "my-0 border border-white gradient-bg-light-blue rounded text-center p-2"
-                                      }
-                                      onClick={() => {
-                                        alert(schedule.Course);
-                                      }}
-                                    >
-                                      <p className="fw-semibold m-0 p-0">
-                                        {`${schedule.Section}`}
-                                      </p>
-                                    </td>
-                                  ) : (
-                                    ""
-                                  )
-                                ) : null
-                              ) : null
-                            )
-                          : null}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </section>
-            ))}
-          </main>
-          <main>
-            <DefaultButton
-              class=""
-              icon={<MdArrowBackIosNew />}
-              function={() => nextSection()}
-            />
-          </main>
-        </main>
-      </section> */
 }

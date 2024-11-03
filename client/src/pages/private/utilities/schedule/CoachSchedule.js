@@ -115,7 +115,7 @@ export function CoachSchedule() {
           </main>
           <main className="flex-fill h-100 pb-2">
             <table
-              className="h-100 w-100 rounded border-secondary"
+              className="h-100 w-100 rounded"
               style={{ tableLayout: "fixed" }}
             >
               <thead>
@@ -133,7 +133,7 @@ export function CoachSchedule() {
                   <tr>
                     <td className="p-1 border">{convertMinutes(timeslot)}</td>
                     {day.map((daytime, index) => (
-                      <td className="border">
+                      <td className="border-end">
                         {getAllScheduleOf(daytime).map((schedule, item) =>
                           schedule.Day === daytime ? (
                             +schedule.StartTime === timeslot ? (
@@ -189,6 +189,9 @@ export function CoachSchedule() {
                     ))}
                   </tr>
                 ))}
+                <tr>
+                  <td className="border-top" colSpan={6}></td>
+                </tr>
               </tbody>
             </table>
           </main>

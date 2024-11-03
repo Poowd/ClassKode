@@ -166,10 +166,10 @@ export function ViewRoom() {
                             <h6 className="m-0">Total Room Usage</h6>
                             <h3
                               className={`m-0 ${
-                                getRoomUsageWeek(roomusage.sum) > 60
+                                getRoomUsageWeek(roomusage.sum) >= 60
                                   ? "text-success"
                                   : getRoomUsageWeek(roomusage.sum) < 60 &&
-                                    getRoomUsageWeek(roomusage.sum) > 40
+                                    getRoomUsageWeek(roomusage.sum) >= 40
                                   ? "text-warning"
                                   : "text-danger"
                               }`}
@@ -182,10 +182,10 @@ export function ViewRoom() {
                             <main>
                               <ProgressBar
                                 state={
-                                  getRoomUsageWeek(roomusage.sum) > 60
+                                  getRoomUsageWeek(roomusage.sum) >= 60
                                     ? "success"
                                     : getRoomUsageWeek(roomusage.sum) < 60 &&
-                                      getRoomUsageWeek(roomusage.sum) > 40
+                                      getRoomUsageWeek(roomusage.sum) >= 40
                                     ? "warning"
                                     : "danger"
                                 }
@@ -200,10 +200,10 @@ export function ViewRoom() {
                               <h6>Monday</h6>
                               <p
                                 className={`m-0 ${
-                                  getRoomUsage(roomMonday.sum) > 60
+                                  getRoomUsage(roomMonday.sum) >= 60
                                     ? "text-success"
                                     : getRoomUsage(roomMonday.sum) < 60 &&
-                                      getRoomUsage(roomMonday.sum) > 40
+                                      getRoomUsage(roomMonday.sum) >= 40
                                     ? "text-warning"
                                     : "text-danger"
                                 }`}
@@ -219,10 +219,10 @@ export function ViewRoom() {
                               <h6>Tuesday</h6>
                               <p
                                 className={`m-0 ${
-                                  getRoomUsage(roomTuesday.sum) > 60
+                                  getRoomUsage(roomTuesday.sum) >= 60
                                     ? "text-success"
                                     : getRoomUsage(roomTuesday.sum) < 60 &&
-                                      getRoomUsage(roomTuesday.sum) > 40
+                                      getRoomUsage(roomTuesday.sum) >= 40
                                     ? "text-warning"
                                     : "text-danger"
                                 }`}
@@ -238,10 +238,10 @@ export function ViewRoom() {
                               <h6>Wednesday</h6>
                               <p
                                 className={`m-0 ${
-                                  getRoomUsage(roomWednesday.sum) > 60
+                                  getRoomUsage(roomWednesday.sum) >= 60
                                     ? "text-success"
                                     : getRoomUsage(roomWednesday.sum) < 60 &&
-                                      getRoomUsage(roomWednesday.sum) > 40
+                                      getRoomUsage(roomWednesday.sum) >= 40
                                     ? "text-warning"
                                     : "text-danger"
                                 }`}
@@ -257,10 +257,10 @@ export function ViewRoom() {
                               <h6>Thursday</h6>
                               <p
                                 className={`m-0 ${
-                                  getRoomUsage(roomThursday.sum) > 60
+                                  getRoomUsage(roomThursday.sum) >= 60
                                     ? "text-success"
                                     : getRoomUsage(roomThursday.sum) < 60 &&
-                                      getRoomUsage(roomThursday.sum) > 40
+                                      getRoomUsage(roomThursday.sum) >= 40
                                     ? "text-warning"
                                     : "text-danger"
                                 }`}
@@ -276,10 +276,10 @@ export function ViewRoom() {
                               <h6>Friday</h6>
                               <p
                                 className={`m-0 ${
-                                  getRoomUsage(roomFriday.sum) > 60
+                                  getRoomUsage(roomFriday.sum) >= 60
                                     ? "text-success"
                                     : getRoomUsage(roomFriday.sum) < 60 &&
-                                      getRoomUsage(roomFriday.sum) > 40
+                                      getRoomUsage(roomFriday.sum) >= 40
                                     ? "text-warning"
                                     : "text-danger"
                                 }`}

@@ -175,7 +175,7 @@ export function ViewCoach() {
                           </div>
                           <h3
                             className={`m-0 ${
-                              getCoachUnits(units.sum, assign.MAX) > 60
+                              getCoachUnits(units.sum, assign.MAX) >= 60
                                 ? "text-success"
                                 : getCoachUnits(units.sum, assign.MAX) < 60 &&
                                   getCoachUnits(units.sum, assign.MAX) > 40
@@ -190,10 +190,10 @@ export function ViewCoach() {
                           <main>
                             <ProgressBar
                               state={
-                                getCoachUnits(units.sum, assign.MAX) > 60
+                                getCoachUnits(units.sum, assign.MAX) >= 60
                                   ? "success"
                                   : getCoachUnits(units.sum, assign.MAX) < 60 &&
-                                    getCoachUnits(units.sum, assign.MAX) > 40
+                                    getCoachUnits(units.sum, assign.MAX) >= 40
                                   ? "warning"
                                   : "danger"
                               }

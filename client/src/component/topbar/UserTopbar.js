@@ -12,26 +12,47 @@ import owie from "../../assets/imgs/misc/owie.png";
 import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { SidebarItem } from "../sidebar/SidebarItem";
 import { SidebarDropdown } from "../sidebar/SidebarDropdown";
+import useDatabase from "../../hook/useDatabase";
 
 export function UserTopbar() {
+  const dateObject = new Date();
   const navigate = useNavigate();
   const [info] = useConfiguration();
+  const [get, post, data_get, data_post] = useDatabase();
   const [data, setData] = useState({
     Input: "",
   });
+  const [logs, setLogs] = useState("");
   const [dataChange] = useHandleChange(setData);
+
+  const unSetCookie = () => {
+    document.cookie = "accountCookies=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  };
 
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
   const [itemlist, setItemList] = useState("Default");
 
   const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("loggedin");
-    navigate("/");
-    //window.location.reload(true);
+    data_post(
+      "log-me",
+      {
+        Action: "Logout",
+        Module: "Web-Application",
+        User: loggeduser.SCHLID,
+        Details: "A User has Logged-Out",
+        Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
+        Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
+      },
+      setLogs
+    );
+    setTimeout(() => {
+      sessionStorage.removeItem("loggedin");
+      sessionStorage.removeItem("user");
+      unSetCookie();
+      window.location.assign("/");
+    }, 1000);
   };
-
   const quicknav = () => {
     //=>
     // if (/coach [0-9]{11}/g.test(data.Input)) {
@@ -138,80 +159,6 @@ export function UserTopbar() {
         </div>
       </div>
       <div className="d-flex align-items-center">
-        <section className="d-flex gap-1 border-end px-1">
-          <DefaultInput
-            class="bg-transparent border-0"
-            autocomplete={false}
-            label="inputs"
-            id="Input"
-            name="Input"
-            placeholder="Quick Navigation"
-            trigger={dataChange}
-          />
-          <DefaultButton
-            class="text-light"
-            reversed={true}
-            icon={info.icons.navigation.quicknav}
-            function={quicknav}
-          />
-        </section>
-        {/* <div>
-          <DefaultButton
-            class="text-light"
-            reversed={false}
-            icon={info.icons.navigation.quicknav}
-            text={""}
-            function={() => {}}
-            toggle="modal"
-            target="#QuickNav"
-          />
-          <ViewModal
-            id={"QuickNav"}
-            title={<h6 className="text-center text-black">Kwa-Go</h6>}
-            content={
-              <main>
-                <section className="d-flex gap-1">
-                  <DefaultInput
-                    label="inputs"
-                    id="Input"
-                    name="Input"
-                    trigger={dataChange}
-                  />
-                  <DefaultButton
-                    class="btn-primary py-2 px-2"
-                    reversed={true}
-                    text="Enter"
-                    function={quicknav}
-                    dismiss={"modal"}
-                  />
-                </section>
-                <main className="w-100 bottom-0 end-0 d-flex align-items-center justify-content-end">
-                  <section className="w-100 p-0 m-0 border rounded p-2 px-3 text-dark">
-                    <p className="p-0 m-0 fw-semibold">Commands</p>
-                    <p className="p-0 m-0">
-                      list
-                      <span className="text-secondary fst-italic">
-                        {" "}
-                        {`< module >`}
-                      </span>
-                    </p>
-                    <p className="p-0 m-0">
-                      <span className="text-secondary fst-italic">
-                        {`< module >`} {`< id >`}
-                      </span>
-                    </p>
-                  </section>
-                  <img
-                    src={owie}
-                    alt="..."
-                    className=""
-                    style={{ height: "10em" }}
-                  />
-                </main>
-              </main>
-            }
-          />
-        </div> */}
         <div className="px-1 border-end">
           <DefaultButton
             class="text-light"

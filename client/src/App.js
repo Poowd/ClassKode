@@ -244,32 +244,53 @@ function App() {
                         <Route index element={<Dashboard />}></Route>
                         <>
                           {loggeduser.PermissionLevel >= 0 ? (
-                            <Route path={"/institution"}>
+                            <>
+                              <Route path={"/institution"}>
+                                <Route
+                                  path={"/institution/department"}
+                                  element={<Department />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/program"}
+                                  element={<Program />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/course"}
+                                  element={<Course />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/section"}
+                                  element={<Section />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/room"}
+                                  element={<Room />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/coach"}
+                                  element={<Coach />}
+                                ></Route>
+                              </Route>
+                              <Route path={"/utilities/schedule"}>
+                                <Route index element={<Schedule />}></Route>
+                                <Route
+                                  path={"/utilities/schedule/room"}
+                                  element={<RoomSchedule />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/schedule/section"}
+                                  element={<SectionSchedule />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/schedule/coach"}
+                                  element={<CoachSchedule />}
+                                ></Route>
+                              </Route>
                               <Route
-                                path={"/institution/department"}
-                                element={<Department />}
+                                path={"/utilities/locator"}
+                                element={<Locator />}
                               ></Route>
-                              <Route
-                                path={"/institution/program"}
-                                element={<Program />}
-                              ></Route>
-                              <Route
-                                path={"/institution/course"}
-                                element={<Course />}
-                              ></Route>
-                              <Route
-                                path={"/institution/section"}
-                                element={<Section />}
-                              ></Route>
-                              <Route
-                                path={"/institution/room"}
-                                element={<Room />}
-                              ></Route>
-                              <Route
-                                path={"/institution/coach"}
-                                element={<Coach />}
-                              ></Route>
-                            </Route>
+                            </>
                           ) : null}
                         </>
                         <>
@@ -296,7 +317,7 @@ function App() {
                               <Route path={"/utilities/examinations"}>
                                 <Route index element={<ExamSchedule />}></Route>
                               </Route>
-                              <Route path={"/utilities/schedule"}>
+                              {/* <Route path={"/utilities/schedule"}>
                                 <Route index element={<Schedule />}></Route>
                                 <Route
                                   path={"/utilities/schedule/room"}
@@ -314,7 +335,7 @@ function App() {
                               <Route
                                 path={"/utilities/locator"}
                                 element={<Locator />}
-                              ></Route>
+                              ></Route> */}
                             </Route>
                           ) : null}
                         </>

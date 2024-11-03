@@ -93,10 +93,10 @@ router.post("/coach-status-update", (req, res) => {
 router.post("/user-registry", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
-    var id = clientData.SchoolID;
+    var email = clientData.Email;
     var code = clientData.AcademicCode;
     pool.query(
-      `UPDATE _user SET "AcademicCode"='${code}' WHERE "SCHLID"='${id}' AND "UUI_Status"='ACTIVE'`,
+      `UPDATE _user SET "AcademicCode"='${code}' WHERE "Email"='${email}' AND "UUI_Status"='ACTIVE'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);
@@ -228,6 +228,38 @@ router.post("/user-generate", (req, res) => {
       var pass = hash;
       pool.query(
         `INSERT INTO _user ("UUID", "SCHLID", "FirstName", "LastName", "Email", "Password", "UserType", "PermissionLevel")
+          VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from _user), '0${id}', '${first}', '${last}', '${email}', '${pass}', '${type}', '${level}')`,
+
+        (err, rslt) => {
+          if (err) {
+            console.error("Query error:", err);
+            return res.json({ Status: "Failed", data: err });
+          }
+          res.json({ Status: "Success", data: rslt.rows });
+        }
+      );
+    });
+  } catch (err) {
+    console.error(err);
+    res.json({ Status: "Failed", data: err });
+    //res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/user-insert", (req, res) => {
+  const clientData = JSON.parse(req.body);
+  try {
+    bcrypt.hash(`${clientData.Firstname}`, saltRounds, function (err, hash) {
+      console.log(hash);
+      var id = clientData.SchoolID;
+      var first = clientData.Firstname;
+      var last = clientData.Lastname;
+      var email = clientData.Email;
+      var type = clientData.Type;
+      var level = clientData.PermissionLevel;
+      var pass = hash;
+      pool.query(
+        `INSERT INTO _user ("UUID", "SCHLID", "FirstName", "LastName", "Email", "Password", "UserType", "PermissionLevel")
           VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from _user), '${id}', '${first}', '${last}', '${email}', '${pass}', '${type}', '${level}')`,
 
         (err, rslt) => {
@@ -239,6 +271,29 @@ router.post("/user-generate", (req, res) => {
         }
       );
     });
+  } catch (err) {
+    console.error(err);
+    res.json({ Status: "Failed", data: err });
+    //res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/student-section-register", (req, res) => {
+  const clientData = JSON.parse(req.body);
+  const id = clientData.data;
+  try {
+    pool.query(
+      `INSERT INTO student_section ("SCHLID", "Section")
+        VALUES ('${id}', 'None')`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return res.json({ Status: "Failed", data: err });
+        }
+        res.json({ Status: "Success", data: rslt.rows });
+      }
+    );
   } catch (err) {
     console.error(err);
     res.json({ Status: "Failed", data: err });

@@ -43,23 +43,26 @@ export function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevents normal function of onsubmit in forms
     try {
-      const response = await fetch("http://localhost:8081/user-login", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+      data_post(
+        "user-registry",
+        {
+          Email: values.email,
+          AcademicCode: values.academicCode,
+        },
+        setData
+      );
+      const response = await fetch(
+        "https://cskode-server.vercel.app/user-login",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+        }
+      );
       const entry = await response.json();
       try {
         setData(entry);
         if (entry.Status === "Success") {
           if (values.academicCode === academicYearCode.AcademicCode) {
-            data_post(
-              "user-registry",
-              {
-                SchoolID: entry.data.SCHLID,
-                AcademicCode: values.academicCode,
-              },
-              setData
-            );
             sessionStorage.setItem("user", JSON.stringify(entry.data));
             sessionStorage.setItem("loggedin", true);
             data_post(
@@ -67,14 +70,14 @@ export function Register() {
               {
                 Action: "Register",
                 Module: "Register Module",
-                User: data.data.SCHLID,
+                User: entry.data.SCHLID,
                 Details: "A User has Registered",
                 Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
                 Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
               },
               setLogs
             );
-            setCookies(JSON.stringify(data.data));
+            setCookies(JSON.stringify(entry.data));
             //navigate("/");
             // window.location.reload(true);
             window.location.assign("/");

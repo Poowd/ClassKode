@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../../../hook/useDatabase";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { FileMaintainanceTemplate } from "../../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
@@ -12,6 +12,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import useConfiguration from "../../../../hook/useConfiguration";
 
 export function CoachAssignment() {
+  const params = useParams();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
@@ -22,7 +23,7 @@ export function CoachAssignment() {
 
   useEffect(() => {
     data_get("current-academic-year", setCurrentAcademicYear);
-    data_get("assign-list", setAssignment);
+    data_post("assign-onyear-list", { data: params.id }, setAssignment);
   }, []);
 
   // useEffect(() => {
@@ -79,21 +80,19 @@ export function CoachAssignment() {
       }
       list={
         assignment &&
-        assignment.map((item, i) =>
-          item.AcademicYear === currentacademicyear.Code ? (
-            <ListCard
-              key={i}
-              slot1={item.CoachType}
-              slot2={item.LastName}
-              slot3={`${item.MAX} units`}
-              slot4={item.AcademicYear}
-              slot5={null}
-              view={info.icons.forms.view}
-              link={`/coach/view/${item.SCHLID}`}
-              state={{ data: item }}
-            />
-          ) : null
-        )
+        assignment.map((item, i) => (
+          <ListCard
+            key={i}
+            slot1={item.CoachType}
+            slot2={item.LastName}
+            slot3={`${item.MAX} units`}
+            slot4={item.AcademicYear}
+            slot5={null}
+            view={info.icons.forms.view}
+            link={`/coach/view/${item.SCHLID}`}
+            state={{ data: item }}
+          />
+        ))
       }
     />
   );

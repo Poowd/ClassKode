@@ -22,6 +22,20 @@ router.get("/project-list", (req, res) => {
   }
 });
 
+router.post("/project-onyear-list", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicyear = clientData.data;
+    pool.query(
+      `SELECT projection."PRJID", section."Section", section."YearLevel", projection."AcademicYear", projection."Population", projection."Created", projection."Status" FROM projection INNER JOIN section ON projection."Section" = section."Section" WHERE projection."Status"='ACTIVE' AND "AcademicYear"='${academicyear}'`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/projection-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);

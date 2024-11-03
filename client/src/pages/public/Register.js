@@ -52,8 +52,6 @@ export function Register() {
         setData(entry);
         if (entry.Status === "Success") {
           if (values.academicCode === academicYearCode.AcademicCode) {
-            sessionStorage.setItem("user", JSON.stringify(entry.data));
-            sessionStorage.setItem("loggedin", true);
             data_post(
               "user-registry",
               {
@@ -62,6 +60,8 @@ export function Register() {
               },
               setData
             );
+            sessionStorage.setItem("user", JSON.stringify(entry.data));
+            sessionStorage.setItem("loggedin", true);
             data_post(
               "log-me",
               {
@@ -75,8 +75,9 @@ export function Register() {
               setLogs
             );
             setCookies(JSON.stringify(data.data));
-            navigate("/");
-            window.location.reload(true);
+            //navigate("/");
+            // window.location.reload(true);
+            window.location.assign("/");
           } else {
             alert("A problem occurred");
           }

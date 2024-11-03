@@ -76,9 +76,9 @@ export function CreateSection() {
             if (yrl.YearLevel === data.YearLevel) {
               if (sem === data.Semester) {
                 setSectionName(
-                  `${prg.Abbrev}${counter}${getSectionDuplicates(
-                    `${prg.Abbrev}${counter}`
-                  )}`
+                  `${prg.Abbrev}${
+                    counter > 8 ? counter - 8 : counter
+                  }${getSectionDuplicates(`${prg.Abbrev}${counter}`)}`
                 );
               }
             }

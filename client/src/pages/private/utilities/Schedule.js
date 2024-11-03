@@ -16,16 +16,21 @@ export function Schedule() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [sched, setSched] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
     data_get("class-schedule-list", setSched);
-  }, [sched]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
   return (
     <>
       <FileMaintainanceTemplate
+        loader={isLoading}
         sidepanel={<NoDisplay />}
         control={
           <>

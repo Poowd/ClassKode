@@ -8,7 +8,6 @@ import useConfiguration from "../../hook/useConfiguration";
 import { Link, useNavigate } from "react-router-dom";
 import useHandleChange from "../../hook/useHandleChange";
 import { DefaultInput } from "../input/DefaultInput";
-import { SidebarDropdownItem } from "../dropdown/sidebar/SidebarDropdownItem";
 import owie from "../../assets/imgs/misc/owie.png";
 import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { SidebarItem } from "../sidebar/SidebarItem";

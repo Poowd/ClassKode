@@ -125,11 +125,7 @@ export function Curriculum() {
                         slot4={item.Status}
                         slot5={null}
                         view={info.icons.others.package}
-                        link={
-                          currentcurriculum.Code === item.Code
-                            ? `/utilities/curriculum/setup/${item.Code}`
-                            : null
-                        }
+                        link={`/utilities/curriculum/setup/${item.Code}`}
                         state={null}
                       />
                     ) : null

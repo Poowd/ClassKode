@@ -10,21 +10,27 @@ import useDatabase from "../../../hook/useDatabase";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import useConfiguration from "../../../hook/useConfiguration";
+import { LinkButton } from "../../../component/button/LinkButton";
 
 export function ExamSchedule() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [sched, setSched] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
   useEffect(() => {
     data_get("exam-schedule-list", setSched);
-  }, [sched]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
   return (
     <>
       <FileMaintainanceTemplate
+        loader={isLoading}
         sidepanel={<NoDisplay />}
         control={
           <>
@@ -59,18 +65,18 @@ export function ExamSchedule() {
                     </>
                   }
                 />
-                <Link to={"/examinations/generate/0"}>
-                  <DefaultButton
-                    class="btn-primary"
-                    icon={info.icons.forms.generate}
-                  />
-                </Link>
-                <Link to={"/examinations/create/0"}>
-                  <DefaultButton
-                    class="btn-primary"
-                    icon={info.icons.forms.add}
-                  />
-                </Link>
+                <LinkButton
+                  to={"/examinations/generate/0"}
+                  class="btn-primary"
+                  textclass="text-white"
+                  icon={info.icons.forms.generate}
+                />
+                <LinkButton
+                  to={"/examinations/create/0"}
+                  class="btn-primary"
+                  textclass="text-white"
+                  icon={info.icons.forms.add}
+                />
               </div>
             </div>
           </>

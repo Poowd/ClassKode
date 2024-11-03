@@ -85,14 +85,18 @@ export function AcademicYear() {
                         class="custom-bg-primary-light px-2"
                         icon={info.icons.pages.institution.coach}
                         function={() =>
-                          navigate("/utilities/academicyear/assigment")
+                          navigate(
+                            `/utilities/academicyear/assigment/${item.Code}`
+                          )
                         }
                       />
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
                         icon={info.icons.pages.institution.section}
                         function={() =>
-                          navigate("/utilities/academicyear/projection")
+                          navigate(
+                            `/utilities/academicyear/projection/${item.Code}`
+                          )
                         }
                       />
                     </>

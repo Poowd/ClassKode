@@ -13,6 +13,7 @@ import useDatabase from "../../hook/useDatabase";
 import reader from "../../assets/imgs/misc/owie.png";
 import useConfiguration from "../../hook/useConfiguration";
 import useHandleChange from "../../hook/useHandleChange";
+import { CoffeeLoader } from "../../component/loader/CoffeeLoader";
 
 export function Login() {
   const dateObject = new Date();
@@ -76,8 +77,9 @@ export function Login() {
               setLogs
             );
             setCookies(JSON.stringify(data.data));
-            navigate("/");
-            window.location.reload(true);
+            //navigate("/");
+            // window.location.reload(true);
+            window.location.assign("/");
           } else {
             navigate("/register");
           }

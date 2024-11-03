@@ -267,7 +267,7 @@ export function Dashboard() {
                     ? 0
                     : dataEntryCount.tertiary_class_schedules}
                 </h1>
-                <p className="m-0">Tertiary</p>
+                <p className="m-0">Tertiary Class Schedules</p>
               </main>
             </section>
             <section className="h-100 w-50 p-0 m-0 d-flex justify-content-center align-items-center">
@@ -279,7 +279,7 @@ export function Dashboard() {
                     ? 0
                     : dataEntryCount.shs_class_schedules}
                 </h1>
-                <p className="m-0">Senior High School</p>
+                <p className="m-0">Senior High School Class Schedules</p>
               </main>
             </section>
           </main>

@@ -21,6 +21,7 @@ export function EditSection() {
   const [toasty, showToast] = useToasty();
   const [sectionName, setSectionName] = useState("");
   const [data, setData] = useState({
+    SCTID: null,
     Section: null,
     Program: null,
     YearLevel: null,
@@ -39,7 +40,7 @@ export function EditSection() {
     data_get("section-list", setSection);
     data_get("program-list", setProgram);
     data_get("year-level-list", setYearLevel);
-  }, [section]);
+  }, []);
 
   useEffect(() => {
     data[0] && data.map((item) => setData(item));

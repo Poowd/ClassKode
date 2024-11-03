@@ -75,7 +75,8 @@ function App() {
       });
       const cookieVal = cookieMap["accountCookies"];
       setAccount(JSON.parse(cookieVal));
-      setCheckStatus(true);
+      console.log(cookieVal);
+      return setCheckStatus(true);
     } catch (error) {
       return false;
     }
@@ -111,10 +112,10 @@ function App() {
         {isLoading ? <FullscreenLoader class="position-fixed z-3" /> : ""}
       </header>
       <Routes>
-        {checkstatus === true ? (
+        {status === true ? (
           <>
-            {account.UserType === "Manager" ||
-            account.UserType === "Developer" ? (
+            {loggeduser.UserType === "Manager" ||
+            loggeduser.UserType === "Developer" ? (
               <Route
                 path={"*"}
                 element={
@@ -168,11 +169,11 @@ function App() {
                           <Route path={"/utilities/academicyear"}>
                             <Route index element={<AcademicYear />}></Route>
                             <Route
-                              path={"/utilities/academicyear/assigment"}
+                              path={"/utilities/academicyear/assigment/:id"}
                               element={<CoachAssignment />}
                             ></Route>
                             <Route
-                              path={"/utilities/academicyear/projection"}
+                              path={"/utilities/academicyear/projection/:id"}
                               element={<SectionProjection />}
                             ></Route>
                           </Route>
@@ -232,7 +233,7 @@ function App() {
                   />
                 }
               ></Route>
-            ) : account.UserType === "Admin" ? (
+            ) : loggeduser.UserType === "Admin" ? (
               <Route
                 path={"*"}
                 element={
@@ -242,7 +243,7 @@ function App() {
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
                         <>
-                          {account.PermissionLevel >= 0 ? (
+                          {loggeduser.PermissionLevel >= 0 ? (
                             <Route path={"/institution"}>
                               <Route
                                 path={"/institution/department"}
@@ -272,7 +273,7 @@ function App() {
                           ) : null}
                         </>
                         <>
-                          {account.PermissionLevel >= 1 ? (
+                          {loggeduser.PermissionLevel >= 1 ? (
                             <Route path={"/utilities"}>
                               <Route path={"/utilities/curriculum"}>
                                 <Route index element={<Curriculum />}></Route>
@@ -318,7 +319,7 @@ function App() {
                           ) : null}
                         </>
                         <>
-                          {account.PermissionLevel >= 2 ? (
+                          {loggeduser.PermissionLevel >= 2 ? (
                             <Route
                               path={"/:module/:form/:id"}
                               element={<DataController />}
@@ -331,7 +332,7 @@ function App() {
                   />
                 }
               ></Route>
-            ) : account.UserType === "User" ? (
+            ) : loggeduser.UserType === "User" ? (
               <Route
                 path={"*"}
                 element={
@@ -340,7 +341,7 @@ function App() {
                     content={
                       <Routes>
                         <Route index element={<LandingPage />}></Route>
-                        {account.PermissionLevel == 0 ? (
+                        {loggeduser.PermissionLevel == 0 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/my-schedules"}
@@ -348,7 +349,7 @@ function App() {
                             ></Route>
                           </Route>
                         ) : null}
-                        {account.PermissionLevel >= 0 ? (
+                        {loggeduser.PermissionLevel >= 0 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/section-schedules"}
@@ -360,7 +361,7 @@ function App() {
                             ></Route>
                           </Route>
                         ) : null}
-                        {account.PermissionLevel == 1 ? (
+                        {loggeduser.PermissionLevel == 1 ? (
                           <Route path={"/"}>
                             <Route
                               path={"/my-schedules"}

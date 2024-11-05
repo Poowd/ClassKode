@@ -151,25 +151,17 @@ export function Course() {
             {course.map((item, i) =>
               item.Course.toLowerCase().includes(search.search.toLowerCase()) ||
               search.search === "" ? (
-                item.Department.includes(search.setbyDepartment) ||
-                search.setbyDepartment === "" ? (
-                  <ListCard
-                    key={i}
-                    slot1={item.Code}
-                    slot2={item.Course}
-                    slot3={
-                      department &&
-                      department.map((dept) =>
-                        dept.Code === item.Department ? dept.Department : null
-                      )
-                    }
-                    slot4={null}
-                    slot5={item.Status}
-                    view={info.icons.forms.view}
-                    link={`/course/view/${item.CRSID}`}
-                    state={{ data: item }}
-                  />
-                ) : null
+                <ListCard
+                  key={i}
+                  slot1={item.CourseID}
+                  slot2={item.Course}
+                  slot3={item.SubjectArea}
+                  slot4={item.CatalogNo}
+                  slot5={item.Status}
+                  view={info.icons.forms.view}
+                  link={`/course/view/${item.CRSID}`}
+                  state={{ data: item }}
+                />
               ) : null
             )}
           </section>

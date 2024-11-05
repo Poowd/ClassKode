@@ -3,9 +3,9 @@ import React from "react";
 export class DataViewerTemplate extends React.Component {
   render() {
     return (
-      <main className="row h-100 m-0">
-        <section className="col-lg-3 h-100 p-2 height-auto">
-          <main className="h-100 bg-white rounded shadow-sm p-2">
+      <main className="row h-100 m-0 p-0">
+        <section className="col-lg-3 h-100 p-2 m-0 height-auto">
+          <main className="h-100 bg-white rounded shadow-sm p-3">
             {this.props.extradata}
           </main>
         </section>

@@ -160,7 +160,7 @@ export function Locator() {
                                       </span>
                                     </section>
                                     <section className="col-9 m-0 p-0">
-                                      {schedule.Section}
+                                      {`${schedule.Section} ( ${schedule.Population} students )`}
                                     </section>
                                   </main>
                                   <main className="row m-0 p-0 ">

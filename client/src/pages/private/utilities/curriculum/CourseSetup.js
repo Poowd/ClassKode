@@ -43,7 +43,7 @@ export function CourseSetup() {
     data_get("current-curriculum", setCurrentCurriculum);
     data_get("department-list", setDept);
     data_get("program-list", setPrg);
-    data_post("setup-target", { data: params.id }, setSetup);
+    //data_post("setup-target", { data: params.id }, setSetup);
   }, []);
 
   useEffect(() => {
@@ -54,6 +54,14 @@ export function CourseSetup() {
         "department_program_selection",
         JSON.stringify(data)
       );
+      data_post(
+        "curriculum-setup-target",
+        {
+          Curriculum: params.id,
+          Program: data.Program,
+        },
+        setSetup
+      );
     }
   }, [data]);
 
@@ -63,7 +71,6 @@ export function CourseSetup() {
       setData(SessionStorage[0]);
     }
   }, []);
-
   return (
     <FileMaintainanceTemplate
       sidepanel={
@@ -174,6 +181,17 @@ export function CourseSetup() {
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
+                to={data.Program !== "" ? "/setup/generate/0" : ""}
+                state={{
+                  program: data.Program,
+                  department: data.Department,
+                  curriculum: currentcurriculum.Code,
+                }}
+                icon={info.icons.forms.generate}
+              />
+              <LinkButton
+                class="btn-primary px-2"
+                textclass="text-white"
                 to={data.Program !== "" ? "/setup/create/0" : ""}
                 state={{
                   program: data.Program,
@@ -208,8 +226,7 @@ export function CourseSetup() {
           <section>
             {data.Program !== "" ? (
               setup.map((item, i) =>
-                item.Program === data.Program &&
-                item.Curriculum === currentcurriculum.Code ? (
+                true ? (
                   item.Course.toLowerCase().includes(
                     search.search.toLowerCase()
                   ) || search.search === "" ? (

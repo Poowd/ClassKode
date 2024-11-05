@@ -45,6 +45,7 @@ import { GenerateExaminations } from "./generate/GenerateExaminations";
 import { EditSchedule } from "./utilities/edit/EditSchedule";
 import { CreateUser } from "./misc/create/CreateUser";
 import { EditUser } from "./misc/edit/EditUser";
+import { GenerateCurriculum, GenerateSetup } from "./generate/GenerateSetup";
 
 export function DataController() {
   const params = useParams();
@@ -171,6 +172,8 @@ export function DataController() {
               <CreateSetup />
             ) : params.form === "view" ? (
               <ViewSetup />
+            ) : params.form === "generate" ? (
+              <GenerateSetup />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

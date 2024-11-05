@@ -22,12 +22,12 @@ router.post("/gen-class", (req, res) => {
 
   clientData.classes.map((data, i) => {
     classes.push({
-      CRS_Code: data.coursecode,
+      CRS_Code: data.CourseID,
       Course: data.Course,
       Component: data.Component,
       Section: data.Section,
       Population: data.Population,
-      Units: parseInt(data.MaxUnits), //converting text.json to float
+      Units: parseInt(data.Units), //converting text.json to float
       YearLevel: data.YearLevel,
     });
   });
@@ -76,7 +76,7 @@ router.post("/gen-class", (req, res) => {
       coach: function () {
         for (var i = 0; i < classes.length; i++) {
           if (!IS_LAB(classes[i].Component)) {
-            var coach = ADD_COACH(classes[i].CRS_Code);
+            var coach = ADD_COACH(classes[i].CRS_Code, classes[i].Units);
             schedules.push({
               ACY: academicyear.Code,
               SCT: classes[i].Section,
@@ -102,7 +102,7 @@ router.post("/gen-class", (req, res) => {
                 sct_classes[p].classes.push(classes[i].CRS_Code);
               }
             }
-            ADD_UNITS_TO_COACH(coach, classes[i].Units);
+            ADD_UNITS_TO_COACH(coach.SCHLID, classes[i].Units);
             for (var j = 0; j < classes.length; j++) {
               if (IS_LAB(classes[j].Component)) {
                 if (
@@ -140,8 +140,7 @@ router.post("/gen-class", (req, res) => {
         for (var j = 0; j < rooms.length; j++) {
           for (var k = 0; k < schedules.length; k++) {
             if (
-              (!IS_LAB(schedules[k].CPT) &&
-                schedules[k].CPT.includes(rooms[j].Facility)) ||
+              !IS_LAB(schedules[k].CPT) ||
               (IS_LAB(schedules[k].CPT) &&
                 schedules[k].CPT === rooms[j].Facility)
             ) {
@@ -220,7 +219,7 @@ router.post("/gen-class", (req, res) => {
             //if (class_schedules[i].CCH === target_coach) {
             console.log("conflict");
             return false;
-            //}
+            // }
           }
         }
       }
@@ -238,18 +237,18 @@ router.post("/gen-class", (req, res) => {
 
   function ADD_UNITS_TO_COACH(target_coach, course_units) {
     for (var i = 0; i < coaches.length; i++) {
-      if (coaches[i].LastName === target_coach) {
+      if (coaches[i].SCHLID === target_coach) {
         coaches[i].Units += course_units;
       }
     }
   }
 
-  function ADD_COACH(target_course) {
+  function ADD_COACH(target_course, target_units) {
     for (var i = 0; i < coachtype.length; i++) {
       for (var j = 0; j < coaches.length; j++) {
         if (IS_SPECIALIZED(coaches[j].SCHLID, target_course)) {
           if (coachtype[i].Type === coaches[j].CoachType) {
-            if (coaches[j].Units < coachtype[i].MAX - 3) {
+            if (coaches[j].Units + target_units < coaches[j].MaxUnits - 3) {
               return coaches[j];
             }
           }
@@ -344,7 +343,7 @@ router.post("/gen-exam-shs", (req, res) => {
   schedules.forEach((schedule) => {
     if (schedule.AcademicLevel === "Senior High School") {
       courses.push({
-        CourseCode: schedule.Code,
+        CourseCode: schedule.CourseID,
         Course: schedule.Course,
         Section: schedule.Section,
         AcademicLevel: schedule.AcademicLevel,
@@ -443,6 +442,7 @@ router.post("/gen-exam-ter", (req, res) => {
           Room: data.Room,
           Day: day,
           Capacity: data.Capacity,
+          Units: 0,
           Exams: [],
         });
       }
@@ -452,7 +452,7 @@ router.post("/gen-exam-ter", (req, res) => {
   schedules.forEach((schedule) => {
     if (schedule.AcademicLevel === "Tertiary") {
       courses.push({
-        CourseCode: schedule.Code,
+        CourseCode: schedule.CourseID,
         Course: schedule.Course,
         Section: schedule.Section,
         AcademicLevel: schedule.AcademicLevel,
@@ -470,26 +470,48 @@ router.post("/gen-exam-ter", (req, res) => {
           (component.includes("Major") || component.includes("Laboratory"))) ||
         ((examinationRoom[i].Day === "Friday" ||
           examinationRoom[i].Day === "Monday") &&
-          (component.includes("Basic") || component.includes("Minor")))
+          (component.includes("Basic") ||
+            component.includes("General") ||
+            component.includes("PE") ||
+            component.includes("NSTP")))
       ) {
         if (
           examinationRoom[i].Capacity > population &&
           examinationRoom[i].Exams.length < 7
         ) {
-          shuffle(examinationRoom);
-          return examinationRoom[i].Exams.push({
-            CourseCode: code,
-            Course: course,
-            Section: section,
-            Component: component,
-            Time: times[
-              examinationRoom[i].Exams !== undefined
-                ? examinationRoom[i].Exams.length
-                : 0
-            ],
-            Level: "Tertiary",
-            Population: population,
-          });
+          if (
+            conflictSection(
+              section,
+              examinationRoom[i].Day,
+              examinationRoom[i].Units * 60 + 420,
+              examinationRoom[i].Units * 60 + 420 + 1.5 * 60
+            )
+          ) {
+            //shuffle(examinationRoom);
+            examList.push({
+              CourseCode: code,
+              Course: course,
+              Section: section,
+              Component: component,
+              Day: examinationRoom[i].Day,
+              Room: examinationRoom[i].Room,
+              Capacity: examinationRoom[i].Capacity,
+              StartTime: examinationRoom[i].Units * 60 + 420,
+              EndTime: examinationRoom[i].Units * 60 + 420 + 1.5 * 60,
+              Level: "Tertiary",
+              Population: population,
+            });
+            console.log(
+              conflictSection(
+                section,
+                examinationRoom[i].Day,
+                examinationRoom[i].Units * 60 + 420,
+                examinationRoom[i].Units * 60 + 420 + 1.5 * 60
+              )
+            );
+            addUnitstoRoom(examinationRoom[i].Room, 1.5);
+            return;
+          }
         }
       }
     }
@@ -501,6 +523,31 @@ router.post("/gen-exam-ter", (req, res) => {
       [target_array[i], target_array[j]] = [target_array[j], target_array[i]];
     }
     return target_array;
+  }
+
+  function conflictSection(target_section, target_day, start_time, end_time) {
+    for (var i = 0; i < examList.length; i++) {
+      if (examList[i].Section === target_section) {
+        if (examList[i].Day === target_day) {
+          if (
+            examList[i].StartTime === start_time &&
+            examList[i].EndTime === end_time
+          ) {
+            console.log("conflict");
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  function addUnitstoRoom(target_room, course_units) {
+    for (var i = 0; i < examinationRoom.length; i++) {
+      if (examinationRoom[i].Room === target_room) {
+        examinationRoom[i].Units += course_units;
+      }
+    }
   }
 
   function combineAlikeCourses() {}
@@ -517,8 +564,8 @@ router.post("/gen-exam-ter", (req, res) => {
     );
   });
 
-  console.log(examinationRoom);
-  return res.json(examinationRoom);
+  console.log(examList);
+  return res.json(examList);
 });
 
 module.exports = router;

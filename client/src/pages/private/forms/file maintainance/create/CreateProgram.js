@@ -20,7 +20,6 @@ export function CreateProgram() {
   const [info] = useConfiguration();
   const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
-    Code: "",
     Program: "",
     Abbrev: "",
     Department: "",
@@ -28,7 +27,6 @@ export function CreateProgram() {
     Description: "",
   });
   const [validation, setValidation] = useState({
-    Code: "",
     Program: "",
     Abbrev: "",
     Department: "",
@@ -50,19 +48,6 @@ export function CreateProgram() {
     data_get("program-list", setProgram);
   }, [department]);
 
-  const checkDuplicateCode = (code) => {
-    for (var i = 0; i < program.length; i++) {
-      if (program[i].Code === code) {
-        setValidation((prev) => ({
-          ...prev,
-          Code: ["is-invalid", "invalid-feedback", "Looks Bad!"],
-        }));
-        return true;
-      }
-    }
-    return false;
-  };
-
   const checkDuplicateAbbrev = (abbrev) => {
     for (var i = 0; i < program.length; i++) {
       if (program[i].Abbrev === abbrev) {
@@ -80,7 +65,6 @@ export function CreateProgram() {
     e.preventDefault();
     setValidation((prev) => ({
       ...prev,
-      Code: ValiAI("Code", data.Code),
       Program: ValiAI("Name", data.Program),
       Abbrev: ValiAI("Abbrev", data.Abbrev),
       Department: ["is-valid", "valid-feedback", "Looks Good!"],
@@ -88,10 +72,8 @@ export function CreateProgram() {
       Description: ["is-valid", "valid-feedback", "Looks Good!"],
     }));
     if (
-      trueValiAIBool("Code", data.Code) &&
       trueValiAIBool("Name", data.Program) &&
       trueValiAIBool("Abbrev", data.Abbrev) &&
-      !checkDuplicateCode(data.Code) &&
       !checkDuplicateAbbrev(data.Abbrev)
     ) {
       data_post("program-insert", data, setData);
@@ -129,18 +111,6 @@ export function CreateProgram() {
         entryform={
           <>
             <MainInput
-              class={`${validation.Code[0]}`}
-              label="Code"
-              id="Code"
-              trigger={dataChange}
-              value={data.Code}
-              feedbackstatus={`${validation.Code[1]}`}
-              feedback={`${
-                validation.Code[2] !== undefined ? validation.Code[2] : ""
-              }`}
-              required={true}
-            />
-            <MainInput
               class={`${validation.Program[0]}`}
               label="Program"
               id="Program"
@@ -154,7 +124,7 @@ export function CreateProgram() {
             />
             <MainInput
               class={`${validation.Abbrev[0]}`}
-              label="Abbrev"
+              label="SectionAbbrev"
               id="Abbrev"
               trigger={dataChange}
               value={data.Abbrev}

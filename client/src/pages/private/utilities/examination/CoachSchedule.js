@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import useDatabase from "../../../../hook/useDatabase";
-import { MdArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useConfiguration from "../../../../hook/useConfiguration";
 
-export function SectionSchedule() {
+export function CoachSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [info] = useConfiguration();
@@ -22,9 +21,9 @@ export function SectionSchedule() {
   const [schedule, setSchedule] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
-  const [section, setSection] = useState([]);
+  const [coach, setCoach] = useState([]);
   const [course, setCourse] = useState([]);
-  const [currsection, setCurrentSection] = useState(
+  const [currcoach, setCurrentCoach] = useState(
     search.Search === "" ? "n/a" : search.Search
   );
 
@@ -43,49 +42,47 @@ export function SectionSchedule() {
 
   useEffect(() => {
     data_get("class-schedule-list", setSchedule);
-    data_get("project-list", setSection);
+    data_get("assign-list", setCoach);
     data_get("course-list", setCourse);
     if (search.Search === "") {
-      for (var i = 0; i < section.length; i++) {
-        setCurrentSection(section[0].Section);
+      for (var i = 0; i < coach.length; i++) {
+        setCurrentCoach(coach[0].SCHLID);
       }
     } else {
-      setCurrentSection(search.Search);
+      setCurrentCoach(search.Search);
     }
   }, [search]);
 
   useEffect(() => {
-    section.map((section, i) =>
-      i === 0 && currsection === "n/a"
-        ? setCurrentSection(section.Section)
-        : null
+    coach.map((coach, i) =>
+      i === 0 && currcoach === "n/a" ? setCurrentCoach(coach.SCHLID) : null
     );
-  }, [section]);
+  }, [coach]);
 
   function resetSearch() {
     setSearch({ Search: "" });
   }
   function previousSection() {
-    for (var i = 0; i < section.length; i++) {
-      if (section[i].Section === currsection) {
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === currcoach) {
         if (i - 1 >= 0) {
-          setCurrentSection(section[i - 1].Section);
+          setCurrentCoach(coach[i - 1].SCHLID);
         }
       }
-      if (currsection === "n/a") {
-        setCurrentSection(section[0].Section);
+      if (currcoach === "n/a") {
+        setCurrentCoach(coach[0].SCHLID);
       }
     }
   }
   function nextSection() {
-    for (var i = 0; i < section.length; i++) {
-      if (section[i].Section === currsection) {
-        if (i + 1 < section.length) {
-          setCurrentSection(section[i + 1].Section);
+    for (var i = 0; i < coach.length; i++) {
+      if (coach[i].SCHLID === currcoach) {
+        if (i + 1 < coach.length) {
+          setCurrentCoach(coach[i + 1].SCHLID);
         }
       }
-      if (currsection === "n/a") {
-        setCurrentSection(section[0].Section);
+      if (currcoach === "n/a") {
+        setCurrentCoach(coach[0].SCHLID);
       }
     }
   }
@@ -93,7 +90,7 @@ export function SectionSchedule() {
   function getAllScheduleOf(day) {
     var schedules = [];
     schedule.forEach((scheds) => {
-      if (scheds.Section === currsection) {
+      if (scheds.SCHLID === currcoach) {
         if (scheds.Day === day) {
           schedules.push(scheds);
         }
@@ -104,12 +101,12 @@ export function SectionSchedule() {
   }
 
   return (
-    <main className="h-100 w-100 row m-0 p-2">
-      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
+    <main className="h-100 row m-0 p-0">
+      <section className="h-100 col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
-              class="border-0"
+              class=""
               icon={info.icons.navigation.previous}
               function={() => {
                 previousSection();
@@ -123,11 +120,7 @@ export function SectionSchedule() {
             >
               <thead>
                 <tr>
-                  <td
-                    className="p-1 border"
-                    colSpan={2}
-                    style={{ width: "10%" }}
-                  >
+                  <td className="p-1 border" style={{ width: "10%" }}>
                     Day / Time
                   </td>
                   {day.map((daytime, index) => (
@@ -136,20 +129,11 @@ export function SectionSchedule() {
                 </tr>
               </thead>
               <tbody>
-                {time.map((timeslot, timeindex) => (
+                {time.map((timeslot, index) => (
                   <tr>
-                    <td className="p-1 text-center border">
-                      {convertMinutes(timeslot)}
-                    </td>
-                    <td className="p-1 text-center border">
-                      {convertMinutes(timeslot + 30)}
-                    </td>
-                    {day.map((daytime, dayindex) => (
-                      <td
-                        className={`border-end ${
-                          (timeindex - 1) % 2 == 0 ? "border-bottom" : ""
-                        }`}
-                      >
+                    <td className="p-1 border">{convertMinutes(timeslot)}</td>
+                    {day.map((daytime, index) => (
+                      <td className="border-end">
                         {getAllScheduleOf(daytime).map((schedule, item) =>
                           schedule.Day === daytime ? (
                             +schedule.StartTime === timeslot ? (
@@ -213,11 +197,11 @@ export function SectionSchedule() {
           </main>
           {/* <main className="h-100 flex-fill py-2">
             <header className="p-2">
-              {section.map((section, o) =>
-                section.Section === currsection ? (
+              {coach.map((coach, o) =>
+                coach.SCHLID === currcoach ? (
                   <>
-                    <h3>{`${section.Section}`}</h3>
-                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
+                    <h3>{`${coach.LastName}, ${coach.FirstName}`}</h3>
+                    <p className="m-0">{`${coach.Department}`}</p>
                   </>
                 ) : null
               )}
@@ -228,11 +212,11 @@ export function SectionSchedule() {
                 <section>
                   <h6>{day}</h6>
                 </section>
-                <section className="w-100 d-flex">
+                <section className="w-100 d-flex height-auto">
                   {time.map((time, j) =>
                     schedule.length > 0
                       ? schedule.map((schedule, k) =>
-                          schedule.Section === currsection ? (
+                          schedule.SCHLID === currcoach ? (
                             schedule.Day === day ? (
                               +schedule.StartTime === time ? (
                                 <section
@@ -247,6 +231,9 @@ export function SectionSchedule() {
                                   }}
                                 >
                                   <small>
+                                    <p className="fw-semibold m-0 p-0">
+                                      {schedule.Section}
+                                    </p>
                                     <h6 className="fw-bold m-0 p-0">
                                       {schedule.Course}
                                     </h6>
@@ -274,15 +261,15 @@ export function SectionSchedule() {
           </main> */}
           <main>
             <DefaultButton
-              class="border-0"
+              class=""
               icon={info.icons.navigation.next}
               function={() => nextSection()}
             />
           </main>
         </main>
       </section>
-      <section className="col-lg-3 h-100 p-0 ps-2 m-0 height-auto">
-        <main className="h-100 overflow-y-auto px-1">
+      <section className="col-lg-3 h-100 p-0 ps-2 m-0">
+        <main className="h-100 position-relative overflow-y-auto px-1">
           <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
             <div className="d-flex justify-content-between gap-2">
               <div className="d-flex w-100">
@@ -302,11 +289,11 @@ export function SectionSchedule() {
           </section>
           <section>
             <header className="p-2">
-              {section.map((section, o) =>
-                section.Section === currsection ? (
+              {coach.map((coach, o) =>
+                coach.SCHLID === currcoach ? (
                   <>
-                    <h3>{`${section.Section}`}</h3>
-                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
+                    <h3>{`${coach.LastName}, ${coach.FirstName}`}</h3>
+                    <p className="m-0">{`${coach.Department}`}</p>
                   </>
                 ) : null
               )}
@@ -314,7 +301,7 @@ export function SectionSchedule() {
             </header>
             {schedule.length > 0
               ? schedule.map((schedule, i) =>
-                  schedule.Section === currsection ? (
+                  schedule.SCHLID === currcoach ? (
                     <>
                       <main className="p-3 shadow-sm rounded mb-2 hover-darken">
                         <main className="row m-0 p-0">

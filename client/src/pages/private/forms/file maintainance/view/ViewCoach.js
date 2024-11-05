@@ -44,6 +44,7 @@ export function ViewCoach() {
   const [assign, setAssign] = useState([]);
   const [department, setDepartment] = useState([]);
   const [currentImage, setCurrentImage] = useState("");
+  const [specialization, setSpecializaton] = useState([]);
   const [confirmCode, setConfirmCode] = useState({
     Confirm: "",
   });
@@ -61,8 +62,26 @@ export function ViewCoach() {
   useEffect(() => {
     try {
       setCurrentImage(data[0].Image);
+      data_post(
+        "specialization-target",
+        { data: data[0].SCHLID },
+        setSpecializaton
+      );
     } catch (error) {}
   }, [data]);
+
+  const removeDuplicates = (data) => {
+    const uniqueEntries = new Map();
+    data.forEach((entry) => {
+      const key = `${entry.Subject}`;
+
+      if (!uniqueEntries.has(key)) {
+        uniqueEntries.set(key, entry);
+      }
+    });
+
+    return Array.from(uniqueEntries.values());
+  };
 
   const archiveEntry = (e) => {
     e.preventDefault();
@@ -132,6 +151,17 @@ export function ViewCoach() {
             />
           </>
         }
+        extradata={
+          <>
+            <p>Specialization</p>
+            {specialization &&
+              removeDuplicates(specialization).map((special, i) => (
+                <main className="bg-white rounded shadow-sm p-2 px-3 mb-2">
+                  <p className="m-0">{`${special.CourseID} - ${special.Course}`}</p>
+                </main>
+              ))}
+          </>
+        }
         content={
           <>
             {data &&
@@ -175,12 +205,12 @@ export function ViewCoach() {
                           </div>
                           <h3
                             className={`m-0 ${
-                              getCoachUnits(units.sum, assign.MAX) >= 60
-                                ? "text-success"
-                                : getCoachUnits(units.sum, assign.MAX) < 60 &&
-                                  getCoachUnits(units.sum, assign.MAX) > 40
+                              getCoachUnits(units.sum, assign.MAX) > 100
+                                ? "text-danger"
+                                : getCoachUnits(units.sum, assign.MAX) <= 100 &&
+                                  getCoachUnits(units.sum, assign.MAX) > 50
                                 ? "text-warning"
-                                : "text-danger"
+                                : "text-success"
                             }`}
                           >
                             {getCoachUnits(units.sum, assign.MAX)}%
@@ -190,12 +220,13 @@ export function ViewCoach() {
                           <main>
                             <ProgressBar
                               state={
-                                getCoachUnits(units.sum, assign.MAX) >= 60
-                                  ? "success"
-                                  : getCoachUnits(units.sum, assign.MAX) < 60 &&
-                                    getCoachUnits(units.sum, assign.MAX) >= 40
+                                getCoachUnits(units.sum, assign.MAX) > 100
+                                  ? "danger"
+                                  : getCoachUnits(units.sum, assign.MAX) <=
+                                      100 &&
+                                    getCoachUnits(units.sum, assign.MAX) >= 50
                                   ? "warning"
-                                  : "danger"
+                                  : "success"
                               }
                               progress={getCoachUnits(units.sum, assign.MAX)}
                             />
@@ -216,7 +247,6 @@ export function ViewCoach() {
               ))}
           </>
         }
-        extradata={<></>}
         additional={
           <figure className="p-5">
             <img

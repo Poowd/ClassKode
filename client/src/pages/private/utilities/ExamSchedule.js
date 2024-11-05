@@ -52,15 +52,19 @@ export function ExamSchedule() {
                     <>
                       <DefaultDropdownItem
                         title={"Room"}
-                        trigger={() => navigate("/utilities/schedule/room")}
+                        trigger={() => navigate("/utilities/examinations/room")}
                       />
                       <DefaultDropdownItem
                         title={"Coach"}
-                        trigger={() => navigate("/utilities/schedule/coach")}
+                        trigger={() =>
+                          navigate("/utilities/examinations/coach")
+                        }
                       />
                       <DefaultDropdownItem
                         title={"Section"}
-                        trigger={() => navigate("/utilities/schedule/section")}
+                        trigger={() =>
+                          navigate("/utilities/examinations/section")
+                        }
                       />
                     </>
                   }

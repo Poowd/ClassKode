@@ -112,7 +112,7 @@ export function RoomSchedule() {
             <div className="d-flex justify-content-between gap-2">
               <div>
                 <DefaultButton
-                  class="px-2 py-2"
+                  class="px-2"
                   icon={info.icons.navigation.back}
                   text="Back"
                   function={() => navigate(-1)}
@@ -120,7 +120,7 @@ export function RoomSchedule() {
               </div>
               <div className="d-flex gap-2">
                 <DefaultDropdown
-                  class="border px-3 rounded btn-primary p-2"
+                  class="border px-2 rounded btn-primary"
                   reversed={true}
                   icon={<TbStairs />}
                   text={building.map((item, i) =>
@@ -140,7 +140,7 @@ export function RoomSchedule() {
                   }
                 />
                 <DefaultDropdown
-                  class="border px-3 rounded btn-primary p-2"
+                  class="border px-2 rounded btn-primary"
                   reversed={true}
                   icon={<TbStairs />}
                   text={floor.map((item, i) =>
@@ -163,11 +163,6 @@ export function RoomSchedule() {
             </div>
           </section>
           <section>
-            <header className="p-2">
-              <p className="m-0">{`${currbuilding}`}</p>
-              <h3>{`${currfloor}`}</h3>
-              <hr />
-            </header>
             {room &&
               room.map((room, a) =>
                 room.Building === currbuilding && room.Floor === currfloor

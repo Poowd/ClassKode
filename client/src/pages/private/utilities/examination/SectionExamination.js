@@ -8,7 +8,7 @@ import { DefaultInput } from "../../../../component/input/DefaultInput";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useConfiguration from "../../../../hook/useConfiguration";
 
-export function SectionSchedule() {
+export function SectionExamination() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [info] = useConfiguration();
@@ -42,7 +42,7 @@ export function SectionSchedule() {
   ]);
 
   useEffect(() => {
-    data_get("class-schedule-list", setSchedule);
+    data_get("exam-schedule-list", setSchedule);
     data_get("project-list", setSection);
     data_get("course-list", setCourse);
     if (search.Search === "") {
@@ -163,16 +163,10 @@ export function SectionSchedule() {
                                 onClick={() => alert(schedule.Course)}
                               >
                                 <small className="fw-bold">
-                                  {` ${
-                                    schedule.Room.includes("Laboratory")
-                                      ? "LAB"
-                                      : "LEC"
-                                  } : ${schedule.Course}`}
+                                  {`${schedule.Course}`}
                                 </small>
                               </div>
-                            ) : +schedule.StartTime +
-                                60 * (schedule.Units - 0.5) ===
-                              timeslot ? (
+                            ) : +schedule.StartTime + 60 === timeslot ? (
                               <div
                                 className={`h-100 w-100 d-flex align-items-center ${
                                   schedule.Component.includes("Minor") ||
@@ -184,9 +178,8 @@ export function SectionSchedule() {
                               >
                                 <small></small>
                               </div>
-                            ) : +schedule.StartTime +
-                                60 * (schedule.Units - 0.5) >
-                                timeslot && +schedule.StartTime < timeslot ? (
+                            ) : +schedule.StartTime + 60 > timeslot &&
+                              +schedule.StartTime < timeslot ? (
                               <div
                                 className={`h-100 w-100 d-flex align-items-center ${
                                   schedule.Component.includes("Minor") ||

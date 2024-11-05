@@ -157,4 +157,76 @@ router.post("/setup-restore", (req, res) => {
 
 //select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') from department
 
+// =>
+
+router.get("/curriculum-setup-list", (req, res) => {
+  try {
+    pool.query(
+      `SELECT setup."CourseID", setup."Course", setup."SubjectArea", setup."CatalogNo", setup."YearLevel", setup."Units", setup."Semester", setup."Component", setup."Program", setup."Curriculum", department."Code" AS "Department" FROM setup INNER JOIN program ON program."Code" = setup."Program" INNER JOIN department ON department."Code" = program."Department" WHERE setup."Curriculum"=(SELECT "Curriculum" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/curriculum-setup-target", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var curriculum = clientData.Curriculum;
+    var program = clientData.Program;
+    pool.query(
+      `SELECT setup."CourseID", setup."Course", setup."SubjectArea", setup."CatalogNo", setup."YearLevel", setup."Units", setup."Semester", setup."Component", setup."Program", setup."Curriculum", department."Code" FROM setup INNER JOIN program ON program."Code" = setup."Program" INNER JOIN department ON department."Code" = program."Department" WHERE setup."Curriculum"='${curriculum}' AND setup."Program"='${program}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/curriculum-setup-insert", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var courseid = clientData.data.Course_ID;
+    var course = clientData.data.Course;
+    var subjectarea = clientData.data.Subject_Area;
+    var catalogno = clientData.data.Catalog_No;
+    var component = clientData.data.Component;
+    var units = clientData.data.Units;
+    var yearlevel = clientData.data.Year_Level;
+    var semester = clientData.data.Semester;
+    var program = clientData.Program;
+    var curriculum = clientData.Curriculum;
+    pool.query(
+      `INSERT INTO setup ("SETID", "CourseID", "Course", "SubjectArea", "CatalogNo", "Component", "Units", "YearLevel", "Semester", "Program", "Curriculum")
+        VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from setup), '${courseid}', '${course}', '${subjectarea}', '${catalogno}', '${component}','${units}','${yearlevel}','${semester}','${program}','${curriculum}')`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

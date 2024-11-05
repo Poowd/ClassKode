@@ -47,6 +47,7 @@ import { About } from "./pages/public/About";
 import { Features } from "./pages/public/Features";
 import { Team } from "./pages/public/Team";
 import { Timetabling } from "./pages/testing/Timetabling";
+import { SectionExamination } from "./pages/private/utilities/examination/SectionExamination";
 
 function App() {
   const navigate = useNavigate();
@@ -180,6 +181,10 @@ function App() {
 
                           <Route path={"/utilities/examinations"}>
                             <Route index element={<ExamSchedule />}></Route>
+                            <Route
+                              path={"/utilities/examinations/section"}
+                              element={<SectionExamination />}
+                            ></Route>
                           </Route>
 
                           <Route path={"/utilities/schedule"}>

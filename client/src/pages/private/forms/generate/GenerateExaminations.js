@@ -68,7 +68,7 @@ export function GenerateExaminations() {
   const removeDuplicates = (data) => {
     const uniqueEntries = new Map();
     data.forEach((entry) => {
-      const key = `${entry.Code}-${entry.Section}`;
+      const key = `${entry.CourseID}-${entry.Section}`;
 
       if (!uniqueEntries.has(key)) {
         uniqueEntries.set(key, entry);
@@ -87,34 +87,32 @@ export function GenerateExaminations() {
     e.preventDefault();
     if (true) {
       for (var i in examSchedule) {
-        for (var j in examSchedule[i].Exams) {
-          do {
-            try {
-              const response = await fetch(
-                `${info.conn.server}exam-schedule-insert`,
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                    CourseCode: examSchedule[i].Exams[j].CourseCode,
-                    Course: examSchedule[i].Exams[j].Course,
-                    Section: examSchedule[i].Exams[j].Section,
-                    Component: examSchedule[i].Exams[j].Component,
-                    Time: examSchedule[i].Exams[j].Time,
-                    Level: examSchedule[i].Exams[j].Level,
-                    Population: examSchedule[i].Exams[j].Population,
-                    Room: examSchedule[i].Room,
-                    Day: examSchedule[i].Day,
-                    Capacity: examSchedule[i].Capacity,
-                  }),
-                }
-              );
-              const data = await response.json();
-              console.log(data);
-            } catch (error) {
-              console.log(error);
-            }
-          } while (data.Status === "Success");
-        }
+        do {
+          try {
+            const response = await fetch(
+              `${info.conn.server}exam-schedule-insert`,
+              {
+                method: "POST",
+                body: JSON.stringify({
+                  CourseCode: examSchedule[i].CourseCode,
+                  Course: examSchedule[i].Course,
+                  Section: examSchedule[i].Section,
+                  Component: examSchedule[i].Component,
+                  Time: examSchedule[i].StartTime,
+                  Level: examSchedule[i].Level,
+                  Population: examSchedule[i].Population,
+                  Room: examSchedule[i].Room,
+                  Day: examSchedule[i].Day,
+                  Capacity: examSchedule[i].Capacity,
+                }),
+              }
+            );
+            const data = await response.json();
+            console.log(data);
+          } catch (error) {
+            console.log(error);
+          }
+        } while (data.Status === "Success");
       }
       //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
@@ -209,26 +207,20 @@ export function GenerateExaminations() {
               </thead>
               <tbody>
                 {examSchedule.length > 0
-                  ? examSchedule.map((item, i) =>
-                      item.Exams.map((examSchedule, p) => (
-                        <tr key={i}>
-                          <td className="py-3">{examSchedule.CourseCode}</td>
-                          <td className="py-3 text-start">
-                            {examSchedule.Course}
-                          </td>
-                          <td className="py-3">{`${item.Room} ( ${examSchedule.Population}/${item.Capacity} )`}</td>
-                          <td className="py-3">{examSchedule.Section}</td>
-                          <td className="py-3">{examSchedule.Component}</td>
-                          <td className="py-3">{item.Day}</td>
-                          <td className="py-3">
-                            {convertMinutes(examSchedule.Time)}
-                          </td>
-                          <td className="py-3">
-                            {convertMinutes(examSchedule.Time + 90)}
-                          </td>
-                        </tr>
-                      ))
-                    )
+                  ? examSchedule.map((item, i) => (
+                      <tr key={i}>
+                        <td className="py-3">{item.CourseCode}</td>
+                        <td className="py-3 text-start">{item.Course}</td>
+                        <td className="py-3">{`${item.Room} ( ${item.Population}/${item.Capacity} )`}</td>
+                        <td className="py-3">{item.Section}</td>
+                        <td className="py-3">{item.Component}</td>
+                        <td className="py-3">{item.Day}</td>
+                        <td className="py-3">
+                          {convertMinutes(item.StartTime)}
+                        </td>
+                        <td className="py-3">{convertMinutes(item.EndTime)}</td>
+                      </tr>
+                    ))
                   : null}
               </tbody>
             </table>

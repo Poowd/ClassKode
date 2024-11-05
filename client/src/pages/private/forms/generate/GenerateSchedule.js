@@ -110,6 +110,22 @@ export function GenerateSchedule() {
   // }
   //navigate(-1);
 
+  const checkConflict = (start_time, end_time) => {
+    schedule.forEach((schedule) => {
+      if (
+        !(
+          (+start_time < +schedule.STR_TME && +end_time <= +schedule.STR_TME) ||
+          (+start_time > +schedule.STR_TME &&
+            +end_time >= +schedule.STR_TME &&
+            +schedule.END_TME <= +start_time)
+        )
+      ) {
+        return "bg-danger";
+      }
+    });
+    return "";
+  };
+
   const submitForm = async (e) => {
     e.preventDefault();
     if (true) {
@@ -152,8 +168,9 @@ export function GenerateSchedule() {
             <div className="w-100 d-flex justify-content-between">
               <div className="d-flex gap-2 ">
                 <DefaultButton
-                  class=""
-                  icon={<MdArrowBackIosNew />}
+                  class="px-2"
+                  icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />
               </div>
@@ -223,21 +240,28 @@ export function GenerateSchedule() {
             <tbody>
               {schedule.length > 0
                 ? schedule.map((sc, i) => (
-                    <tr key={i}>
-                      <td className="py-3">{sc.CRS_CODE}</td>
-                      <td className="text-start py-3">{sc.CRS}</td>
-                      <td className="py-3">{sc.SCT}</td>
-                      <td className="py-3">{sc.YRLVL}</td>
-                      <td className="py-3">{sc.DAY}</td>
-                      <td className="py-3">
+                    <tr
+                      key={i}
+                      className={`${
+                        sc.CCH == "n/a" ? "bg-warning" : ""
+                      } ${checkConflict(sc.STR_TME, sc.END_TME)}`}
+                    >
+                      <td className="bg-transparent py-3">{sc.CRS_CODE}</td>
+                      <td className="bg-transparent text-start py-3">
+                        {sc.CRS}
+                      </td>
+                      <td className="bg-transparent py-3">{sc.SCT}</td>
+                      <td className="bg-transparent py-3">{sc.YRLVL}</td>
+                      <td className="bg-transparent py-3">{sc.DAY}</td>
+                      <td className="bg-transparent py-3">
                         {`${convertMinutes(sc.STR_TME)} - ${convertMinutes(
                           sc.END_TME
                         )}`}
                       </td>
-                      <td className="py-3">{sc.ROM}</td>
-                      <td className="py-3">{sc.CPT}</td>
-                      <td className="py-3">{sc.CCH}</td>
-                      <td className="py-3">{`${sc.PPL} out of ${sc.CPC}`}</td>
+                      <td className="bg-transparent py-3">{sc.ROM}</td>
+                      <td className="bg-transparent py-3">{sc.CPT}</td>
+                      <td className="bg-transparent py-3">{sc.CCH}</td>
+                      <td className="bg-transparent py-3">{`${sc.PPL} out of ${sc.CPC}`}</td>
                     </tr>
                   ))
                 : null}

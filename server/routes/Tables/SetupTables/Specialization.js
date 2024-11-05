@@ -22,6 +22,20 @@ router.get("/specialization-list", (req, res) => {
   }
 });
 
+router.post("/specialization-target", (req, res) => {
+  const clientData = JSON.parse(req.body);
+  var id = clientData.data;
+  try {
+    pool.query(
+      `SELECT specialization."SPLID", specialization."Coach", specialization."Created", specialization."Status", course."Course", course."CourseID" FROM specialization INNER JOIN course ON course."CourseID" = specialization."Course" WHERE specialization."Status"='ACTIVE' AND specialization."Coach"='${id}'`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/specialization-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);

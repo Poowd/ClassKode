@@ -69,13 +69,11 @@ export function CreateDepartment() {
     e.preventDefault();
     setValidation((prev) => ({
       ...prev,
-      Code: ValiAI("Code", data.Code),
       Department: ValiAI("Name", data.Department),
       Abbrev: ValiAI("Abbrev", data.Abbrev),
       Description: ["is-valid", "valid-feedback", "Looks Good!"],
     }));
     if (
-      trueValiAIBool("Code", data.Code) &&
       trueValiAIBool("Name", data.Department) &&
       trueValiAIBool("Abbrev", data.Abbrev) &&
       !checkDuplicateCode(data.Code) &&
@@ -115,18 +113,6 @@ export function CreateDepartment() {
         }
         entryform={
           <>
-            <MainInput
-              class={`${validation.Code[0]}`}
-              label="Code"
-              id="Code"
-              trigger={dataChange}
-              value={data.Code}
-              feedbackstatus={`${validation.Code[1]}`}
-              feedback={`${
-                validation.Code[2] !== undefined ? validation.Code[2] : ""
-              }`}
-              required={true}
-            />
             <MainInput
               class={`${validation.Department[0]}`}
               label="Department"

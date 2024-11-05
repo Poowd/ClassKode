@@ -13,7 +13,16 @@ const pool = new Pool({
 router.get("/class-schedule-list", (req, res) => {
   try {
     pool.query(
-      `SELECT class_schedules."CLSID", course."Code", course."Course", section."Section", program."AcademicLevel", class_schedules."YearLevel", class_schedules."Day", class_schedules."StartTime", class_schedules."EndTime", class_schedules."Room", class_schedules."Component", coach."SCHLID", coach."FirstName", coach."LastName", class_schedules."Population", class_schedules."Created", class_schedules."Status", class_schedules."Units", class_schedules."Capacity", class_schedules."AcademicYear" FROM class_schedules FULL JOIN coach ON class_schedules."Coach" = coach."SCHLID" INNER JOIN course ON class_schedules."Course" = course."Code" INNER JOIN section ON class_schedules."Section" = section."Section" INNER JOIN program ON section."Program" = program."Code" WHERE class_schedules."Status"='ACTIVE' AND class_schedules."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      `SELECT class_schedules."CLSID", course."CourseID", course."Course", section."Section", program."AcademicLevel", class_schedules."YearLevel", class_schedules."Day", class_schedules."StartTime", class_schedules."EndTime", class_schedules."Room", class_schedules."Component", coach."SCHLID", coach."FirstName", coach."LastName", class_schedules."Population", class_schedules."Created", class_schedules."Status", class_schedules."Units", class_schedules."Capacity", class_schedules."AcademicYear" 
+
+      FROM class_schedules 
+      FULL JOIN coach ON class_schedules."Coach" = coach."SCHLID" 
+      INNER JOIN course ON class_schedules."Course" = course."CourseID"
+      INNER JOIN section ON class_schedules."Section" = section."Section" 
+      INNER JOIN program ON section."Program" = program."Code" 
+
+      WHERE class_schedules."Status"='ACTIVE'
+      AND class_schedules."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {

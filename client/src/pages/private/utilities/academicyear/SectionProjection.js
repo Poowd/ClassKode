@@ -65,7 +65,15 @@ export function SectionProjection() {
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
-
+              <LinkButton
+                class="btn-primary px-2"
+                textclass="text-white"
+                to={`/projection/generate/0`}
+                state={{
+                  academicyear: currentacademicyear,
+                }}
+                icon={info.icons.forms.generate}
+              />
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"

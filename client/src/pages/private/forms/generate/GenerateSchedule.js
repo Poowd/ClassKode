@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { PiGearSixFill } from "react-icons/pi";
-import { MdArrowBackIosNew } from "react-icons/md";
-import { TbListDetails } from "react-icons/tb";
-import { FaRegSave } from "react-icons/fa";
-import { FaFilter } from "react-icons/fa6";
 import useDatabase from "../../../../hook/useDatabase";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import { ViewModal } from "../../../../component/modal/ViewModal";
 import useConfiguration from "../../../../hook/useConfiguration";
+import useModal from "../../../../hook/useModal";
+import { LoaderModal } from "../../../../component/modal/LoaderModal";
+import { StatusModal } from "../../../../component/modal/StatusModal";
+import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
+import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
 
 export function GenerateSchedule() {
+  const bootstrap = require("bootstrap");
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [convertMinutes] = useTimeFormat();
   const [info] = useConfiguration();
 
-  const SessionStorage = [
-    JSON.parse(sessionStorage.getItem("semester_selector")),
-  ];
-
-  var classes = [];
   const [expected, setExpected] = useState([]);
   const [room, setRoom] = useState([]);
+  const [academiclevel, setAcademicLevel] = useState([]);
   const [coach, setCoach] = useState([]);
   const [section, setSection] = useState([]);
+  const [schedulestatus, setScheduleStatus] = useState([]);
   const [data, setData] = useState({
     currentSemester: "",
+  });
+
+  const [search, setSearch] = useState({
+    Search: "",
+    setbyAcademicLevel: "",
   });
 
   const [weekly, setWeekly] = useState([]);
@@ -35,96 +39,42 @@ export function GenerateSchedule() {
   const [schedule, setSchedule] = useState([]);
   const [specialize, setSpecialize] = useState([]);
   const [ay, setAY] = useState([]);
-  const [days, setDays] = useState([
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-  ]);
 
   useEffect(() => {
     data_get("current-academic-year", setAY);
-  }, [ay]);
-
-  useEffect(() => {
     data_get("room-list", setRoom);
+    data_get("academic-level-list", setAcademicLevel);
     data_get("project-list", setSection);
     data_get("assign-list", setCoach);
     data_get("coach-type-list", setCoachType);
     data_get("weekly-event-list", setWeekly);
     data_get("specialization-list", setSpecialize);
     data_post("expected-class-list", { data: ay.Code }, setExpected);
-  }, [ay]);
-
-  useEffect(() => {
-    //schedule.splice(0, 1);
-    //console.log(schedule);
-  }, [schedule]);
-
-  function conflictChecker() {
-    var a = 1;
-    var b = 10;
-
-    var test = [
-      {
-        c: 11,
-        d: 15,
-      },
-    ];
-
-    for (var i = 0; i < test.length; i++) {
-      if (
-        (!(a < test[i].c && b < test[i].c) &&
-          !(a > test[i].c && b > test[i].c)) ||
-        (a > test[i].c && b < test[i].d)
-      ) {
-        return console.log(`conflict : ${test[i].c} - ${test[i].d}`);
-      } else {
-        return console.log(`no conflict : ${test[i].c} - ${test[i].d}`);
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (data.currentSemester === "") {
-    } else {
-      sessionStorage.setItem("semester_selector", JSON.stringify(data));
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (SessionStorage[0] === null) {
-    } else {
-      setData(SessionStorage[0]);
-    }
   }, []);
 
-  // for (var i in schedule) {
-  //   console.log(schedule[i]);
-  //   data_post(
-  //     "class-schedule-insert",
-  //     schedule[i],
-  //     setSchedule
-  //   );
-  // }
-  //navigate(-1);
-
-  const checkConflict = (start_time, end_time) => {
-    schedule.forEach((schedule) => {
+  const checkConflict = (start_time, end_time, target_coach, target_day) => {
+    schedule.forEach((sche) => {
       if (
         !(
-          (+start_time < +schedule.STR_TME && +end_time <= +schedule.STR_TME) ||
-          (+start_time > +schedule.STR_TME &&
-            +end_time >= +schedule.STR_TME &&
-            +schedule.END_TME <= +start_time)
-        )
+          (+start_time < +sche.STR_TME && +end_time <= +sche.STR_TME) ||
+          (+start_time > +sche.STR_TME &&
+            +end_time >= +sche.STR_TME &&
+            +sche.END_TME <= +start_time)
+        ) &&
+        sche.CCH === target_coach &&
+        sche.DAY === target_day
       ) {
         return "bg-danger";
       }
     });
     return "";
   };
+
+  function sleep(time) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time || 1000);
+    });
+  }
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -148,160 +98,296 @@ export function GenerateSchedule() {
       }
       //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
+        data_post("set-schedule-status", { data: ay.Code }, setScheduleStatus);
+        showModal("StatusModal", "Sucs", "Sucs Lang");
         navigate(-1);
       }, 2500); // 2 second delay
     }
   };
 
   return (
-    <main>
-      <main className="h-100 position-relative overflow-y-auto px-1">
-        <header>
-          <h3 className="m-0 p-0">Generate Schedule</h3>
-          <p className="m-0 p-0 text-secondary">
-            Please Generate me a new Schedule
-          </p>
-          <hr className="p-0 mx-0 my-2" />
-        </header>
-        <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
-          <div className="d-flex justify-content-end gap-2">
-            <div className="w-100 d-flex justify-content-between">
-              <div className="d-flex gap-2 ">
-                <DefaultButton
-                  class="px-2"
-                  icon={info.icons.navigation.back}
-                  text="Back"
-                  function={() => navigate(-1)}
-                />
-              </div>
-              <div className="d-flex gap-2 ">
-                <DefaultButton
-                  class="btn-primary px-2"
-                  icon={<TbListDetails />}
-                  function={() => conflictChecker()}
-                />
-                <DefaultButton
-                  class="btn-primary px-2"
-                  reversed={false}
-                  text={"Expected Classes"}
-                  icon={<TbListDetails />}
-                  function={() => {}}
-                  toggle="modal"
-                  target="#ExpectedClass"
-                />
-                <DefaultButton class="btn-primary px-2" icon={<FaFilter />} />
-                <DefaultButton
-                  class="btn-primary px-2"
-                  icon={<FaRegSave />}
-                  function={submitForm}
-                />
-                <DefaultButton
-                  class="btn-primary px-2"
-                  icon={<PiGearSixFill />}
-                  text="Generate"
-                  function={() => {
-                    //setSchedule(expected);
-                    data_post(
-                      "gen-class",
-                      {
-                        classes: expected,
-                        rooms: room,
-                        coaches: coach,
-                        sections: section,
-                        coachtype: coachtype,
-                        specialize: specialize,
-                        academicyear: ay,
-                      },
-                      setSchedule
-                    );
-                  }}
-                  // disabled={sched.length > 0 ? true : false}
-                />
+    <>
+      <main className="h-100 position-relative overflow-y-auto p-1">
+        <main className="h-100 bg-white rounded shadow-sm p-3">
+          <header>
+            <h3 className="m-0 p-0">Generate Schedule</h3>
+            <p className="m-0 p-0 text-secondary">
+              Please Generate me a new Schedule
+            </p>
+            <hr className="p-0 mx-0 my-2" />
+          </header>
+          <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
+            <div className="d-flex justify-content-end gap-2">
+              <div className="w-100 d-flex justify-content-between">
+                <div className="d-flex gap-2 ">
+                  <DefaultButton
+                    class="px-2"
+                    icon={info.icons.navigation.back}
+                    text="Back"
+                    function={() => navigate(-1)}
+                  />
+                </div>
+                <div className="d-flex gap-2 ">
+                  <DefaultDropdown
+                    class="border p-2"
+                    reversed={true}
+                    icon={info.icons.forms.filter}
+                    dropdownitems={
+                      <main className="d-flex gap-2 p-3">
+                        <section>
+                          <h6>Academic Level</h6>
+                          {academiclevel &&
+                            academiclevel.map((item, i) => (
+                              <DefaultDropdownItem
+                                title={item.AcademicLevel}
+                                trigger={() =>
+                                  setSearch((prev) => ({
+                                    ...prev,
+                                    setbyAcademicLevel: item.AcademicLevel,
+                                  }))
+                                }
+                              />
+                            ))}
+                        </section>
+                      </main>
+                    }
+                  />
+                  <DefaultButton
+                    class="border px-2"
+                    reversed={false}
+                    icon={info.icons.others.list}
+                    function={() => {}}
+                    toggle="modal"
+                    target="#ExpectedClass"
+                  />
+                  <DefaultButton
+                    class={`px-2 btn-primary`}
+                    icon={info.icons.forms.add}
+                    text="Save"
+                    function={submitForm}
+                    disabled={schedule.length < 1 ? true : false}
+                  />
+                  <DefaultButton
+                    class={`px-2 btn-primary`}
+                    icon={info.icons.forms.generate}
+                    text="Generate"
+                    function={() => {
+                      showModal("AwaitModal", "", "Schedules are being made.");
+                      data_post(
+                        "gen-class",
+                        {
+                          classes: expected,
+                          rooms: room,
+                          coaches: coach,
+                          sections: section,
+                          coachtype: coachtype,
+                          specialize: specialize,
+                          academicyear: ay,
+                        },
+                        setSchedule
+                      );
+                      setTimeout(() => {
+                        hideModal();
+                      }, 2500); // 2 second delay
+                    }}
+                    disabled={ay.GeneratedSchedules === true ? true : false}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-        <section className="table-responsive">
-          <table className="table table-hover text-center">
-            <thead>
-              <tr>
-                <th className="p-3">Course Code</th>
-                <th className="text-start p-3">Course</th>
-                <th className="p-3">Section</th>
-                <th className="p-3">Course Level</th>
-                <th className="p-3">Day</th>
-                <th className="p-3">Time</th>
-                <th className="p-3">Room</th>
-                <th className="p-3">Component</th>
-                <th className="p-3">Coach</th>
-                <th className="p-3">Population</th>
-              </tr>
-            </thead>
-            <tbody>
-              {schedule.length > 0
-                ? schedule.map((sc, i) => (
-                    <tr
-                      key={i}
-                      className={`${
-                        sc.CCH == "n/a" ? "bg-warning" : ""
-                      } ${checkConflict(sc.STR_TME, sc.END_TME)}`}
-                    >
-                      <td className="bg-transparent py-3">{sc.CRS_CODE}</td>
-                      <td className="bg-transparent text-start py-3">
-                        {sc.CRS}
-                      </td>
-                      <td className="bg-transparent py-3">{sc.SCT}</td>
-                      <td className="bg-transparent py-3">{sc.YRLVL}</td>
-                      <td className="bg-transparent py-3">{sc.DAY}</td>
-                      <td className="bg-transparent py-3">
-                        {`${convertMinutes(sc.STR_TME)} - ${convertMinutes(
-                          sc.END_TME
-                        )}`}
-                      </td>
-                      <td className="bg-transparent py-3">{sc.ROM}</td>
-                      <td className="bg-transparent py-3">{sc.CPT}</td>
-                      <td className="bg-transparent py-3">{sc.CCH}</td>
-                      <td className="bg-transparent py-3">{`${sc.PPL} out of ${sc.CPC}`}</td>
-                    </tr>
-                  ))
-                : null}
-            </tbody>
-          </table>
-        </section>
+          </section>
+          <section>
+            <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
+              <li className={search.Search === "" ? "visually-hidden" : ""}>
+                <DefaultButton
+                  class="btn-outline-primary px-2"
+                  text={search.Search}
+                  function={() => {
+                    document.getElementById(`Search`).value = "";
+                    setSearch((prev) => ({
+                      ...prev,
+                      Search: "",
+                    }));
+                  }}
+                />
+              </li>
+              <li
+                className={
+                  search.setbyAcademicLevel === "" ? "visually-hidden" : ""
+                }
+              >
+                <DefaultButton
+                  class="btn-outline-primary px-2"
+                  text={search.setbyAcademicLevel}
+                  function={() =>
+                    setSearch((prev) => ({
+                      ...prev,
+                      setbyAcademicLevel: "",
+                    }))
+                  }
+                />
+              </li>
+            </ul>
+          </section>
+          <section className="table-responsive">
+            <table className="table table-hover text-center">
+              <thead>
+                <tr>
+                  <th className="p-3">Course Code</th>
+                  <th className="text-start p-3">Course</th>
+                  <th className="p-3">Section</th>
+                  <th className="p-3">Course Level</th>
+                  <th className="p-3">Day</th>
+                  <th className="p-3">Time</th>
+                  <th className="p-3">Room</th>
+                  <th className="p-3">Component</th>
+                  <th className="p-3">Coach</th>
+                  <th className="p-3">Population</th>
+                </tr>
+              </thead>
+              <tbody>
+                {schedule.length > 0
+                  ? schedule.map((sc, i) =>
+                      search.setbyAcademicLevel === "" ||
+                      search.setbyAcademicLevel === sc.ACDLVL ? (
+                        <tr
+                          key={i}
+                          className={`${
+                            sc.CCH == "n/a" ? "bg-warning" : ""
+                          } ${checkConflict(
+                            sc.STR_TME,
+                            sc.END_TME,
+                            sc.CCH,
+                            sc.DAY
+                          )}`}
+                        >
+                          <td className="bg-transparent py-3">{sc.CRS_CODE}</td>
+                          <td className="bg-transparent text-start py-3">
+                            {sc.CRS}
+                          </td>
+                          <td className="bg-transparent py-3">{sc.SCT}</td>
+                          <td className="bg-transparent py-3">{sc.YRLVL}</td>
+                          <td className="bg-transparent py-3">{sc.DAY}</td>
+                          <td className="bg-transparent py-3">
+                            {`${convertMinutes(sc.STR_TME)} - ${convertMinutes(
+                              sc.END_TME
+                            )}`}
+                          </td>
+                          <td className="bg-transparent py-3">{sc.ROM}</td>
+                          <td className="bg-transparent py-3">{sc.CPT}</td>
+                          <td className="bg-transparent py-3">{sc.CCH}</td>
+                          <td className="bg-transparent py-3">{`${sc.PPL} out of ${sc.CPC}`}</td>
+                        </tr>
+                      ) : null
+                    )
+                  : null}
+              </tbody>
+            </table>
+          </section>
+        </main>
+        <ViewModal
+          id={"ExpectedClass"}
+          title={
+            <h6 className="text-center text-black">List of Expected Classes</h6>
+          }
+          content={
+            <main>
+              <header className="py-2 px-3 border rounded mb-2">
+                <section>
+                  <p className="p-0 m-0">{`Total Classes: ${expected.length}`}</p>
+                </section>
+              </header>
+              <main className="row m-0 p-0">
+                <section className="col-lg-6 pe-1 p-0 m-0">
+                  <header className="mt-2">
+                    <h6>Tertiary</h6>
+                  </header>
+                  <ol className="list-group list-group-numbered">
+                    {expected.map((item, i) =>
+                      item.AcademicLevel === "Tertiary" ? (
+                        <li
+                          key={i}
+                          className="list-group-item d-flex justify-content-between align-items-start"
+                        >
+                          <div className="ms-2 me-auto">
+                            <div className="fw-bold">{item.Section}</div>
+                            {item.Course}
+                          </div>
+                          <span className="badge text-bg-primary rounded-pill">
+                            {item.Population}
+                          </span>
+                        </li>
+                      ) : null
+                    )}
+                  </ol>
+                </section>
+                <section className="col-lg-6 ps-1 p-0 m-0">
+                  <header className="mt-2">
+                    <h6>Senior High School</h6>
+                  </header>
+                  <ol className="list-group list-group-numbered">
+                    {expected.map((item, i) =>
+                      item.AcademicLevel === "Senior High School" ? (
+                        <li
+                          key={i}
+                          className="list-group-item d-flex justify-content-between align-items-start"
+                        >
+                          <div className="ms-2 me-auto">
+                            <div className="fw-bold">{item.Section}</div>
+                            {item.Course}
+                          </div>
+                          <span className="badge text-bg-primary rounded-pill">
+                            {item.Population}
+                          </span>
+                        </li>
+                      ) : null
+                    )}
+                  </ol>
+                </section>
+              </main>
+            </main>
+          }
+        />
       </main>
       <ViewModal
-        id={"ExpectedClass"}
-        title={
-          <h6 className="text-center text-black">List of Expected Classes</h6>
-        }
+        id={"Modal"}
+        title={modalcontent.Title}
         content={
-          <main>
-            <header className="py-2 px-3 border rounded mb-2">
-              <section>
-                <p className="p-0 m-0">{`Total Classes: ${expected.length}`}</p>
-              </section>
-            </header>
+          <>
             <main>
-              <ol className="list-group list-group-numbered">
-                {expected.map((item, i) => (
-                  <li
-                    key={i}
-                    className="list-group-item d-flex justify-content-between align-items-start"
-                  >
-                    <div className="ms-2 me-auto">
-                      <div className="fw-bold">{item.Section}</div>
-                      {item.Course}
-                    </div>
-                    <span className="badge text-bg-primary rounded-pill">
-                      {item.Population}
-                    </span>
-                  </li>
-                ))}
-              </ol>
+              <section>{modalcontent.Content}</section>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
             </main>
-          </main>
+          </>
         }
+        trigger={() => {}}
       />
-    </main>
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>
+              <section>{modalcontent.Content}</section>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </main>
+          </>
+        }
+        trigger={() => {}}
+      />
+      <LoaderModal id={"AwaitModal"} content={<>{modalcontent.Content}</>} />
+    </>
   );
 }

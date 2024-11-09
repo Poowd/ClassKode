@@ -20,6 +20,7 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { useToasty } from "../../../../../hook/useToasty";
 import { TextFormat2 } from "../../../../../component/textformat/TextFormat2";
+import { useClipboard } from "../../../../../hook/useClipboard";
 
 export function ViewAcademicYear() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export function ViewAcademicYear() {
   const [ArchiveEntry] = useArchiveEntry();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
+  const [CopyClipboard] = useClipboard();
 
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState([]);
@@ -148,12 +150,25 @@ export function ViewAcademicYear() {
                         />
                       </main>
                       <main className="d-flex gap-2 align-items-center mt-3">
-                        <section className="w-100 p-2 bg-white rounded shadow-sm px-3 d-flex justify-content-between align-items-center">
-                          <p className="m-0">Academic Codepass</p>
-                          <h3 className="m-0 fw-semibold">
-                            {academicYearCode.AcademicCode}
-                          </h3>
-                        </section>
+                        <button
+                          className="btn w-100 p-0"
+                          type="button"
+                          onClick={() => {
+                            CopyClipboard(academicYearCode.AcademicCode);
+                            showToast(
+                              info.icons.others.info,
+                              "Clipboard",
+                              "Copied!"
+                            );
+                          }}
+                        >
+                          <section className="w-100 p-2 bg-white rounded shadow-sm px-3 d-flex justify-content-between align-items-center">
+                            <p className="m-0">Academic Codepass</p>
+                            <h3 className="m-0 fw-semibold">
+                              {academicYearCode.AcademicCode}
+                            </h3>
+                          </section>
+                        </button>
                       </main>
                       <footer className="mt-5">
                         <small>

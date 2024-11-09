@@ -60,6 +60,30 @@ router.post("/projection-insert", (req, res) => {
   }
 });
 
+router.post("/projection-generate", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicyear = clientData.Academic_Year;
+    var section = clientData.Section;
+    var population = clientData.Population;
+    pool.query(
+      `INSERT INTO projection ("PRJID", "Section", "AcademicYear", "Population")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from projection), '${section}', '${academicyear}', '${population}')`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/project-total-population", (req, res) => {
   try {
     pool.query(

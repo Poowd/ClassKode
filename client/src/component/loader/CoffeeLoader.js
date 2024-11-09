@@ -6,13 +6,10 @@ export class CoffeeLoader extends React.Component {
     return (
       // slide-out-bck-center
       <main
-        className="d-flex justify-content-center align-items-center flex-column "
+        className="d-flex justify-content-center mt-5 p-5"
         style={{ width: "100%", height: "100vh" }}
       >
-        <div class="d-flex align-items-center gap-3">
-          <div class="spinner-border ms-auto" aria-hidden="true"></div>
-          <strong role="status">Loading...</strong>
-        </div>
+        <div class="bookloader"></div>
       </main>
     );
   }

@@ -16,7 +16,7 @@ export function GenerateUsers() {
   //const bootstrap = require("bootstrap");
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
-  const [file, sheets, FileUpload] = useSheetImport();
+  const [file, sheets, FileUpload, setSheets] = useSheetImport();
   const [data, setData] = useState([]);
   const [info] = useConfiguration();
 
@@ -25,6 +25,15 @@ export function GenerateUsers() {
   // const [CopyClipboard] = useClipboard();
   const [itemCounter] = useItemCounter();
   const [savestatus, setSaveStatus] = useState(null);
+
+  function removeSelectedFile() {
+    setData([]);
+    setSheets([]);
+    document.getElementById("formFile").value = "";
+    document
+      .getElementById("formFile")
+      .dispatchEvent(new Event("change", { bubbles: true }));
+  }
 
   useEffect(() => {
     sheets &&
@@ -146,6 +155,13 @@ export function GenerateUsers() {
                   }}
                 />
               </a>
+              <DefaultButton
+                class="bg-primary text-white px-2"
+                icon={info.icons.forms.reset}
+                type="button"
+                text="Reset"
+                function={removeSelectedFile}
+              />
               <DefaultButton
                 class="bg-primary text-white"
                 icon={info.icons.forms.add}

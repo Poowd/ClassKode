@@ -45,7 +45,8 @@ import { GenerateExaminations } from "./generate/GenerateExaminations";
 import { EditSchedule } from "./utilities/edit/EditSchedule";
 import { CreateUser } from "./misc/create/CreateUser";
 import { EditUser } from "./misc/edit/EditUser";
-import { GenerateCurriculum, GenerateSetup } from "./generate/GenerateSetup";
+import { GenerateSetup } from "./generate/GenerateSetup";
+import { GenerateProjection } from "./generate/GenerateProjection";
 
 export function DataController() {
   const params = useParams();
@@ -159,6 +160,8 @@ export function DataController() {
           {params.module === "projection" ? (
             params.form === "create" ? (
               <CreateProjection />
+            ) : params.form === "generate" ? (
+              <GenerateProjection />
             ) : params.form === "view" ? (
               <ViewProjection />
             ) : params.form === "edit" ? (

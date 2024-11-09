@@ -105,9 +105,9 @@ export function SectionSchedule() {
 
   return (
     <main className="h-100 w-100 row m-0 p-2">
-      <section className="col-lg-9 h-100 p-0 m-0 pe-2 overflow-y-auto height-auto">
-        <main className="h-100 w-100 d-flex align-items-center">
-          <main>
+      <section className="h-100 col-lg-9 h-100 p-1 m-0 pe-2 overflow-y-auto height-auto">
+        <main className="w-100 d-flex justify-content-end">
+          <section className="d-flex align-items-center gap-2 mb-2">
             <DefaultButton
               class="border-0"
               icon={info.icons.navigation.previous}
@@ -115,175 +115,121 @@ export function SectionSchedule() {
                 previousSection();
               }}
             />
-          </main>
-          <main className="flex-fill h-100 pb-2">
-            <table
-              className="h-100 w-100 rounded"
-              style={{ tableLayout: "fixed" }}
-            >
-              <thead>
-                <tr>
-                  <td
-                    className="p-1 border"
-                    colSpan={2}
-                    style={{ width: "10%" }}
-                  >
-                    Day / Time
-                  </td>
-                  {day.map((daytime, index) => (
-                    <td className="p-1 text-center border">{daytime}</td>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {time.map((timeslot, timeindex) => (
-                  <tr>
-                    <td className="p-1 text-center border">
-                      {convertMinutes(timeslot)}
-                    </td>
-                    <td className="p-1 text-center border">
-                      {convertMinutes(timeslot + 30)}
-                    </td>
-                    {day.map((daytime, dayindex) => (
-                      <td
-                        className={`border-end ${
-                          (timeindex - 1) % 2 == 0 ? "border-bottom" : ""
-                        }`}
-                      >
-                        {getAllScheduleOf(daytime).map((schedule, item) =>
-                          schedule.Day === daytime ? (
-                            +schedule.StartTime === timeslot ? (
-                              <div
-                                className={`p-2 h-100 w-100 d-flex align-items-center text-truncate text-start text-break text-wrap ${
-                                  schedule.Component.includes("Minor") ||
-                                  schedule.Component.includes("Basic")
-                                    ? "plotted1-2"
-                                    : "plotted1"
-                                }`}
-                                onClick={() => alert(schedule.Course)}
-                              >
-                                <small className="fw-bold">
-                                  {` ${
-                                    schedule.Room.includes("Laboratory")
-                                      ? "LAB"
-                                      : "LEC"
-                                  } : ${schedule.Course}`}
-                                </small>
-                              </div>
-                            ) : +schedule.StartTime +
-                                60 * (schedule.Units - 0.5) ===
-                              timeslot ? (
-                              <div
-                                className={`h-100 w-100 d-flex align-items-center ${
-                                  schedule.Component.includes("Minor") ||
-                                  schedule.Component.includes("Basic")
-                                    ? "plotted2-2"
-                                    : "plotted2"
-                                }`}
-                                onClick={() => alert(schedule.Course)}
-                              >
-                                <small></small>
-                              </div>
-                            ) : +schedule.StartTime +
-                                60 * (schedule.Units - 0.5) >
-                                timeslot && +schedule.StartTime < timeslot ? (
-                              <div
-                                className={`h-100 w-100 d-flex align-items-center ${
-                                  schedule.Component.includes("Minor") ||
-                                  schedule.Component.includes("Basic")
-                                    ? "plotted2-2"
-                                    : "plotted2"
-                                }`}
-                                onClick={() => alert(schedule.Course)}
-                              >
-                                <small></small>
-                              </div>
-                            ) : null
-                          ) : null
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-                <tr>
-                  <td className="border-top" colSpan={6}></td>
-                </tr>
-              </tbody>
-            </table>
-          </main>
-          {/* <main className="h-100 flex-fill py-2">
-            <header className="p-2">
-              {section.map((section, o) =>
-                section.Section === currsection ? (
-                  <>
-                    <h3>{`${section.Section}`}</h3>
-                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
-                  </>
-                ) : null
-              )}
-              <hr />
-            </header>
-            {day.map((day, i) => (
-              <main className="p-2">
-                <section>
-                  <h6>{day}</h6>
-                </section>
-                <section className="w-100 d-flex">
-                  {time.map((time, j) =>
-                    schedule.length > 0
-                      ? schedule.map((schedule, k) =>
-                          schedule.Section === currsection ? (
-                            schedule.Day === day ? (
-                              +schedule.StartTime === time ? (
-                                <section
-                                  className={
-                                    schedule.Component.includes("Minor") ||
-                                    schedule.Component.includes("Basic")
-                                      ? "border border-white gradient-bg-yellow custom-text-blue rounded p-3 w-100"
-                                      : "border border-white gradient-bg-light-blue rounded p-3 w-100"
-                                  }
-                                  onClick={() => {
-                                    alert(schedule.Course);
-                                  }}
-                                >
-                                  <small>
-                                    <h6 className="fw-bold m-0 p-0">
-                                      {schedule.Course}
-                                    </h6>
-                                    <p className="fw-semibold m-0 p-0">
-                                      {`${convertMinutes(
-                                        schedule.StartTime
-                                      )} : ${convertMinutes(schedule.EndTime)}`}
-                                    </p>
-                                    <p className="fw-semibold m-0 p-0">
-                                      {schedule.Room}
-                                    </p>
-                                  </small>
-                                </section>
-                              ) : (
-                                ""
-                              )
-                            ) : null
-                          ) : null
-                        )
-                      : null
-                  )}
-                </section>
-              </main>
-            ))}
-          </main> */}
-          <main>
+            <h6 className="m-0 p-0">{currsection}</h6>
             <DefaultButton
               class="border-0"
               icon={info.icons.navigation.next}
               function={() => nextSection()}
             />
-          </main>
+          </section>
+        </main>
+        <main className="flex-fill h-100">
+          <table
+            className="h-100 w-100 rounded"
+            style={{ tableLayout: "fixed" }}
+          >
+            <thead>
+              <tr>
+                <td className="p-1 border" colSpan={2} style={{ width: "15%" }}>
+                  Day / Time
+                </td>
+                {day.map((daytime, index) => (
+                  <td className="p-1 text-center border">{daytime}</td>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {time.map((timeslot, timeindex) => (
+                <tr>
+                  <td className="p-1 text-center border">
+                    <small>{convertMinutes(timeslot)}</small>
+                  </td>
+                  <td className="p-1 text-center border">
+                    <small>{convertMinutes(timeslot + 30)}</small>
+                  </td>
+                  {day.map((daytime, index) => (
+                    <td
+                      className={`border-end position-relative ${
+                        (timeindex - 1) % 2 == 0 ? "border-bottom" : ""
+                      }`}
+                    >
+                      {getAllScheduleOf(daytime).map((schedule, item) =>
+                        schedule.Day === daytime ? (
+                          +schedule.StartTime === timeslot ? (
+                            <div
+                              className={`p-2 h-100 w-100 d-flex align-items-center justify-content-center text-truncate text-break text-wrap ${
+                                schedule.Component.includes("Minor") ||
+                                schedule.Component.includes("General")
+                                  ? "plotted2-2"
+                                  : "plotted2"
+                              }`}
+                              onClick={() => alert(schedule.Course)}
+                            >
+                              <small className="fw-bold">
+                                {`${schedule.CourseID} ${
+                                  schedule.Room.includes("Laboratory")
+                                    ? "( LAB )"
+                                    : ""
+                                }`}
+                              </small>
+                            </div>
+                          ) : +schedule.StartTime +
+                              60 * (schedule.Units - 0.5) ===
+                            timeslot ? (
+                            <div
+                              className={`h-100 w-100 d-flex align-items-center ${
+                                schedule.Component.includes("Minor") ||
+                                schedule.Component.includes("General")
+                                  ? "plotted2-2"
+                                  : "plotted2"
+                              }`}
+                              onClick={() => alert(schedule.Course)}
+                            >
+                              <small></small>
+                            </div>
+                          ) : +schedule.StartTime +
+                              60 * (schedule.Units - 0.5) >
+                              timeslot && +schedule.StartTime < timeslot ? (
+                            <div
+                              className={`h-100 w-100 d-flex align-items-center ${
+                                schedule.Component.includes("Minor") ||
+                                schedule.Component.includes("General")
+                                  ? "plotted2-2"
+                                  : "plotted2"
+                              }`}
+                              onClick={() => alert(schedule.Course)}
+                            >
+                              <small></small>
+                            </div>
+                          ) : null
+                        ) : null
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              <tr>
+                <td className="border-top" colSpan={7}>
+                  &nbsp;
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </main>
       </section>
       <section className="col-lg-3 h-100 p-0 ps-2 m-0 height-auto">
-        <main className="h-100 overflow-y-auto px-1">
-          <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
+        <main className="h-100 position-relative overflow-y-auto rounded shadow-sm p-3">
+          <header className="p-2">
+            {section.map((section, o) =>
+              section.Section === currsection ? (
+                <>
+                  <p className="m-0">{`Population: ${section.Population} Student/s`}</p>
+                  <h3 className="m-0">{`${section.Section}`}</h3>
+                </>
+              ) : null
+            )}
+          </header>
+          <section className="w-100 bg-white rounded shadow-sm p-2 mb-2">
             <div className="d-flex justify-content-between gap-2">
               <div className="d-flex w-100">
                 <DefaultButton
@@ -301,17 +247,6 @@ export function SectionSchedule() {
             </div>
           </section>
           <section>
-            <header className="p-2">
-              {section.map((section, o) =>
-                section.Section === currsection ? (
-                  <>
-                    <h3>{`${section.Section}`}</h3>
-                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
-                  </>
-                ) : null
-              )}
-              <hr />
-            </header>
             {schedule.length > 0
               ? schedule.map((schedule, i) =>
                   schedule.Section === currsection ? (
@@ -320,19 +255,20 @@ export function SectionSchedule() {
                         <main className="row m-0 p-0">
                           <section className="col-12 p-0 m-0">
                             <section>
+                              <h6 className="p-0 m-0">{schedule.CourseID}</h6>
                               <h6 className="p-0 m-0">{schedule.Course}</h6>
                             </section>
                             <section>
                               <small>
-                                <p className="p-0 m-0 text-secondary fst-italic">
-                                  {schedule.Room}
-                                </p>
                                 <p className="p-0 m-0 text-secondary fst-italic">
                                   <span>
                                     {`${schedule.Day} - ${convertMinutes(
                                       schedule.StartTime
                                     )} : ${convertMinutes(schedule.EndTime)}`}
                                   </span>
+                                </p>
+                                <p className="p-0 m-0 text-secondary fst-italic">
+                                  {schedule.Room}
                                 </p>
                               </small>
                             </section>

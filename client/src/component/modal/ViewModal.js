@@ -10,7 +10,7 @@ export class ViewModal extends React.Component {
         tabIndex="-1"
         data-bs-backdrop="static"
       >
-        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered ">
+        <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
           <div className="modal-content">
             <div className="modal-body p-3">
               <div className="d-flex justify-content-between align-items-center m-0 ">

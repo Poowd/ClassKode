@@ -76,12 +76,13 @@ function App() {
       });
       const cookieVal = cookieMap["accountCookies"];
       setAccount(JSON.parse(cookieVal));
-      console.log(cookieVal);
       return setCheckStatus(true);
     } catch (error) {
       return false;
     }
   };
+
+  //console.log(document.cookie.split(";"));
 
   useEffect(() => {
     // Simulate an API call

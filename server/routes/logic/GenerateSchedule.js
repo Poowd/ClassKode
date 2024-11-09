@@ -27,6 +27,7 @@ router.post("/gen-class", (req, res) => {
       Component: data.Component,
       Section: data.Section,
       Population: data.Population,
+      AcademicLevel: data.AcademicLevel,
       Units: parseInt(data.Units), //converting text.json to float
       YearLevel: data.YearLevel,
     });
@@ -86,6 +87,7 @@ router.post("/gen-class", (req, res) => {
               CCH: coach.LastName,
               CPT: classes[i].Component,
               UNT: classes[i].Units,
+              ACDLVL: classes[i].AcademicLevel,
               YRLVL: classes[i].YearLevel,
               ROM: "None",
               DAY: "None",
@@ -118,6 +120,7 @@ router.post("/gen-class", (req, res) => {
                     CCH: coach.LastName,
                     CPT: classes[j].Component,
                     UNT: classes[j].Units,
+                    ACDLVL: classes[j].AcademicLevel,
                     YRLVL: classes[j].YearLevel,
                     ROM: "None",
                     DAY: "None",
@@ -167,6 +170,7 @@ router.post("/gen-class", (req, res) => {
                     CCH: schedules[k].CCH,
                     CPT: schedules[k].CPT,
                     UNT: schedules[k].UNT,
+                    ACDLVL: schedules[k].ACDLVL,
                     YRLVL: schedules[k].YRLVL,
                     ROM: rooms[j].Room,
                     DAY: rooms[j].Day,
@@ -310,7 +314,7 @@ router.post("/gen-exam-shs", (req, res) => {
   var shs = [];
   var rooms = [];
   var courses = [];
-  var examinationSchedules = [];
+  var examList = [];
   var examinationRoom = [];
 
   clientData.schedule.map((data, i) => {
@@ -334,6 +338,7 @@ router.post("/gen-exam-shs", (req, res) => {
           Room: data.Room,
           Day: day,
           Capacity: data.Capacity,
+          Units: 0,
           Exams: [],
         });
       }
@@ -390,26 +395,36 @@ router.post("/gen-exam-shs", (req, res) => {
         examinationRoom[i].Room === room &&
         examinationRoom[i].Exams.length < 3
       ) {
-        return examinationRoom[i].Exams.push({
+        examList.push({
           CourseCode: code,
           Course: course,
           Section: section,
           Component: component,
-          Time: times[
-            examinationRoom[i].Exams !== undefined
-              ? examinationRoom[i].Exams.length
-              : 0
-          ],
+          Day: examinationRoom[i].Day,
+          Room: examinationRoom[i].Room,
+          Capacity: examinationRoom[i].Capacity,
+          StartTime: examinationRoom[i].Units * 60 + 420,
+          EndTime: examinationRoom[i].Units * 60 + 420 + 1.5 * 60,
           Level: "Senior High School",
           Population: population,
         });
+        addUnitstoRoom(examinationRoom[i].Room, 1.5);
+        return;
+      }
+    }
+  }
+
+  function addUnitstoRoom(target_room, course_units) {
+    for (var i = 0; i < examinationRoom.length; i++) {
+      if (examinationRoom[i].Room === target_room) {
+        examinationRoom[i].Units += course_units;
       }
     }
   }
 
   //console.log(examinationRoom);
 
-  return res.json(examinationRoom);
+  return res.json(examList);
 });
 
 router.post("/gen-exam-ter", (req, res) => {
@@ -501,14 +516,6 @@ router.post("/gen-exam-ter", (req, res) => {
               Level: "Tertiary",
               Population: population,
             });
-            console.log(
-              conflictSection(
-                section,
-                examinationRoom[i].Day,
-                examinationRoom[i].Units * 60 + 420,
-                examinationRoom[i].Units * 60 + 420 + 1.5 * 60
-              )
-            );
             addUnitstoRoom(examinationRoom[i].Room, 1.5);
             return;
           }

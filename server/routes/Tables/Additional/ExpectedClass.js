@@ -23,11 +23,14 @@ router.post("/expected-class-list", (req, res) => {
         projection."Population", 
         setup."Units", 
         setup."YearLevel", 
-        setup."Semester" 
+        setup."Semester",
+        program."AcademicLevel" 
 
         FROM section 
         INNER JOIN projection ON section."Section" = projection."Section" 
-        INNER JOIN setup ON section."Program" = setup."Program" 
+        INNER JOIN setup ON section."Program" = setup."Program"
+        INNER JOIN program ON section."Program" = program."Code"
+        
 
         WHERE projection."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1) 
         AND section."YearLevel"=setup."YearLevel" 

@@ -25,5 +25,5 @@ export default function useSheetImport(trigger) {
     } catch (error) {}
   };
 
-  return [file, sheets, FileUpload];
+  return [file, sheets, FileUpload, setSheets];
 }

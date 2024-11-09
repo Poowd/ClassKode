@@ -54,6 +54,10 @@ import { FcPackage } from "react-icons/fc";
 import { FcList } from "react-icons/fc";
 import { FcReadingEbook } from "react-icons/fc";
 import { FcServices } from "react-icons/fc";
+import { FaListUl } from "react-icons/fa";
+import { PiCheckFatFill } from "react-icons/pi";
+import { RiAlarmWarningFill } from "react-icons/ri";
+import { ImCross } from "react-icons/im";
 
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
@@ -298,6 +302,12 @@ export default function useConfiguration() {
         hiddenuser: <FaUserSecret />,
         help: <LuHelpCircle />,
         info: <IoAlertCircle />,
+        list: <FaListUl />,
+      },
+      status: {
+        success: <PiCheckFatFill />,
+        warning: <RiAlarmWarningFill />,
+        danger: <ImCross />,
       },
     },
     maps: {

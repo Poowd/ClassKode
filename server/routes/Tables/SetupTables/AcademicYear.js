@@ -181,4 +181,45 @@ router.post("/academic-year-restore", (req, res) => {
   }
 });
 
+router.post("/set-schedule-status", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicYear = clientData.data;
+    pool.query(
+      `UPDATE academic_year SET "GeneratedSchedules"='TRUE' WHERE "Code"='${academicYear}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/set-exam-status", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicYear = clientData.data;
+    var level = clientData.level;
+    pool.query(
+      `UPDATE academic_year SET "Generated${level}Exams"='TRUE' WHERE "Code"='${academicYear}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

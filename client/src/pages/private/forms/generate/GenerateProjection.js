@@ -2,27 +2,32 @@ import React, { useEffect, useState } from "react";
 import useSheetImport from "../../../../hook/useSheetImport";
 import { useToasty } from "../../../../hook/useToasty";
 import { DefaultToast } from "../../../../component/toast/DefaultToast";
-import { useClipboard } from "../../../../hook/useClipboard";
 import useConfiguration from "../../../../hook/useConfiguration";
-import { ViewCard } from "../../../../component/card/ViewCard";
-import { ListCard } from "../../../../component/card/ListCard";
-import useItemCounter from "../../../../hook/useItemCounter";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/BatchUploadTemplate.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export function GenerateSetup() {
+export function GenerateProjection() {
   const { state } = useLocation();
   //const bootstrap = require("bootstrap");
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [file, sheets, FileUpload, setSheets] = useSheetImport();
   const [data, setData] = useState([]);
-  const [dataentry, setDataEntry] = useState([]);
   const [info] = useConfiguration();
 
   const [toasty, showToast] = useToasty();
+
+  useEffect(() => {
+    sheets &&
+      showToast(
+        info.icons.others.info,
+        "Sheet Upload",
+        `${file} is successfully uploaded!`
+      );
+    setData(sheets);
+  }, [sheets]);
 
   function removeSelectedFile() {
     setData([]);
@@ -33,74 +38,31 @@ export function GenerateSetup() {
       .dispatchEvent(new Event("change", { bubbles: true }));
   }
 
-  useEffect(() => {
-    sheets &&
-      showToast(
-        info.icons.others.info,
-        "Sheet Upload",
-        `${file} is successfully uploaded!`
-      );
-    setData(sheets);
-    setDataEntry(sheets);
-  }, [sheets]);
-
-  const removeDuplicates = (data) => {
-    const uniqueEntries = new Map();
-    data.forEach((entry) => {
-      const key = `${entry.Course_ID}`;
-
-      if (!uniqueEntries.has(key)) {
-        uniqueEntries.set(key, entry);
-      }
-    });
-
-    return Array.from(uniqueEntries.values());
-  };
-
   //SaVE
-  const saveUserData = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-
-    var forCourseModule = removeDuplicates(dataentry);
-    if (sheets === null) {
-      showToast(
-        info.icons.others.info,
-        "Users",
-        "No Data Found. Try uploading a sheet file!"
-      );
-    }
-    if (sheets !== null) {
-      try {
-        for (var i in data) {
-          const response = await fetch(
-            `${info.conn.server}curriculum-setup-insert`,
-            {
-              method: "POST",
-              body: JSON.stringify({
-                data: data[i],
-                Curriculum: state.curriculum,
-                Program: state.program,
-              }),
-            }
-          );
-          const entry = await response.json();
-        }
-
-        for (var i in forCourseModule) {
-          const setCourse = await fetch(`${info.conn.server}course-insert`, {
-            method: "POST",
-            body: JSON.stringify(forCourseModule[i]),
-          });
-          const courseResponse = await setCourse.json();
-        }
-
-        showToast(info.icons.others.info, "Users", "User Data are saved!");
-        setTimeout(() => {
-          navigate(-1);
-        }, 2500); // 2 second delay
-      } catch (err) {
-        showToast(info.icons.others.info, "Users", err);
+    if (true) {
+      for (var i in data) {
+        do {
+          try {
+            const response = await fetch(
+              `${info.conn.server}projection-generate`,
+              {
+                method: "POST",
+                body: JSON.stringify(data[i]),
+              }
+            );
+            const entry = await response.json();
+            console.log(entry);
+          } catch (error) {
+            console.log(error);
+          }
+        } while (data.Status === "Success");
       }
+      //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2500); // 2 second delay
     }
   };
 
@@ -147,7 +109,6 @@ export function GenerateSetup() {
                   }}
                 />
               </a>
-
               <DefaultButton
                 class="bg-primary text-white px-2"
                 icon={info.icons.forms.reset}
@@ -159,20 +120,9 @@ export function GenerateSetup() {
                 class="bg-primary text-white px-2"
                 icon={info.icons.forms.add}
                 text="Save"
-                function={saveUserData}
+                function={submitForm}
                 disabled={file !== null ? false : true}
               />
-
-              {/* <button
-                className="btn btn-primary ms-2"
-                type="button"
-                onClick={() => {
-                  CopyClipboard(text);
-                  showToast(info.icons.others.info, "Clipboard", "Copied!");
-                }}
-              >
-                Copy
-              </button> */}
             </section>
             <DefaultToast
               icon={toasty.icon}
@@ -188,27 +138,19 @@ export function GenerateSetup() {
                   <table className="table table-hover text-center">
                     <thead>
                       <tr>
-                        <th className="p-3">Course ID</th>
-                        <th className="text-start p-3">Course</th>
-                        <th className="p-3">Subject Area</th>
-                        <th className="p-3">Catalog No</th>
-                        <th className="p-3">Component</th>
-                        <th className="p-3">Units</th>
-                        <th className="p-3">Year Level</th>
-                        <th className="p-3">Semester</th>
+                        <th className="p-3">Academic_Year</th>
+                        <th className="text-start p-3">Section</th>
+                        <th className="p-3">Population</th>
+                        <th className="p-3">Academic Level</th>
                       </tr>
                     </thead>
                     <tbody>
                       {sheets.map((item, i) => (
                         <tr key={i}>
-                          <td className="py-3">{item.Course_ID}</td>
-                          <td className="py-3 text-start">{item.Course}</td>
-                          <td className="py-3">{`${item.Subject_Area}`}</td>
-                          <td className="py-3">{`${item.Catalog_No}`}</td>
-                          <td className="py-3">{`${item.Component}`}</td>
-                          <td className="py-3">{`${item.Units}`}</td>
-                          <td className="py-3">{`${item.Year_Level}`}</td>
-                          <td className="py-3">{`${item.Semester}`}</td>
+                          <td className="py-3">{item.Academic_Year}</td>
+                          <td className="py-3 text-start">{item.Section}</td>
+                          <td className="py-3">{`${item.Population}`}</td>
+                          <td className="py-3">{`${item.Academic_Level}`}</td>
                         </tr>
                       ))}
                     </tbody>

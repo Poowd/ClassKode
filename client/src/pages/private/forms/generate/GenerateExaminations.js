@@ -5,53 +5,44 @@ import { ViewModal } from "../../../../../src/component/modal/ViewModal";
 import useDatabase from "../../../../hook/useDatabase";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import useConfiguration from "../../../../hook/useConfiguration";
+import useModal from "../../../../hook/useModal";
+import { LoaderModal } from "../../../../component/modal/LoaderModal";
+import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
+import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
+import { MainSelect } from "../../../../component/dropdown/select/MainSelect";
+import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
+import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
+import useHandleChange from "../../../../hook/useHandleChange";
+import { StatusModal } from "../../../../component/modal/StatusModal";
 
 export function GenerateExaminations() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [convertMinutes] = useTimeFormat();
   const [info] = useConfiguration();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [schedule, setSchedule] = useState([]);
   const [examSchedule, setExamSchedule] = useState([]);
   const [room, setRooms] = useState([]);
   const [sections, setSection] = useState([]);
+  const [academiclevel, setAcademicLevel] = useState([]);
   const [ay, setAY] = useState([]);
+  const [genSelection, setGenSelection] = useState("");
   const [data, setData] = useState([]);
-  const [days, setDays] = useState([
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Friday",
-  ]);
+  const [schedulestatus, setScheduleStatus] = useState([]);
+  const [dataChange] = useHandleChange(setGenSelection);
 
   useEffect(() => {
     data_get("current-academic-year", setAY);
     data_get("class-schedule-list", setSchedule);
+    data_get("academic-level-list", setAcademicLevel);
     data_get("room-list", setRooms);
     data_get("section-list", setSection);
   }, []);
 
-  const [availRoom, setAvailRoom] = useState([]);
-
-  useEffect(() => {
-    setAvailRoom([]);
-    days.forEach((day) => {
-      room.forEach((rom) => {
-        if (rom.Facility.includes("Lecture")) {
-          setAvailRoom((prev) => [
-            ...prev,
-            { Room: rom.Room, Day: day, Exams: [] },
-          ]);
-        }
-      });
-    });
-  }, [room]);
-
   const [tertiary, setTertiary] = useState([]);
-  const [noDuplicateTertiary, setNoDuplicateTeriary] = useState(null);
   const [shs, setSHS] = useState([]);
-  const [noDuplicateSHS, setNoDuplicateSHS] = useState(null);
 
   useEffect(() => {
     setTertiary([]);
@@ -77,11 +68,6 @@ export function GenerateExaminations() {
 
     return Array.from(uniqueEntries.values());
   };
-
-  useEffect(() => {
-    setNoDuplicateTeriary(removeDuplicates(tertiary));
-    setNoDuplicateSHS(removeDuplicates(shs));
-  }, [tertiary, shs]);
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -114,8 +100,30 @@ export function GenerateExaminations() {
           }
         } while (data.Status === "Success");
       }
-      //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
+        data_post(
+          "set-exam-status",
+          { data: ay.Code, level: genSelection },
+          setScheduleStatus
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <p className="text-secondary">das</p>
+              <button
+                type="button"
+                class="btn btn-success mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
       }, 2500); // 2 second delay
     }
@@ -145,22 +153,27 @@ export function GenerateExaminations() {
                 </div>
                 <div className="d-flex gap-2 ">
                   <DefaultButton
-                    class="btn-primary"
+                    class="border px-2"
                     reversed={false}
-                    icon={info.icons.others.package}
+                    icon={info.icons.others.list}
                     function={() => {}}
                     toggle="modal"
                     target="#ExpectedClass"
                   />
                   <DefaultButton
-                    class="btn-primary px-2"
+                    class={`px-2 btn-primary`}
                     icon={info.icons.forms.add}
+                    text="Save"
                     function={submitForm}
+                    disabled={examSchedule.length < 1 ? true : false}
                   />
                   <DefaultButton
                     class="btn-primary px-2"
-                    text="Generate Tertiary"
+                    text="Tertiary"
+                    icon={info.icons.forms.generate}
                     function={() => {
+                      showModal("AwaitModal", "", "Schedules are being made.");
+                      setGenSelection("Tertiary");
                       data_post(
                         "gen-exam-ter",
                         {
@@ -170,12 +183,19 @@ export function GenerateExaminations() {
                         },
                         setExamSchedule
                       );
+                      setTimeout(() => {
+                        hideModal();
+                      }, 2500); // 2 second delay
                     }}
+                    disabled={ay.GeneratedTertiaryExams === true ? true : false}
                   />
                   <DefaultButton
                     class="btn-primary px-2"
-                    text="Generate SHS"
+                    text="SHS"
+                    icon={info.icons.forms.generate}
                     function={() => {
+                      showModal("AwaitModal", "", "Schedules are being made.");
+                      setGenSelection("SHS");
                       data_post(
                         "gen-exam-shs",
                         {
@@ -185,7 +205,11 @@ export function GenerateExaminations() {
                         },
                         setExamSchedule
                       );
+                      setTimeout(() => {
+                        hideModal();
+                      }, 2500); // 2 second delay
                     }}
+                    disabled={ay.GeneratedSHSExams === true ? true : false}
                   />
                 </div>
               </div>
@@ -229,47 +253,79 @@ export function GenerateExaminations() {
         <ViewModal
           id={"ExpectedClass"}
           title={
-            <h6 className="text-center text-black">
-              List of Expected Examination
-            </h6>
+            <h6 className="text-center text-black">List of Expected Classes</h6>
           }
           content={
             <main>
               <header className="py-2 px-3 border rounded mb-2">
                 <section>
                   <p className="p-0 m-0">{`Total Classes: ${
-                    noDuplicateTertiary &&
-                    noDuplicateSHS &&
-                    noDuplicateTertiary.length + noDuplicateSHS.length
+                    removeDuplicates(tertiary) &&
+                    removeDuplicates(shs) &&
+                    removeDuplicates(tertiary).length +
+                      removeDuplicates(shs).length
                   }`}</p>
                 </section>
               </header>
-              <main>
-                <ol className="list-group list-group-numbered">
-                  <h6 className="mt-2">Tertiary</h6>
-                  {tertiary.map((schedule, o) => (
-                    <li key={o} className="list-group-item d-flex">
-                      <main className="ms-2 d-flex flex-column justify-content-between align-items-start">
-                        <p className="m-0 fw-bold">{schedule.Course}</p>
-                        <p className="m-0">{schedule.Component}</p>
-                      </main>
-                    </li>
-                  ))}
-                  <h6 className="mt-2">SHS</h6>
-                  {shs.map((schedule, o) => (
-                    <li key={o} className="list-group-item d-flex">
-                      <main className="ms-2 d-flex flex-column justify-content-between align-items-start">
-                        <p className="m-0 fw-bold">{schedule.Course}</p>
-                        <p className="m-0">{schedule.Component}</p>
-                      </main>
-                    </li>
-                  ))}
-                </ol>
+              <main className="row m-0 p-0">
+                <section className="col-lg-6 pe-1 p-0 m-0">
+                  <header className="mt-2">
+                    <h6>Tertiary</h6>
+                  </header>
+                  <ol className="list-group list-group-numbered">
+                    {removeDuplicates(tertiary).map((schedule, o) => (
+                      <li
+                        key={o}
+                        className="list-group-item d-flex justify-content-between align-items-start"
+                      >
+                        <div className="ms-2 me-auto">
+                          <div className="fw-bold">{schedule.Course}</div>
+                          {schedule.Component}
+                        </div>
+                        <span className="badge text-bg-primary rounded-pill">
+                          {schedule.Population}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+                <section className="col-lg-6 ps-1 p-0 m-0">
+                  <header className="mt-2">
+                    <h6>Senior High School</h6>
+                  </header>
+                  <ol className="list-group list-group-numbered">
+                    {removeDuplicates(shs).map((schedule, o) => (
+                      <li
+                        key={o}
+                        className="list-group-item d-flex justify-content-between align-items-start"
+                      >
+                        <div className="ms-2 me-auto">
+                          <div className="fw-bold">{schedule.Course}</div>
+                          {schedule.Component}
+                        </div>
+                        <span className="badge text-bg-primary rounded-pill">
+                          {schedule.Population}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
               </main>
             </main>
           }
         />
       </main>
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
+      />
+      <LoaderModal id={"AwaitModal"} content={<>{modalcontent.Content}</>} />
     </>
   );
 }

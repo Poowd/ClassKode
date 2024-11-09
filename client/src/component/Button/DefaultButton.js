@@ -4,13 +4,11 @@ export class DefaultButton extends React.Component {
   render() {
     return (
       <button
-        className={
+        className={`btn btn-sm d-flex align-items-center justify-content-center gap-2 ${
           this.props.text != null
-            ? "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-1 " +
-              this.props.class
-            : "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 " +
-              this.props.class
-        }
+            ? "p-1 " + this.props.class
+            : "p-2 " + this.props.class
+        }`}
         type={this.props.type}
         disabled={this.props.disabled}
         onClick={this.props.function}
@@ -18,12 +16,10 @@ export class DefaultButton extends React.Component {
         data-bs-target={this.props.target}
         data-bs-dismiss={this.props.dismiss}
       >
-        <div
-          className={
-            this.props.reversed
-              ? "d-flex align-items-center justify-content-center flex-row-reverse gap-2"
-              : "d-flex align-items-center justify-content-center gap-2"
-          }
+        <span
+          className={`d-flex align-items-center justify-content-center gap-2 ${
+            this.props.reversed ? "flex-row-reverse" : ""
+          }`}
         >
           {this.props.icon}
           {this.props.text != null ? (
@@ -31,7 +27,7 @@ export class DefaultButton extends React.Component {
           ) : (
             ""
           )}
-        </div>
+        </span>
       </button>
     );
   }

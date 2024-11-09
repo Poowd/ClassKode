@@ -79,7 +79,7 @@ export function CreateUser() {
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      data_post("user-generate", data, setData);
+      data_post("user-insert", data, setData);
       showToast(
         info.icons.others.info,
         "User",

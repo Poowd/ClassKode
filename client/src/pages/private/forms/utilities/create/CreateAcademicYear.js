@@ -171,6 +171,7 @@ export function CreateAcademicYear() {
             <MainInput
               label="StartDate"
               id="StartDate"
+              type="date"
               trigger={dataChange}
               value={data.StartDate}
               required={true}
@@ -178,6 +179,7 @@ export function CreateAcademicYear() {
             <MainInput
               label="EndDate"
               id="EndDate"
+              type="date"
               trigger={dataChange}
               value={data.EndDate}
               required={true}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { MainLayout } from "./layout/MainLayout";
 import { Dashboard } from "./pages/private/Dashboard";
 import { Error404 } from "./component/placeholder/Error404";
@@ -46,14 +46,18 @@ import { ExamSchedule } from "./pages/private/utilities/ExamSchedule";
 import { About } from "./pages/public/About";
 import { Features } from "./pages/public/Features";
 import { Team } from "./pages/public/Team";
+import { Timetabling } from "./pages/testing/Timetabling";
+import { SectionExamination } from "./pages/private/utilities/examination/SectionExamination";
 
 function App() {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
 
   const [test, setTest] = useState([]);
   const [account, setAccount] = useState([]);
+  const [checkstatus, setCheckStatus] = useState(false);
 
   const status = JSON.parse(sessionStorage.getItem("loggedin"));
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
@@ -63,15 +67,22 @@ function App() {
   };
 
   const getCookies = () => {
-    const cookies = document.cookie.split("; ");
-    const cookieMap = {};
-    cookies.forEach((cookie) => {
-      const [name, value] = cookie.split("=");
-      cookieMap[name] = value;
-    });
-    const cookieVal = cookieMap["accountCookies"];
-    setAccount(JSON.parse(cookieVal));
+    try {
+      const cookies = document.cookie.split(";");
+      const cookieMap = {};
+      cookies.forEach((cookie) => {
+        const [name, value] = cookie.split("=");
+        cookieMap[name] = value;
+      });
+      const cookieVal = cookieMap["accountCookies"];
+      setAccount(JSON.parse(cookieVal));
+      return setCheckStatus(true);
+    } catch (error) {
+      return false;
+    }
   };
+
+  //console.log(document.cookie.split(";"));
 
   useEffect(() => {
     // Simulate an API call
@@ -85,8 +96,16 @@ function App() {
     }
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
+
+  // useEffect(() => {
+  //   if (checkstatus === true) {
+  //     navigate("/");
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <main className="overflow-hidden">
@@ -109,8 +128,8 @@ function App() {
                         <Route index element={<Dashboard />}></Route>
 
                         <Route
-                          path={"/testing"}
-                          element={<FileInput />}
+                          path="/timetable"
+                          element={<Timetabling />}
                         ></Route>
 
                         <Route path={"/institution"}>
@@ -152,17 +171,21 @@ function App() {
                           <Route path={"/utilities/academicyear"}>
                             <Route index element={<AcademicYear />}></Route>
                             <Route
-                              path={"/utilities/academicyear/assigment"}
+                              path={"/utilities/academicyear/assigment/:id"}
                               element={<CoachAssignment />}
                             ></Route>
                             <Route
-                              path={"/utilities/academicyear/projection"}
+                              path={"/utilities/academicyear/projection/:id"}
                               element={<SectionProjection />}
                             ></Route>
                           </Route>
 
                           <Route path={"/utilities/examinations"}>
                             <Route index element={<ExamSchedule />}></Route>
+                            <Route
+                              path={"/utilities/examinations/section"}
+                              element={<SectionExamination />}
+                            ></Route>
                           </Route>
 
                           <Route path={"/utilities/schedule"}>
@@ -227,32 +250,53 @@ function App() {
                         <Route index element={<Dashboard />}></Route>
                         <>
                           {loggeduser.PermissionLevel >= 0 ? (
-                            <Route path={"/institution"}>
+                            <>
+                              <Route path={"/institution"}>
+                                <Route
+                                  path={"/institution/department"}
+                                  element={<Department />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/program"}
+                                  element={<Program />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/course"}
+                                  element={<Course />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/section"}
+                                  element={<Section />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/room"}
+                                  element={<Room />}
+                                ></Route>
+                                <Route
+                                  path={"/institution/coach"}
+                                  element={<Coach />}
+                                ></Route>
+                              </Route>
+                              <Route path={"/utilities/schedule"}>
+                                <Route index element={<Schedule />}></Route>
+                                <Route
+                                  path={"/utilities/schedule/room"}
+                                  element={<RoomSchedule />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/schedule/section"}
+                                  element={<SectionSchedule />}
+                                ></Route>
+                                <Route
+                                  path={"/utilities/schedule/coach"}
+                                  element={<CoachSchedule />}
+                                ></Route>
+                              </Route>
                               <Route
-                                path={"/institution/department"}
-                                element={<Department />}
+                                path={"/utilities/locator"}
+                                element={<Locator />}
                               ></Route>
-                              <Route
-                                path={"/institution/program"}
-                                element={<Program />}
-                              ></Route>
-                              <Route
-                                path={"/institution/course"}
-                                element={<Course />}
-                              ></Route>
-                              <Route
-                                path={"/institution/section"}
-                                element={<Section />}
-                              ></Route>
-                              <Route
-                                path={"/institution/room"}
-                                element={<Room />}
-                              ></Route>
-                              <Route
-                                path={"/institution/coach"}
-                                element={<Coach />}
-                              ></Route>
-                            </Route>
+                            </>
                           ) : null}
                         </>
                         <>
@@ -279,7 +323,7 @@ function App() {
                               <Route path={"/utilities/examinations"}>
                                 <Route index element={<ExamSchedule />}></Route>
                               </Route>
-                              <Route path={"/utilities/schedule"}>
+                              {/* <Route path={"/utilities/schedule"}>
                                 <Route index element={<Schedule />}></Route>
                                 <Route
                                   path={"/utilities/schedule/room"}
@@ -297,7 +341,7 @@ function App() {
                               <Route
                                 path={"/utilities/locator"}
                                 element={<Locator />}
-                              ></Route>
+                              ></Route> */}
                             </Route>
                           ) : null}
                         </>

@@ -21,7 +21,7 @@ export class MainInput extends React.Component {
           <input
             id={this.props.id}
             name={this.props.id}
-            type={"text"}
+            type={this.props.type}
             className={"form-control shadow-none " + this.props.class}
             placeholder={this.props.placeholder}
             onChange={this.props.trigger}

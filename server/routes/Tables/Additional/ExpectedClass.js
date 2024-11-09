@@ -15,7 +15,26 @@ router.post("/expected-class-list", (req, res) => {
     const clientData = JSON.parse(req.body);
     var acadmicyear = clientData.data;
     pool.query(
-      `SELECT course."Code" AS CourseCode, course."Course", section."Section", curriculum_setup."Component", projection."Population", component."MaxUnits", year_level."YearLevel", semester."Semester" FROM section INNER JOIN year_level ON section."YearLevel" = year_level."YearLevel" INNER JOIN projection ON section."Section" = projection."Section" INNER JOIN curriculum_setup ON section."Program" = curriculum_setup."Program" INNER JOIN course ON curriculum_setup."Course" = course."Code" INNER JOIN component ON curriculum_setup."Component" = component."Component" INNER JOIN  semester ON section."Semester" = semester."Semester" WHERE projection."AcademicYear"='${acadmicyear}' AND section."YearLevel"=curriculum_setup."YearLevel" AND section."Semester"=curriculum_setup."Semester"`,
+      `SELECT 
+        setup."CourseID", 
+        setup."Course", 
+        section."Section", 
+        setup."Component", 
+        projection."Population", 
+        setup."Units", 
+        setup."YearLevel", 
+        setup."Semester",
+        program."AcademicLevel" 
+
+        FROM section 
+        INNER JOIN projection ON section."Section" = projection."Section" 
+        INNER JOIN setup ON section."Program" = setup."Program"
+        INNER JOIN program ON section."Program" = program."Code"
+        
+
+        WHERE projection."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1) 
+        AND section."YearLevel"=setup."YearLevel" 
+        AND section."Semester"=setup."Semester"`,
 
       (err, rslt) => {
         if (err) {

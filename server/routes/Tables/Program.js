@@ -65,7 +65,7 @@ router.post("/program-insert", (req, res) => {
       clientData.Description === null ? null : clientData.Description;
     pool.query(
       `INSERT INTO program ("PRGID", "Code", "Program", "Abbrev", "Department", "AcademicLevel", "Description")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from program), '${code}', '${program}', '${abbrev}', '${department}', '${academiclevel}', '${description}')`,
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from program), (select CONCAT('${abbrev}-',LPAD(CAST((count(*) + 1)::integer AS TEXT), 3, '0')) AS Wow from program), '${program}', '${abbrev}', '${department}', '${academiclevel}', '${description}')`,
 
       (err, rslt) => {
         if (err) {

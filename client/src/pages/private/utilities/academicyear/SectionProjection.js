@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useDatabase from "../../../../hook/useDatabase";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RiStickyNoteAddLine } from "react-icons/ri";
 import { FileMaintainanceTemplate } from "../../../../layout/grid/FileMaintainanceTemplate";
 import { GrView } from "react-icons/gr";
@@ -12,6 +12,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import useConfiguration from "../../../../hook/useConfiguration";
 
 export function SectionProjection() {
+  const params = useParams();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
@@ -22,7 +23,7 @@ export function SectionProjection() {
 
   useEffect(() => {
     data_get("current-academic-year", setCurrentAcademicYear);
-    data_get("project-list", setProjection);
+    data_post("project-onyear-list", { data: params.id }, setProjection);
   }, []);
 
   // useEffect(() => {
@@ -64,7 +65,15 @@ export function SectionProjection() {
                 function={() => navigate(-1)}
               />
               <DefaultInput placeholder="Search" />
-
+              <LinkButton
+                class="btn-primary px-2"
+                textclass="text-white"
+                to={`/projection/generate/0`}
+                state={{
+                  academicyear: currentacademicyear,
+                }}
+                icon={info.icons.forms.generate}
+              />
               <LinkButton
                 class="btn-primary px-2"
                 textclass="text-white"
@@ -80,20 +89,18 @@ export function SectionProjection() {
       }
       list={
         projection &&
-        projection.map((item, i) =>
-          item.AcademicYear === currentacademicyear.Code ? (
-            <ListCard
-              slot1={`${item.Population} Students`}
-              slot2={item.Section}
-              slot3={`${item.Population} Students`}
-              slot4={item.AcademicYear}
-              slot5={null}
-              view={info.icons.forms.view}
-              link={`/section/view/${item.Section}`}
-              state={{ data: item }}
-            />
-          ) : null
-        )
+        projection.map((item, i) => (
+          <ListCard
+            slot1={`${item.Population} Students`}
+            slot2={item.Section}
+            slot3={`${item.Population} Students`}
+            slot4={item.AcademicYear}
+            slot5={null}
+            view={info.icons.forms.view}
+            link={`/section/view/${item.Section}`}
+            state={{ data: item }}
+          />
+        ))
       }
     />
   );

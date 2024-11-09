@@ -43,25 +43,24 @@ export function CourseSetup() {
     data_get("current-curriculum", setCurrentCurriculum);
     data_get("department-list", setDept);
     data_get("program-list", setPrg);
-    data_post("setup-target", { data: params.id }, setSetup);
+    //data_post("setup-target", { data: params.id }, setSetup);
   }, []);
 
-  // useEffect(() => {
-  //   currentcurriculum.map((curr, i) => setCurrent(curr));
-  // }, [currentcurriculum]);
-
   useEffect(() => {
-    // if (SessionStorage[0].Department !== null) {
-    //   if (data.Department !== SessionStorage[0].Department) {
-    //     setData((prev) => ({ ...prev, Program: "" }));
-    //   }
-    // }
     if (
       !(data.Curriculum === "" && data.Department === "" && data.Program === "")
     ) {
       sessionStorage.setItem(
         "department_program_selection",
         JSON.stringify(data)
+      );
+      data_post(
+        "curriculum-setup-target",
+        {
+          Curriculum: params.id,
+          Program: data.Program,
+        },
+        setSetup
       );
     }
   }, [data]);
@@ -72,7 +71,6 @@ export function CourseSetup() {
       setData(SessionStorage[0]);
     }
   }, []);
-
   return (
     <FileMaintainanceTemplate
       sidepanel={
@@ -91,31 +89,14 @@ export function CourseSetup() {
               icon={info.icons.forms.view}
             />
           </header>
-          <section>
-            <section>
-              <h6></h6>
-              <ul className="list-group list-group-flush"></ul>
-            </section>
-          </section>
-        </main>
-      }
-      control={
-        <>
-          <div className="w-100">
-            <div className="d-flex gap-2 justify-content-end">
-              <DefaultButton
-                class="px-2"
-                icon={info.icons.navigation.back}
-                text="Back"
-                function={() => navigate(-1)}
-              />{" "}
-              <DefaultInput
-                placeholder="Search"
-                id="search"
-                trigger={dataChange}
-              />
+          <main className="w-100">
+            <section className="w-100 bg-white rounded m p-2">
+              <main className="mb-2">
+                Please Select Department and Program here.
+              </main>
               <DefaultDropdown
-                class="border px-2 btn-primary"
+                topclass="w-100 mb-2"
+                class="w-100 border btn-outline-primary py-2"
                 reversed={true}
                 icon={info.icons.forms.view}
                 text={
@@ -146,7 +127,8 @@ export function CourseSetup() {
                 )}
               />
               <DefaultDropdown
-                class="border px-2 btn-primary"
+                topclass="w-100"
+                class="w-100 border py-2 btn-outline-primary"
                 reversed={true}
                 icon={info.icons.forms.view}
                 text={
@@ -170,6 +152,42 @@ export function CourseSetup() {
                     />
                   ) : null
                 )}
+              />
+            </section>
+          </main>
+          <section>
+            <section>
+              <h6></h6>
+              <ul className="list-group list-group-flush"></ul>
+            </section>
+          </section>
+        </main>
+      }
+      control={
+        <>
+          <div className="w-100">
+            <div className="d-flex gap-2 justify-content-end">
+              <DefaultButton
+                class="px-2"
+                icon={info.icons.navigation.back}
+                text="Back"
+                function={() => navigate(-1)}
+              />{" "}
+              <DefaultInput
+                placeholder="Search"
+                id="search"
+                trigger={dataChange}
+              />
+              <LinkButton
+                class="btn-primary px-2"
+                textclass="text-white"
+                to={data.Program !== "" ? "/setup/generate/0" : ""}
+                state={{
+                  program: data.Program,
+                  department: data.Department,
+                  curriculum: currentcurriculum.Code,
+                }}
+                icon={info.icons.forms.generate}
               />
               <LinkButton
                 class="btn-primary px-2"
@@ -208,8 +226,7 @@ export function CourseSetup() {
           <section>
             {data.Program !== "" ? (
               setup.map((item, i) =>
-                item.Program === data.Program &&
-                item.Curriculum === currentcurriculum.Code ? (
+                true ? (
                   item.Course.toLowerCase().includes(
                     search.search.toLowerCase()
                   ) || search.search === "" ? (
@@ -220,7 +237,7 @@ export function CourseSetup() {
                       slot4={item.Curriculum}
                       slot5={null}
                       view={info.icons.forms.view}
-                      link={`/course/view/${item.Course}`}
+                      link={`/course/view/${item.Code}`}
                       state={{ data: item }}
                     />
                   ) : null

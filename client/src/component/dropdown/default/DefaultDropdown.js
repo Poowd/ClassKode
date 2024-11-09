@@ -4,28 +4,23 @@ import "../Dropdown.css";
 export class DefaultDropdown extends React.Component {
   render() {
     return (
-      <div className="btn-group z-3">
+      <div className={`${this.props.topclass}`}>
         <button
-          className={
+          className={`btn btn-sm d-flex align-items-center justify-content-center gap-2 ${
             this.props.text != null
-              ? "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-1 rounded  " +
-                this.props.class
-              : "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 rounded " +
-                this.props.class
-          }
+              ? "p-1  " + this.props.class
+              : "p-2 " + this.props.class
+          }`}
           type={"button"}
           disabled={this.props.disabled}
           data-bs-toggle={"dropdown"}
           data-bs-target={this.props.target}
           data-bs-dismiss={this.props.dismiss}
         >
-          {" "}
           <div
-            className={
-              this.props.reversed
-                ? "d-flex align-items-center justify-content-center flex-row-reverse gap-2"
-                : "d-flex align-items-center justify-content-center gap-2"
-            }
+            className={`d-flex align-items-center justify-content-center gap-1 ${
+              this.props.reversed ? "flex-row-reverse" : ""
+            }`}
           >
             {this.props.icon}
             {this.props.text != null ? (
@@ -37,7 +32,7 @@ export class DefaultDropdown extends React.Component {
             )}
           </div>
         </button>
-        <ul className="dropdown-menu z-3">{this.props.dropdownitems}</ul>
+        <ul className="dropdown-menu">{this.props.dropdownitems}</ul>
       </div>
     );
   }

@@ -77,7 +77,7 @@ export function RoomSchedule() {
 
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="col-lg-8 order-2 order-lg-1 h-100 p-0 m-0 pe-2">
+      <section className="h-100 col-lg-8 order-2 order-lg-1 p-0 m-0 pe-2">
         <main className="h-100 w-100 d-flex align-items-center">
           <main>
             <DefaultButton
@@ -107,8 +107,12 @@ export function RoomSchedule() {
         </main>
       </section>
       <section className="col-lg-4 order-1 order-lg-2 h-100 p-0 ps-2 m-0 border-start height-auto">
-        <main className="h-100 position-relative overflow-y-auto px-1">
-          <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
+        <main className="h-100 position-relative overflow-y-auto rounded shadow-sm p-3">
+          <header className="p-2">
+            <p className="m-0">{`${currbuilding}`}</p>
+            <h3 className="m-0">{`${currfloor}`}</h3>
+          </header>
+          <section className="w-100 bg-white rounded shadow-sm p-2 mb-2">
             <div className="d-flex justify-content-between gap-2">
               <div>
                 <DefaultButton
@@ -120,7 +124,7 @@ export function RoomSchedule() {
               </div>
               <div className="d-flex gap-2">
                 <DefaultDropdown
-                  class="border px-2 rounded btn-primary"
+                  class="border px-2"
                   reversed={true}
                   icon={<TbStairs />}
                   text={building.map((item, i) =>
@@ -140,7 +144,7 @@ export function RoomSchedule() {
                   }
                 />
                 <DefaultDropdown
-                  class="border px-2 rounded btn-primary"
+                  class="border px-2"
                   reversed={true}
                   icon={<TbStairs />}
                   text={floor.map((item, i) =>

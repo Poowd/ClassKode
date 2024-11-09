@@ -166,7 +166,7 @@ export function Dashboard() {
             ? 0
             : totalPopulation[0] === undefined
             ? 0
-            : totalPopulation[0].tertiary_population,
+            : +totalPopulation[0].tertiary_population,
         ],
         "Senior High School Population",
         [
@@ -194,10 +194,10 @@ export function Dashboard() {
             ? 0
             : totalPopulation[0] === undefined
             ? 0
-            : totalPopulation[0].shs_population,
+            : +totalPopulation[0].shs_population,
         ]
       )}
-      chart2={useChart(
+      chart3={useChart(
         [
           "Department",
           "Program",
@@ -208,7 +208,7 @@ export function Dashboard() {
           "Curriculum",
           "Academic Year",
         ],
-        "My Chart",
+        "Module Entries",
         [
           dataEntryCount === undefined
             ? 0
@@ -255,34 +255,36 @@ export function Dashboard() {
         "y",
         "100%"
       )}
-      chart3={useChart(
-        [
-          "Department",
-          "Program",
-          "Section",
-          "Course",
-          "Room",
-          "Coach",
-          "Curriculum",
-          "Academic Year",
-        ],
-        "My Chart",
-        [
-          dataEntryCount === undefined
-            ? 0
-            : dataEntryCount.tertiary_class_schedules === undefined
-            ? 0
-            : dataEntryCount.tertiary_class_schedules,
-          dataEntryCount === undefined
-            ? 0
-            : dataEntryCount.shs_class_schedules === undefined
-            ? 0
-            : dataEntryCount.shs_class_schedules,
-        ],
-        "bar",
-        "y",
-        "100%"
-      )}
+      chart2={
+        <>
+          <main className="h-100 w-100 d-flex gap-3 justify-content-end m-0 p-3">
+            <section className="h-100 w-50 p-0 m-0 d-flex justify-content-center align-items-center">
+              <main className="bg-white h-100 w-100 text-center p-5 shadow-sm rounded">
+                <h1 className="fw-bold display-1">
+                  {dataEntryCount === undefined
+                    ? 0
+                    : dataEntryCount.tertiary_class_schedules === undefined
+                    ? 0
+                    : dataEntryCount.tertiary_class_schedules}
+                </h1>
+                <p className="m-0">Tertiary Class Schedules</p>
+              </main>
+            </section>
+            <section className="h-100 w-50 p-0 m-0 d-flex justify-content-center align-items-center">
+              <main className="bg-white h-100 w-100 text-center p-5 shadow-sm rounded">
+                <h1 className="fw-bold display-1">
+                  {dataEntryCount === undefined
+                    ? 0
+                    : dataEntryCount.shs_class_schedules === undefined
+                    ? 0
+                    : dataEntryCount.shs_class_schedules}
+                </h1>
+                <p className="m-0">Senior High School Class Schedules</p>
+              </main>
+            </section>
+          </main>
+        </>
+      }
     />
   );
 }

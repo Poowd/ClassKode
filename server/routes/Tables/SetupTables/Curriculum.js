@@ -150,7 +150,7 @@ router.post("/curriculum-restore", (req, res) => {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `UPDATE curriculum SET "Status"='ACTIVE' WHERE "DPTID"='${id}'`,
+      `UPDATE curriculum SET "Status"='ACTIVE' WHERE "CRRID"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

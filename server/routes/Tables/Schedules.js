@@ -13,7 +13,27 @@ const pool = new Pool({
 router.get("/class-schedule-list", (req, res) => {
   try {
     pool.query(
-      `SELECT class_schedules."CLSID", course."Code", course."Course", section."Section", program."AcademicLevel", class_schedules."YearLevel", class_schedules."Day", class_schedules."StartTime", class_schedules."EndTime", class_schedules."Room", class_schedules."Component", coach."SCHLID", coach."FirstName", coach."LastName", class_schedules."Population", class_schedules."Created", class_schedules."Status", class_schedules."Units", class_schedules."Capacity", class_schedules."AcademicYear" FROM class_schedules FULL JOIN coach ON class_schedules."Coach" = coach."SCHLID" INNER JOIN course ON class_schedules."Course" = course."Code" INNER JOIN section ON class_schedules."Section" = section."Section" INNER JOIN program ON section."Program" = program."Code" WHERE class_schedules."Status"='ACTIVE' AND class_schedules."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      `SELECT class_schedules."CLSID", course."CourseID", course."Course", section."Section", program."AcademicLevel", class_schedules."YearLevel", class_schedules."Day", class_schedules."StartTime", class_schedules."EndTime", class_schedules."Room", class_schedules."Component", coach."SCHLID", coach."FirstName", coach."LastName", class_schedules."Population", class_schedules."Created", class_schedules."Status", class_schedules."Units", class_schedules."Capacity", class_schedules."AcademicYear" 
+
+      FROM class_schedules 
+      FULL JOIN coach ON class_schedules."Coach" = coach."SCHLID" 
+      INNER JOIN course ON class_schedules."Course" = course."CourseID"
+      INNER JOIN section ON class_schedules."Section" = section."Section" 
+      INNER JOIN program ON section."Program" = program."Code" 
+
+      WHERE class_schedules."Status"='ACTIVE'
+      AND class_schedules."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+router.get("/exam-schedule-list", (req, res) => {
+  try {
+    pool.query(
+      `SELECT * FROM exam_schedules WHERE "Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -29,6 +49,40 @@ router.post("/class-schedule-target", (req, res) => {
     pool.query(
       `SELECT * FROM class_schedules WHERE "CLSID"='${id}'`,
       (err, rslt) => res.json(rslt.rows[0])
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/exam-schedule-insert", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var code = clientData.CourseCode;
+    var course = clientData.Course;
+    var section = clientData.Section;
+    var component = clientData.Component;
+    var time = clientData.Time;
+    var level = clientData.Level;
+    var room = clientData.Room;
+    var day = clientData.Day;
+    var capacity = clientData.Capacity;
+    var population = clientData.Population;
+
+    pool.query(
+      `INSERT INTO exam_schedules ("ELSID", "Code", "Course", "Section", "Day", "StartTime", "EndTime", "Level", "Room", "Population", "Component", "Capacity", "AcademicYear")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from exam_schedules), '${code}', '${course}', '${section}', '${day}', '${time}', '${
+        time + 90
+      }', '${level}', '${room}', '${population}', '${component}', '${capacity}', (SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1))`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
     );
   } catch (err) {
     console.error(err);

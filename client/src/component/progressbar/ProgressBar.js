@@ -9,10 +9,10 @@ export class ProgressBar extends React.Component {
     return (
       <div className="progress" role="progressbar">
         <div
-          className="progress-bar bg-success"
+          className={`progress-bar bg-${this.props.state}`}
           style={{ width: `${this.props.progress}%` }}
         >
-          {this.props.progress}%
+          {this.props.progress}
         </div>
       </div>
     );

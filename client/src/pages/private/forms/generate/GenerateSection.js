@@ -61,15 +61,17 @@ export function GenerateSection() {
       yearlevel.forEach((yrl) => {
         semester.forEach((sem) => {
           if (prg.Code === data.Code) {
-            counter++;
-            generated_phase1.push({
-              Section: `${prg.Abbrev}${counter}${getSectionDuplicates(
-                `${prg.Abbrev}${counter}`
-              )}`,
-              YearLevel: yrl.YearLevel,
-              Program: prg.Code,
-              Semester: sem.Semester
-            });
+            if (prg.AcademicLevel === yrl.AcademicLevel) {
+              counter++;
+              generated_phase1.push({
+                Section: `${prg.Abbrev}${counter}${getSectionDuplicates(
+                  `${prg.Abbrev}${counter}`
+                )}`,
+                YearLevel: yrl.YearLevel,
+                Program: prg.Code,
+                Semester: sem.Semester,
+              });
+            }
           }
         });
       });

@@ -22,10 +22,48 @@ router.get("/project-list", (req, res) => {
   }
 });
 
+router.post("/project-onyear-list", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicyear = clientData.data;
+    pool.query(
+      `SELECT projection."PRJID", section."Section", section."YearLevel", projection."AcademicYear", projection."Population", projection."Created", projection."Status" FROM projection INNER JOIN section ON projection."Section" = section."Section" WHERE projection."Status"='ACTIVE' AND "AcademicYear"='${academicyear}'`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/projection-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var academicyear = clientData.AcademicYear;
+    var section = clientData.Section;
+    var population = clientData.Population;
+    pool.query(
+      `INSERT INTO projection ("PRJID", "Section", "AcademicYear", "Population")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from projection), '${section}', '${academicyear}', '${population}')`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/projection-generate", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicyear = clientData.Academic_Year;
     var section = clientData.Section;
     var population = clientData.Population;
     pool.query(

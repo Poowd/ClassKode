@@ -36,14 +36,28 @@ export function CreateAssignment() {
   const [currentacademicyear, setCurrentAcademicYear] = useState([]);
 
   var test = [];
+  console.log(selectedValues);
 
   useEffect(() => {
     data_get("current-academic-year", setCurrentAcademicYear);
     data_get("assign-list", setAssignment);
     data_get("coach-list", setCoach);
-    data_get("course-list", setCourse);
     data_get("coach-type-list", setCoachType);
+    data_get("course-list", setCourse);
   }, []);
+
+  const removeDuplicates = (data) => {
+    const uniqueEntries = new Map();
+    data.forEach((entry) => {
+      const key = `${entry.CourseID}`;
+
+      if (!uniqueEntries.has(key)) {
+        uniqueEntries.set(key, entry);
+      }
+    });
+
+    return Array.from(uniqueEntries.values());
+  };
 
   useEffect(() => {
     //currentacademicyear.map((ay, i) => setCurrent(ay));
@@ -61,7 +75,7 @@ export function CreateAssignment() {
     });
     coach.map((item, i) =>
       item.SCHLID === data.SCHLID
-        ? setData((prev) => ({ ...prev, Department: item.Department }))
+        ? setData((prev) => ({ ...prev, Department: item.Code }))
         : null
     );
   }, [data.SCHLID]);
@@ -200,54 +214,6 @@ export function CreateAssignment() {
                 </>
               }
             />
-            <div className="row mb-2 align-items-middle">
-              <div className="col-2 pt-2">
-                <span className="fw-semibold">Specialization</span>
-              </div>
-              <div className="col-10">
-                <div
-                  className="overflow-y-auto p-1 border rounded"
-                  style={{ height: "25vh" }}
-                >
-                  {data.SCHLID !== ""
-                    ? course.map((crs, j) =>
-                        crs.Department === data.Department ? (
-                          <div key={j} className={"form-check p-0"}>
-                            <label
-                              className="form-check-label px-5 py-2 w-100 rounded shadow-sm mb-2"
-                              htmlFor={j}
-                            >
-                              {crs.Course}
-                              <input
-                                className="form-check-input course-checkbox"
-                                type="checkbox"
-                                id={j}
-                                onChange={(e) => {
-                                  {
-                                    if (e.target.checked) {
-                                      setSelectedValues((prev) => [
-                                        ...prev,
-                                        {
-                                          id: j,
-                                          SCHLID: data.SCHLID,
-                                          Course: crs.Code,
-                                          AcademicYear: data.AcademicYear,
-                                        },
-                                      ]);
-                                    } else {
-                                      removeItem(j);
-                                    }
-                                  }
-                                }}
-                              />
-                            </label>
-                          </div>
-                        ) : null
-                      )
-                    : null}
-                </div>
-              </div>
-            </div>
 
             <main className="">
               <small>
@@ -256,17 +222,49 @@ export function CreateAssignment() {
             </main>
           </>
         }
-        entry={
+        additional={
           <main className="p-3">
             <section>
-              {/* <h6>{data.CRS_Code.length > 0 ? data.CRS_Code : "Code"}</h6>
-              <h3>{data.Course.length > 0 ? data.Course : "Course"}</h3>
-              <hr />
-              <ul className="m-0 p-0 d-flex gap-2 mb-3">
-                <li className="border m-0 p-2 rounded">
-                  <p className="fst-italic text-secondary m-0 p-0"></p>
-                </li>
-              </ul> */}
+              <span className="fw-semibold">Specialization</span>
+              <div
+                className="overflow-y-auto p-1 border rounded"
+                style={{ height: "60vh" }}
+              >
+                {data.SCHLID !== ""
+                  ? removeDuplicates(course).map((crs, j) => (
+                      <div key={j} className={"form-check p-0"}>
+                        <label
+                          className="form-check-label px-5 py-2 w-100 rounded shadow-sm mb-2"
+                          htmlFor={j}
+                        >
+                          {crs.Course}
+                          <input
+                            className="form-check-input course-checkbox"
+                            type="checkbox"
+                            id={j}
+                            onChange={(e) => {
+                              {
+                                if (e.target.checked) {
+                                  setSelectedValues((prev) => [
+                                    ...prev,
+                                    {
+                                      id: j,
+                                      SCHLID: data.SCHLID,
+                                      Course: crs.CourseID,
+                                      AcademicYear: data.AcademicYear,
+                                    },
+                                  ]);
+                                } else {
+                                  removeItem(j);
+                                }
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    ))
+                  : null}
+              </div>
             </section>
           </main>
         }

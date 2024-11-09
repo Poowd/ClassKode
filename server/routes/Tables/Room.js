@@ -45,13 +45,16 @@ router.post("/room-target", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
-    pool.query(`SELECT * FROM room WHERE "ROMID"='${id}'`, (err, rslt) => {
-      if (err) {
-        console.error("Query error:", err);
-        return;
+    pool.query(
+      `SELECT * FROM room WHERE "ROMID"='${id}' OR "Room"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
       }
-      res.json(rslt.rows);
-    });
+    );
   } catch (err) {
     console.error(err);
     res.status(500).send("Internal Server Error");

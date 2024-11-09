@@ -12,17 +12,21 @@ export function AcademicYear() {
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [ay, setAY] = useState([]);
   const [curray, setCurrAY] = useState([]);
 
   useEffect(() => {
     data_get("academic-year-list", setAY);
     data_get("current-academic-year", setCurrAY);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
   return (
     <FileMaintainanceTemplate
+      loader={isLoading}
       sidepanel={
         <main>
           <header className="mb-3">
@@ -81,14 +85,18 @@ export function AcademicYear() {
                         class="custom-bg-primary-light px-2"
                         icon={info.icons.pages.institution.coach}
                         function={() =>
-                          navigate("/utilities/academicyear/assigment")
+                          navigate(
+                            `/utilities/academicyear/assigment/${item.Code}`
+                          )
                         }
                       />
                       <DefaultButton
                         class="custom-bg-primary-light px-2"
                         icon={info.icons.pages.institution.section}
                         function={() =>
-                          navigate("/utilities/academicyear/projection")
+                          navigate(
+                            `/utilities/academicyear/projection/${item.Code}`
+                          )
                         }
                       />
                     </>

@@ -7,15 +7,13 @@ export class LinkButton extends React.Component {
       <Link
         to={this.props.to}
         state={this.props.state}
-        className={
+        className={`btn btn-sm d-flex align-items-center justify-content-center gap-2 ${
           this.props.text != null
-            ? "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-1 " +
-              this.props.class
-            : "btn btn-sm d-flex align-items-center justify-content-center gap-2 p-2 " +
-              this.props.class
-        }
+            ? "p-1 " + this.props.class
+            : "p-2 " + this.props.class
+        }`}
       >
-        <button
+        {/* <button
           className={"btn btn-sm p-0 " + this.props.textclass}
           type={this.props.type}
           disabled={this.props.disabled}
@@ -23,26 +21,22 @@ export class LinkButton extends React.Component {
           data-bs-toggle={this.props.toggle}
           data-bs-target={this.props.target}
           data-bs-dismiss={this.props.dismiss}
+        > */}
+        <div
+          className={`d-flex align-items-center justify-content-center gap-1 ${
+            this.props.reversed ? "flex-row-reverse" : ""
+          }`}
         >
-          <div
-            className={
-              this.props.reversed
-                ? "d-flex align-items-center justify-content-center flex-row-reverse gap-2"
-                : "d-flex align-items-center justify-content-center gap-2"
-            }
-          >
-            {this.props.icon}
-            {this.props.text != null ? (
-              <small>
-                <span className={"fw-semibold " + this.props.textclass}>
-                  {this.props.text}
-                </span>
-              </small>
-            ) : (
-              ""
-            )}
-          </div>
-        </button>
+          {this.props.icon}
+          {this.props.text != null ? (
+            <small>
+              <span className={""}>{this.props.text}</span>
+            </small>
+          ) : (
+            ""
+          )}
+        </div>
+        {/* </button> */}
       </Link>
     );
   }

@@ -37,7 +37,7 @@ router.post("/course-target", (req, res) => {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `SELECT * FROM course WHERE "CRSID"='${id}' OR "Code"='${id}'`,
+      `SELECT * FROM course WHERE "CRSID"='${id}' OR "CourseID"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);
@@ -55,21 +55,22 @@ router.post("/course-target", (req, res) => {
 router.post("/course-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
-    var code = clientData.Code;
+    var courseid = clientData.Course_ID;
     var course = clientData.Course;
-    var department = clientData.Department;
+    var subjectarea = clientData.Subject_Area;
+    var catalogno = clientData.Catalog_No;
     var description =
       clientData.Description === null ? null : clientData.Description;
     pool.query(
-      `INSERT INTO course ("CRSID", "Code", "Course", "Department", "Description")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from course), '${code}', '${course}', '${department}', '${description}')`,
+      `INSERT INTO course ("CRSID", "CourseID", "Course", "SubjectArea", "CatalogNo", "Description")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from course), '${courseid}', '${course}', '${subjectarea}', '${catalogno}', '${description}')`,
 
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);
-          return;
+        } else {
+          res.json(rslt.rows);
         }
-        res.json(rslt.rows);
       }
     );
   } catch (err) {

@@ -202,11 +202,7 @@ export function SectionStudentSchedule() {
                           <section className="col-12 p-0 m-0">
                             <section>
                               <h6 className="p-0 m-0">
-                                {course.map((course, i) =>
-                                  course.Code === schedule.Course ? (
-                                    <span key={i}>{course.Course}</span>
-                                  ) : null
-                                )}
+                                <span>{schedule.Course}</span>
                               </h6>
                             </section>
                             <section>

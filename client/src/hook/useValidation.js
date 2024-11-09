@@ -69,7 +69,7 @@ export default function useValidation() {
         }
         return false;
       case "Name":
-        if (/^[A-Z]{1}[a-z\s]{2,99}/gi.test(data) && data.length <= 100) {
+        if (/^[A-Za-z\s0-9]{1,99}/gi.test(data) && data.length <= 100) {
           return true;
         }
         return false;

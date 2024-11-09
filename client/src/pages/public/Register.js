@@ -15,6 +15,7 @@ import useDatabase from "../../hook/useDatabase";
 import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 
 export function Register() {
+  const dateObject = new Date();
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
@@ -27,6 +28,7 @@ export function Register() {
   const [password, setPassword] = useState(0);
   const [data, setData] = useState(null);
   const [academicYearCode, setAYCode] = useState([]);
+  const [logs, setLogs] = useState("");
 
   useEffect(() => {
     data_get("current-academic-year-code", setAYCode);
@@ -34,30 +36,51 @@ export function Register() {
 
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
+  const setCookies = (data) => {
+    document.cookie = `accountCookies=${data};`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevents normal function of onsubmit in forms
     try {
-      const response = await fetch("http://localhost:8081/user-login", {
-        method: "POST",
-        body: JSON.stringify(values),
-      });
+      data_post(
+        "user-registry",
+        {
+          Email: values.email,
+          AcademicCode: values.academicCode,
+        },
+        setData
+      );
+      const response = await fetch(
+        "https://cskode-server.vercel.app/user-login",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+        }
+      );
       const entry = await response.json();
       try {
         setData(entry);
         if (entry.Status === "Success") {
           if (values.academicCode === academicYearCode.AcademicCode) {
-            data_post(
-              "user-registry",
-              {
-                SchoolID: entry.data.SCHLID,
-                AcademicCode: values.academicCode,
-              },
-              setData
-            );
             sessionStorage.setItem("user", JSON.stringify(entry.data));
             sessionStorage.setItem("loggedin", true);
-            navigate("/"); //to dashboard
-            //alert("Succcess");
+            data_post(
+              "log-me",
+              {
+                Action: "Register",
+                Module: "Register Module",
+                User: entry.data.SCHLID,
+                Details: "A User has Registered",
+                Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
+                Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
+              },
+              setLogs
+            );
+            setCookies(JSON.stringify(entry.data));
+            //navigate("/");
+            // window.location.reload(true);
+            window.location.assign("/");
           } else {
             alert("A problem occurred");
           }

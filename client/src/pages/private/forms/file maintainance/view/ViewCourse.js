@@ -114,12 +114,12 @@ export function ViewCourse() {
                   </header>
                   <main className="p-3">
                     <section>
-                      <h6>{item.Code}</h6>
+                      <h6>{item.CourseID}</h6>
                       <h6>
-                        {department &&
-                          department.map((dpt) =>
-                            dpt.Code === item.Department ? dpt.Department : null
-                          )}
+                        {item.SubjectArea}
+                      </h6>
+                      <h6>
+                        {item.CatalogNo}
                       </h6>
                       <p>{item.Description && item.Description}</p>
                       <footer className="mt-5">

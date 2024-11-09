@@ -27,6 +27,7 @@ export function Locator() {
   const [info] = useConfiguration();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
+  const [isLoading, setIsLoading] = useState(true);
   const daytoday = new Date();
   const days = [
     "Sunday",
@@ -44,17 +45,23 @@ export function Locator() {
   const [selcoach, setSelCoach] = useState([]);
   const [currcoach, setCurrCoach] = useState("n/a");
   const [coachStatus, setCoachStatus] = useState([]);
+  const [academicLevel, setAcademicLevel] = useState([]);
   const [time, setTime] = useState();
   const [filter, setFilter] = useState({
     setbyDepartment: "",
     setbyClass: "",
+    setbyAcademicLevel: "",
   });
 
   useEffect(() => {
     data_get("assign-list", setCoaches);
     data_get("department-list", setDepartment);
+    data_get("academic-level-list", setAcademicLevel);
     data_get("class-schedule-list", setSchedules);
     data_get("all-coach-status", setCoachStatus);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   }, []);
 
   useEffect(() => {
@@ -80,21 +87,11 @@ export function Locator() {
             schedules[i].EndTime
         ) {
           if (schedules[i].SCHLID === coach) {
-            data_post(
-              "coach-status-update",
-              { id: coach, status: "ONGOING", description: "" },
-              setTest
-            );
             return "On Going";
           }
         }
       }
     }
-    data_post(
-      "coach-status-update",
-      { id: coach, status: "NOTINCLASS", description: "" },
-      setTest
-    );
     return "No Class";
   }
 
@@ -123,6 +120,7 @@ export function Locator() {
   return (
     <>
       <FileMaintainanceTemplate
+        loader={isLoading}
         sidepanel={
           <main className="h-100 d-flex flex-column justify-content-between">
             <main>
@@ -144,7 +142,7 @@ export function Locator() {
                               <main>
                                 <section className="px-2">
                                   <section className="m-0 p-0">
-                                    <h6>{" ".concat(schedule.Coach)}</h6>
+                                    <h6>{" ".concat(schedule.SCHLID)}</h6>
                                     <h5>
                                       {coaches.map((coach, i) =>
                                         coach.SCHLID === currcoach
@@ -162,7 +160,7 @@ export function Locator() {
                                       </span>
                                     </section>
                                     <section className="col-9 m-0 p-0">
-                                      {schedule.Section}
+                                      {`${schedule.Section} ( ${schedule.Population} students )`}
                                     </section>
                                   </main>
                                   <main className="row m-0 p-0 ">
@@ -283,6 +281,28 @@ export function Locator() {
                               }
                             />
                           ))}
+                          <hr />
+                          {academicLevel.map((item, i) => (
+                            <DefaultDropdownItem
+                              key={i}
+                              title={item.AcademicLevel}
+                              trigger={() =>
+                                setFilter((prev) => ({
+                                  ...prev,
+                                  setbyAcademicLevel: item.AcademicLevel,
+                                }))
+                              }
+                            />
+                          ))}
+                          <DefaultDropdownItem
+                            title={"Both"}
+                            trigger={() =>
+                              setFilter((prev) => ({
+                                ...prev,
+                                setbyAcademicLevel: "Both",
+                              }))
+                            }
+                          />
                         </section>
                       </main>
                     </>
@@ -324,120 +344,137 @@ export function Locator() {
                     }
                   />
                 ) : null}
+                {filter.setbyAcademicLevel !== "" ? (
+                  <DefaultButton
+                    class="btn-outline-primary px-2"
+                    reversed={true}
+                    icon={info.icons.navigation.close}
+                    text={filter.setbyAcademicLevel}
+                    function={() =>
+                      setFilter((prev) => ({
+                        ...prev,
+                        setbyAcademicLevel: "",
+                      }))
+                    }
+                  />
+                ) : null}
               </section>
             </main>
             {coaches.length > 0
               ? coaches.map((coach, i) =>
                   filter.setbyClass === "" ||
                   checkClassStatus(coach.SCHLID) === filter.setbyClass ? (
-                    filter.setbyDepartment === "" ||
-                    coach.Department === filter.setbyDepartment ? (
-                      <section
-                        className="col-md-6 col-12 col-lg-4 p-1 m-0"
-                        key={i}
-                        style={{ height: "15em" }}
-                      >
-                        <main className="h-100 bg-white rounded shadow-sm row m-0 p-0">
-                          <section className="col-6 h-100 d-flex flex-column align-items-center py-2">
-                            <header className="h-100 w-100 d-flex justify-content-center">
-                              <figure className="h-100">
-                                <img
-                                  src={`${CDNURL}${coach.Image}`}
-                                  alt="..."
-                                  className="w-100 h-100 object-fit-cover rounded"
-                                  style={{ objectPosition: "top" }}
-                                />
-                              </figure>
-                            </header>
-                          </section>
-                          <section className="col-6">
-                            <main className="h-100 w-100 d-flex flex-column align-items-between justify-content-center py-3 overflow-hidden">
-                              <small className="h-100">
-                                {coachStatus.map((status, q) =>
-                                  status.SCHLID === coach.SCHLID ? (
-                                    <main className="d-flex">
-                                      <section
-                                        className={`px-3 py-0 rounded-pill ${checkStatusHours(
-                                          status.ClassStatus
-                                        )}`}
-                                      >
-                                        <small>
-                                          <p
-                                            className={`p-0 m-0 fw-semibold text-white`}
-                                          >
-                                            {status.ClassStatus}
-                                          </p>
-                                        </small>
-                                      </section>
-                                    </main>
-                                  ) : null
-                                )}
-                                <h4 className="w-100 text-truncate custom-text-gradient fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
-                                <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
-                                <p className="p-0 pt-1 m-0 fw-normal text-secondary">{`${coach.departmentabbrev}`}</p>
-                                {coachStatus.map((status, q) =>
-                                  status.SCHLID === coach.SCHLID ? (
-                                    <main>
-                                      <quote className="p-0 pt-1 m-0 fw-normal text-secondary fst-italic">
-                                        "{status.Description}"
-                                      </quote>
-                                    </main>
-                                  ) : null
-                                )}
-                              </small>
-                              <main>
-                                <section className="d-flex gap-1">
-                                  <DefaultButton
-                                    class="w-100 btn-info text-white"
-                                    icon={info.icons.pages.utilities.schedule}
-                                    text={
-                                      checkClassStatus(coach.SCHLID) ===
-                                      "On Going"
-                                        ? schedules.length > 0
-                                          ? schedules.map((schedule, i) =>
-                                              schedule.SCHLID === coach.SCHLID
-                                                ? schedule.StartTime <
+                    filter.setbyAcademicLevel === "" ||
+                    filter.setbyAcademicLevel === coach.AcademicLevel ? (
+                      filter.setbyDepartment === "" ||
+                      coach.Department === filter.setbyDepartment ? (
+                        <section
+                          className="col-md-6 col-12 col-lg-4 p-1 m-0"
+                          key={i}
+                          style={{ height: "15em" }}
+                        >
+                          <main className="h-100 bg-white rounded shadow-sm row m-0 p-0">
+                            <section className="col-6 h-100 d-flex flex-column align-items-center py-2">
+                              <header className="h-100 w-100 d-flex justify-content-center">
+                                <figure className="h-100">
+                                  <img
+                                    src={`${CDNURL}${coach.Image}`}
+                                    alt="..."
+                                    className="w-100 h-100 object-fit-cover rounded"
+                                    style={{ objectPosition: "top" }}
+                                  />
+                                </figure>
+                              </header>
+                            </section>
+                            <section className="col-6">
+                              <main className="h-100 w-100 d-flex flex-column align-items-between justify-content-center py-3 overflow-hidden">
+                                <small className="h-100">
+                                  {coachStatus.map((status, q) =>
+                                    status.SCHLID === coach.SCHLID ? (
+                                      <main className="d-flex">
+                                        <section
+                                          className={`px-3 py-0 rounded-pill ${checkStatusHours(
+                                            status.ClassStatus
+                                          )}`}
+                                        >
+                                          <small>
+                                            <p
+                                              className={`p-0 m-0 fw-semibold text-white`}
+                                            >
+                                              {status.ClassStatus}
+                                            </p>
+                                          </small>
+                                        </section>
+                                      </main>
+                                    ) : null
+                                  )}
+                                  <h4 className="w-100 text-truncate custom-text-gradient fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
+                                  <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
+                                  <p className="p-0 pt-1 m-0 fw-normal text-secondary">{`${coach.departmentabbrev}`}</p>
+                                  {coachStatus.map((status, q) =>
+                                    status.SCHLID === coach.SCHLID ? (
+                                      <main>
+                                        <quote className="p-0 pt-1 m-0 fw-normal text-secondary fst-italic">
+                                          "{status.Description}"
+                                        </quote>
+                                      </main>
+                                    ) : null
+                                  )}
+                                </small>
+                                <main>
+                                  <section className="d-flex gap-1">
+                                    <DefaultButton
+                                      class="w-100 btn-info text-white"
+                                      icon={info.icons.pages.utilities.schedule}
+                                      text={
+                                        checkClassStatus(coach.SCHLID) ===
+                                        "On Going"
+                                          ? schedules.length > 0
+                                            ? schedules.map((schedule, i) =>
+                                                schedule.SCHLID === coach.SCHLID
+                                                  ? schedule.StartTime <
+                                                      daytoday.getHours() * 60 +
+                                                        daytoday.getMinutes() &&
                                                     daytoday.getHours() * 60 +
-                                                      daytoday.getMinutes() &&
-                                                  daytoday.getHours() * 60 +
-                                                    daytoday.getMinutes() <
-                                                    schedule.EndTime
-                                                  ? schedule.Day ===
-                                                    days[daytoday.getDay()]
-                                                    ? schedule.Room
+                                                      daytoday.getMinutes() <
+                                                      schedule.EndTime
+                                                    ? schedule.Day ===
+                                                      days[daytoday.getDay()]
+                                                      ? schedule.Room
+                                                      : null
                                                     : null
                                                   : null
-                                                : null
-                                            )
-                                          : null
-                                        : "No Class"
-                                    }
-                                    function={() => {
-                                      setCurrCoach(coach.SCHLID);
-                                    }}
-                                    disabled={
-                                      checkClassStatus(coach.SCHLID) ===
-                                      "On Going"
-                                        ? false
-                                        : true
-                                    }
-                                  />
-                                  <DefaultButton
-                                    class="border px-2"
-                                    reversed={true}
-                                    icon={info.icons.pages.utilities.schedule}
-                                    function={() => {
-                                      setSelCoach(coach);
-                                    }}
-                                    toggle="modal"
-                                    target="#CoachSchedule"
-                                  />
-                                </section>
+                                              )
+                                            : null
+                                          : "No Class"
+                                      }
+                                      function={() => {
+                                        setCurrCoach(coach.SCHLID);
+                                      }}
+                                      disabled={
+                                        checkClassStatus(coach.SCHLID) ===
+                                        "On Going"
+                                          ? false
+                                          : true
+                                      }
+                                    />
+                                    <DefaultButton
+                                      class="border px-2"
+                                      reversed={true}
+                                      icon={info.icons.pages.utilities.schedule}
+                                      function={() => {
+                                        setSelCoach(coach);
+                                      }}
+                                      toggle="modal"
+                                      target="#CoachSchedule"
+                                    />
+                                  </section>
+                                </main>
                               </main>
-                            </main>
-                          </section>
-                        </main>
-                      </section>
+                            </section>
+                          </main>
+                        </section>
+                      ) : null
                     ) : null
                   ) : null
                 )

@@ -22,4 +22,33 @@ router.get("/year-level-list", (req, res) => {
   }
 });
 
+router.post("/year-level-edit", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.YRLID;
+    var yearlevel = clientData.YearLevel;
+    var academiclevel = clientData.AcademicLevel;
+    pool.query(
+      `UPDATE year_level 
+
+      SET 
+      "YearLevel"='${yearlevel}', 
+      "AcademicLevel"='${academiclevel}'
+      
+      WHERE "YRLID"='${id}'`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

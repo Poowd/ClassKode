@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormsTemplate } from "../../../layout/grid/FormsTemplate";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -45,11 +45,21 @@ import { GenerateExaminations } from "./generate/GenerateExaminations";
 import { EditSchedule } from "./utilities/edit/EditSchedule";
 import { CreateUser } from "./misc/create/CreateUser";
 import { EditUser } from "./misc/edit/EditUser";
+import { GenerateSetup } from "./generate/GenerateSetup";
+import { GenerateProjection } from "./generate/GenerateProjection";
+
 export function DataController() {
   const params = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
   return (
     <FormsTemplate
+      loader={isLoading}
       content={
         <main className="h-100">
           {params.module === "coach" ? (
@@ -150,6 +160,8 @@ export function DataController() {
           {params.module === "projection" ? (
             params.form === "create" ? (
               <CreateProjection />
+            ) : params.form === "generate" ? (
+              <GenerateProjection />
             ) : params.form === "view" ? (
               <ViewProjection />
             ) : params.form === "edit" ? (
@@ -163,6 +175,8 @@ export function DataController() {
               <CreateSetup />
             ) : params.form === "view" ? (
               <ViewSetup />
+            ) : params.form === "generate" ? (
+              <GenerateSetup />
             ) : params.form === "edit" ? (
               <h1>temp edit</h1>
             ) : params.form === "archive" ? (

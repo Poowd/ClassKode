@@ -13,7 +13,21 @@ const pool = new Pool({
 router.get("/assign-list", (req, res) => {
   try {
     pool.query(
-      `SELECT coach."SCHLID", coach."FirstName", coach."LastName", coach."Image", coach."Link", coach."Email", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE assignment."Status"='ACTIVE' AND coach."Status"='ACTIVE' AND assignment."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      `SELECT coach."SCHLID", coach."FirstName", coach."LastName", coach."Image", coach."Link", coach."Email", coach."AcademicLevel", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE assignment."Status"='ACTIVE' AND coach."Status"='ACTIVE' AND assignment."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/assign-onyear-list", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicyear = clientData.data;
+    pool.query(
+      `SELECT coach."SCHLID", coach."FirstName", coach."LastName", coach."Image", coach."Link", coach."Email", coach."AcademicLevel", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE assignment."Status"='ACTIVE' AND coach."Status"='ACTIVE' AND assignment."AcademicYear"='${academicyear}'`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {

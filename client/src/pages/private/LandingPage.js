@@ -94,6 +94,17 @@ export function LandingPage() {
     //   `Course ${data[0].Course} is set to archive!`
     // );
   };
+  
+  const addStudentSection = (e) => {
+    e.preventDefault();
+    data_post(
+      "student-section-register",
+      {
+        data: loggeduser.SCHLID,
+      },
+      setData
+    );
+  };
 
   const updateStatus = (e) => {
     e.preventDefault();
@@ -185,15 +196,7 @@ export function LandingPage() {
                       class="btn-primary w-100"
                       reversed={true}
                       icon={info.icons.forms.add}
-                      function={() =>
-                        showModal(
-                          "AddModal",
-                          "What is your Section ?",
-                          <>
-                            <span>Input your Section.</span>
-                          </>
-                        )
-                      }
+                      function={addStudentSection}
                     />
                   )}
                 </main>

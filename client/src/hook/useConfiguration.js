@@ -54,6 +54,10 @@ import { FcPackage } from "react-icons/fc";
 import { FcList } from "react-icons/fc";
 import { FcReadingEbook } from "react-icons/fc";
 import { FcServices } from "react-icons/fc";
+import { FaListUl } from "react-icons/fa";
+import { PiCheckFatFill } from "react-icons/pi";
+import { RiAlarmWarningFill } from "react-icons/ri";
+import { ImCross } from "react-icons/im";
 
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
@@ -298,22 +302,28 @@ export default function useConfiguration() {
         hiddenuser: <FaUserSecret />,
         help: <LuHelpCircle />,
         info: <IoAlertCircle />,
+        list: <FaListUl />,
+      },
+      status: {
+        success: <PiCheckFatFill />,
+        warning: <RiAlarmWarningFill />,
+        danger: <ImCross />,
       },
     },
     maps: {
       m1: (
         <figure className="w-100 h-100 d-flex justify-content-center">
-          <img src={m1} alt="m1" className="w-100"></img>
+          <img src={m1} alt="m1" className="h-100"></img>
         </figure>
       ),
       m2: (
         <figure className="w-100 h-100 d-flex justify-content-center">
-          <img src={m2} alt="m2" className="w-100"></img>
+          <img src={m2} alt="m2" className="h-100"></img>
         </figure>
       ),
       m3: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={m3} alt="m3" className="w-100"></img>
+          <img src={m3} alt="m3" className="h-100"></img>
         </figure>
       ),
       a1: (
@@ -333,17 +343,17 @@ export default function useConfiguration() {
       ),
       b1: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={b1} alt="b1" className="w-100"></img>
+          <img src={b1} alt="b1" className="h-75"></img>
         </figure>
       ),
       b2: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={b2} alt="b2" className="w-100"></img>
+          <img src={b2} alt="b2" className="h-75"></img>
         </figure>
       ),
       b3: (
         <figure className="w-100 h-100 d-flex justify-content-center align-items-center">
-          <img src={b3} alt="b3" className="w-100"></img>
+          <img src={b3} alt="b3" className="h-75"></img>
         </figure>
       ),
     },

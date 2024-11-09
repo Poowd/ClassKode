@@ -13,47 +13,50 @@ import owie from "../../assets/imgs/misc/owie.png";
 import { SidebarItem } from "../sidebar/SidebarItem";
 import { SidebarDropdown } from "../sidebar/SidebarDropdown";
 import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
+import { useQuickNavigate } from "../../hook/useQuickNavigate";
+import useDatabase from "../../hook/useDatabase";
 
 export function AdminTopbar() {
+  const dateObject = new Date();
   const navigate = useNavigate();
   const [info] = useConfiguration();
+  const [QuickNavigate] = useQuickNavigate();
+  const [get, post, data_get, data_post] = useDatabase();
+  const [logs, setLogs] = useState("");
   const [data, setData] = useState({
     Input: "",
   });
   const [dataChange] = useHandleChange(setData);
 
+  const unSetCookie = () => {
+    document.cookie = "accountCookies=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  };
+
   const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
   const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem("loggedin");
-    navigate("/");
-    //window.location.reload(true);
+    data_post(
+      "log-me",
+      {
+        Action: "Logout",
+        Module: "Web-Application",
+        User: loggeduser.SCHLID,
+        Details: "A User has Logged-Out",
+        Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
+        Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
+      },
+      setLogs
+    );
+    setTimeout(() => {
+      sessionStorage.removeItem("loggedin");
+      sessionStorage.removeItem("user");
+      unSetCookie();
+      window.location.assign("/");
+    }, 1000);
   };
 
   const quicknav = () => {
-    if (/list department/g.test(data.Input)) {
-      navigate(`/institution/department`);
-    }
-    if (/list program/g.test(data.Input)) {
-      navigate(`/institution/program`);
-    }
-    if (/list course/g.test(data.Input)) {
-      navigate(`/institution/course`);
-    }
-    if (/list coach/g.test(data.Input)) {
-      navigate(`/institution/coach`);
-    }
-    if (/list section/g.test(data.Input)) {
-      navigate(`/institution/section`);
-    }
-    if (/list room/g.test(data.Input)) {
-      navigate(`/institution/room`);
-    }
-    //=>
-    if (/coach [0-9]{11}/g.test(data.Input)) {
-      navigate(`/coach/view/${data.Input.slice(6)}`);
-    }
+    QuickNavigate(data.Input);
     document.getElementById("Input").value = "";
     setData({ Input: "" });
   };

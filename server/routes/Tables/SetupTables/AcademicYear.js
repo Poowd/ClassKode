@@ -13,7 +13,7 @@ const pool = new Pool({
 router.get("/academic-year-list", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM academic_year WHERE "Status"='ACTIVE'`,
+      `SELECT * FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC `,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -135,6 +135,79 @@ router.post("/academic-year-archive", (req, res) => {
     var id = clientData.data;
     pool.query(
       `UPDATE academic_year SET "Status"='ARCHIVE' WHERE "ACYID"='${id}' OR "Code"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/academic-year-list-archived", (req, res) => {
+  try {
+    pool.query(
+      `SELECT * FROM academic_year WHERE "Status"='ARCHIVE'`,
+      (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/academic-year-restore", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `UPDATE academic_year SET "Status"='ACTIVE' WHERE "ACYID"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/set-schedule-status", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicYear = clientData.data;
+    pool.query(
+      `UPDATE academic_year SET "GeneratedSchedules"='TRUE' WHERE "Code"='${academicYear}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/set-exam-status", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var academicYear = clientData.data;
+    var level = clientData.level;
+    pool.query(
+      `UPDATE academic_year SET "Generated${level}Exams"='TRUE' WHERE "Code"='${academicYear}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

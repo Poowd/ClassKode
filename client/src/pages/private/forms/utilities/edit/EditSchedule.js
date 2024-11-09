@@ -204,15 +204,17 @@ export function EditSchedule() {
                 <>
                   <SelectButtonItemSelected
                     content={course.map((option) => (
-                      <>{option.Code === data.Course ? option.Course : ""}</>
+                      <>
+                        {option.CourseID === data.Course ? option.Course : ""}
+                      </>
                     ))}
                   />
                   {course.map((option, i) => (
                     <>
-                      {data.Course !== option.Code ? (
+                      {data.Course !== option.CourseID ? (
                         <SelectButtonItem
                           key={i}
-                          value={option.Code}
+                          value={option.CourseID}
                           content={option.Course}
                         />
                       ) : (

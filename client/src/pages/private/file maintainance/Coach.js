@@ -16,6 +16,7 @@ export function Coach() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState({
     setbyDepartment: "",
     search: "",
@@ -28,10 +29,14 @@ export function Coach() {
   useEffect(() => {
     data_get("coach-list", setCoach);
     data_get("department-list", setDepartment);
-  }, [coach]);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
 
   return (
     <FileMaintainanceTemplate
+      loader={isLoading}
       sidepanel={
         <main>
           <header className="">
@@ -59,9 +64,9 @@ export function Coach() {
       control={
         <>
           <DefaultButton
-                class="px-2"
-                icon={info.icons.navigation.back}
-                text="Back"
+            class="px-2"
+            icon={info.icons.navigation.back}
+            text="Back"
             function={() => navigate(-1)}
           />
           <DefaultInput placeholder="Search" id="search" trigger={dataChange} />

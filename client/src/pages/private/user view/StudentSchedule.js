@@ -105,11 +105,7 @@ export function StudentSchedule() {
                               >
                                 <small>
                                   <h6 className="fw-bold m-0 p-0">
-                                    {course.map((course, i) =>
-                                      course.Code === schedule.Course ? (
-                                        <span key={i}>{course.Course}</span>
-                                      ) : null
-                                    )}
+                                    <span>{schedule.Course}</span>
                                   </h6>
                                   <p className="fw-semibold m-0 p-0">
                                     {`${convertMinutes(

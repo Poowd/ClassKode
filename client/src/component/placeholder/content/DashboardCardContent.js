@@ -9,8 +9,10 @@ export class DashboardCardContent extends React.Component {
           <h5 className="p-0 m-0 fw-light">{this.props.title}</h5>
           <div>{this.props.button}</div>
         </header>
-        <main>
-          <h3 className="p-0 pe-4 m-0 fw-bold">{this.props.content}</h3>
+        <main className="text-truncate ">
+          <h3 className="p-0 pe-4 m-0 fw-bold text-wrap">
+            {this.props.content}
+          </h3>
         </main>
         <small>
           <footer className="d-flex gap-1 align-items-center fw-semibold fw-light">

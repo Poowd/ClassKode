@@ -37,13 +37,13 @@ export function SectionProjection() {
           <header className="mb-3">
             <h5 className="p-0 m-0">Projected Sections Details</h5>
             <p>Entries: {projection.length} row/s</p>
-            <LinkButton
-              class="btn-primary py-2"
-              textclass="text-white"
-              to={`/academic-year/view/${currentacademicyear.ACYID}`}
-              state={{ data: current }}
-              text={`Current Academic Year`}
+            <DefaultButton
+              class="w-100 border py-2"
               icon={info.icons.forms.view}
+              text="Current Academic Year"
+              function={() =>
+                navigate(`/academic-year/view/${currentacademicyear.ACYID}`)
+              }
             />
           </header>
           <section>
@@ -66,22 +66,21 @@ export function SectionProjection() {
               />
               <DefaultInput placeholder="Search" />
               <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
-                to={`/projection/generate/0`}
-                state={{
-                  academicyear: currentacademicyear,
-                }}
-                icon={info.icons.forms.generate}
-              />
-              <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
                 to={`/projection/create/${currentacademicyear.ACYID}`}
                 state={{
                   academicyear: currentacademicyear,
                 }}
+                class="btn-outline-primary px-2"
                 icon={info.icons.forms.add}
+              />
+              <LinkButton
+                to={`/projection/generate/0`}
+                state={{
+                  academicyear: currentacademicyear,
+                }}
+                text="Upload"
+                class="btn-primary px-2"
+                icon={info.icons.forms.generate}
               />
             </div>
           </div>
@@ -93,9 +92,9 @@ export function SectionProjection() {
           <ListCard
             slot1={`${item.Population} Students`}
             slot2={item.Section}
-            slot3={`${item.Population} Students`}
+            slot3={item.Program}
             slot4={item.AcademicYear}
-            slot5={null}
+            slot5={item.YearLevel}
             view={info.icons.forms.view}
             link={`/section/view/${item.Section}`}
             state={{ data: item }}

@@ -13,18 +13,21 @@ export class ViewModal extends React.Component {
         <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
           <div className="modal-content">
             <div className="modal-body p-3">
-              <div className="d-flex justify-content-between align-items-center m-0 ">
-                <span className="m-0 mt-2 p-0">{this.props.title}</span>
+              <div className="d-flex justify-content-between align-items-center m-0 my-2 ">
+                <h5 className="m-0 mt-2 p-0">{this.props.title}</h5>
+              </div>
+              <div>{this.props.content}</div>
+              <div className="w-100 mt-3">
                 <button
                   type="button"
-                  className="btn p-0 me-2 d-flex border-0"
+                  className="btn border-0 w-100"
                   data-bs-dismiss="modal"
                 >
-                  <IoCloseOutline />
+                  <small>
+                    <small className="text-secondary">Close Modal</small>
+                  </small>
                 </button>
               </div>
-              <hr className="p-0 my-2 mx-0 border" />
-              <div>{this.props.content}</div>
             </div>
           </div>
         </div>

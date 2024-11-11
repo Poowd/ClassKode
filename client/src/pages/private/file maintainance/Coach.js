@@ -97,8 +97,8 @@ export function Coach() {
           />
           <LinkButton
             to={"/coach/create/0"}
-            class="btn-primary"
-            textclass="text-white"
+            class="btn-primary px-2"
+            text="Create"
             icon={info.icons.forms.add}
           />
         </>
@@ -159,14 +159,16 @@ export function Coach() {
                       <ListCard
                         key={i}
                         slot1={item.SCHLID}
-                        slot2={`${item.FirstName} ${
-                          item.MiddleInitial !== (null || "")
-                            ? " " + item.MiddleInitial + ". "
-                            : " "
-                        } ${item.LastName}`}
+                        slot2={`${item.Gender === "Male" ? "Mr." : "Ms."} ${
+                          item.LastName
+                        }, ${item.FirstName} ${
+                          item.MiddleInitial != ""
+                            ? `${item.MiddleInitial}.`
+                            : ""
+                        }`}
                         slot3={item.Email}
                         slot4={item.Department}
-                        slot5={null}
+                        slot5={item.AcademicLevel}
                         view={info.icons.forms.view}
                         link={`/coach/view/${item.CCHID}`}
                         state={{ data: item }}

@@ -6,6 +6,7 @@ import useTimeFormat from "../../../hook/useTimeFormat";
 import { DefaultInput } from "../../../component/input/DefaultInput";
 import useHandleChange from "../../../hook/useHandleChange";
 import useConfiguration from "../../../hook/useConfiguration";
+import { CollapseButton } from "../../../component/button/CollapsButton";
 
 export function StudentSchedule() {
   const { state } = useLocation();
@@ -70,63 +71,72 @@ export function StudentSchedule() {
     <main className="h-100 row m-0 p-2">
       <main className="h-100 w-100 d-flex align-items-center">
         <main className="h-100 flex-fill py-2">
-          <header className="p-2">
+          <header className="p-2 text-center">
             {section.map((section, o) =>
               section.Section === studentSection.Section ? (
                 <>
-                  <h3>{`${section.Section}`}</h3>
-                  <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
+                  <h1>{`${section.Section}`}</h1>
+                  <p className="m-0 fst-italic">{`Number of Students: ${section.Population} student/s`}</p>
                 </>
               ) : null
             )}
             <hr />
           </header>
           {day.map((day, i) => (
-            <main className="p-2">
-              <section>
-                <h6>{day}</h6>
-              </section>
-              <section className="w-100 d-flex">
-                {time.map((time, j) =>
-                  schedule.length > 0
-                    ? schedule.map((schedule, k) =>
-                        schedule.Section === studentSection.Section ? (
-                          schedule.Day === day ? (
-                            +schedule.StartTime === time ? (
-                              <section
-                                className={
-                                  schedule.Component.includes("Minor")
-                                    ? "border border-white gradient-bg-yellow custom-text-blue rounded p-3 w-100"
-                                    : "border border-white gradient-bg-light-blue rounded p-3 w-100"
-                                }
-                                onClick={() => {
-                                  alert(schedule.Course);
-                                }}
-                              >
-                                <small>
-                                  <h6 className="fw-bold m-0 p-0">
-                                    <span>{schedule.Course}</span>
-                                  </h6>
-                                  <p className="fw-semibold m-0 p-0">
-                                    {`${convertMinutes(
-                                      schedule.StartTime
-                                    )} : ${convertMinutes(schedule.EndTime)}`}
-                                  </p>
-                                  <p className="fw-semibold m-0 p-0">
-                                    {schedule.Room}
-                                  </p>
-                                </small>
-                              </section>
-                            ) : (
-                              ""
-                            )
+            <CollapseButton
+              id={i}
+              width={"w-100 mb-2"}
+              background={"shadow-sm rounded text-center w-100 p-3"}
+              title={day}
+              content={
+                <section className="w-100 d-flex">
+                  {time.map((time, j) =>
+                    schedule.length > 0
+                      ? schedule.map((schedule, k) =>
+                          schedule.Section === studentSection.Section ? (
+                            schedule.Day === day ? (
+                              +schedule.StartTime === time ? (
+                                <section
+                                  className={
+                                    schedule.Component.includes("General")
+                                      ? "border border-white plotted2-2 rounded p-3 w-100"
+                                      : "border border-white plotted2 rounded p-3 w-100"
+                                  }
+                                  onClick={() => {
+                                    alert(schedule.Course);
+                                  }}
+                                >
+                                  <small>
+                                    <h6 className="fw-bold m-0 p-0">
+                                      <span>{schedule.Course}</span>
+                                    </h6>
+                                    <p className="fw-normal m-0 p-0">
+                                      {`${schedule.Component}`}
+                                    </p>
+                                    <p className="fw-normal m-0 p-0">
+                                      {`${schedule.Day}, ${convertMinutes(
+                                        schedule.StartTime
+                                      )} : ${convertMinutes(schedule.EndTime)}`}
+                                    </p>
+                                    <p className="fw-normal m-0 p-0">
+                                      {schedule.Room}
+                                    </p>
+                                    <p className="fw-normal m-0 p-0">
+                                      {`${schedule.Population} students`}
+                                    </p>
+                                  </small>
+                                </section>
+                              ) : (
+                                ""
+                              )
+                            ) : null
                           ) : null
-                        ) : null
-                      )
-                    : null
-                )}
-              </section>
-            </main>
+                        )
+                      : null
+                  )}
+                </section>
+              }
+            />
           ))}
         </main>
       </main>

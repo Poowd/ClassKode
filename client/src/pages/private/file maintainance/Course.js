@@ -20,13 +20,15 @@ export function Course() {
   const [info] = useConfiguration();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState({
-    setbyDepartment: "",
+    setbySubjectArea: "",
     search: "",
   });
   const [dataChange] = useHandleChange(setSearch);
 
   const [course, setCourse] = useState([]);
   const [department, setDepartment] = useState([]);
+
+  const subjectArea = ["CITE", "COSC", "GEDC", "NSTP", "PE Tertiary"];
 
   useEffect(() => {
     data_get("course-list", setCourse);
@@ -48,14 +50,12 @@ export function Course() {
           <section>
             <h6>Department</h6>
             <ul className="list-group list-group-flush">
-              {department &&
-                department.map((item, i) => (
+              {subjectArea &&
+                subjectArea.map((item, i) => (
                   <li key={i} className="list-group-item">
                     <TextFormat1
-                      header={<span>{item.Department}</span>}
-                      data={
-                        course.filter((x) => x.Department === item.Code).length
-                      }
+                      header={<span>{item}</span>}
+                      data={course.filter((x) => x.SubjectArea === item).length}
                     />
                   </li>
                 ))}
@@ -79,16 +79,16 @@ export function Course() {
             dropdownitems={
               <main className="d-flex gap-2 p-3">
                 <section>
-                  <h6>Department</h6>
-                  {department &&
-                    department.map((item, i) => (
+                  <h6>SubjectArea</h6>
+                  {subjectArea &&
+                    subjectArea.map((item, i) => (
                       <DefaultDropdownItem
                         key={i}
-                        title={item.Department}
+                        title={item}
                         trigger={() =>
                           setSearch((prev) => ({
                             ...prev,
-                            setbyDepartment: item.Code,
+                            setbySubjectArea: item,
                           }))
                         }
                       />
@@ -99,8 +99,8 @@ export function Course() {
           />
           <LinkButton
             to={"/course/create/0"}
-            class="btn-primary"
-            textclass="text-white"
+            class="btn-primary px-2"
+            text="Create"
             icon={info.icons.forms.add}
           />
         </>
@@ -124,23 +124,21 @@ export function Course() {
               </li>
               <li
                 className={
-                  search.setbyDepartment === "" ? "visually-hidden" : ""
+                  search.setbySubjectArea === "" ? "visually-hidden" : ""
                 }
               >
                 <DefaultButton
                   class="btn-outline-primary px-2"
                   text={
-                    department &&
-                    department.map((item) =>
-                      item.Code === search.setbyDepartment
-                        ? item.Department
-                        : null
+                    subjectArea &&
+                    subjectArea.map((item) =>
+                      item === search.setbySubjectArea ? item : null
                     )
                   }
                   function={() =>
                     setSearch((prev) => ({
                       ...prev,
-                      setbyDepartment: "",
+                      setbySubjectArea: "",
                     }))
                   }
                 />
@@ -151,17 +149,20 @@ export function Course() {
             {course.map((item, i) =>
               item.Course.toLowerCase().includes(search.search.toLowerCase()) ||
               search.search === "" ? (
-                <ListCard
-                  key={i}
-                  slot1={item.CourseID}
-                  slot2={item.Course}
-                  slot3={item.SubjectArea}
-                  slot4={item.CatalogNo}
-                  slot5={item.Status}
-                  view={info.icons.forms.view}
-                  link={`/course/view/${item.CRSID}`}
-                  state={{ data: item }}
-                />
+                search.setbySubjectArea === "" ||
+                item.SubjectArea === search.setbySubjectArea ? (
+                  <ListCard
+                    key={i}
+                    slot1={item.CourseID}
+                    slot2={item.Course}
+                    slot3={`${item.SubjectArea}-${item.CatalogNo}`}
+                    slot4={item.Status}
+                    slot5={""}
+                    view={info.icons.forms.view}
+                    link={`/course/view/${item.CRSID}`}
+                    state={{ data: item }}
+                  />
+                ) : null
               ) : null
             )}
           </section>

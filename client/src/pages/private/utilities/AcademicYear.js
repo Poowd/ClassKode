@@ -32,13 +32,12 @@ export function AcademicYear() {
           <header className="mb-3">
             <h5 className="p-0 m-0">Academic Year Details</h5>
             <p>Entries: {ay.length} row/s</p>
-            <LinkButton
-              class="btn-primary py-2"
-              textclass="text-white"
-              to={`/academic-year/view/${curray.ACYID}`}
-              state={[]}
-              text={`Current Academic Year`}
+            <h3>{curray.AcademicYear}</h3>
+            <DefaultButton
+              class="w-100 border py-2"
               icon={info.icons.forms.view}
+              text="Current Academic Year"
+              function={() => navigate(`/academic-year/view/${curray.ACYID}`)}
             />
           </header>
           <section>
@@ -58,9 +57,9 @@ export function AcademicYear() {
               />
               <DefaultInput placeholder="Search" />
               <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
                 to={"/academic-year/create/0"}
+                class="btn-primary px-2"
+                text="Create"
                 icon={info.icons.forms.add}
               />
             </div>
@@ -73,34 +72,26 @@ export function AcademicYear() {
               <ListCard
                 slot1={item.Code}
                 slot2={item.AcademicYear}
-                slot3={item.Code}
+                slot3={item.Semester}
                 slot4={`${item.StartDate} - ${item.EndDate}`}
-                slot5={null}
+                slot5={item.Curriculum}
                 link={null}
                 state={null}
                 custom={
-                  item.ACY_Code === curray.ACY_Code ? (
-                    <>
-                      <DefaultButton
-                        class="custom-bg-primary-light px-2"
-                        icon={info.icons.pages.institution.coach}
-                        function={() =>
-                          navigate(
-                            `/utilities/academicyear/assigment/${item.Code}`
-                          )
-                        }
-                      />
-                      <DefaultButton
-                        class="custom-bg-primary-light px-2"
-                        icon={info.icons.pages.institution.section}
-                        function={() =>
-                          navigate(
-                            `/utilities/academicyear/projection/${item.Code}`
-                          )
-                        }
-                      />
-                    </>
-                  ) : null
+                  <>
+                    <LinkButton
+                      to={`/utilities/academicyear/assigment/${item.Code}`}
+                      class="text-primary px-2 border"
+                      text="Coach Assignments"
+                      icon={info.icons.forms.edit}
+                    />
+                    <LinkButton
+                      to={`/utilities/academicyear/projection/${item.Code}`}
+                      class="text-primary px-2 border"
+                      text="Section Projection"
+                      icon={info.icons.forms.edit}
+                    />
+                  </>
                 }
               />
             ))

@@ -37,13 +37,13 @@ export function CoachAssignment() {
           <header className="mb-3">
             <h5 className="p-0 m-0">Assigned Coaches Details</h5>
             <p>Entries: {assignment.length} row/s</p>
-            <LinkButton
-              class="btn-primary py-2"
-              textclass="text-white"
-              to={`/academic-year/view/${currentacademicyear.ACYID}`}
-              state={{ data: current }}
-              text={`Current Academic Year`}
+            <DefaultButton
+              class="w-100 border py-2"
               icon={info.icons.forms.view}
+              text="Current Academic Year"
+              function={() =>
+                navigate(`/academic-year/view/${currentacademicyear.ACYID}`)
+              }
             />
           </header>
           <section>
@@ -66,12 +66,12 @@ export function CoachAssignment() {
               />
               <DefaultInput placeholder="Search" />
               <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
                 to={`/assignment/create/${currentacademicyear.ACYID}`}
                 state={{
                   academicyear: currentacademicyear,
                 }}
+                class="btn-primary px-2"
+                text="Create"
                 icon={info.icons.forms.add}
               />
             </div>
@@ -83,11 +83,15 @@ export function CoachAssignment() {
         assignment.map((item, i) => (
           <ListCard
             key={i}
-            slot1={item.CoachType}
-            slot2={item.LastName}
-            slot3={`${item.MAX} units`}
+            slot1={`${item.CoachType}`}
+            slot2={`${item.Gender === "Male" ? "Mr." : "Ms."} ${
+              item.LastName
+            }, ${item.FirstName} ${
+              item.MiddleInitial != "" ? `${item.MiddleInitial}.` : ""
+            }`}
+            slot3={item.Department}
             slot4={item.AcademicYear}
-            slot5={null}
+            slot5={`${item.MAX} units`}
             view={info.icons.forms.view}
             link={`/coach/view/${item.SCHLID}`}
             state={{ data: item }}

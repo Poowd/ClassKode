@@ -32,7 +32,7 @@ export class DefaultDropdown extends React.Component {
             )}
           </div>
         </button>
-        <ul className="dropdown-menu">{this.props.dropdownitems}</ul>
+        <ul className="dropdown-menu p-3">{this.props.dropdownitems}</ul>
       </div>
     );
   }

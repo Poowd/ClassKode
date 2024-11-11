@@ -40,7 +40,7 @@ export function Section() {
       sidepanel={
         <main>
           <header className="">
-            <h5 className="p-0 m-0">Department Details</h5>
+            <h5 className="p-0 m-0">Section Details</h5>
             <p>Entries: {section.length} row/s</p>
           </header>
           <section>
@@ -99,15 +99,14 @@ export function Section() {
           />
           <LinkButton
             class="btn-outline-primary"
-            textclass="text-primary"
-            to={"/section/generate/0"}
-            icon={info.icons.forms.generate}
-          />
-          <LinkButton
-            class="btn-primary"
-            textclass="text-white"
             to={"/section/create/0"}
             icon={info.icons.forms.add}
+          />
+          <LinkButton
+            class="btn-primary px-2"
+            text="Generate"
+            to={"/section/generate/0"}
+            icon={info.icons.forms.generate}
           />
         </>
       }

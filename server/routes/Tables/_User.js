@@ -118,7 +118,7 @@ router.post("/student-section-edit", (req, res) => {
     var section = clientData.section;
     var id = clientData.id;
     pool.query(
-      `UPDATE student_section SET "Section"='${data}' WHERE "SCHLID"='${id}' AND "Section"='${section}'`,
+      `UPDATE student_section SET "Section"='${data}', "ChangeAttempt"='true' WHERE "SCHLID"='${id}' AND "Section"='${section}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

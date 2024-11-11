@@ -32,10 +32,6 @@ export function Curriculum() {
     }, 500);
   }, []);
 
-  // useEffect(() => {
-  //   currentcurriculum[0].map((curr, i) => setCurrent(curr));
-  // }, [currentcurriculum]);
-
   return (
     <>
       <FileMaintainanceTemplate
@@ -45,15 +41,14 @@ export function Curriculum() {
             <header className="mb-3">
               <h5 className="p-0 m-0">Curriculum Details</h5>
               <p>Entries: {curriculum.length} row/s</p>
-              <LinkButton
-                class="btn-primary py-2"
-                textclass="text-white"
-                to={`/curriculum/view/${currentcurriculum.CRRID}`}
-                state={{
-                  data: currentcurriculum[0],
-                }}
-                text={`Current Curriculum`}
+              <h3>{currentcurriculum.Curriculum}</h3>
+              <DefaultButton
+                class="w-100 border py-2"
                 icon={info.icons.forms.view}
+                text={`Current Curriculum`}
+                function={() =>
+                  navigate(`/curriculum/view/${currentcurriculum.CRRID}`)
+                }
               />
             </header>
             <section>
@@ -80,12 +75,12 @@ export function Curriculum() {
                   trigger={dataChange}
                 />
                 <LinkButton
-                  class="btn-primary px-2"
-                  textclass="text-white"
                   to={"/curriculum/create/0"}
                   state={{
                     curriculum: currentcurriculum[0],
                   }}
+                  class="btn-primary px-2"
+                  text="Create"
                   icon={info.icons.forms.add}
                 />
               </div>
@@ -122,7 +117,11 @@ export function Curriculum() {
                         slot1={item.Code}
                         slot2={item.Curriculum}
                         slot3={"..."}
-                        slot4={item.Status}
+                        slot4={
+                          item.Code === currentcurriculum.Code
+                            ? "Active"
+                            : "Inactive"
+                        }
                         slot5={null}
                         view={info.icons.others.package}
                         link={`/utilities/curriculum/setup/${item.Code}`}

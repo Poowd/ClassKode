@@ -23,7 +23,7 @@ export class LinkButton extends React.Component {
           data-bs-dismiss={this.props.dismiss}
         > */}
         <div
-          className={`d-flex align-items-center justify-content-center gap-1 ${
+          className={`d-flex align-items-center justify-content-center gap-2 ${
             this.props.reversed ? "flex-row-reverse" : ""
           }`}
         >

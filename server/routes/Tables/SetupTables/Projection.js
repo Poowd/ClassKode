@@ -27,7 +27,7 @@ router.post("/project-onyear-list", (req, res) => {
     const clientData = JSON.parse(req.body);
     var academicyear = clientData.data;
     pool.query(
-      `SELECT projection."PRJID", section."Section", section."YearLevel", projection."AcademicYear", projection."Population", projection."Created", projection."Status" FROM projection INNER JOIN section ON projection."Section" = section."Section" WHERE projection."Status"='ACTIVE' AND "AcademicYear"='${academicyear}'`,
+      `SELECT projection."PRJID", section."Section", section."YearLevel", program."Program", projection."AcademicYear", projection."Population", projection."Created", projection."Status" FROM projection INNER JOIN section ON projection."Section" = section."Section" INNER JOIN program ON section."Program" = program."Code" WHERE projection."Status"='ACTIVE' AND "AcademicYear"='${academicyear}'`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {

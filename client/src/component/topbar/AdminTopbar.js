@@ -198,11 +198,11 @@ export function AdminTopbar() {
         </div>
         <div className="d-flex gap-2">
           <h5 className="p-0 m-0">
-            <span className="fw-bold gradient-text-golden">ClassKode</span>
+            <span className="fw-bold gradient-text-2">ClassKode</span>
           </h5>
           <div>
             <p className="p-0 m-0">
-              <span className="fw-semibold gradient-text-2">Admin</span>
+              <span className="fw-semibold ">Admin</span>
             </p>
           </div>
         </div>
@@ -225,63 +225,6 @@ export function AdminTopbar() {
             function={quicknav}
           />
         </section>
-        {/* <div>
-          <DefaultButton
-            class="text-light"
-            reversed={false}
-            icon={info.icons.navigation.quicknav}
-            text={""}
-            function={() => {}}
-            toggle="modal"
-            target="#QuickNav"
-          />
-          <ViewModal
-            id={"QuickNav"}
-            title={<h6 className="text-center text-black">Kwa-Go</h6>}
-            content={
-              <main>
-                <section className="d-flex gap-1">
-                  <DefaultInput
-                    label="inputs"
-                    id="Input"
-                    name="Input"
-                    trigger={dataChange}
-                  />
-                  <DefaultButton
-                    class="btn-primary py-2 px-2"
-                    reversed={true}
-                    text="Enter"
-                    function={quicknav}
-                    dismiss={"modal"}
-                  />
-                </section>
-                <main className="w-100 bottom-0 end-0 d-flex align-items-center justify-content-end">
-                  <section className="w-100 p-0 m-0 border rounded p-2 px-3 text-dark">
-                    <p className="p-0 m-0 fw-semibold">Commands</p>
-                    <p className="p-0 m-0">
-                      list
-                      <span className="text-secondary fst-italic">
-                        {" "}
-                        {`< module >`}
-                      </span>
-                    </p>
-                    <p className="p-0 m-0">
-                      <span className="text-secondary fst-italic">
-                        {`< module >`} {`< id >`}
-                      </span>
-                    </p>
-                  </section>
-                  <img
-                    src={owie}
-                    alt="..."
-                    className=""
-                    style={{ height: "10em" }}
-                  />
-                </main>
-              </main>
-            }
-          />
-        </div> */}
         <div className="px-1 border-end">
           <DefaultButton
             class="text-light"

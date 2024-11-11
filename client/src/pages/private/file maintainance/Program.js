@@ -4,7 +4,6 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import { Link, useNavigate } from "react-router-dom";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultInput } from "../../../component/input/DefaultInput";
-import { NoDisplay } from "../../../component/placeholder/NoDisplay";
 import { ListCard } from "../../../component/card/ListCard";
 import useConfiguration from "../../../hook/useConfiguration";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
@@ -12,7 +11,6 @@ import { DefaultDropdownItem } from "../../../component/dropdown/default/Default
 import { LinkButton } from "../../../component/button/LinkButton";
 import useHandleChange from "../../../hook/useHandleChange";
 import { TextFormat1 } from "../../../component/textformat/TextFormat1";
-import { CoffeeLoader } from "../../../component/loader/CoffeeLoader";
 
 export function Program() {
   const navigate = useNavigate();
@@ -55,7 +53,7 @@ export function Program() {
                       <TextFormat1
                         header={<span>{item.Department}</span>}
                         data={
-                          program.filter((x) => x.dptcode === item.Code).length
+                          program.filter((x) => x.DPTCode === item.Code).length
                         }
                       />
                     </li>
@@ -101,8 +99,8 @@ export function Program() {
           />
           <LinkButton
             to={"/program/create/0"}
-            class="btn-primary"
-            textclass="text-white"
+            class="btn-primary px-2"
+            text="Create"
             icon={info.icons.forms.add}
           />
         </>
@@ -154,20 +152,15 @@ export function Program() {
               item.Program.toLowerCase().includes(
                 search.search.toLowerCase()
               ) || search.search === "" ? (
-                item.dptcode.includes(search.setbyDepartment) ||
+                item.DPTCode.includes(search.setbyDepartment) ||
                 search.setbyDepartment === "" ? (
                   <ListCard
                     key={i}
                     slot1={item.Code}
                     slot2={item.Program}
                     slot3={item.Abbrev}
-                    slot4={null}
-                    slot5={
-                      department &&
-                      department.map((dept) =>
-                        dept.Code === item.Department ? dept.Department : null
-                      )
-                    }
+                    slot4={item.DPTCode}
+                    slot5={item.AcademicLevel}
                     view={info.icons.forms.view}
                     link={`/program/view/${item.PRGID}`}
                     state={{ data: item }}

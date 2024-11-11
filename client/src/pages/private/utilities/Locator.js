@@ -103,17 +103,17 @@ export function Locator() {
   ]);
 
   const checkStatusHours = (status) => {
-    if (status === "ONCLASS") {
+    if (status === "On-Going") {
       return "bg-success";
     }
-    if (status === "NOTINCLASS") {
+    if (status === "No Class") {
       return "bg-warning";
     }
-    if (status === "ABSENT") {
+    if (status === "Absent") {
       return "bg-danger";
     }
-    if (status === "OFFHOURS") {
-      return "bg-secondary";
+    if (status === "Not Set") {
+      return "bg-secondary-subtle";
     }
   };
 
@@ -133,16 +133,15 @@ export function Locator() {
                         daytoday.getHours() * 60 + daytoday.getMinutes() <
                           schedule.EndTime ? (
                           schedule.Day === days[daytoday.getDay()] ? (
-                            <main className="border rounded p-2">
+                            <main className="border rounded p-3">
                               <header>
                                 <h6 className="fw-bold text-success">
                                   ON GOING
                                 </h6>
                               </header>
                               <main>
-                                <section className="px-2">
+                                <section>
                                   <section className="m-0 p-0">
-                                    <h6>{" ".concat(schedule.SCHLID)}</h6>
                                     <h5>
                                       {coaches.map((coach, i) =>
                                         coach.SCHLID === currcoach
@@ -153,44 +152,28 @@ export function Locator() {
                                   </section>
                                   <hr />
                                   <h6>Schedule Details</h6>
-                                  <main className="row m-0 p-0 ">
-                                    <section className="col-3 m-0 p-0">
-                                      <span className="fw-semibold">
-                                        Section:
-                                      </span>
-                                    </section>
-                                    <section className="col-9 m-0 p-0">
-                                      {`${schedule.Section} ( ${schedule.Population} students )`}
-                                    </section>
-                                  </main>
-                                  <main className="row m-0 p-0 ">
-                                    <section className="col-3 m-0 p-0">
-                                      <span className="fw-semibold">
-                                        Course:
-                                      </span>
-                                    </section>
-                                    <section className="col-9 m-0 p-0">
-                                      {schedule.Course}
-                                    </section>
-                                  </main>
-                                  <main className="row m-0 p-0 ">
-                                    <section className="col-3 m-0 p-0">
-                                      <span className="fw-semibold">Room:</span>
-                                    </section>
-                                    <section className="col-9 m-0 p-0">
-                                      {schedule.Room}
-                                    </section>
-                                  </main>
-                                  <main className="row m-0 p-0 ">
-                                    <section className="col-3 m-0 p-0">
-                                      <span className="fw-semibold">Time:</span>
-                                    </section>
-                                    <section className="col-9 m-0 p-0">
-                                      {`${convertMinutes(
-                                        schedule.StartTime
-                                      )} - ${convertMinutes(schedule.EndTime)}`}
-                                    </section>
-                                  </main>
+                                  <TextFormat2
+                                    header="Section"
+                                    data={schedule.Section}
+                                  />
+                                  <TextFormat2
+                                    header="Course"
+                                    data={schedule.Course}
+                                  />
+                                  <TextFormat2
+                                    header="Room"
+                                    data={schedule.Room}
+                                  />
+                                  <TextFormat2
+                                    header="Time"
+                                    data={`${convertMinutes(
+                                      schedule.StartTime
+                                    )} - ${convertMinutes(schedule.EndTime)}`}
+                                  />
+                                  <TextFormat2
+                                    header="Population"
+                                    data={`${schedule.Population} students`}
+                                  />
                                 </section>
                               </main>
                             </main>
@@ -226,8 +209,9 @@ export function Locator() {
             <div className="w-100">
               <div className="d-flex gap-2 justify-content-end">
                 <DefaultButton
-                  class=""
+                  class="px-2"
                   icon={info.icons.navigation.back}
+                  text="Back"
                   function={() => navigate(-1)}
                 />
                 <DefaultInput placeholder="Search" />
@@ -247,9 +231,10 @@ export function Locator() {
                         }
                       />
                       <hr />
-                      <main className="d-flex pb-3">
+                      <main className="d-flex">
                         <section>
-                          <DefaultDropdownItem
+                          
+                        <DefaultDropdownItem
                             title={"On Going"}
                             trigger={() =>
                               setFilter((prev) => ({
@@ -267,8 +252,6 @@ export function Locator() {
                               }))
                             }
                           />
-                        </section>
-                        <section>
                           {department.map((item, i) => (
                             <DefaultDropdownItem
                               key={i}
@@ -392,25 +375,26 @@ export function Locator() {
                                   {coachStatus.map((status, q) =>
                                     status.SCHLID === coach.SCHLID ? (
                                       <main className="d-flex">
-                                        <section
-                                          className={`px-3 py-0 rounded-pill ${checkStatusHours(
-                                            status.ClassStatus
-                                          )}`}
-                                        >
-                                          <small>
-                                            <p
-                                              className={`p-0 m-0 fw-semibold text-white`}
-                                            >
-                                              {status.ClassStatus}
-                                            </p>
-                                          </small>
-                                        </section>
+                                        <small>
+                                          <section
+                                            className={`px-3 py-1 rounded-pill ${checkStatusHours(
+                                              status.ClassStatus
+                                            )}`}
+                                          >
+                                            <small>
+                                              <p
+                                                className={`p-0 m-0 fw-semibold text-white`}
+                                              >
+                                                {status.ClassStatus}
+                                              </p>
+                                            </small>
+                                          </section>
+                                        </small>
                                       </main>
                                     ) : null
                                   )}
                                   <h4 className="w-100 text-truncate custom-text-gradient fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
                                   <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
-                                  <p className="p-0 pt-1 m-0 fw-normal text-secondary">{`${coach.departmentabbrev}`}</p>
                                   {coachStatus.map((status, q) =>
                                     status.SCHLID === coach.SCHLID ? (
                                       <main>
@@ -422,12 +406,24 @@ export function Locator() {
                                   )}
                                 </small>
                                 <main>
-                                  <section className="d-flex gap-1">
-                                    <DefaultButton
-                                      class="w-100 btn-info text-white"
-                                      icon={info.icons.pages.utilities.schedule}
-                                      text={
+                                  <section className="d-flex gap-1 w-100">
+                                    <button
+                                      className={`btn w-100 btn-sm d-flex align-items-center justify-content-start gap-2 p-2 btn-info`}
+                                      disabled={
                                         checkClassStatus(coach.SCHLID) ===
+                                        "On Going"
+                                          ? false
+                                          : true
+                                      }
+                                      onClick={() => {
+                                        setCurrCoach(coach.SCHLID);
+                                      }}
+                                    >
+                                      <span className="text-white">
+                                        {info.icons.pages.utilities.schedule}
+                                      </span>
+                                      <span className="text-start fw-bold text-white">
+                                        {checkClassStatus(coach.SCHLID) ===
                                         "On Going"
                                           ? schedules.length > 0
                                             ? schedules.map((schedule, i) =>
@@ -440,24 +436,18 @@ export function Locator() {
                                                       schedule.EndTime
                                                     ? schedule.Day ===
                                                       days[daytoday.getDay()]
-                                                      ? schedule.Room
+                                                      ? schedule.Room.replace(
+                                                          "Computer Laboratory",
+                                                          "ComLab"
+                                                        )
                                                       : null
                                                     : null
                                                   : null
                                               )
                                             : null
-                                          : "No Class"
-                                      }
-                                      function={() => {
-                                        setCurrCoach(coach.SCHLID);
-                                      }}
-                                      disabled={
-                                        checkClassStatus(coach.SCHLID) ===
-                                        "On Going"
-                                          ? false
-                                          : true
-                                      }
-                                    />
+                                          : "No Class"}
+                                      </span>
+                                    </button>
                                     <DefaultButton
                                       class="border px-2"
                                       reversed={true}
@@ -488,10 +478,9 @@ export function Locator() {
         content={
           <main className="p-3">
             <header>
-              <section className="m-0 p-0">
+              <section className="w-50 m-0 p-0">
                 <h5>{` ${selcoach.LastName}, ${selcoach.FirstName}`}</h5>
                 <main>
-                  <TextFormat2 header="School ID" data={selcoach.SCHLID} />
                   <TextFormat2 header="Department" data={selcoach.Department} />
                   <TextFormat2 header="Email" data={selcoach.Email} />
                   <TextFormat2

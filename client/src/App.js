@@ -92,7 +92,7 @@ function App() {
       (dateObject.getHours() >= 21 && dateObject.getHours() <= 24) ||
       (dateObject.getHours() >= 1 && dateObject.getHours() < 7)
     ) {
-      resetStatus("OFFHOURS");
+      resetStatus("Not Set");
     }
     setTimeout(() => {
       setIsLoading(false);

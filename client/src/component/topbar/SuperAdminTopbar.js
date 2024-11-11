@@ -79,52 +79,6 @@ export function SuperAdminTopbar() {
   };
 
   const quicknav = () => {
-    // //=>
-    // if (/list department/g.test(data.Input)) {
-    //   navigate(`/institution/department`);
-    // }
-    // if (/list program/g.test(data.Input)) {
-    //   navigate(`/institution/program`);
-    // }
-    // if (/list course/g.test(data.Input)) {
-    //   navigate(`/institution/course`);
-    // }
-    // if (/list coach/g.test(data.Input)) {
-    //   navigate(`/institution/coach`);
-    // }
-    // if (/list section/g.test(data.Input)) {
-    //   navigate(`/institution/section`);
-    // }
-    // if (/list room/g.test(data.Input)) {
-    //   navigate(`/institution/room`);
-    // }
-    // //=>
-    // if (/coach [0-9]{11}/g.test(data.Input)) {
-    //   navigate(`/coach/view/${data.Input.slice(6)}`);
-    // }
-    // if (/department [A-Z0-9]{1,15}/g.test(data.Input)) {
-    //   navigate(`/department/view/${data.Input.slice(11)}`);
-    // }
-    // // Navigation for Course (using CRS_Code)
-    // if (/course [A-Z0-9]{1,15}/g.test(data.Input)) {
-    //   navigate(`course/view/${data.Input.slice(7)}`);
-    // }
-
-    // // Navigation for Section (using Section name)
-    // if (/section [A-Za-z0-9]{1,15}/g.test(data.Input)) {
-    //   navigate(`section/view/${data.Input.slice(8)}`);
-    // }
-
-    // // Navigation for Room (using Room name)
-    // if (/room [A-Za-z0-9]{1,15}/g.test(data.Input)) {
-    //   navigate(`room/view/${data.Input.slice(5)}`);
-    // }
-
-    // // Navigation for Program (using PRG_Code)
-    // if (/program [A-Z0-9]{1,15}/g.test(data.Input)) {
-    //   navigate(`program/view/${data.Input.slice(8)}`);
-    // }
-
     QuickNavigate(data.Input);
 
     document.getElementById("Input").value = "";
@@ -308,13 +262,8 @@ export function SuperAdminTopbar() {
           </div>
           <div className="d-flex gap-2">
             <h5 className="p-0 m-0">
-              <span className="fw-bold gradient-text-golden">ClassKode</span>
+              <span className="fw-bold gradient-text-3">ClassKode</span>
             </h5>
-            <div>
-              <p className="p-0 m-0">
-                <span className="fw-semibold gradient-text-3">Manager</span>
-              </p>
-            </div>
           </div>
         </div>
         <div className="d-flex align-items-center">
@@ -344,7 +293,7 @@ export function SuperAdminTopbar() {
           </div>
           <div className="px-1">
             <DefaultButton
-              class="text-light"
+              class="text-white"
               icon={info.icons.others.hiddenuser}
               text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
               function={() => {}}

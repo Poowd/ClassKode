@@ -10,10 +10,10 @@ const pool = new Pool({
   database: "postgres",
 });
 
-router.get("/program-list", (req, res) => {
+router.get("/posts-list", (req, res) => {
   try {
     pool.query(
-      `SELECT program."PRGID", program."Code", program."Program", program."Abbrev", department."Code" as "DPTCode", program."AcademicLevel", program."Created", program."Status" FROM program INNER JOIN department ON program."Department"=department."Code" WHERE program."Status"='ACTIVE'`,
+      `SELECT posts."PSTID", _user."SCHLID", _user."Email", _user."FirstName", _user."LastName", posts."SubjectMatter", posts."Details", posts."Date", posts."Time", posts."Created", posts."Status" FROM posts INNER JOIN _user ON _user."SCHLID"=posts."Author" WHERE posts."Status"='ACTIVE' ORDER BY posts."PSTID" DESC`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -22,9 +22,9 @@ router.get("/program-list", (req, res) => {
   }
 });
 
-router.get("/program-list-archived", (req, res) => {
+router.get("/posts-list-archived", (req, res) => {
   try {
-    pool.query(`SELECT * FROM program WHERE "Status"='ARCHIVE'`, (err, rslt) =>
+    pool.query(`SELECT * FROM posts WHERE "Status"='ARCHIVE'`, (err, rslt) =>
       res.json(rslt.rows)
     );
   } catch (err) {
@@ -33,12 +33,35 @@ router.get("/program-list-archived", (req, res) => {
   }
 });
 
-router.post("/program-target", (req, res) => {
+router.post("/posts-target", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
+    pool.query(`SELECT * FROM posts`, (err, rslt) => {
+      if (err) {
+        console.error("Query error:", err);
+        return;
+      }
+      res.json(rslt.rows);
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/posts-insert", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var author = clientData.Author;
+    var subjectmatter = clientData.SubjectMatter;
+    var details = clientData.Details;
+    var date = clientData.Date;
+    var time = clientData.Time;
     pool.query(
-      `SELECT * FROM program WHERE "PRGID"='${id}' OR "Code"='${id}'`,
+      `INSERT INTO posts ("PSTID", "Author", "SubjectMatter",  "Details", "Date", "Time")
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from posts),'${author}', '${subjectmatter}',  '${details}',  '${date}',  '${time}')`,
+
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);
@@ -53,19 +76,25 @@ router.post("/program-target", (req, res) => {
   }
 });
 
-router.post("/program-insert", (req, res) => {
+router.post("/department-edit", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
+    var id = clientData.DPTID;
     var code = clientData.Code;
-    var program = clientData.Program;
-    var abbrev = clientData.Abbrev;
     var department = clientData.Department;
-    var academiclevel = clientData.AcademicLevel;
+    var abbrev = clientData.Abbrev;
     var description =
       clientData.Description === null ? null : clientData.Description;
     pool.query(
-      `INSERT INTO program ("PRGID", "Code", "Program", "Abbrev", "Department", "AcademicLevel", "Description")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from program), (select CONCAT('${abbrev}-',LPAD(CAST((count(*) + 1)::integer AS TEXT), 3, '0')) AS Wow from program), '${program}', '${abbrev}', '${department}', '${academiclevel}', '${description}')`,
+      `UPDATE department 
+
+      SET 
+      "Code"='${code}', 
+      "Department"='${department}', 
+      "Abbrev"='${abbrev}', 
+      "Description"='${description}' 
+      
+      WHERE "DPTID"='${id}'`,
 
       (err, rslt) => {
         if (err) {
@@ -81,49 +110,12 @@ router.post("/program-insert", (req, res) => {
   }
 });
 
-router.post("/program-edit", (req, res) => {
-  try {
-    const clientData = JSON.parse(req.body);
-    var id = clientData.PRGID;
-    var code = clientData.Code;
-    var program = clientData.Program;
-    var department = clientData.Department;
-    var abbrev = clientData.Abbrev;
-    var academiclevel = clientData.AcademicLevel;
-    var description =
-      clientData.Description === null ? null : clientData.Description;
-    pool.query(
-      `UPDATE program 
-        SET 
-        "Code"='${code}', 
-        "Program"='${program}', 
-        "Abbrev"='${abbrev}', 
-        "Department"='${department}',
-        "AcademicLevel"='${academiclevel}', 
-        "Description"='${description}' 
-        
-        WHERE "PRGID"='${id}'`,
-
-      (err, rslt) => {
-        if (err) {
-          console.error("Query error:", err);
-          return;
-        }
-        res.json(rslt.rows);
-      }
-    );
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-router.post("/program-archive", (req, res) => {
+router.post("/department-archive", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `UPDATE program SET "Status"='ARCHIVE' WHERE "PRGID"='${id}'`,
+      `UPDATE department SET "Status"='ARCHIVE' WHERE "DPTID"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);
@@ -138,12 +130,12 @@ router.post("/program-archive", (req, res) => {
   }
 });
 
-router.post("/program-restore", (req, res) => {
+router.post("/department-restore", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
     var id = clientData.data;
     pool.query(
-      `UPDATE program SET "Status"='ACTIVE' WHERE "PRGID"='${id}'`,
+      `UPDATE department SET "Status"='ACTIVE' WHERE "DPTID"='${id}'`,
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);

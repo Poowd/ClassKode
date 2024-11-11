@@ -5,16 +5,12 @@ import useConfiguration from "../../hook/useConfiguration";
 import useHandleChange from "../../hook/useHandleChange";
 import { DefaultInput } from "../../component/input/DefaultInput";
 import { DefaultButton } from "../../component/button/DefaultButton";
-import { MainSelect } from "../../component/dropdown/select/MainSelect";
 import { SelectButtonItemSelected } from "../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../component/dropdown/select/SelectButtonItem";
-import { MainInput } from "../../component/input/MainInput";
 import useModal from "../../hook/useModal";
 import { PassiveModal } from "../../component/modal/PassiveModal";
-import { FormInput } from "../../component/input/FormInput";
 import { SelectButton } from "../../component/dropdown/select/SelectButton";
 import useTimeFormat from "../../hook/useTimeFormat";
-import { RoomCard } from "../../component/card/RoomCard";
 
 export function LandingPage() {
   const [convertMinutes] = useTimeFormat();
@@ -38,17 +34,20 @@ export function LandingPage() {
     Section: "",
     Status: "",
     Description: "",
+    SubjectMatter: "",
+    Details: "",
   });
   const [studentSection, setStudentSection] = useState([]);
   const [coachStatus, setCoachStatus] = useState([]);
   const [section, setSection] = useState([]);
   const [schedules, setSchedules] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const [classStatus, setClassStatus] = useState([
-    "ONCLASS",
-    "NOTINCLASS",
-    "OFFHOURS",
-    "ABSENT",
+    "On-Going",
+    "No Class",
+    "Absent",
+    "Not Set",
   ]);
 
   const [dataChange] = useHandleChange(setData);
@@ -94,7 +93,7 @@ export function LandingPage() {
     //   `Course ${data[0].Course} is set to archive!`
     // );
   };
-  
+
   const addStudentSection = (e) => {
     e.preventDefault();
     data_post(
@@ -117,15 +116,40 @@ export function LandingPage() {
       },
       setData
     );
-    data_post("coach-status", { data: loggeduser.SCHLID }, setCoachStatus);
-    // showToast(
-    //   info.icons.others.info,
-    //   "Course",
-    //   `Course ${data[0].Course} is set to archive!`
-    // );
+    setTimeout(() => {
+      data_post("coach-status", { data: loggeduser.SCHLID }, setCoachStatus);
+    }, 500);
+  };
+
+  const posting = (e) => {
+    e.preventDefault();
+    data_post(
+      "posts-insert",
+      {
+        Author: loggeduser.SCHLID,
+        SubjectMatter: data.SubjectMatter,
+        Details: data.Details,
+        Date: `${
+          days[daytoday.getDay()]
+        }, ${daytoday.getDate()}/${daytoday.getMonth()}/${daytoday.getFullYear()}`,
+        Time: `${
+          daytoday.getHours() > 12
+            ? daytoday.getHours() - 12
+            : daytoday.getHours()
+        }:${daytoday.getMinutes()} ${daytoday.getHours() >= 12 ? "PM" : "AM"}`,
+      },
+      setData
+    );
+
+    document.getElementById("SubjectMatter").value = "";
+    document.getElementById("Details").value = "";
+    setTimeout(() => {
+      data_get("posts-list", setPosts);
+    }, 500);
   };
 
   useEffect(() => {
+    data_get("posts-list", setPosts);
     data_get("project-list", setSection);
     data_get("class-schedule-list", setSchedules);
     if (loggeduser.PermissionLevel === "0") {
@@ -170,31 +194,31 @@ export function LandingPage() {
               {loggeduser.PermissionLevel === "0" ? (
                 <main className="">
                   {studentSection.SCHLID !== undefined ? (
-                    <main className="p-2 d-flex justify-content-between align-items-center bg-white rounded shadow-sm">
-                      <section>
-                        <h6 className="m-0">{studentSection.Section}</h6>
-                      </section>
-                      <section className="d-flex gap-1">
+                    <main className="d-flex justify-content-between align-items-center">
+                      <section className="w-100">
                         <DefaultButton
-                          class="btn-primary"
-                          reversed={true}
+                          class="btn-primary w-100 p-2"
+                          reversed={false}
+                          text={studentSection.Section}
                           icon={info.icons.forms.edit}
                           function={() =>
                             showModal(
                               "studentModal",
-                              "What is your Section ?",
+                              "What class are you in?",
                               <>
                                 <span>Input your Section.</span>
                               </>
                             )
                           }
+                          disabled={studentSection.ChangeAttempt}
                         />
                       </section>
                     </main>
                   ) : (
                     <DefaultButton
-                      class="btn-primary w-100"
-                      reversed={true}
+                      class="btn-primary w-100 p-2"
+                      text="Set Your Section"
+                      reversed={false}
                       icon={info.icons.forms.add}
                       function={addStudentSection}
                     />
@@ -203,13 +227,11 @@ export function LandingPage() {
               ) : (
                 <main>
                   <main className="d-flex justify-content-between align-items-center">
-                    <section>
-                      <h6 className="m-0">{coachStatus.ClassStatus}</h6>
-                    </section>
-                    <section className="d-flex gap-1">
+                    <section className="w-100">
                       <DefaultButton
-                        class="btn-primary"
+                        class="btn-primary w-100 p-2"
                         reversed={true}
+                        text={coachStatus.ClassStatus}
                         icon={info.icons.forms.edit}
                         function={() =>
                           showModal(
@@ -223,18 +245,21 @@ export function LandingPage() {
                           )
                         }
                       />
+                      <p className="m-0 border p-1 mt-1 rounded text-center fst-italic text-truncate">
+                        <small>{coachStatus.Description}</small>
+                      </p>
                     </section>
                   </main>
-                  <section>
-                    <p className="m-0">{coachStatus.Description}</p>
-                  </section>
+                  <section></section>
                 </main>
               )}
             </main>
             {loggeduser.PermissionLevel === "0" ? (
               <main className="h-75 overflow-y-auto">
                 <main>
-                  <h6 className="m-0 text-secondary fw-normal">On-Going</h6>
+                  <h6 className="m-0 text-secondary fw-normal text-end px-1">
+                    On-Going
+                  </h6>
                   {schedules.map((schedule, i) =>
                     schedule.Section === studentSection.Section ? (
                       schedule.StartTime <
@@ -242,20 +267,32 @@ export function LandingPage() {
                       daytoday.getHours() * 60 + daytoday.getMinutes() <
                         schedule.EndTime ? (
                         schedule.Day === days[daytoday.getDay()] ? (
-                          <RoomCard
-                            key={i}
-                            section={schedule.Room}
-                            course={schedule.Course}
-                            time={`${schedule.Day} - ${convertMinutes(
-                              schedule.StartTime
-                            )} - ${convertMinutes(schedule.EndTime)}`}
-                          />
+                          <main className="p-1">
+                            <section className="p-3 shadow-sm rounded mb-2">
+                              <h6 className="p-0 m-0">{schedule.Course}</h6>
+                              <p className="p-0 m-0 text-secondary">
+                                <span>{schedule.Section}</span>
+                              </p>
+                              <p className="p-0 m-0 text-secondary">
+                                <span>{`${schedule.Day}, ${convertMinutes(
+                                  schedule.StartTime
+                                )} - ${convertMinutes(
+                                  schedule.EndTime
+                                )}`}</span>
+                              </p>
+                              <p className="p-0 m-0 text-secondary">
+                                <span>{schedule.Room}</span>
+                              </p>
+                            </section>
+                          </main>
                         ) : null
                       ) : null
                     ) : null
                   )}
-                  <hr className="m-0 p-0 my-2"></hr>
-                  <h6 className="m-0 text-secondary fw-normal">This Day!</h6>
+                  <hr className="m-0 p-0 my-3"></hr>
+                  <h6 className="m-0 text-secondary fw-normal text-end px-1">
+                    Classes
+                  </h6>
                   {schedules.length > 0
                     ? schedules.map((item, i) =>
                         item.Day === days[daytoday.getDay()] ? (
@@ -267,16 +304,24 @@ export function LandingPage() {
                               daytoday.getHours() * 60 + daytoday.getMinutes() <
                                 item.EndTime
                             ) ? (
-                              <>
-                                <RoomCard
-                                  key={i}
-                                  section={item.Room}
-                                  course={item.Course}
-                                  time={`${item.Day} - ${convertMinutes(
-                                    item.StartTime
-                                  )} - ${convertMinutes(item.EndTime)}`}
-                                />
-                              </>
+                              <main className="p-1">
+                                <section className="p-3 shadow-sm rounded mb-2">
+                                  <h6 className="p-0 m-0">{item.Course}</h6>
+                                  <p className="p-0 m-0 text-secondary">
+                                    <span>{item.Section}</span>
+                                  </p>
+                                  <p className="p-0 m-0 text-secondary">
+                                    <span>{`${item.Day}, ${convertMinutes(
+                                      item.StartTime
+                                    )} - ${convertMinutes(
+                                      item.EndTime
+                                    )}`}</span>
+                                  </p>
+                                  <p className="p-0 m-0 text-secondary">
+                                    <span>{item.Room}</span>
+                                  </p>
+                                </section>
+                              </main>
                             ) : null
                           ) : null
                         ) : null
@@ -287,32 +332,46 @@ export function LandingPage() {
             ) : (
               <main className="h-75 overflow-y-auto">
                 <main>
-                  <h6 className="m-0 text-secondary fw-normal">On-Going</h6>
+                  <h6 className="m-0 text-secondary fw-normal mb-2 text-end px-1">
+                    On-Going
+                  </h6>
                   {schedules.map((schedule, i) =>
-                    schedule.Coach === loggeduser.SCHLID ? (
+                    schedule.SCHLID === loggeduser.SCHLID ? (
                       schedule.StartTime <
                         daytoday.getHours() * 60 + daytoday.getMinutes() &&
                       daytoday.getHours() * 60 + daytoday.getMinutes() <
                         schedule.EndTime ? (
                         schedule.Day === days[daytoday.getDay()] ? (
-                          <RoomCard
-                            key={i}
-                            section={schedule.Room}
-                            course={schedule.Course}
-                            time={`${schedule.Day} - ${convertMinutes(
-                              schedule.StartTime
-                            )} - ${convertMinutes(schedule.EndTime)}`}
-                          />
+                          <main className="p-1">
+                            <section className="p-3 shadow-sm rounded mb-2">
+                              <h6 className="p-0 m-0">{schedule.Course}</h6>
+                              <p className="p-0 m-0 text-secondary">
+                                <span>{schedule.Section}</span>
+                              </p>
+                              <p className="p-0 m-0 text-secondary">
+                                <span>{`${schedule.Day}, ${convertMinutes(
+                                  schedule.StartTime
+                                )} - ${convertMinutes(
+                                  schedule.EndTime
+                                )}`}</span>
+                              </p>
+                              <p className="p-0 m-0 text-secondary">
+                                <span>{schedule.Room}</span>
+                              </p>
+                            </section>
+                          </main>
                         ) : null
                       ) : null
                     ) : null
                   )}
-                  <hr className="m-0 p-0 my-2"></hr>
-                  <h6 className="m-0 text-secondary fw-normal">This Day!</h6>
+                  <hr className="m-0 p-0 my-3"></hr>
+                  <h6 className="m-0 text-secondary fw-normal text-end px-1">
+                    Classes
+                  </h6>
                   {schedules.length > 0
                     ? schedules.map((item, i) =>
                         item.Day === days[daytoday.getDay()] ? (
-                          item.Section === loggeduser.SCHLID ? (
+                          item.SCHLID === loggeduser.SCHLID ? (
                             !(
                               item.StartTime <
                                 daytoday.getHours() * 60 +
@@ -320,16 +379,24 @@ export function LandingPage() {
                               daytoday.getHours() * 60 + daytoday.getMinutes() <
                                 item.EndTime
                             ) ? (
-                              <>
-                                <RoomCard
-                                  key={i}
-                                  section={item.Room}
-                                  course={item.Course}
-                                  time={`${item.Day} - ${convertMinutes(
-                                    item.StartTime
-                                  )} - ${convertMinutes(item.EndTime)}`}
-                                />
-                              </>
+                              <main className="p-1">
+                                <section className="p-3 shadow-sm rounded mb-2">
+                                  <h6 className="p-0 m-0">{item.Course}</h6>
+                                  <p className="p-0 m-0 text-secondary">
+                                    <span>{item.Section}</span>
+                                  </p>
+                                  <p className="p-0 m-0 text-secondary">
+                                    <span>{`${item.Day}, ${convertMinutes(
+                                      item.StartTime
+                                    )} - ${convertMinutes(
+                                      item.EndTime
+                                    )}`}</span>
+                                  </p>
+                                  <p className="p-0 m-0 text-secondary">
+                                    <span>{item.Room}</span>
+                                  </p>
+                                </section>
+                              </main>
                             ) : null
                           ) : null
                         ) : null
@@ -341,25 +408,72 @@ export function LandingPage() {
           </main>
         </section>
         <section className="col-9 h-100 p-2">
-          <main className="h-100 overflow-y-auto">
-            <main className="d-flex">
-              <textarea
-                id="Input"
-                name="Input"
-                rows="2"
-                className="w-100 form-control"
-                placeholder="Quick Navigation"
-                onChange={dataChange}
-              ></textarea>
-              <DefaultButton
-                class=""
-                reversed={true}
-                icon={info.icons.navigation.quicknav}
-                function={() => {}}
-              />
-            </main>
-            pwede mag post si coach ng announcement consultation hours ni coach
-            class nya dito makikita ung mga announcements
+          <main className="h-100 overflow-y-auto pe-2">
+            {loggeduser.PermissionLevel === "1" ? (
+              <main className="bg-white shadow-sm rounded p-2 mb-2">
+                <section className="d-flex gap-2 mb-2">
+                  <input
+                    id="SubjectMatter"
+                    name="SubjectMatter"
+                    className="w-100 form-control form-control-sm"
+                    placeholder="Subject"
+                    onChange={dataChange}
+                  ></input>
+                  <DefaultButton
+                    class="px-2 py-0 border"
+                    reversed={false}
+                    text="Post"
+                    icon={info.icons.navigation.quicknav}
+                    function={() => {
+                      data.SubjectMatter !== "" && data.Details !== ""
+                        ? showModal(
+                            "PostsModal",
+                            "Post",
+                            <main>
+                              <header>
+                                <p>Submit to Post your Announcements</p>
+                              </header>
+                            </main>
+                          )
+                        : alert("Required: Subject and Details");
+                    }}
+                  />
+                </section>
+                <section>
+                  <textarea
+                    id="Details"
+                    name="Details"
+                    rows="2"
+                    className="w-100 form-control form-control-sm"
+                    placeholder="Post Details"
+                    onChange={dataChange}
+                    style={{ whiteSpace: "pre-line" }}
+                  ></textarea>
+                </section>
+              </main>
+            ) : null}
+            {posts.map((item, i) => (
+              <main className="bg-white p-3 mb-2">
+                <header>
+                  <small>
+                    <h6 className="m-0">{`${item.LastName}, ${item.FirstName}`}</h6>
+                    <p className="text-secondary">{item.Email}</p>
+                  </small>
+                </header>
+                <main>
+                  <section className="ms-3">
+                    <h5>{item.SubjectMatter}</h5>
+                    <pre>{item.Details}</pre>
+                  </section>
+                  <footer className="mt-3">
+                    <small>
+                      <p className="m-0 text-secondary">{`${item.Date} at ${item.Time}`}</p>
+                    </small>
+                  </footer>
+                </main>
+                <hr />
+              </main>
+            ))}
           </main>
         </section>
       </main>
@@ -390,7 +504,31 @@ export function LandingPage() {
             />
           </>
         }
+        trigger={() =>
+          showModal(
+            "StatusModal",
+            "Are you sure?",
+            <main>
+              <header>
+                <p>
+                  By submitting, you cannot change your section until next Term
+                </p>
+              </header>
+            </main>
+          )
+        }
+      />
+      <PassiveModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={modalcontent.Content}
         trigger={changeSection}
+      />
+      <PassiveModal
+        id={"PostsModal"}
+        title={modalcontent.Title}
+        content={modalcontent.Content}
+        trigger={posting}
       />
       <PassiveModal
         id={"coachModal"}

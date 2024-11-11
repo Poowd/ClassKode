@@ -107,6 +107,20 @@ export function UserTopbar() {
                       navigate={"/"}
                       text={"Homepage"}
                     />
+                    <SidebarItem
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
+                      icon={info.icons.modules.schedules}
+                      navigate={"/my-schedules"}
+                      text={"My Schedules"}
+                    />
+                    <SidebarItem
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
+                      icon={info.icons.modules.locator}
+                      navigate={"/faculty-locator"}
+                      text={"Faculty Locator"}
+                    />
                     <SidebarDropdown
                       class={"fw-medium w-100 py-1"}
                       icon={info.icons.modules.schedules}
@@ -134,13 +148,6 @@ export function UserTopbar() {
                         </>
                       }
                     />
-                    <SidebarItem
-                      class={"fw-medium w-100"}
-                      classlink={"py-2"}
-                      icon={info.icons.modules.locator}
-                      navigate={"/faculty-locator"}
-                      text={"Faculty Locator"}
-                    />
                   </>
                 }
               />
@@ -149,13 +156,8 @@ export function UserTopbar() {
         </div>
         <div className="d-flex gap-2">
           <h5 className="p-0 m-0">
-            <span className="fw-bold gradient-text-golden">ClassKode</span>
+            <span className="fw-bold gradient-text-1">ClassKode</span>
           </h5>
-          <div>
-            <p className="p-0 m-0">
-              <span className="fw-semibold gradient-text-1">User</span>
-            </p>
-          </div>
         </div>
       </div>
       <div className="d-flex align-items-center">

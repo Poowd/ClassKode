@@ -7,13 +7,8 @@ import { DefaultInput } from "../../../component/input/DefaultInput";
 import { ListCard } from "../../../component/card/ListCard";
 import useConfiguration from "../../../hook/useConfiguration";
 import { LinkButton } from "../../../component/button/LinkButton";
-import { DefaultDropdownItem } from "../../../component/dropdown/default/DefaultDropdownItem";
 import { DefaultDropdown } from "../../../component/dropdown/default/DefaultDropdown";
 import useHandleChange from "../../../hook/useHandleChange";
-import { TextFormat1 } from "../../../component/textformat/TextFormat1";
-import { FullscreenLoader } from "../../../component/loader/FullscreenLoader";
-import { Loader } from "../../../component/loader/Loader";
-import { CoffeeLoader } from "../../../component/loader/CoffeeLoader";
 
 export function Department() {
   const navigate = useNavigate();
@@ -104,8 +99,8 @@ export function Department() {
           />
           <LinkButton
             to={"/department/create/0"}
-            class="btn-primary"
-            textclass="text-white"
+            class="btn-primary px-2"
+            text="Create"
             icon={info.icons.forms.add}
           />
         </>
@@ -156,7 +151,7 @@ export function Department() {
                     slot1={item.Code}
                     slot2={item.Department}
                     slot3={item.Abbrev}
-                    slot4={null}
+                    slot4={item.Department}
                     slot5={item.AcademicLevel}
                     view={info.icons.forms.view}
                     link={`/department/view/${item.DPTID}`}

@@ -78,31 +78,32 @@ export function CourseSetup() {
           <header className="mb-3">
             <h5 className="p-0 m-0">Curriculum Details</h5>
             <p>Entries: {curriculum.length} row/s</p>
-            <LinkButton
-              class="btn-primary py-2"
-              textclass="text-white"
-              to={`/curriculum/view/${currentcurriculum.CRRID}`}
-              state={{
-                data: currentcurriculum,
-              }}
-              text={`Current Curriculum`}
+            <DefaultButton
+              class="w-100 border py-2"
               icon={info.icons.forms.view}
+              text={`Current Curriculum`}
+              function={() =>
+                navigate(`/curriculum/view/${currentcurriculum.CRRID}`)
+              }
             />
           </header>
           <main className="w-100">
-            <section className="w-100 bg-white rounded m p-2">
-              <main className="mb-2">
-                Please Select Department and Program here.
+            <section className="w-100 bg-white rounded">
+              <main className="mb-2 text-center">
+                <small>
+                  <p className="m-0 text-secondary">
+                    Please Select Department and Program here.
+                  </p>
+                </small>
               </main>
               <DefaultDropdown
                 topclass="w-100 mb-2"
-                class="w-100 border btn-outline-primary py-2"
-                reversed={true}
+                class="w-100 border py-2"
                 icon={info.icons.forms.view}
                 text={
                   data.Department !== ""
                     ? dept.map((item, i) =>
-                        item.Code === data.Department ? item.Abbrev : null
+                        item.Code === data.Department ? item.Department : null
                       )
                     : "Department"
                 }
@@ -128,18 +129,17 @@ export function CourseSetup() {
               />
               <DefaultDropdown
                 topclass="w-100"
-                class="w-100 border py-2 btn-outline-primary"
-                reversed={true}
+                class="w-100 border py-2"
                 icon={info.icons.forms.view}
                 text={
                   data.Program !== ""
                     ? prg.map((item, i) =>
-                        item.Code === data.Program ? item.Abbrev : null
+                        item.Code === data.Program ? item.Program : null
                       )
                     : "Program"
                 }
                 dropdownitems={prg.map((option, i) =>
-                  option.dptcode === data.Department &&
+                  option.DPTCode === data.Department &&
                   option.Code !== data.Program ? (
                     <DefaultDropdownItem
                       title={option.Program}
@@ -179,26 +179,25 @@ export function CourseSetup() {
                 trigger={dataChange}
               />
               <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
-                to={data.Program !== "" ? "/setup/generate/0" : ""}
-                state={{
-                  program: data.Program,
-                  department: data.Department,
-                  curriculum: currentcurriculum.Code,
-                }}
-                icon={info.icons.forms.generate}
-              />
-              <LinkButton
-                class="btn-primary px-2"
-                textclass="text-white"
                 to={data.Program !== "" ? "/setup/create/0" : ""}
                 state={{
                   program: data.Program,
                   department: data.Department,
                   curriculum: currentcurriculum.Code,
                 }}
+                class="btn-outline-primary px-2"
                 icon={info.icons.forms.add}
+              />
+              <LinkButton
+                to={data.Program !== "" ? "/setup/generate/0" : ""}
+                state={{
+                  program: data.Program,
+                  department: data.Department,
+                  curriculum: currentcurriculum.Code,
+                }}
+                class="btn-primary px-2"
+                text="Generate"
+                icon={info.icons.forms.generate}
               />
             </div>
           </div>
@@ -231,13 +230,24 @@ export function CourseSetup() {
                     search.search.toLowerCase()
                   ) || search.search === "" ? (
                     <ListCard
-                      slot1={item.Component}
-                      slot2={item.Course}
-                      slot3={item.Program}
+                      slot1={
+                        <main>
+                          <section className="mb-2">{item.Component}</section>
+                          <section>
+                            <small>
+                              <p className="p-0 m-0 text-secondary fw-normal">
+                                <span>{`${item.Units} units`}</span>
+                              </p>
+                            </small>
+                          </section>
+                        </main>
+                      }
+                      slot2={`${item.Course}`}
+                      slot3={`${item.Program} : ${item.YearLevel}`}
                       slot4={item.Curriculum}
-                      slot5={null}
+                      slot5={`${item.SubjectArea}-${item.CatalogNo} `}
                       view={info.icons.forms.view}
-                      link={`/course/view/${item.Code}`}
+                      link={`/course/view/${item.CourseID}`}
                       state={{ data: item }}
                     />
                   ) : null

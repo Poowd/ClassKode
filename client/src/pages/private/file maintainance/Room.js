@@ -47,7 +47,7 @@ export function Room() {
       sidepanel={
         <main>
           <header className="">
-            <h5 className="p-0 m-0">Course Details</h5>
+            <h5 className="p-0 m-0">Room Details</h5>
             <p>Entries: {room.length} row/s</p>
           </header>
           <section>
@@ -170,8 +170,8 @@ export function Room() {
           />
           <LinkButton
             to={"/room/create/0"}
-            class="btn-primary"
-            textclass="text-white"
+            class="btn-primary px-2"
+            text="Create"
             icon={info.icons.forms.add}
           />
         </>
@@ -246,10 +246,12 @@ export function Room() {
                     item.Floor.includes(search.setbyFloor) ||
                     search.setbyFloor === "" ? (
                       <ListCard
-                        slot1={item.ROMID}
-                        slot2={item.Room}
-                        slot3={`${item.Building} - ${item.Floor}`}
-                        slot4={item.Facility}
+                        slot1={item.Building}
+                        slot2={`${
+                          !item.Room.includes("Laboratory") ? "Room" : ""
+                        } ${item.Room}`}
+                        slot3={`${item.Facility}`}
+                        slot4={`${item.Floor}`}
                         slot5={null}
                         view={info.icons.forms.view}
                         link={`/room/view/${item.ROMID}`}

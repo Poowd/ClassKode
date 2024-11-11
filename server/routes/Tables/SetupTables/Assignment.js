@@ -27,7 +27,7 @@ router.post("/assign-onyear-list", (req, res) => {
     const clientData = JSON.parse(req.body);
     var academicyear = clientData.data;
     pool.query(
-      `SELECT coach."SCHLID", coach."FirstName", coach."LastName", coach."Image", coach."Link", coach."Email", coach."AcademicLevel", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE assignment."Status"='ACTIVE' AND coach."Status"='ACTIVE' AND assignment."AcademicYear"='${academicyear}'`,
+      `SELECT coach."SCHLID", coach."FirstName", coach."LastName", coach."MiddleInitial", coach."Gender", coach."Image", coach."Link", coach."Email", coach."AcademicLevel", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE assignment."Status"='ACTIVE' AND coach."Status"='ACTIVE' AND assignment."AcademicYear"='${academicyear}'`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {
@@ -41,7 +41,7 @@ router.post("/assign-list-target", (req, res) => {
     const clientData = JSON.parse(req.body);
     var coach = clientData.data;
     pool.query(
-      `SELECT coach."CCHID", coach."SCHLID", coach."FirstName", coach."LastName", coach."Image", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE coach."SCHLID"='${coach}' OR coach."CCHID"='${coach}' AND assignment."Status"='ACTIVE' AND assignment."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      `SELECT coach."CCHID", coach."SCHLID", coach."FirstName", coach."LastName", coach."MiddleInitial", coach."Gender", coach."Image", department."Code" as DepartmentCode, department."Department", department."Abbrev" as DepartmentAbbrev, assignment."CoachType", coach_type."MAX", assignment."AcademicYear", assignment."Created", assignment."Status" FROM assignment INNER JOIN coach ON assignment."Coach" = coach."SCHLID" INNER JOIN coach_type ON assignment."CoachType" = coach_type."Type" INNER JOIN department ON coach."Department" = department."Code" WHERE coach."SCHLID"='${coach}' OR coach."CCHID"='${coach}' AND assignment."Status"='ACTIVE' AND assignment."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => {
         if (rslt !== undefined) {
           return res.json(rslt.rows[0]);

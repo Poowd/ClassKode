@@ -69,13 +69,12 @@ router.post("/curriculum-target", (req, res) => {
 router.post("/curriculum-insert", (req, res) => {
   try {
     const clientData = JSON.parse(req.body);
-    var code = clientData.Code;
     var curriculum = clientData.Curriculum;
     var description =
       clientData.Description === null ? null : clientData.Description;
     pool.query(
       `INSERT INTO curriculum ("CRRID", "Code", "Curriculum", "Description")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from curriculum), '${code}', '${curriculum}', '${description}')`,
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from curriculum), (select CONCAT('CURR-',LPAD(CAST((count(*) + 1)::integer AS TEXT), 3, '0')) AS Wow from curriculum), '${curriculum}', '${description}')`,
 
       (err, rslt) => {
         if (err) {

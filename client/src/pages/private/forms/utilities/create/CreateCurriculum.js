@@ -10,16 +10,21 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { MainInput } from "../../../../../component/input/MainInput";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateCurriculum() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
+  const [ValiAI, trueValiAIBool] = useValidation();
 
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
-    Code: "",
+    Curriculum: "",
+    Description: "",
+  });
+  const [validation, setValidation] = useState({
     Curriculum: "",
     Description: "",
   });
@@ -28,11 +33,16 @@ export function CreateCurriculum() {
 
   useEffect(() => {
     data_get("curriculum-list", setCurriculum);
-  }, [curriculum]);
+  }, []);
 
   const submitForm = (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      Curriculum: ValiAI("Name", data.Curriculum),
+      Description: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (trueValiAIBool("Name", data.Curriculum) === true) {
       data_post("curriculum-insert", data, setData);
       showToast(
         info.icons.others.info,
@@ -68,20 +78,21 @@ export function CreateCurriculum() {
         entryform={
           <>
             <MainInput
-              label="Code"
-              id="Code"
-              trigger={dataChange}
-              value={data.Code}
-              required={true}
-            />
-            <MainInput
+              class={`${validation.Curriculum[0]}`}
               label="Curriculum"
               id="Curriculum"
               trigger={dataChange}
               value={data.Curriculum}
+              feedbackstatus={`${validation.Curriculum[1]}`}
+              feedback={`${
+                validation.Curriculum[2] !== undefined
+                  ? validation.Curriculum[2]
+                  : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.Description[0]}`}
               label="Description"
               id="Description"
               trigger={dataChange}

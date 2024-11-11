@@ -58,6 +58,10 @@ import { FaListUl } from "react-icons/fa";
 import { PiCheckFatFill } from "react-icons/pi";
 import { RiAlarmWarningFill } from "react-icons/ri";
 import { ImCross } from "react-icons/im";
+import { RiStickyNoteAddFill } from "react-icons/ri";
+import { FaGear } from "react-icons/fa6";
+import { MdEditSquare } from "react-icons/md";
+import { IoMdHelpCircle } from "react-icons/io";
 
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
@@ -69,10 +73,6 @@ import b1 from "./../assets/imgs/stimap/b1.png";
 import b2 from "./../assets/imgs/stimap/b2.png";
 import b3 from "./../assets/imgs/stimap/b3.png";
 import temp_dp from "./../assets/imgs/misc/char.png";
-
-import carou_item1 from "./../assets/imgs/background/sti-bg-campus.jpg";
-import carou_item2 from "./../assets/imgs/background/sti-bg-campus-2.jpg";
-import carou_item3 from "./../assets/imgs/background/sti-wallpaper-2.jpg";
 
 import lape from "./../assets/imgs/misc/lape.jpg";
 import gerena from "./../assets/imgs/misc/gerena.jpg";
@@ -247,10 +247,10 @@ export default function useConfiguration() {
       },
       forms: {
         view: <TbListDetails />,
-        add: <GrChapterAdd />,
-        edit: <TbEdit />,
+        add: <RiStickyNoteAddFill />,
+        edit: <MdEditSquare />,
         archive: <MdFolderDelete />,
-        generate: <VscSettingsGear />,
+        generate: <FaGear />,
         reset: <GrPowerReset />,
         set: <VscSettings />,
         filter: <FaFilter />,
@@ -300,7 +300,7 @@ export default function useConfiguration() {
         events: <MdOutlineEmojiEvents />,
         menu: <BsMenuButtonWideFill />,
         hiddenuser: <FaUserSecret />,
-        help: <LuHelpCircle />,
+        help: <IoMdHelpCircle />,
         info: <IoAlertCircle />,
         list: <FaListUl />,
       },

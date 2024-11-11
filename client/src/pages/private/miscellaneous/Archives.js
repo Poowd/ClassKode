@@ -44,7 +44,7 @@ export function Archives() {
       "Section",
       "Room",
     ],
-    utilities: ["Curriculum", "Academic Year", "Schedules"],
+    utilities: ["Curriculum", "Academic_Year", "Schedules"],
   });
 
   useEffect(() => {
@@ -169,33 +169,31 @@ export function Archives() {
             />
             <DefaultInput placeholder="Search" />
             <DefaultDropdown
-              class="border px-2 btn-primary"
-              reversed={true}
+              class="border p-2"
+              reversed={false}
               icon={info.icons.forms.filter}
               text={selection}
               dropdownitems={
-                <>
-                  <main className="p-2 d-flex">
-                    <section className="p-3">
-                      <h6>Institution</h6>
-                      {category.institution.map((item, i) => (
-                        <DefaultDropdownItem
-                          title={item}
-                          trigger={() => setSelection(item)}
-                        />
-                      ))}
-                    </section>
-                    <section className="p-3">
-                      <h6>Utilities</h6>
-                      {category.utilities.map((item, i) => (
-                        <DefaultDropdownItem
-                          title={item}
-                          trigger={() => setSelection(item)}
-                        />
-                      ))}
-                    </section>
-                  </main>
-                </>
+                <main className="d-flex gap-3 p-3">
+                  <section className="p-3">
+                    <h6>Institution</h6>
+                    {category.institution.map((item, i) => (
+                      <DefaultDropdownItem
+                        title={item}
+                        trigger={() => setSelection(item)}
+                      />
+                    ))}
+                  </section>
+                  <section className="p-3">
+                    <h6>Utilities</h6>
+                    {category.utilities.map((item, i) => (
+                      <DefaultDropdownItem
+                        title={item}
+                        trigger={() => setSelection(item)}
+                      />
+                    ))}
+                  </section>
+                </main>
               }
             />
           </>
@@ -415,7 +413,7 @@ export function Archives() {
                   }
                 />
               ))
-            : selection === "Academic Year"
+            : selection === "Academic_Year"
             ? academicyear.map((acy, i) => (
                 <ListCard
                   slot1={acy.Code}

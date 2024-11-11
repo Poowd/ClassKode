@@ -27,11 +27,14 @@ export function User() {
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [data, setData] = useState([]);
-  const [code, setCode] = useState("");
-  const [confirmCode, setConfirmCode] = useState({
+  const [search, setSearch] = useState({
     Confirm: "",
+    Search: "",
+    setbyRegister: "",
+    setbyType: "",
   });
-  const [dataChange] = useHandleChange(setConfirmCode);
+  const [code, setCode] = useState("");
+  const [dataChange] = useHandleChange(setSearch);
 
   useEffect(() => {
     data_get("random-code-generator", setCode);
@@ -40,7 +43,7 @@ export function User() {
 
   const archiveEntry = (e) => {
     e.preventDefault();
-    if (code === confirmCode.Confirm) {
+    if (code === search.Confirm) {
       data_post("department-archive", { data: params.id }, setData);
       showToast(
         info.icons.others.info,
@@ -76,80 +79,206 @@ export function User() {
               icon={info.icons.navigation.back}
               function={() => navigate(-1)}
             />
-            <DefaultInput placeholder="Search" />
+            <DefaultInput
+              placeholder="Search"
+              id="Search"
+              trigger={dataChange}
+            />
             <DefaultDropdown
               class="border p-2"
               reversed={true}
               icon={info.icons.forms.filter}
               dropdownitems={
-                <>
-                  <DefaultDropdownItem title={"Profile"} />
-                  <hr />
-                  <DefaultDropdownItem title={"Logout"} />
-                </>
+                <main className="d-flex gap-3 p-3">
+                  <section>
+                    <h6>Status</h6>
+                    <DefaultDropdownItem
+                      title={"Registered"}
+                      trigger={() =>
+                        setSearch((prev) => ({
+                          ...prev,
+                          setbyRegister: "Registered",
+                        }))
+                      }
+                    />
+                    <DefaultDropdownItem
+                      title={"Not Registered"}
+                      trigger={() =>
+                        setSearch((prev) => ({
+                          ...prev,
+                          setbyRegister: "Not Registered",
+                        }))
+                      }
+                    />
+                  </section>
+                  <section>
+                    <h6>Type</h6>
+                    <DefaultDropdownItem
+                      title={"Manager"}
+                      trigger={() =>
+                        setSearch((prev) => ({
+                          ...prev,
+                          setbyType: "Manager",
+                        }))
+                      }
+                    />
+                    <DefaultDropdownItem
+                      title={"Admin"}
+                      trigger={() =>
+                        setSearch((prev) => ({
+                          ...prev,
+                          setbyType: "Admin",
+                        }))
+                      }
+                    />
+                    <DefaultDropdownItem
+                      title={"User"}
+                      trigger={() =>
+                        setSearch((prev) => ({
+                          ...prev,
+                          setbyType: "User",
+                        }))
+                      }
+                    />
+                  </section>
+                </main>
               }
             />
+            <LinkButton
+              to={"/user/create/0"}
+              class="border"
+              icon={info.icons.forms.add}
+            />
             <DefaultButton
-              class="btn-primary"
+              class="btn-primary px-2"
               icon={info.icons.forms.generate}
+              text="Generate"
               function={() => {
                 navigate("/user/generate/0");
               }}
             />
-            <LinkButton
-              to={"/user/create/0"}
-              class="btn-primary"
-              textclass="text-white"
-              icon={info.icons.forms.add}
-            />
           </>
         }
         list={
-          users &&
-          users.map((item) => (
-            <ListCard
-              slot1={item.SCHLID}
-              slot2={`${item.FirstName} ${item.LastName}`}
-              slot3={item.Email}
-              slot4={`${item.UserType} ${item.PermissionLevel}`}
-              slot5={
-                item.AcademicCode !== null
-                  ? item.AcademicCode
-                  : "Not Registered"
-              }
-              view={info.icons.details}
-              link={null}
-              state={null}
-              custom={
-                <>
-                  <LinkButton
-                    to={`/user/edit/${item.UUID}`}
-                    class="btn-warning"
-                    textclass=""
-                    icon={info.icons.forms.edit}
-                  />
+          <>
+            <section>
+              <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
+                <li className={search.Search === "" ? "visually-hidden" : ""}>
                   <DefaultButton
-                    class="btn-danger px-2"
-                    icon={info.icons.forms.archive}
+                    class="btn-outline-primary px-2"
+                    text={search.Search}
+                    function={() => {
+                      document.getElementById(`Search`).value = "";
+                      setSearch((prev) => ({
+                        ...prev,
+                        Search: "",
+                      }));
+                    }}
+                  />
+                </li>
+                <li
+                  className={
+                    search.setbyRegister === "" ? "visually-hidden" : ""
+                  }
+                >
+                  <DefaultButton
+                    class="btn-outline-primary px-2"
+                    text={search.setbyRegister}
                     function={() =>
-                      showModal(
-                        "Modal",
-                        "Archive Entry",
-                        <p>
-                          <span>Type the code </span>
-                          <span className="fw-bold text-black">{code}</span>
-                          <span> to archive </span>
-                          <span className="fw-bold text-black">
-                            {item.SCHLID}
-                          </span>
-                        </p>
-                      )
+                      setSearch((prev) => ({
+                        ...prev,
+                        setbyRegister: "",
+                      }))
                     }
                   />
-                </>
-              }
-            />
-          ))
+                </li>
+                <li
+                  className={search.setbyType === "" ? "visually-hidden" : ""}
+                >
+                  <DefaultButton
+                    class="btn-outline-primary px-2"
+                    text={search.setbyType}
+                    function={() =>
+                      setSearch((prev) => ({
+                        ...prev,
+                        setbyType: "",
+                      }))
+                    }
+                  />
+                </li>
+              </ul>
+            </section>
+            {users &&
+              users.map((item) =>
+                search.Search === "" ||
+                item.SCHLID.toLowerCase().includes(
+                  search.Search.toLowerCase()
+                ) ||
+                item.Email.toLowerCase().includes(
+                  search.Search.toLowerCase()
+                ) ||
+                item.LastName.toLowerCase().includes(
+                  search.Search.toLowerCase()
+                ) ||
+                item.FirstName.toLowerCase().includes(
+                  search.Search.toLowerCase()
+                ) ? (
+                  search.setbyRegister === "" ||
+                  (item.AcademicCode === null &&
+                    search.setbyRegister === "Not Registered") ||
+                  (item.AcademicCode !== null &&
+                    search.setbyRegister === "Registered") ? (
+                    search.setbyType === "" ||
+                    search.setbyType === item.UserType ? (
+                      <ListCard
+                        slot1={item.SCHLID}
+                        slot2={`${item.FirstName} ${item.LastName}`}
+                        slot3={item.Email}
+                        slot4={`${item.UserType} ${item.PermissionLevel}`}
+                        slot5={
+                          item.AcademicCode !== null
+                            ? item.AcademicCode
+                            : "Not Registered"
+                        }
+                        view={info.icons.details}
+                        link={null}
+                        state={null}
+                        custom={
+                          <>
+                            <LinkButton
+                              to={`/user/edit/${item.UUID}`}
+                              class="btn-warning"
+                              textclass=""
+                              icon={info.icons.forms.edit}
+                            />
+                            <DefaultButton
+                              class="btn-danger px-2"
+                              icon={info.icons.forms.archive}
+                              function={() =>
+                                showModal(
+                                  "Modal",
+                                  "Archive Entry",
+                                  <p>
+                                    <span>Type the code </span>
+                                    <span className="fw-bold text-black">
+                                      {code}
+                                    </span>
+                                    <span> to archive </span>
+                                    <span className="fw-bold text-black">
+                                      {item.SCHLID}
+                                    </span>
+                                  </p>
+                                )
+                              }
+                            />
+                          </>
+                        }
+                      />
+                    ) : null
+                  ) : null
+                ) : null
+              )}
+          </>
         }
       />
       <PassiveModal
@@ -162,7 +291,7 @@ export function User() {
               hidden={true}
               id="Confirm"
               trigger={dataChange}
-              value={confirmCode.Confirm}
+              value={search.Confirm}
               required={true}
             />
           </>

@@ -23,6 +23,7 @@ export function GenerateSetup() {
   const [info] = useConfiguration();
 
   const [toasty, showToast] = useToasty();
+  const [course, setCourse] = useState([]);
 
   function removeSelectedFile() {
     setData([]);
@@ -32,6 +33,9 @@ export function GenerateSetup() {
       .getElementById("formFile")
       .dispatchEvent(new Event("change", { bubbles: true }));
   }
+  useEffect(() => {
+    data_get("course-list", setCourse);
+  }, []);
 
   useEffect(() => {
     sheets &&
@@ -87,11 +91,14 @@ export function GenerateSetup() {
         }
 
         for (var i in forCourseModule) {
-          const setCourse = await fetch(`${info.conn.server}course-insert`, {
-            method: "POST",
-            body: JSON.stringify(forCourseModule[i]),
-          });
-          const courseResponse = await setCourse.json();
+          if (checkDuplicate(forCourseModule[i].Course_ID)) {
+            const setCourse = await fetch(`${info.conn.server}course-insert`, {
+              method: "POST",
+              body: JSON.stringify(forCourseModule[i]),
+            });
+            const courseResponse = await setCourse.json();
+            data_get("course-list", setCourse);
+          }
         }
 
         showToast(info.icons.others.info, "Users", "User Data are saved!");
@@ -102,6 +109,15 @@ export function GenerateSetup() {
         showToast(info.icons.others.info, "Users", err);
       }
     }
+  };
+
+  const checkDuplicate = (target_id) => {
+    course.forEach((item) => {
+      if (item.CourseID === target_id) {
+        return false;
+      }
+    });
+    return true;
   };
 
   return (

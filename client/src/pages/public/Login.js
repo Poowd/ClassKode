@@ -1,5 +1,4 @@
 import "../../App.css";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { json, Link, useNavigate } from "react-router-dom";
 import stiLogo from "../../assets/imgs/logo/sti-logo.png";

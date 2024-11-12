@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,12 +6,18 @@ import useTimeFormat from "../../../../hook/useTimeFormat";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useConfiguration from "../../../../hook/useConfiguration";
+import { createFileName, useScreenshot } from "use-react-screenshot";
 
 export function CoachSchedule() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
+  const ref = useRef(null);
+  const [image, takeScreenshot] = useScreenshot({
+    type: "image/jpg",
+    quality: 1.0,
+  });
 
   const [search, setSearch] = useState({
     Search: "",
@@ -100,11 +106,30 @@ export function CoachSchedule() {
     return schedules;
   }
 
+  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const getImage = () => {
+    takeScreenshot(ref.current).then(download);
+  };
+
   return (
     <main className="h-100 row m-0 p-0">
-      <section className="h-100 col-lg-9 h-100 p-1 m-0 pe-2 overflow-y-auto height-auto">
+      <section
+        className="h-100 col-lg-9 h-100 p-1 m-0 pe-2 overflow-y-auto height-auto"
+        ref={ref}
+      >
         <main className="w-100 d-flex justify-content-end">
           <section className="d-flex align-items-center gap-2 mb-2">
+            <DefaultButton
+              class="px-2 border"
+              icon={info.icons.others.camera}
+              function={getImage}
+            />
             <DefaultButton
               class="border-0"
               icon={info.icons.navigation.previous}
@@ -112,7 +137,13 @@ export function CoachSchedule() {
                 previousSection();
               }}
             />
-            <h6 className="m-0 p-0">{currcoach}</h6>
+            <h6 className="m-0 p-0">
+              {coach.map((coach, o) =>
+                coach.SCHLID === currcoach
+                  ? `${coach.LastName}, ${coach.FirstName}`
+                  : null
+              )}
+            </h6>
             <DefaultButton
               class="border-0"
               icon={info.icons.navigation.next}
@@ -126,8 +157,12 @@ export function CoachSchedule() {
             style={{ tableLayout: "fixed" }}
           >
             <thead>
-              <tr>
-                <td className="p-1 border" colSpan={2} style={{ width: "15%" }}>
+              <tr className="fw-bold">
+                <td
+                  className="p-1 border text-center"
+                  colSpan={2}
+                  style={{ width: "15%" }}
+                >
                   Day / Time
                 </td>
                 {day.map((daytime, index) => (
@@ -154,29 +189,39 @@ export function CoachSchedule() {
                         schedule.Day === daytime ? (
                           +schedule.StartTime === timeslot ? (
                             <div
-                              className={`p-2 h-100 w-100 d-flex align-items-center justify-content-center text-truncate text-break text-wrap ${
+                              className={`p-2 z-2 w-100 d-flex align-items-center justify-content-center position-absolute top-0 text-break text-wrap border-top border-dark border-start border-end ${
                                 schedule.Component.includes("Minor") ||
-                                schedule.Component.includes("Basic")
+                                schedule.Component.includes("General")
                                   ? "plotted2-2"
                                   : "plotted2"
                               }`}
                               onClick={() => alert(schedule.Course)}
                             >
-                              <small className="fw-bold">
-                                {`${schedule.CourseID} ${
-                                  schedule.Room.includes("Laboratory")
-                                    ? "( LAB )"
-                                    : ""
-                                }`}
-                              </small>
+                              <main>
+                                <p className="m-0">
+                                  <small className="fw-bold">
+                                    {`${schedule.Course}`}
+                                  </small>
+                                </p>
+                                <p className="m-0">
+                                  <small className="fw-bold">
+                                    {`${schedule.Section}`}
+                                  </small>
+                                </p>
+                                <p className="m-0">
+                                  <small className="fw-bold">
+                                    {`${schedule.Room}`}
+                                  </small>
+                                </p>
+                              </main>
                             </div>
                           ) : +schedule.StartTime +
                               60 * (schedule.Units - 0.5) ===
                             timeslot ? (
                             <div
-                              className={`h-100 w-100 d-flex align-items-center ${
+                              className={`h-100 w-100 d-flex align-items-center border-bottom border-dark border-start border-end ${
                                 schedule.Component.includes("Minor") ||
-                                schedule.Component.includes("Basic")
+                                schedule.Component.includes("General")
                                   ? "plotted2-2"
                                   : "plotted2"
                               }`}
@@ -188,9 +233,9 @@ export function CoachSchedule() {
                               60 * (schedule.Units - 0.5) >
                               timeslot && +schedule.StartTime < timeslot ? (
                             <div
-                              className={`h-100 w-100 d-flex align-items-center ${
+                              className={`h-100 w-100 d-flex align-items-center border-dark border-start border-end ${
                                 schedule.Component.includes("Minor") ||
-                                schedule.Component.includes("Basic")
+                                schedule.Component.includes("General")
                                   ? "plotted2-2"
                                   : "plotted2"
                               }`}

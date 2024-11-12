@@ -68,6 +68,7 @@ router.post("/course-insert", (req, res) => {
       (err, rslt) => {
         if (err) {
           console.error("Query error:", err);
+          res.json([]);
         } else {
           res.json(rslt.rows);
         }

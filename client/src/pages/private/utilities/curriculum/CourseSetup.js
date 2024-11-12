@@ -193,7 +193,7 @@ export function CourseSetup() {
                 state={{
                   program: data.Program,
                   department: data.Department,
-                  curriculum: currentcurriculum.Code,
+                  curriculum: params.id,
                 }}
                 class="btn-primary px-2"
                 text="Generate"

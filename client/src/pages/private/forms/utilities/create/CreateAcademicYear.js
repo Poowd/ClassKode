@@ -14,6 +14,7 @@ import { MainSelect } from "../../../../../component/dropdown/select/MainSelect"
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
+import useValidation from "../../../../../hook/useValidation";
 
 export function CreateAcademicYear() {
   const navigate = useNavigate();
@@ -23,9 +24,18 @@ export function CreateAcademicYear() {
   const [curriculum, setCurriculum] = useState([]);
   const [semester, setSemester] = useState([]);
   const [academicCode, setAcademicCode] = useState("");
+  const [ValiAI, trueValiAIBool] = useValidation();
 
   const [data, setData] = useState({
-    Code: "",
+    AcademicYear: "",
+    Curriculum: "",
+    Semester: "",
+    StartDate: "",
+    EndDate: "",
+    AcademicCode: "",
+    Description: "",
+  });
+  const [validation, setValidation] = useState({
     AcademicYear: "",
     Curriculum: "",
     Semester: "",
@@ -52,7 +62,20 @@ export function CreateAcademicYear() {
 
   const submitForm = async (e) => {
     e.preventDefault();
-    if (true) {
+    setValidation((prev) => ({
+      ...prev,
+      AcademicYear: ValiAI("Name", data.AcademicYear),
+      Curriculum: ["is-valid", "valid-feedback", "Looks Good!"],
+      Semester: ["is-valid", "valid-feedback", "Looks Good!"],
+      StartDate: ["is-valid", "valid-feedback", "Looks Good!"],
+      EndDate: ["is-valid", "valid-feedback", "Looks Good!"],
+      AcademicCode: ValiAI("Name", data.AcademicCode),
+      Description: ["is-valid", "valid-feedback", "Looks Good!"],
+    }));
+    if (
+      trueValiAIBool("Name", data.AcademicYear) &&
+      trueValiAIBool("Name", data.AcademicCode)
+    ) {
       try {
         const response = await fetch(
           `${info.conn.server}academic-year-insert`,
@@ -103,24 +126,31 @@ export function CreateAcademicYear() {
         entryform={
           <>
             <MainInput
-              label="Code"
-              id="Code"
-              trigger={dataChange}
-              value={data.Code}
-              required={true}
-            />
-            <MainInput
+              class={`${validation.AcademicYear[0]}`}
               label="AcademicYear"
               id="AcademicYear"
               trigger={dataChange}
               value={data.AcademicYear}
+              feedbackstatus={`${validation.AcademicYear[1]}`}
+              feedback={`${
+                validation.AcademicYear[2] !== undefined
+                  ? validation.AcademicYear[2]
+                  : ""
+              }`}
               required={true}
             />
             <MainSelect
+              class={`${validation.Curriculum[0]}`}
               label="Curriculum"
               id="Curriculum"
               trigger={dataChange}
               required={true}
+              feedbackstatus={`${validation.Curriculum[1]}`}
+              feedback={`${
+                validation.Curriculum[2] !== undefined
+                  ? validation.Curriculum[2]
+                  : ""
+              }`}
               option={
                 <>
                   <SelectButtonItemSelected
@@ -143,10 +173,17 @@ export function CreateAcademicYear() {
               }
             />
             <MainSelect
+              class={`${validation.Semester[0]}`}
               label="Semester"
               id="Semester"
               trigger={dataChange}
               required={true}
+              feedbackstatus={`${validation.Semester[1]}`}
+              feedback={`${
+                validation.Semester[2] !== undefined
+                  ? validation.Semester[2]
+                  : ""
+              }`}
               option={
                 <>
                   <SelectButtonItemSelected
@@ -169,25 +206,44 @@ export function CreateAcademicYear() {
               }
             />
             <MainInput
+              class={`${validation.StartDate[0]}`}
               label="StartDate"
               id="StartDate"
               type="date"
               trigger={dataChange}
               value={data.StartDate}
+              feedbackstatus={`${validation.StartDate[1]}`}
+              feedback={`${
+                validation.StartDate[2] !== undefined
+                  ? validation.StartDate[2]
+                  : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.EndDate[0]}`}
               label="EndDate"
               id="EndDate"
               type="date"
               trigger={dataChange}
               value={data.EndDate}
+              feedbackstatus={`${validation.EndDate[1]}`}
+              feedback={`${
+                validation.EndDate[2] !== undefined ? validation.EndDate[2] : ""
+              }`}
               required={true}
             />
             <MainInput
+              class={`${validation.AcademicCode[0]}`}
               label="AcademicCode"
               id="AcademicCode"
               trigger={dataChange}
+              feedbackstatus={`${validation.AcademicCode[1]}`}
+              feedback={`${
+                validation.AcademicCode[2] !== undefined
+                  ? validation.AcademicCode[2]
+                  : ""
+              }`}
               value={data.AcademicCode}
               required={true}
             />
@@ -200,10 +256,17 @@ export function CreateAcademicYear() {
               />
             </main>
             <MainInput
+              class={`${validation.Description[0]}`}
               label="Description"
               id="Description"
               trigger={dataChange}
               value={data.Description}
+              feedbackstatus={`${validation.Description[1]}`}
+              feedback={`${
+                validation.Description[2] !== undefined
+                  ? validation.Description[2]
+                  : ""
+              }`}
               required={false}
             />
           </>

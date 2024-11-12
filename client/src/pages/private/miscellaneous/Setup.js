@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import useDatabase from "../../../hook/useDatabase";
 import { DefaultButton } from "../../../component/button/DefaultButton";
 import { DefaultInput } from "../../../component/input/DefaultInput";
@@ -8,6 +8,7 @@ import useConfiguration from "../../../hook/useConfiguration";
 import { useToasty } from "../../../hook/useToasty";
 import { useNavigate } from "react-router-dom";
 import owlie from "../../../assets/imgs/misc/owie.png";
+import { createFileName, useScreenshot } from "use-react-screenshot";
 
 export function Setup() {
   const navigate = useNavigate();
@@ -24,6 +25,11 @@ export function Setup() {
   const [floor, setFloor] = useState([]);
   const [facility, setFacility] = useState([]);
 
+  const [code, setCode] = useState({
+    ActionCode: "",
+  });
+  const [dataChange] = useHandleChange(setCode);
+
   useEffect(() => {
     data_get("academic-level-list", setAcademicLevel);
     data_get("year-level-list", setYearLevel);
@@ -35,11 +41,39 @@ export function Setup() {
     data_get("facility-list", setFacility);
   }, []);
 
+  const ref = useRef(null);
+  const [image, takeScreenshot] = useScreenshot({
+    type: "image/jpg",
+    quality: 1.0,
+  });
+
+  const download = (image, { name = "img", extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const getImage = () => {
+    takeScreenshot(ref.current).then(download);
+  };
+
+  function getFunctionCode(input) {
+    if (input === "-SCREENSHOT -OWLIE") {
+      getImage();
+      return;
+    }
+    if (document.getElementById(`search`) !== null) {
+      return (document.getElementById(`search`).value = "");
+    }
+    return;
+  }
+
   return (
     <main className="h-100 row m-0 p-0">
       <section className="col-lg-9 p-1 h-100 height-auto">
         <main className="h-100 bg-white rounded shadow-sm p-2 height-auto py-4 py-lg-0">
-          <section className="h-100 w-100 row m-0 p-0">
+          <section className="h-100 w-100 row m-0 p-0" ref={ref}>
             <figure className="h-100 col-lg-6 p-0 m-0">
               <main className="d-flex h-100 align-items-center justify-content-center">
                 <img src={owlie} className="w-100 ratio ratio-1x1"></img>
@@ -52,14 +86,17 @@ export function Setup() {
                     <DefaultInput
                       class="p-2"
                       placeholder="Code"
-                      id="search"
-                      trigger={() => {}}
+                      id="ActionCode"
+                      name="ActionCode"
+                      trigger={dataChange}
                     />
                     <DefaultButton
                       class="btn-primary px-3"
                       reversed={true}
                       text="Proceed"
-                      function={() => {}}
+                      function={() =>
+                        code.ActionCode && getFunctionCode(code.ActionCode)
+                      }
                     />
                   </section>
                   <section className="pt-2">

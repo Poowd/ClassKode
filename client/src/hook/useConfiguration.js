@@ -62,6 +62,7 @@ import { RiStickyNoteAddFill } from "react-icons/ri";
 import { FaGear } from "react-icons/fa6";
 import { MdEditSquare } from "react-icons/md";
 import { IoMdHelpCircle } from "react-icons/io";
+import { FaCameraRetro } from "react-icons/fa6";
 
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
@@ -303,6 +304,7 @@ export default function useConfiguration() {
         help: <IoMdHelpCircle />,
         info: <IoAlertCircle />,
         list: <FaListUl />,
+        camera: <FaCameraRetro />,
       },
       status: {
         success: <PiCheckFatFill />,

@@ -91,7 +91,7 @@ router.post("/academic-year-insert", (req, res) => {
       clientData.Description === null ? null : clientData.Description;
     pool.query(
       `INSERT INTO academic_year ("ACYID", "Code", "AcademicYear", "Curriculum", "Semester", "StartDate", "EndDate", "Description")
-      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from academic_year), '${code}', '${academicyear}', '${curriculum}', '${semester}', '${startdate}', '${enddate}', '${description}')`,
+      VALUES ((select LPAD(CAST((count(*) + 1)::integer AS TEXT), 10, '0') AS Wow from academic_year), (select CONCAT('ACY-',LPAD(CAST((count(*) + 1)::integer AS TEXT), 3, '0')) AS Wow from academic_year), '${academicyear}', '${curriculum}', '${semester}', '${startdate}', '${enddate}', '${description}')`,
 
       (err, rslt) => {
         if (err) {

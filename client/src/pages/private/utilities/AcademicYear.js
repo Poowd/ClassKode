@@ -28,11 +28,11 @@ export function AcademicYear() {
     <FileMaintainanceTemplate
       loader={isLoading}
       sidepanel={
-        <main>
+        <main className="p-2">
           <header className="mb-3">
             <h5 className="p-0 m-0">Academic Year Details</h5>
             <p>Entries: {ay.length} row/s</p>
-            <h3>{curray.AcademicYear}</h3>
+            <h5>{curray.AcademicYear}</h5>
             <DefaultButton
               class="w-100 border py-2"
               icon={info.icons.forms.view}

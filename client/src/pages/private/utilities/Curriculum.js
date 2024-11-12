@@ -37,11 +37,11 @@ export function Curriculum() {
       <FileMaintainanceTemplate
         loader={isLoading}
         sidepanel={
-          <main>
+          <main className="p-2">
             <header className="mb-3">
               <h5 className="p-0 m-0">Curriculum Details</h5>
               <p>Entries: {curriculum.length} row/s</p>
-              <h3>{currentcurriculum.Curriculum}</h3>
+              <h5>{currentcurriculum.Curriculum}</h5>
               <DefaultButton
                 class="w-100 border py-2"
                 icon={info.icons.forms.view}

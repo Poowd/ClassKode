@@ -82,8 +82,6 @@ function App() {
     }
   };
 
-  //console.log(document.cookie.split(";"));
-
   useEffect(() => {
     // Simulate an API call
     getCookies();
@@ -98,14 +96,6 @@ function App() {
       setIsLoading(false);
     }, 1000);
   }, []);
-
-  // useEffect(() => {
-  //   if (checkstatus === true) {
-  //     navigate("/");
-  //   } else {
-  //     navigate("/");
-  //   }
-  // }, []);
 
   return (
     <main className="overflow-hidden">

@@ -8,7 +8,7 @@ import { ViewCard } from "../../../../component/card/ViewCard";
 import { ListCard } from "../../../../component/card/ListCard";
 import useItemCounter from "../../../../hook/useItemCounter";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import sheetTemplate from "../../../../assets/template/BatchUploadTemplate.xlsx";
+import sheetTemplate from "../../../../assets/template/CURRICULUMbatchupload.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 

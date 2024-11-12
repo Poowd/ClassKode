@@ -4,7 +4,7 @@ import { useToasty } from "../../../../hook/useToasty";
 import { DefaultToast } from "../../../../component/toast/DefaultToast";
 import useConfiguration from "../../../../hook/useConfiguration";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import sheetTemplate from "../../../../assets/template/BatchUploadTemplate.xlsx";
+import sheetTemplate from "../../../../assets/template/PROJECTIONbatchupload.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 

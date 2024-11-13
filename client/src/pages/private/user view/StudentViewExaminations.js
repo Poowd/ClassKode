@@ -8,7 +8,7 @@ import useHandleChange from "../../../hook/useHandleChange";
 import useConfiguration from "../../../hook/useConfiguration";
 import { CollapseButton } from "../../../component/button/CollapsButton";
 
-export function StudentSchedule() {
+export function StudentViewExaminations() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [info] = useConfiguration();
@@ -20,6 +20,7 @@ export function StudentSchedule() {
 
   const [dataChange] = useHandleChange(setSearch);
   const [schedule, setSchedule] = useState([]);
+  const [exams, setExamniations] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
   const [studentSection, setStudentSection] = useState([]);
@@ -53,6 +54,7 @@ export function StudentSchedule() {
       { data: loggeduser.SCHLID },
       setStudentSection
     );
+    data_get("exam-schedule-list", setExamniations);
   }, []);
 
   useEffect(() => {
@@ -91,8 +93,8 @@ export function StudentSchedule() {
               content={
                 <section className="w-100 d-flex">
                   {time.map((time, j) =>
-                    schedule.length > 0
-                      ? schedule.map((schedule, k) =>
+                    exams.length > 0
+                      ? exams.map((schedule, k) =>
                           schedule.Section === studentSection.Section ? (
                             schedule.Day === day ? (
                               +schedule.StartTime === time ? (

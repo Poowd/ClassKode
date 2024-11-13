@@ -38,7 +38,7 @@ import { UserTopbar } from "./component/topbar/UserTopbar";
 import useConfiguration from "./hook/useConfiguration";
 import { LandingPage } from "./pages/private/LandingPage";
 import { SectionStudentSchedule } from "./pages/private/user view/SectionStudentSchedule";
-import { StudentSchedule } from "./pages/private/user view/StudentSchedule";
+import { StudentViewSchedule } from "./pages/private/user view/StudentViewSchedule";
 import { CoachViewSchedule } from "./pages/private/user view/CoachViewSchedule";
 import useDatabase from "./hook/useDatabase";
 import { Register } from "./pages/public/Register";
@@ -48,6 +48,9 @@ import { Features } from "./pages/public/Features";
 import { Team } from "./pages/public/Team";
 import { Timetabling } from "./pages/testing/Timetabling";
 import { SectionExamination } from "./pages/private/utilities/examination/SectionExamination";
+import { StudentViewExaminations } from "./pages/private/user view/StudentViewExaminations";
+import { CoachViewExaminations } from "./pages/private/user view/CoachViewExaminations";
+import { RoomAvailability } from "./pages/private/user view/RoomAvailability";
 
 function App() {
   const navigate = useNavigate();
@@ -362,7 +365,11 @@ function App() {
                           <Route path={"/"}>
                             <Route
                               path={"/my-schedules"}
-                              element={<StudentSchedule />}
+                              element={<StudentViewSchedule />}
+                            ></Route>
+                            <Route
+                              path={"/my-examinations"}
+                              element={<StudentViewExaminations />}
                             ></Route>
                           </Route>
                         ) : null}
@@ -383,6 +390,14 @@ function App() {
                             <Route
                               path={"/my-schedules"}
                               element={<CoachViewSchedule />}
+                            ></Route>
+                            <Route
+                              path={"/my-examinations"}
+                              element={<CoachViewExaminations />}
+                            ></Route>
+                            <Route
+                              path={"/room-availability"}
+                              element={<RoomAvailability />}
                             ></Route>
                           </Route>
                         ) : null}

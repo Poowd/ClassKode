@@ -492,7 +492,7 @@ router.post("/gen-exam-ter", (req, res) => {
       ) {
         if (
           examinationRoom[i].Capacity > population &&
-          examinationRoom[i].Exams.length < 7
+          examinationRoom[i].Units < 10
         ) {
           if (
             conflictSection(
@@ -516,7 +516,11 @@ router.post("/gen-exam-ter", (req, res) => {
               Level: "Tertiary",
               Population: population,
             });
-            addUnitstoRoom(examinationRoom[i].Room, 1.5);
+            addUnitstoRoom(
+              examinationRoom[i].Room,
+              1.5,
+              examinationRoom[i].Day
+            );
             return;
           }
         }
@@ -549,14 +553,16 @@ router.post("/gen-exam-ter", (req, res) => {
     return true;
   }
 
-  function addUnitstoRoom(target_room, course_units) {
+  function addUnitstoRoom(target_room, course_units, target_day) {
     for (var i = 0; i < examinationRoom.length; i++) {
-      if (examinationRoom[i].Room === target_room) {
+      if (
+        examinationRoom[i].Room === target_room &&
+        examinationRoom[i].Day === target_day
+      ) {
         examinationRoom[i].Units += course_units;
       }
     }
   }
-
   function combineAlikeCourses() {}
 
   shuffle(courses);
@@ -570,7 +576,6 @@ router.post("/gen-exam-ter", (req, res) => {
       exam.Component
     );
   });
-
   console.log(examList);
   return res.json(examList);
 });

@@ -113,7 +113,6 @@ export function GenerateExaminations() {
             <section className="text-center">
               <h1 className="text-success">{info.icons.status.success}</h1>
               <h3 className="text-success fw-bold">Success</h3>
-              <p className="text-secondary">das</p>
               <button
                 type="button"
                 class="btn btn-success mt-3"

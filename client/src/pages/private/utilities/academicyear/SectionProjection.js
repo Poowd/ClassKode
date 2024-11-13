@@ -66,17 +66,17 @@ export function SectionProjection() {
               />
               <DefaultInput placeholder="Search" />
               <LinkButton
-                to={`/projection/create/${currentacademicyear.ACYID}`}
+                to={`/projection/create/${params.id}`}
                 state={{
-                  academicyear: currentacademicyear,
+                  academicyear: params.id,
                 }}
                 class="btn-outline-primary px-2"
                 icon={info.icons.forms.add}
               />
               <LinkButton
-                to={`/projection/generate/0`}
+                to={`/projection/generate/${params.id}`}
                 state={{
-                  academicyear: currentacademicyear,
+                  academicyear: params.id,
                 }}
                 text="Upload"
                 class="btn-primary px-2"

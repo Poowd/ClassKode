@@ -99,7 +99,23 @@ export function GenerateSchedule() {
       //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
         data_post("set-schedule-status", { data: ay.Code }, setScheduleStatus);
-        showModal("StatusModal", "Sucs", "Sucs Lang");
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn btn-success mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
       }, 2500); // 2 second delay
     }
@@ -373,16 +389,7 @@ export function GenerateSchedule() {
         title={modalcontent.Title}
         content={
           <>
-            <main>
-              <section>{modalcontent.Content}</section>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Okay
-              </button>
-            </main>
+            <main>{modalcontent.Content}</main>
           </>
         }
         trigger={() => {}}

@@ -219,8 +219,7 @@ export function Schedule() {
                             <>
                               <LinkButton
                                 to={`/schedule/edit/${sc.CLSID}`}
-                                class="text-primary px-2 border"
-                                text="Edit"
+                                class="bg-warning px-2"
                                 icon={info.icons.forms.edit}
                               />
                             </>

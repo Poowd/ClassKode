@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { CollapseButton } from "../../../component/button/CollapsButton";
+import { DefaultButton } from "../../../component/button/DefaultButton";
 import useDatabase from "../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat";
+import { DefaultInput } from "../../../component/input/DefaultInput";
 import useHandleChange from "../../../hook/useHandleChange";
+import useConfiguration from "../../../hook/useConfiguration";
+import { CollapseButton } from "../../../component/button/CollapsButton";
 
-export function CoachViewSchedule() {
+export function CoachViewExaminations() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [info] = useConfiguration();
   const [get, post, data_get, data_post] = useDatabase();
 
   const [search, setSearch] = useState({
     Search: "",
   });
 
-  const loggeduser = JSON.parse(sessionStorage.getItem("user"));
-
   const [dataChange] = useHandleChange(setSearch);
   const [schedule, setSchedule] = useState([]);
+  const [exams, setExamniations] = useState([]);
+  const [coach, setCoach] = useState([]);
   const [convertMinutes] = useTimeFormat();
 
-  const [coach, setCoach] = useState([]);
+  const [studentSection, setStudentSection] = useState([]);
+  const [section, setSection] = useState([]);
   const [course, setCourse] = useState([]);
-  const [currcoach, setCurrentCoach] = useState(
+  const [currsection, setCurrentSection] = useState(
     search.Search === "" ? "n/a" : search.Search
   );
+
+  const loggeduser = JSON.parse(sessionStorage.getItem("user"));
 
   const [day, setDay] = useState([
     "Monday",
@@ -40,19 +47,30 @@ export function CoachViewSchedule() {
 
   useEffect(() => {
     data_get("class-schedule-list", setSchedule);
-    data_get("assign-list", setCoach);
+    data_get("project-list", setSection);
     data_get("course-list", setCourse);
-  }, [search]);
+    data_get("assign-list", setCoach);
+    data_get("class-schedule-list", setSchedule);
+    data_post(
+      "student-section",
+      { data: loggeduser.SCHLID },
+      setStudentSection
+    );
+    data_get("exam-schedule-list", setExamniations);
+  }, []);
 
   useEffect(() => {
-    coach.map((coach, i) =>
-      i === 0 && currcoach === "n/a" ? setCurrentCoach(coach.SCHLID) : null
+    section.map((section, i) =>
+      i === 0 && currsection === "n/a"
+        ? setCurrentSection(section.Section)
+        : null
     );
-  }, [coach]);
+  }, [section]);
 
   function resetSearch() {
     setSearch({ Search: "" });
   }
+
   return (
     <main className="h-100 row m-0 p-2">
       <main className="h-100 w-100 d-flex align-items-center">
@@ -77,9 +95,9 @@ export function CoachViewSchedule() {
               content={
                 <section className="w-100 d-flex">
                   {time.map((time, j) =>
-                    schedule.length > 0
-                      ? schedule.map((schedule, k) =>
-                          schedule.SCHLID === currcoach ? (
+                    exams.length > 0
+                      ? exams.map((schedule, k) =>
+                          schedule.Coach === loggeduser.SCHLID ? (
                             schedule.Day === day ? (
                               +schedule.StartTime === time ? (
                                 <section

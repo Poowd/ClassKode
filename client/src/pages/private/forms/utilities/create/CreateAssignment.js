@@ -14,6 +14,7 @@ import useConfiguration from "../../../../../hook/useConfiguration";
 
 export function CreateAssignment() {
   const navigate = useNavigate();
+  const params = useParams();
   const { state } = useLocation();
   const [get, post, data_get, data_post] = useDatabase();
   const [selectedValues, setSelectedValues] = useState([]);
@@ -61,7 +62,7 @@ export function CreateAssignment() {
 
   useEffect(() => {
     //currentacademicyear.map((ay, i) => setCurrent(ay));
-    setData((prev) => ({ ...prev, AcademicYear: currentacademicyear.Code }));
+    setData((prev) => ({ ...prev, AcademicYear: params.id }));
   }, [currentacademicyear]);
 
   useEffect(() => {

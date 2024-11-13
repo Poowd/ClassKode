@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FormInput } from "../../../../../component/input/FormInput";
 import { DefaultButton } from "../../../../../component/button/DefaultButton";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -16,13 +16,14 @@ import { SelectButtonItem } from "../../../../../component/dropdown/select/Selec
 
 export function CreateProjection() {
   const navigate = useNavigate();
+  const params = useParams();
   const { state } = useLocation();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
 
   const [section, setSection] = useState([]);
   const [data, setData] = useState({
-    AcademicYear: state.academicyear.AcademicYear,
+    AcademicYear: "",
     Section: "",
     Population: "",
   });
@@ -37,7 +38,7 @@ export function CreateProjection() {
 
   useEffect(() => {
     //currentacademicyear.map((ay, i) => setCurrent(ay));
-    setData((prev) => ({ ...prev, AcademicYear: currentacademicyear.Code }));
+    setData((prev) => ({ ...prev, AcademicYear: params.id }));
   }, [currentacademicyear]);
 
   const submitForm = async (e) => {

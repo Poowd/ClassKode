@@ -218,8 +218,7 @@ export function ExamSchedule() {
                             <>
                               <LinkButton
                                 to={`/schedule/edit/${sc.ELSID}`}
-                                class="text-primary px-2"
-                                text="Edit"
+                                class="bg-warning px-2"
                                 icon={info.icons.forms.edit}
                               />
                             </>

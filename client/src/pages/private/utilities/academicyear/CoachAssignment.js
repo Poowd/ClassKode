@@ -66,7 +66,7 @@ export function CoachAssignment() {
               />
               <DefaultInput placeholder="Search" />
               <LinkButton
-                to={`/assignment/create/${currentacademicyear.ACYID}`}
+                to={`/assignment/create/${params.id}`}
                 state={{
                   academicyear: currentacademicyear,
                 }}

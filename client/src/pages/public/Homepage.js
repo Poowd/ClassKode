@@ -150,7 +150,7 @@ export function Homepage() {
                         className="d-flex flex-column align-items-center"
                       >
                         <figure
-                          className="ratio ratio-1x1 rounded object-fit-cover"
+                          className="ratio ratio-1x1 rounded object-fit-cover border"
                           style={{ width: "10em" }}
                         >
                           <img

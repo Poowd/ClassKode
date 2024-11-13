@@ -117,11 +117,27 @@ export function UserTopbar() {
                     <SidebarItem
                       class={"fw-medium w-100"}
                       classlink={"py-2"}
+                      icon={info.icons.modules.schedules}
+                      navigate={"/my-examinations"}
+                      text={"My Examinations"}
+                    />
+                    <SidebarItem
+                      class={"fw-medium w-100"}
+                      classlink={"py-2"}
                       icon={info.icons.modules.locator}
                       navigate={"/faculty-locator"}
                       text={"Faculty Locator"}
                     />
-                    <SidebarDropdown
+                    {loggeduser.PermissionLevel == 1 ? (
+                      <SidebarItem
+                        class={"fw-medium w-100"}
+                        classlink={"py-2"}
+                        icon={info.icons.modules.locator}
+                        navigate={"/room-availability"}
+                        text={"Room Availability"}
+                      />
+                    ) : null}
+                    {/* <SidebarDropdown
                       class={"fw-medium w-100 py-1"}
                       icon={info.icons.modules.schedules}
                       reference={"#schedule"}
@@ -147,7 +163,7 @@ export function UserTopbar() {
                           />
                         </>
                       }
-                    />
+                    /> */}
                   </>
                 }
               />

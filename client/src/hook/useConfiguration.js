@@ -77,6 +77,8 @@ import temp_dp from "./../assets/imgs/misc/char.png";
 
 import lape from "./../assets/imgs/misc/lape.jpg";
 import gerena from "./../assets/imgs/misc/gerena.jpg";
+import repil from "./../assets/imgs/misc/repil.jpg";
+import maddara from "./../assets/imgs/misc/maddara.jpg";
 import pagaoa from "./../assets/imgs/misc/pagaoa.png";
 import esporsado from "./../assets/imgs/misc/esporsado.JPG";
 import silverio from "./../assets/imgs/misc/silverio.JPG";
@@ -108,7 +110,7 @@ export default function useConfiguration() {
         {
           Name: "Yranimez Repil",
           Role: "Backend / Manager Assistant",
-          Image: temp_dp,
+          Image: repil,
         },
         {
           Name: "James Gereña",
@@ -118,7 +120,7 @@ export default function useConfiguration() {
         {
           Name: "Mia Maddara",
           Role: "Documentation",
-          Image: temp_dp,
+          Image: maddara,
         },
         {
           Name: "Aeron Pagaoa",

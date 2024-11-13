@@ -30,13 +30,12 @@ export class ListCard extends React.Component {
             </small>
           </div>
         </section>
-        <div className="d-flex justify-content-end gap-2 p-0 mt-1">
+        <div className="d-flex justify-content-end gap-2 p-0 mt-2">
           {this.props.link !== null ? (
             <LinkButton
               to={this.props.link}
               state={this.props.state}
-              class="text-primary px-2 border"
-              text="View"
+              class="bg-info"
               icon={this.props.view}
             />
           ) : null}

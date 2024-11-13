@@ -120,10 +120,10 @@ router.use("/", ExpectedClass);
 router.use("/", Logs);
 
 // = = >
-app.listen(8081, () => {
+app.listen(() => {
   console.log("Running");
 });
-app.get("/status", (req, res) => {
+app.get("/", (req, res) => {
   res.send("server is running");
 });
 

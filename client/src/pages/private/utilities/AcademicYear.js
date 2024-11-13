@@ -81,15 +81,13 @@ export function AcademicYear() {
                   <>
                     <LinkButton
                       to={`/utilities/academicyear/assigment/${item.Code}`}
-                      class="text-primary px-2 border"
-                      text="Coach Assignments"
-                      icon={info.icons.forms.edit}
+                      class="btn-info px-2"
+                      icon={info.icons.pages.institution.coach}
                     />
                     <LinkButton
                       to={`/utilities/academicyear/projection/${item.Code}`}
-                      class="text-primary px-2 border"
-                      text="Section Projection"
-                      icon={info.icons.forms.edit}
+                      class="btn-info px-2"
+                      icon={info.icons.pages.institution.section}
                     />
                   </>
                 }

@@ -107,8 +107,8 @@ export function GenerateSchedule() {
 
   return (
     <>
-      <main className="h-100 position-relative overflow-y-auto p-1">
-        <main className="h-100 bg-white rounded shadow-sm p-3">
+      <main className="h-100 position-relative p-1">
+        <main className="h-100 bg-white rounded shadow-sm p-3 overflow-y-auto">
           <header>
             <h3 className="m-0 p-0">Generate Schedule</h3>
             <p className="m-0 p-0 text-secondary">

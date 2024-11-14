@@ -23,9 +23,7 @@ export class ScheduleList extends React.Component {
             </small>
           </section>
           <section className="col-8 col-lg-6 p-0 m-0">
-            <h5 className="p-0 m-0 custom-text-gradient fw-bold">
-              {this.props.slot2}
-            </h5>
+            <h5 className="p-0 m-0 primary-text fw-bold">{this.props.slot2}</h5>
             <small>
               <p className="p-0 m-0 text-secondary">
                 <span>{this.props.slot3}</span>

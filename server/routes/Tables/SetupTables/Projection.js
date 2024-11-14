@@ -87,7 +87,7 @@ router.post("/projection-generate", (req, res) => {
 router.get("/project-total-population", (req, res) => {
   try {
     pool.query(
-      `SELECT MAX(projection."PRJID"::int) as order, academic_year."AcademicYear", SUM(projection."Population"::int) as total_population, SUM(CASE WHEN program."AcademicLevel" = 'Tertiary' THEN projection."Population"::int ELSE 0 END) as tertiary_population, SUM(CASE WHEN program."AcademicLevel" = 'Senior High School' THEN projection."Population"::int ELSE 0 END) as shs_population FROM projection FULL JOIN academic_year ON academic_year."Code" = projection."AcademicYear" INNER JOIN section ON section."Section" = projection."Section" INNER JOIN program ON program."Code" = section."Program" WHERE academic_year."Status"='ACTIVE' GROUP BY academic_year."AcademicYear" ORDER BY MAX(projection."PRJID"::int) DESC LIMIT 5`,
+      `SELECT MAX(projection."PRJID"::int) as order, academic_year."AcademicYear", SUM(projection."Population"::int) as total_population, SUM(CASE WHEN program."AcademicLevel" = 'Tertiary' THEN projection."Population"::int ELSE 0 END) as tertiary_population, SUM(CASE WHEN program."AcademicLevel" = 'Senior High School' THEN projection."Population"::int ELSE 0 END) as shs_population FROM projection FULL JOIN academic_year ON academic_year."Code" = projection."AcademicYear" INNER JOIN section ON section."Section" = projection."Section" INNER JOIN program ON program."Code" = section."Program" WHERE academic_year."Status"='ACTIVE' GROUP BY academic_year."AcademicYear" ORDER BY MAX(projection."PRJID"::int) ASC LIMIT 5`,
       (err, rslt) => res.json(rslt.rows)
     );
   } catch (err) {

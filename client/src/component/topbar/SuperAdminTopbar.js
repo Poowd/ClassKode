@@ -15,6 +15,7 @@ import { SidebarItem } from "../sidebar/SidebarItem";
 import useDatabase from "../../hook/useDatabase";
 import { CoffeeLoader } from "../loader/CoffeeLoader";
 import { useQuickNavigate } from "../../hook/useQuickNavigate";
+import { FaUserCircle } from "react-icons/fa";
 
 export function SuperAdminTopbar() {
   const dateObject = new Date();
@@ -87,7 +88,7 @@ export function SuperAdminTopbar() {
 
   return (
     <>
-      <nav className="main-top-bar gradient-bg-blue">
+      <nav className="main-top-bar topbar-gradient">
         <div className="d-flex align-items-center gap-2">
           <div className="">
             <DefaultButton
@@ -262,7 +263,7 @@ export function SuperAdminTopbar() {
           </div>
           <div className="d-flex gap-2">
             <h5 className="p-0 m-0">
-              <span className="fw-bold gradient-text-3">ClassKode</span>
+              <span className="fw-bold">ClassKode</span>
             </h5>
           </div>
         </div>
@@ -291,15 +292,19 @@ export function SuperAdminTopbar() {
               function={() => {}}
             />
           </div>
-          <div className="px-1">
-            <DefaultButton
-              class="text-white"
-              icon={info.icons.others.hiddenuser}
-              text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
-              function={() => {}}
-              toggle="modal"
-              target="#MenuModal"
-            />
+          <div className="px-1 ms-2">
+            <main className="d-flex gap-1">
+              <DefaultButton
+                class="text-white"
+                text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
+                function={() => {}}
+                toggle="modal"
+                target="#MenuModal"
+              />
+              <div className="rounded-circle manager-text">
+                <FaUserCircle />
+              </div>
+            </main>
             <ViewModal
               id={"MenuModal"}
               title={<h6 className="text-center text-black">Kwa-Goodbye</h6>}
@@ -318,14 +323,14 @@ export function SuperAdminTopbar() {
                   </main>
                   <section className="d-flex gap-2">
                     <DefaultButton
-                      class="w-auto btn-outline-primary py-2 px-5"
+                      class="w-auto primary-outline-gradient py-2 px-5"
                       reversed={true}
                       text="No"
                       function={() => {}}
                       dismiss={"modal"}
                     />
                     <DefaultButton
-                      class="w-100 btn-primary py-2"
+                      class="w-100 primary-gradient py-2"
                       reversed={true}
                       text="Yes"
                       function={handleLogout}

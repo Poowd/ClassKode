@@ -9,7 +9,7 @@ export function LandingPageTopbar() {
     <nav className="navbar navbar-expand-lg position-absolute top-0 start-0 z-2 w-100 text-white d-flex justify-content-between px-5">
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
-          <h5 className="fs-4 fw-bold gradient-text-golden">Class Kode</h5>
+          <h5 className="fs-4 fw-bold gold-text">Class Kode</h5>
         </a>
         <button
           className="navbar-toggler"
@@ -34,7 +34,7 @@ export function LandingPageTopbar() {
               <li>
                 {/* <LinkButton
                     to={"/login"}
-                    textclass="btn-warning text-dark px-3 py-2 rounded-pill fw-bold"
+                    textclass="warning-color text-dark px-3 py-2 rounded-pill fw-bold"
                     text={"Login"}
                   /> */}
               </li>

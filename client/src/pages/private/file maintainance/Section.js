@@ -98,12 +98,12 @@ export function Section() {
             }
           />
           <LinkButton
-            class="btn-outline-primary"
+            class="primary-outline-gradient"
             to={"/section/create/0"}
             icon={info.icons.forms.add}
           />
           <LinkButton
-            class="btn-primary px-2"
+            class="primary-gradient px-2"
             text="Generate"
             to={"/section/generate/0"}
             icon={info.icons.forms.generate}
@@ -116,7 +116,7 @@ export function Section() {
             <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
               <li className={search.search === "" ? "visually-hidden" : ""}>
                 <DefaultButton
-                  class="btn-outline-primary px-2"
+                  class="primary-outline-gradient px-2"
                   text={search.search}
                   function={() => {
                     document.getElementById(`search`).value = "";
@@ -131,7 +131,7 @@ export function Section() {
                 className={search.setbyProgram === "" ? "visually-hidden" : ""}
               >
                 <DefaultButton
-                  class="btn-outline-primary px-2"
+                  class="primary-outline-gradient px-2"
                   text={
                     program &&
                     program.map((item) =>

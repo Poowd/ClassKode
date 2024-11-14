@@ -47,7 +47,7 @@ export function EditCurriculum() {
               function={() => navigate(-1)}
             />
             <DefaultButton
-              class="btn-success px-2"
+              class="safe-color px-2"
               type="submit"
               text="Submit"
             />

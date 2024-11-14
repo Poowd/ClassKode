@@ -120,7 +120,7 @@ export function RoomSchedule() {
               </div>
               <div className="d-flex gap-2">
                 <DefaultDropdown
-                  class="border px-2 rounded btn-primary"
+                  class="border px-2 rounded primary-gradient"
                   reversed={true}
                   icon={<TbStairs />}
                   text={building.map((item, i) =>
@@ -140,7 +140,7 @@ export function RoomSchedule() {
                   }
                 />
                 <DefaultDropdown
-                  class="border px-2 rounded btn-primary"
+                  class="border px-2 rounded primary-gradient"
                   reversed={true}
                   icon={<TbStairs />}
                   text={floor.map((item, i) =>

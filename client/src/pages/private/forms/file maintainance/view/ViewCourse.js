@@ -76,14 +76,14 @@ export function ViewCourse() {
               function={() => navigate(-1)}
             />
             <LinkButton
-              class="btn-warning px-2"
+              class="warning-color px-2"
               icon={info.icons.forms.edit}
               to={"/course/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
-              class="btn-danger px-2"
+              class="danger-color px-2"
               icon={info.icons.forms.archive}
               function={() =>
                 showModal(
@@ -107,20 +107,14 @@ export function ViewCourse() {
               data.map((item, i) => (
                 <main key={i} className="px-0 py-3 m-0">
                   <header>
-                    <h1 className="fw-bold custom-text-gradient pb-2">
-                      {item.Course}
-                    </h1>
+                    <h1 className="fw-bold primary-text pb-2">{item.Course}</h1>
                     <hr />
                   </header>
                   <main className="p-3">
                     <section>
                       <h6>{item.CourseID}</h6>
-                      <h6>
-                        {item.SubjectArea}
-                      </h6>
-                      <h6>
-                        {item.CatalogNo}
-                      </h6>
+                      <h6>{item.SubjectArea}</h6>
+                      <h6>{item.CatalogNo}</h6>
                       <p>{item.Description && item.Description}</p>
                       <footer className="mt-5">
                         <small>

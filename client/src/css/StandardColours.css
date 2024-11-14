@@ -1,0 +1,106 @@
+/* GRADIENT BACKGROUND */
+
+.topbar-gradient {
+  background-image: linear-gradient(
+    to right bottom,
+    #1064b6,
+    #1064b6
+  ) !important;
+  color: #ffffff !important;
+}
+
+.primary-gradient {
+  background-image: linear-gradient(
+    to right bottom,
+    #1064b6,
+    #1075b6,
+    #1064b6
+  ) !important;
+  color: #ffffff !important;
+}
+
+.primary-outline-gradient {
+  background: #fff;
+  border: #1064b6 1px solid !important;
+  color: #1064b6 !important;
+}
+
+/* GRADIENT TEXT */
+
+.user-text {
+  color: #3bb143;
+}
+.admin-text {
+  color: #ffa500 !important;
+}
+.manager-text {
+  color: #8b0000 !important;
+}
+.gold-text {
+  color: #f5bd02 !important;
+}
+
+.classkode-user {
+  background: linear-gradient(to bottom right, #89f336, #89f336);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.classkode-admin {
+  background: linear-gradient(to bottom right, #ffbf00, #ffea99);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.classkode-manager {
+  background: linear-gradient(to bottom right, #ff2f23, #ff2f23);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* COLORED BLOCKS */
+
+.danger-color {
+  background-image: linear-gradient(
+    to right bottom,
+    #e84b3d,
+    #e84b3d
+  ) !important;
+  color: #ffffff !important;
+}
+
+.safe-color {
+  background-image: linear-gradient(
+    to right bottom,
+    #4cbb17,
+    #4cbb17
+  ) !important;
+  color: #ffffff !important;
+}
+
+.warning-color {
+  background-image: linear-gradient(
+    to right bottom,
+    #ff991c,
+    #ff991c
+  ) !important;
+  color: #1e1e1e !important;
+}
+
+/* COLORED TEXT */
+
+.danger-text {
+  color: #e73121 !important;
+}
+
+.safe-text {
+  color: #4cbb17 !important;
+}
+
+.warning-text {
+  color: #ff991c !important;
+}
+
+.primary-text {
+  color: #1064b6 !important;
+}

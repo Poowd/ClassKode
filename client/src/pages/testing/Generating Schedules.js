@@ -449,7 +449,7 @@ export function GeneratingSchedules() {
       <h1>Schedules</h1>
       <section>
         <button
-          className="btn btn-primary btn-sm"
+          className="btn primary-gradient btn-sm"
           onClick={() => {
             temporary();
           }}
@@ -457,7 +457,7 @@ export function GeneratingSchedules() {
           Generate
         </button>
         <button
-          className="btn btn-primary btn-sm"
+          className="btn primary-gradient btn-sm"
           onClick={() => {
             setSchedule(generateclasses());
             temporary(generateclasses());

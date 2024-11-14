@@ -117,7 +117,7 @@ export function CreateAcademicYear() {
               function={() => navigate(-1)}
             />
             <DefaultButton
-              class="btn-success px-2"
+              class="safe-color px-2"
               type="submit"
               text="Submit"
             />
@@ -249,7 +249,7 @@ export function CreateAcademicYear() {
             />
             <main className="w-100 d-flex justify-content-end mb-2">
               <DefaultButton
-                class="btn-primary px-2 py-2"
+                class="primary-gradient px-2 py-2"
                 type="button"
                 text="Generate Code"
                 function={generateAcademicCode}

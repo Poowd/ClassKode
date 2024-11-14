@@ -25,7 +25,7 @@ export class PassiveModal extends React.Component {
               </div>
               <div className="w-100 mt-3">
                 <DefaultButton
-                  class="btn-primary p-2 w-100"
+                  class="primary-gradient p-2 w-100"
                   type="button"
                   text="Submit"
                   dismiss="modal"

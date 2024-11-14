@@ -374,7 +374,7 @@ export function GeneratingSchedules() {
       <h1>Schedules</h1>
       <section>
         <button
-          className="btn btn-primary btn-sm"
+          className="btn primary-gradient btn-sm"
           onClick={() => {
             setSchedule(PROC_GEN_SCHED());
             console.log(schedule);

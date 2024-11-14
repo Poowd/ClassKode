@@ -30,7 +30,7 @@ export function Homepage() {
                 />
               </figure>
               <main>
-                <section className="gradient-text-golden">
+                <section className="gold-text">
                   <h5 className="m-0 fw-semibold">
                     <span>STI College Muñoz-EDSA</span>
                   </h5>
@@ -56,7 +56,7 @@ export function Homepage() {
                   />
                 </figure>
                 <section>
-                  <h3 className="m-0 fw-bold gradient-text-blue-golden">
+                  <h3 className="m-0 fw-bold primary-text">
                     Welcome to Class Kode!
                   </h3>
                   <p className="m-0">
@@ -67,7 +67,7 @@ export function Homepage() {
               <main className="position-absolute top-0 end-0 px-3">
                 <section className="px-3">
                   <DefaultButton
-                    class="gradient-background-2 rounded px-5 py-3 z-3"
+                    class="primary-gradient rounded px-5 py-3 z-3"
                     type="button"
                     text={<h6 className="m-0">Login</h6>}
                     icon={info.icons.navigation.back}
@@ -99,7 +99,7 @@ export function Homepage() {
             }
           />
           <Content1
-            class={"gradient-background-1"}
+            class={"primary-gradient"}
             content={
               <Column2
                 left={
@@ -169,7 +169,7 @@ export function Homepage() {
             }
           />
           <Content1
-            class={"gradient-background-1"}
+            class={"primary-gradient"}
             content={
               <Column2
                 left={
@@ -222,7 +222,7 @@ export function Homepage() {
             }
           />
         </main>
-        <main className="gradient-background-1 text-white">
+        <main className="primary-gradient text-white">
           <div className="container">
             <footer className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 px-lg-0 px-5 border-top">
               <div className="col mb-3">

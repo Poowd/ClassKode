@@ -180,7 +180,7 @@ export function GenerateSetup() {
               />
 
               {/* <button
-                className="btn btn-primary ms-2"
+                className="btn primary-gradient ms-2"
                 type="button"
                 onClick={() => {
                   CopyClipboard(text);

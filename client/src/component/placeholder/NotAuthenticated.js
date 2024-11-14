@@ -11,7 +11,7 @@ export class NotAuthenticated extends React.Component {
         <main>
           <h1>Not Authenticated</h1>
           <p>You are not authenticated</p>
-          <Link to={"/login"} className="btn btn-primary">
+          <Link to={"/login"} className="btn primary-gradient">
             Login
           </Link>
         </main>

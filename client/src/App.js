@@ -120,11 +120,6 @@ function App() {
                       <Routes>
                         <Route index element={<Dashboard />}></Route>
 
-                        <Route
-                          path="/timetable"
-                          element={<Timetabling />}
-                        ></Route>
-
                         <Route path={"/institution"}>
                           <Route
                             path={"/institution/department"}
@@ -419,6 +414,7 @@ function App() {
             <Route path={"/team"} element={<Team />}></Route>
             <Route path={"/login"} element={<Login />}></Route>
             <Route path={"/register"} element={<Register />}></Route>
+            <Route path="/timetable" element={<Timetabling />}></Route>
             <Route
               path={"/*"}
               element={

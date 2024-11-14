@@ -13,17 +13,8 @@ export class LinkButton extends React.Component {
             : "p-2 " + this.props.class
         }`}
       >
-        {/* <button
-          className={"btn btn-sm p-0 " + this.props.textclass}
-          type={this.props.type}
-          disabled={this.props.disabled}
-          onClick={this.props.function}
-          data-bs-toggle={this.props.toggle}
-          data-bs-target={this.props.target}
-          data-bs-dismiss={this.props.dismiss}
-        > */}
         <div
-          className={`d-flex align-items-center justify-content-center gap-2 ${
+          className={`d-flex align-items-center justify-content-center gap-2 fw-semibold ${
             this.props.reversed ? "flex-row-reverse" : ""
           }`}
         >

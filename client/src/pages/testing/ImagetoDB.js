@@ -32,7 +32,7 @@ export function ImagetoDB() {
         name="SCHLID"
         onChange={(e) => setSCHLID({ id: e.target.value })}
       />
-      <button className="btn btn-primary" onClick={handleUpload}>
+      <button className="btn primary-gradient" onClick={handleUpload}>
         Save
       </button>
       {/* <img

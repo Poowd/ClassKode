@@ -185,7 +185,7 @@ export function CourseSetup() {
                   department: data.Department,
                   curriculum: currentcurriculum.Code,
                 }}
-                class="btn-outline-primary px-2"
+                class="primary-outline-gradient px-2"
                 icon={info.icons.forms.add}
               />
               <LinkButton
@@ -195,7 +195,7 @@ export function CourseSetup() {
                   department: data.Department,
                   curriculum: params.id,
                 }}
-                class="btn-primary px-2"
+                class="primary-gradient px-2"
                 text="Generate"
                 icon={info.icons.forms.generate}
               />
@@ -209,7 +209,7 @@ export function CourseSetup() {
             <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
               <li className={search.search === "" ? "visually-hidden" : ""}>
                 <DefaultButton
-                  class="btn-outline-primary px-2"
+                  class="primary-outline-gradient px-2"
                   text={search.search}
                   function={() => {
                     document.getElementById(`search`).value = "";

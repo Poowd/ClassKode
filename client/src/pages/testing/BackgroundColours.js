@@ -12,7 +12,7 @@ export class BackgroundColours extends React.Component {
                 <h3>Gradient 1</h3>
               </main>
             }
-            class="gradient-bg-blue"
+            class="primary-gradient"
           />
         </section>
 

@@ -7,12 +7,11 @@ import { ViewModal } from "../modal/ViewModal";
 import useConfiguration from "../../hook/useConfiguration";
 import { Link, useNavigate } from "react-router-dom";
 import useHandleChange from "../../hook/useHandleChange";
-import { DefaultInput } from "../input/DefaultInput";
 import owie from "../../assets/imgs/misc/owie.png";
 import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { SidebarItem } from "../sidebar/SidebarItem";
-import { SidebarDropdown } from "../sidebar/SidebarDropdown";
 import useDatabase from "../../hook/useDatabase";
+import { FaUserCircle } from "react-icons/fa";
 
 export function UserTopbar() {
   const dateObject = new Date();
@@ -63,7 +62,7 @@ export function UserTopbar() {
   };
 
   return (
-    <nav className="main-top-bar gradient-bg-blue">
+    <nav className="main-top-bar topbar-gradient">
       <div className="d-flex align-items-center gap-2">
         <div className="">
           <DefaultButton
@@ -137,33 +136,6 @@ export function UserTopbar() {
                         text={"Room Availability"}
                       />
                     ) : null}
-                    {/* <SidebarDropdown
-                      class={"fw-medium w-100 py-1"}
-                      icon={info.icons.modules.schedules}
-                      reference={"#schedule"}
-                      text={"Schedule"}
-                      referenced={"schedule"}
-                      parent={"#menu"}
-                      itemlist={
-                        <>
-                          <SidebarItem
-                            icon={info.icons.modules.schedules}
-                            navigate={"/my-schedules"}
-                            text={"My Schedules"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.schedules}
-                            navigate={"/section-schedules"}
-                            text={"Class Schedules"}
-                          />
-                          <SidebarItem
-                            icon={info.icons.modules.schedules}
-                            navigate={"/schedule"}
-                            text={"Examination Schedules"}
-                          />
-                        </>
-                      }
-                    /> */}
                   </>
                 }
               />
@@ -172,7 +144,7 @@ export function UserTopbar() {
         </div>
         <div className="d-flex gap-2">
           <h5 className="p-0 m-0">
-            <span className="fw-bold gradient-text-1">ClassKode</span>
+            <span className="fw-bold">ClassKode</span>
           </h5>
         </div>
       </div>
@@ -184,15 +156,19 @@ export function UserTopbar() {
             function={() => {}}
           />
         </div>
-        <div className="px-1">
-          <DefaultButton
-            class="text-light"
-            icon={info.icons.others.hiddenuser}
-            text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
-            function={() => {}}
-            toggle="modal"
-            target="#MenuModal"
-          />
+        <div className="px-1 ms-2">
+          <main className="d-flex gap-1">
+            <DefaultButton
+              class="text-white"
+              text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
+              function={() => {}}
+              toggle="modal"
+              target="#MenuModal"
+            />
+            <div className="rounded-circle user-text">
+              <FaUserCircle />
+            </div>
+          </main>
           <ViewModal
             id={"MenuModal"}
             title={<h6 className="text-center text-black">Menu</h6>}
@@ -210,7 +186,7 @@ export function UserTopbar() {
                   />
                 </main>
                 <DefaultButton
-                  class="w-100 btn-danger py-2"
+                  class="w-100 danger-color py-2"
                   reversed={true}
                   icon={<PiQuestionMarkBold />}
                   text="Logout"

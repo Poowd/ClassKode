@@ -17,10 +17,10 @@ export class Error404 extends React.Component {
               <h1 className="fw-extrabold">Error 404</h1>
               <p>The page you are trying to access does not exist.</p>
               <div className="d-flex gap-2">
-                <Link to={-1} className="btn btn-primary">
+                <Link to={-1} className="btn primary-gradient">
                   Back
                 </Link>
-                <Link to={"/"} className="btn btn-primary">
+                <Link to={"/"} className="btn primary-gradient">
                   Home
                 </Link>
               </div>

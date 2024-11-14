@@ -6,13 +6,13 @@ export class DashboardCardContent extends React.Component {
     return (
       <main className="h-100 w-100 d-flex flex-column justify-content-between p-3">
         <header className="d-flex justify-content-between align-items-center">
-          <h5 className="p-0 m-0 fw-light">{this.props.title}</h5>
+          <h5 className="p-0 m-0 fw-light gold-text">{this.props.title}</h5>
           <div>{this.props.button}</div>
         </header>
         <main className="text-truncate ">
-          <h3 className="p-0 pe-4 m-0 fw-bold text-wrap">
+          <h4 className="p-0 pe-4 m-0 fw-semibold text-wrap">
             {this.props.content}
-          </h3>
+          </h4>
         </main>
         <small>
           <footer className="d-flex gap-1 align-items-center fw-semibold fw-light">

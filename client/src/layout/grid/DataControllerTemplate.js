@@ -19,7 +19,7 @@ export class DataControllerTemplate extends React.Component {
                   <main className="row m-0">
                     <section className="col-lg-7 p-0">
                       <header>
-                        <h1 className="fw-bold custom-text-gradient pb-2">
+                        <h1 className="fw-bold primary-text pb-2">
                           {this.props.title}
                         </h1>
                         <p className="text-secondary">

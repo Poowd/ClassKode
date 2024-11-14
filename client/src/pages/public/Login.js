@@ -1,18 +1,13 @@
 import "../../App.css";
 import React, { useEffect, useState } from "react";
 import { json, Link, useNavigate } from "react-router-dom";
-import stiLogo from "../../assets/imgs/logo/sti-logo.png";
-import sticampus from "../../assets/imgs/background/sti-bg-campus-2.jpg";
 import classkodelogo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import "../../css/CustomColours.css";
 import { DefaultInput } from "../../component/input/DefaultInput";
 import { DefaultButton } from "../../component/button/DefaultButton";
-import { RiCloseFill } from "react-icons/ri";
 import useDatabase from "../../hook/useDatabase";
-import reader from "../../assets/imgs/misc/owie.png";
 import useConfiguration from "../../hook/useConfiguration";
 import useHandleChange from "../../hook/useHandleChange";
-import { CoffeeLoader } from "../../component/loader/CoffeeLoader";
 
 export function Login() {
   const dateObject = new Date();
@@ -92,7 +87,7 @@ export function Login() {
   return (
     <>
       <main className="vh-100 d-block d-lg-none">
-        <section className="h-100 w-100 gradient-background-1 p-5 position-relative overflow-y-auto">
+        <section className="h-100 w-100 primary-gradient p-5 position-relative overflow-y-auto">
           <section className="position-absolute p-5 top-0 end-0">
             <div className="d-flex justify-content-end">
               <DefaultButton
@@ -138,7 +133,7 @@ export function Login() {
                         required
                       />
                       <DefaultButton
-                        class="px-3 text-dark border-0"
+                        class="px-3 border-0"
                         type="button"
                         icon={info.icons.others.hiddenuser}
                         function={() => {
@@ -146,20 +141,20 @@ export function Login() {
                         }}
                       />
                     </main>
-                    <DefaultButton
-                      class="btn-warning fw-bold text-dark mt-5 mb-3 w-100 p-3 rounded-pill"
-                      type="submit"
-                      text="Login"
-                    />
+                    <main className="d-flex align-items-center gap-2 mt-4">
+                      <DefaultButton
+                        class="warning-color fw-bold text-dark py-3 px-5"
+                        type="submit"
+                        text={<h6 className="m-0">Login</h6>}
+                      />
+                      <p className="m-0 d-flex gap-3 justify-content-center">
+                        <Link to={"/termspolicy"} className="text-light">
+                          Forgot Password
+                        </Link>
+                      </p>
+                    </main>
                   </div>
                 </div>
-                <p className="w-100 m-0 d-flex gap-3 justify-content-center">
-                  <span>
-                    <Link to={"/termspolicy"} className="text-light">
-                      Forgot Password
-                    </Link>
-                  </span>
-                </p>
               </div>
             </form>
           </main>
@@ -169,7 +164,7 @@ export function Login() {
         <main className="h-100 w-100 position-relative back-blur p-lg-5 d-flex justify-content-center">
           <main className="h-100 w-75 position-relative d-flex justify-content-center">
             <section className="h-100 w-75 position-absolute d-flex justify-content-center">
-              <main className="h-100 w-50 gradient-background-1 shadow-lg border border-4 border-primary rounded">
+              <main className="h-100 w-50 primary-gradient shadow-lg border border-4 border-primary rounded">
                 <form
                   onSubmit={handleSubmit}
                   autoComplete="off"
@@ -228,13 +223,15 @@ export function Login() {
                         </main>
                         <main className="d-flex align-items-center gap-2 mt-4">
                           <DefaultButton
-                            class="gradient-background-2 fw-bold text-dark py-2 px-5"
+                            class="warning-color fw-bold text-dark py-3 px-5"
                             type="submit"
                             text={<h6 className="m-0">Login</h6>}
                           />
-                          <Link to={"/termspolicy"} className="text-light btn">
-                            Forgot Password
-                          </Link>
+                          <p className="m-0 d-flex gap-3 justify-content-center">
+                            <Link to={"/termspolicy"} className="text-light">
+                              Forgot Password
+                            </Link>
+                          </p>
                         </main>
                       </div>
                     </div>

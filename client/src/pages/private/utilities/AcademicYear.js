@@ -58,7 +58,7 @@ export function AcademicYear() {
               <DefaultInput placeholder="Search" />
               <LinkButton
                 to={"/academic-year/create/0"}
-                class="btn-primary px-2"
+                class="primary-gradient px-2"
                 text="Create"
                 icon={info.icons.forms.add}
               />
@@ -81,12 +81,12 @@ export function AcademicYear() {
                   <>
                     <LinkButton
                       to={`/utilities/academicyear/assigment/${item.Code}`}
-                      class="btn-info px-2"
+                      class="primary-gradient px-2"
                       icon={info.icons.pages.institution.coach}
                     />
                     <LinkButton
                       to={`/utilities/academicyear/projection/${item.Code}`}
-                      class="btn-info px-2"
+                      class="primary-gradient px-2"
                       icon={info.icons.pages.institution.section}
                     />
                   </>

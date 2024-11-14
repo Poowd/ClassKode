@@ -211,7 +211,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -241,7 +241,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -271,7 +271,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-crs", { CRSID: course.CRSID }, setData);
@@ -301,7 +301,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -335,7 +335,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -365,7 +365,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -395,7 +395,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -425,7 +425,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post(
@@ -455,7 +455,7 @@ export function Archives() {
                   state={null}
                   custom={
                     <DefaultButton
-                      class="btn-warning"
+                      class="warning-color"
                       icon={info.icons.forms.restore}
                       function={() => {
                         data_post("res-sched", { data: sched.SCDID }, setData);

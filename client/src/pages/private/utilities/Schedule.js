@@ -123,12 +123,12 @@ export function Schedule() {
                 />
                 <LinkButton
                   to={"/schedule/create/0"}
-                  class="btn-outline-primary"
+                  class="primary-outline-gradient"
                   icon={info.icons.forms.add}
                 />
                 <LinkButton
                   to={"/schedule/generate/0"}
-                  class="btn-primary px-2"
+                  class="primary-gradient px-2"
                   text="Generate"
                   icon={info.icons.forms.generate}
                 />
@@ -142,7 +142,7 @@ export function Schedule() {
               <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
                 <li className={search.Search === "" ? "visually-hidden" : ""}>
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     text={search.Search}
                     function={() => {
                       document.getElementById(`Search`).value = "";
@@ -155,7 +155,7 @@ export function Schedule() {
                 </li>
                 <li className={search.setbyDay === "" ? "visually-hidden" : ""}>
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     text={search.setbyDay}
                     function={() =>
                       setSearch((prev) => ({
@@ -171,7 +171,7 @@ export function Schedule() {
                   }
                 >
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     text={search.setbyComponent}
                     function={() =>
                       setSearch((prev) => ({

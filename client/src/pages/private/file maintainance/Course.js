@@ -99,7 +99,7 @@ export function Course() {
           />
           <LinkButton
             to={"/course/create/0"}
-            class="btn-primary px-2"
+            class="primary-gradient px-2"
             text="Create"
             icon={info.icons.forms.add}
           />
@@ -111,7 +111,7 @@ export function Course() {
             <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
               <li className={search.search === "" ? "visually-hidden" : ""}>
                 <DefaultButton
-                  class="btn-outline-primary px-2"
+                  class="primary-outline-gradient px-2"
                   text={search.search}
                   function={() => {
                     document.getElementById(`search`).value = "";
@@ -128,7 +128,7 @@ export function Course() {
                 }
               >
                 <DefaultButton
-                  class="btn-outline-primary px-2"
+                  class="primary-outline-gradient px-2"
                   text={
                     subjectArea &&
                     subjectArea.map((item) =>

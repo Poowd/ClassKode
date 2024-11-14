@@ -15,6 +15,7 @@ import { SidebarDropdown } from "../sidebar/SidebarDropdown";
 import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { useQuickNavigate } from "../../hook/useQuickNavigate";
 import useDatabase from "../../hook/useDatabase";
+import { FaUserCircle } from "react-icons/fa";
 
 export function AdminTopbar() {
   const dateObject = new Date();
@@ -62,7 +63,7 @@ export function AdminTopbar() {
   };
 
   return (
-    <nav className="main-top-bar gradient-bg-blue">
+    <nav className="main-top-bar topbar-gradient">
       <div className="d-flex align-items-center gap-2">
         <div className="">
           <DefaultButton
@@ -198,13 +199,8 @@ export function AdminTopbar() {
         </div>
         <div className="d-flex gap-2">
           <h5 className="p-0 m-0">
-            <span className="fw-bold gradient-text-2">ClassKode</span>
+            <span className="fw-bold">ClassKode</span>
           </h5>
-          <div>
-            <p className="p-0 m-0">
-              <span className="fw-semibold ">Admin</span>
-            </p>
-          </div>
         </div>
       </div>
       <div className="d-flex align-items-center">
@@ -232,15 +228,19 @@ export function AdminTopbar() {
             function={() => {}}
           />
         </div>
-        <div className="px-1">
-          <DefaultButton
-            class="text-light"
-            icon={info.icons.others.hiddenuser}
-            text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
-            function={() => {}}
-            toggle="modal"
-            target="#MenuModal"
-          />
+        <div className="px-1 ms-2">
+          <main className="d-flex gap-1">
+            <DefaultButton
+              class="text-white"
+              text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
+              function={() => {}}
+              toggle="modal"
+              target="#MenuModal"
+            />
+            <div className="rounded-circle admin-text">
+              <FaUserCircle />
+            </div>
+          </main>
           <ViewModal
             id={"MenuModal"}
             title={<h6 className="text-center text-black">Menu</h6>}
@@ -258,7 +258,7 @@ export function AdminTopbar() {
                   />
                 </main>
                 <DefaultButton
-                  class="w-100 btn-danger py-2"
+                  class="w-100 danger-color py-2"
                   reversed={true}
                   icon={<PiQuestionMarkBold />}
                   text="Logout"

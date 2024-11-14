@@ -70,7 +70,7 @@ export function SectionProjection() {
                 state={{
                   academicyear: params.id,
                 }}
-                class="btn-outline-primary px-2"
+                class="primary-outline-gradient px-2"
                 icon={info.icons.forms.add}
               />
               <LinkButton
@@ -79,7 +79,7 @@ export function SectionProjection() {
                   academicyear: params.id,
                 }}
                 text="Upload"
-                class="btn-primary px-2"
+                class="primary-gradient px-2"
                 icon={info.icons.forms.generate}
               />
             </div>

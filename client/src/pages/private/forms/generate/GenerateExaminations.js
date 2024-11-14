@@ -115,7 +115,7 @@ export function GenerateExaminations() {
               <h3 className="text-success fw-bold">Success</h3>
               <button
                 type="button"
-                class="btn btn-success mt-3"
+                class="btn safe-color mt-3"
                 data-bs-dismiss="modal"
               >
                 Okay
@@ -160,14 +160,14 @@ export function GenerateExaminations() {
                     target="#ExpectedClass"
                   />
                   <DefaultButton
-                    class={`px-2 btn-primary`}
+                    class={`px-2 primary-gradient`}
                     icon={info.icons.forms.add}
                     text="Save"
                     function={submitForm}
                     disabled={examSchedule.length < 1 ? true : false}
                   />
                   <DefaultButton
-                    class="btn-primary px-2"
+                    class="primary-gradient px-2"
                     text="Tertiary"
                     icon={info.icons.forms.generate}
                     function={() => {
@@ -189,7 +189,7 @@ export function GenerateExaminations() {
                     disabled={ay.GeneratedTertiaryExams === true ? true : false}
                   />
                   <DefaultButton
-                    class="btn-primary px-2"
+                    class="primary-gradient px-2"
                     text="SHS"
                     icon={info.icons.forms.generate}
                     function={() => {

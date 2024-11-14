@@ -197,7 +197,7 @@ export function LandingPage() {
                     <main className="d-flex justify-content-between align-items-center">
                       <section className="w-100">
                         <DefaultButton
-                          class="btn-primary w-100 p-2"
+                          class="primary-gradient w-100 p-2"
                           reversed={false}
                           text={studentSection.Section}
                           icon={info.icons.forms.edit}
@@ -216,7 +216,7 @@ export function LandingPage() {
                     </main>
                   ) : (
                     <DefaultButton
-                      class="btn-primary w-100 p-2"
+                      class="primary-gradient w-100 p-2"
                       text="Set Your Section"
                       reversed={false}
                       icon={info.icons.forms.add}
@@ -229,7 +229,7 @@ export function LandingPage() {
                   <main className="d-flex justify-content-between align-items-center">
                     <section className="w-100">
                       <DefaultButton
-                        class="btn-primary w-100 p-2"
+                        class="primary-gradient w-100 p-2"
                         reversed={true}
                         text={coachStatus.ClassStatus}
                         icon={info.icons.forms.edit}

@@ -75,14 +75,14 @@ export function ViewProjection() {
               function={() => navigate(-1)}
             />
             <LinkButton
-              class="btn-warning px-2"
+              class="warning-color px-2"
               icon={<LuFileEdit />}
               to={"/institution/curriculum/edit/" + params.id}
               state={{ data: data }}
               text={"Edit"}
             />
             <DefaultButton
-              class="btn-danger px-2"
+              class="danger-color px-2"
               icon={<LuFolderArchive />}
               function={() =>
                 showModal(

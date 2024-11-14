@@ -70,7 +70,7 @@ export function CoachAssignment() {
                 state={{
                   academicyear: currentacademicyear,
                 }}
-                class="btn-primary px-2"
+                class="primary-gradient px-2"
                 text="Create"
                 icon={info.icons.forms.add}
               />

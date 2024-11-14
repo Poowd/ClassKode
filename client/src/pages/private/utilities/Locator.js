@@ -233,8 +233,7 @@ export function Locator() {
                       <hr />
                       <main className="d-flex">
                         <section>
-                          
-                        <DefaultDropdownItem
+                          <DefaultDropdownItem
                             title={"On Going"}
                             trigger={() =>
                               setFilter((prev) => ({
@@ -301,7 +300,7 @@ export function Locator() {
               <section className="d-flex gap-1">
                 {filter.setbyClass !== "" ? (
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     reversed={true}
                     icon={info.icons.navigation.close}
                     text={filter.setbyClass}
@@ -315,7 +314,7 @@ export function Locator() {
                 ) : null}
                 {filter.setbyDepartment !== "" ? (
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     reversed={true}
                     icon={info.icons.navigation.close}
                     text={filter.setbyDepartment}
@@ -329,7 +328,7 @@ export function Locator() {
                 ) : null}
                 {filter.setbyAcademicLevel !== "" ? (
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     reversed={true}
                     icon={info.icons.navigation.close}
                     text={filter.setbyAcademicLevel}
@@ -393,7 +392,7 @@ export function Locator() {
                                       </main>
                                     ) : null
                                   )}
-                                  <h4 className="w-100 text-truncate custom-text-gradient fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
+                                  <h4 className="w-100 text-truncate primary-text fw-bold m-0 p-0">{`${coach.LastName}`}</h4>
                                   <h6 className="w-100 text-truncate m-0 p-0">{`${coach.FirstName}`}</h6>
                                   {coachStatus.map((status, q) =>
                                     status.SCHLID === coach.SCHLID ? (
@@ -408,7 +407,7 @@ export function Locator() {
                                 <main>
                                   <section className="d-flex gap-1 w-100">
                                     <button
-                                      className={`btn w-100 btn-sm d-flex align-items-center justify-content-start gap-2 p-2 btn-info`}
+                                      className={`btn w-100 btn-sm d-flex align-items-center justify-content-start gap-2 p-2 primary-gradient`}
                                       disabled={
                                         checkClassStatus(coach.SCHLID) ===
                                         "On Going"

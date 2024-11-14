@@ -29,7 +29,7 @@ export function Dashboard() {
 
   return (
     <DashboardTemplate
-      cardcolor={"gradient-bg-light-blue"}
+      cardcolor={"primary-gradient"}
       card1={
         <DashboardCardContent
           title={"Academic Year"}
@@ -260,7 +260,7 @@ export function Dashboard() {
           <main className="h-100 w-100 d-flex gap-3 justify-content-end m-0 p-3">
             <section className="h-100 w-50 p-0 m-0 d-flex justify-content-center align-items-center">
               <main className="bg-white h-100 w-100 text-center p-5 shadow-sm rounded">
-                <h1 className="fw-bold display-1">
+                <h1 className="fw-bold display-1 primary-text">
                   {dataEntryCount === undefined
                     ? 0
                     : dataEntryCount.tertiary_class_schedules === undefined
@@ -272,7 +272,7 @@ export function Dashboard() {
             </section>
             <section className="h-100 w-50 p-0 m-0 d-flex justify-content-center align-items-center">
               <main className="bg-white h-100 w-100 text-center p-5 shadow-sm rounded">
-                <h1 className="fw-bold display-1">
+                <h1 className="fw-bold display-1 primary-text">
                   {dataEntryCount === undefined
                     ? 0
                     : dataEntryCount.shs_class_schedules === undefined

@@ -26,6 +26,7 @@ export function SectionStudentSchedule() {
   const [currsection, setCurrentSection] = useState(
     search.Search === "" ? "n/a" : search.Search
   );
+  const [academicYearCode, setAYCode] = useState([]);
 
   const [day, setDay] = useState([
     "Monday",
@@ -43,6 +44,7 @@ export function SectionStudentSchedule() {
     data_get("class-schedule-list", setSchedule);
     data_get("project-list", setSection);
     data_get("course-list", setCourse);
+    data_get("current-academic-year-code", setAYCode);
     if (search.Search === "") {
       for (var i = 0; i < section.length; i++) {
         setCurrentSection(section[0].Section);
@@ -104,7 +106,8 @@ export function SectionStudentSchedule() {
           <main className="h-100 flex-fill py-2">
             <header className="p-2">
               {section.map((section, o) =>
-                section.Section === currsection ? (
+                section.Section === currsection &&
+                section.AcademicYear === academicYearCode.AcademicCode ? (
                   <>
                     <h3>{`${section.Section}`}</h3>
                     <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>

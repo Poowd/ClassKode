@@ -153,7 +153,7 @@ export default function useConfiguration() {
             "Say goodbye to scheduling conflicts! Our intuitive platform allows you to easily book classes, manage your timetable, and stay organized throughout the semester.",
           Additionals: (
             <button
-              className="rounded-pill btn btn-warning px-3 py-2"
+              className="rounded-pill btn primary-gradient px-3 py-2"
               onClick={() => {
                 navigate("/about");
               }}
@@ -170,7 +170,7 @@ export default function useConfiguration() {
             "Locate your faculty members with ease. Access their office hours, contact information, and more to ensure you get the guidance you need for your studies.",
           Additionals: (
             <button
-              className="rounded-pill btn btn-warning px-3 py-2"
+              className="rounded-pill btn warning-color px-3 py-2"
               onClick={() => {
                 navigate("/about");
               }}
@@ -186,7 +186,7 @@ export default function useConfiguration() {
           Content: "",
           Additionals: (
             <button
-              className="rounded-pill btn btn-warning px-3 py-2"
+              className="rounded-pill btn primary-gradient px-3 py-2"
               onClick={() => {
                 navigate("/about");
               }}
@@ -202,7 +202,7 @@ export default function useConfiguration() {
           Content: "",
           Additionals: (
             <button
-              className="rounded-pill btn btn-warning px-3 py-2"
+              className="rounded-pill btn warning-color px-3 py-2"
               onClick={() => {
                 navigate("/about");
               }}

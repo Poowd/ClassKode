@@ -146,11 +146,11 @@ export function User() {
             />
             <LinkButton
               to={"/user/create/0"}
-              class="border"
+              class="primary-outline-gradient"
               icon={info.icons.forms.add}
             />
             <DefaultButton
-              class="btn-primary px-2"
+              class="primary-gradient px-2"
               icon={info.icons.forms.generate}
               text="Generate"
               function={() => {
@@ -165,7 +165,7 @@ export function User() {
               <ul className="p-0 m-0 mb-2 d-flex gap-2 flex-wrap">
                 <li className={search.Search === "" ? "visually-hidden" : ""}>
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     text={search.Search}
                     function={() => {
                       document.getElementById(`Search`).value = "";
@@ -182,7 +182,7 @@ export function User() {
                   }
                 >
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     text={search.setbyRegister}
                     function={() =>
                       setSearch((prev) => ({
@@ -196,7 +196,7 @@ export function User() {
                   className={search.setbyType === "" ? "visually-hidden" : ""}
                 >
                   <DefaultButton
-                    class="btn-outline-primary px-2"
+                    class="primary-outline-gradient px-2"
                     text={search.setbyType}
                     function={() =>
                       setSearch((prev) => ({
@@ -247,12 +247,12 @@ export function User() {
                           <>
                             <LinkButton
                               to={`/user/edit/${item.UUID}`}
-                              class="btn-warning"
+                              class="warning-color"
                               textclass=""
                               icon={info.icons.forms.edit}
                             />
                             <DefaultButton
-                              class="btn-danger px-2"
+                              class="danger-color px-2"
                               icon={info.icons.forms.archive}
                               function={() =>
                                 showModal(

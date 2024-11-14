@@ -92,7 +92,10 @@ export function CreateSchedule() {
   }, [curriculum]);
 
   useEffect(() => {
-    setData((prev) => ({ ...prev, EndTime: +data.StartTime + data.Units * 60 }));
+    setData((prev) => ({
+      ...prev,
+      EndTime: +data.StartTime + data.Units * 60,
+    }));
   }, [data.StartTime, data.Units]);
 
   const submitForm = (e) => {
@@ -120,7 +123,7 @@ export function CreateSchedule() {
               function={() => navigate(-1)}
             />
             <DefaultButton
-              class="btn-success px-2"
+              class="safe-color px-2"
               type="submit"
               text="Submit"
             />

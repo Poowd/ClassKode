@@ -91,7 +91,7 @@ export function Setup() {
                       trigger={dataChange}
                     />
                     <DefaultButton
-                      class="btn-primary px-3"
+                      class="primary-gradient px-3"
                       reversed={true}
                       text="Proceed"
                       function={() =>

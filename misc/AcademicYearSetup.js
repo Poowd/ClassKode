@@ -433,7 +433,7 @@ export function AcademicYearSetup() {
         lhs_control={
           <>
             <MainButton
-              class={"btn btn-success"}
+              class={"btn safe-color"}
               text={
                 <ButtonIcons image={ic_add} opacity={"1"} filter={"invert()"} />
               }
@@ -494,7 +494,7 @@ export function AcademicYearSetup() {
                   />
                   <div className="w-100 text-end mt-3">
                     <MainButton
-                      class={"btn btn-primary"}
+                      class={"btn primary-gradient"}
                       type={"submit"}
                       text={"Submit"}
                       onClick={() => {}}
@@ -580,7 +580,7 @@ export function AcademicYearSetup() {
 
                       <div className="d-flex justify-content-end">
                         <MainButton
-                          class={"btn btn-success"}
+                          class={"btn safe-color"}
                           type={"button"}
                           text={
                             <ButtonIcons
@@ -664,7 +664,7 @@ export function AcademicYearSetup() {
                         }
                       />
                       <MainButton
-                        class={"btn btn-sm btn-primary mb-3"}
+                        class={"btn btn-sm primary-gradient mb-3"}
                         type={"submit"}
                         text={"Submit"}
                         onClick={() => {
@@ -677,7 +677,7 @@ export function AcademicYearSetup() {
                     <div className="mb-3 text-end px-2">
                       {pageconfig.filterByDepartment !== "" ? (
                         <button
-                          className="btn btn-outline-primary btn-sm"
+                          className="btn primary-outline-gradient btn-sm"
                           onClick={() =>
                             setPageConfig((prev) => ({
                               ...prev,
@@ -737,7 +737,7 @@ export function AcademicYearSetup() {
         rhs_control={
           <>
             <MainButton
-              class={"btn btn-success"}
+              class={"btn safe-color"}
               text={
                 <ButtonIcons image={ic_add} opacity={"1"} filter={"invert()"} />
               }
@@ -772,7 +772,7 @@ export function AcademicYearSetup() {
                   />
                   <div className="w-100 text-end mt-3">
                     <MainButton
-                      class={"btn btn-primary"}
+                      class={"btn primary-gradient"}
                       type={"submit"}
                       text={"Submit"}
                       onClick={() => {}}
@@ -812,7 +812,7 @@ export function AcademicYearSetup() {
                     <div class="card border p-3">
                       <main className="d-flex justify-content-end">
                         <MainButton
-                          class={"btn btn-success mb-2"}
+                          class={"btn safe-color mb-2"}
                           type={"button"}
                           text={<span>Section</span>}
                           onClick={() => {
@@ -866,7 +866,7 @@ export function AcademicYearSetup() {
                                 />
 
                                 <MainButton
-                                  class={"btn btn-success"}
+                                  class={"btn safe-color"}
                                   type={"button"}
                                   text={
                                     <>
@@ -890,7 +890,7 @@ export function AcademicYearSetup() {
                                 />
 
                                 <MainButton
-                                  class={"btn btn-danger"}
+                                  class={"btn danger-color"}
                                   type={"button"}
                                   text={
                                     <ButtonIcons
@@ -950,7 +950,7 @@ export function AcademicYearSetup() {
                   <form onSubmit={""}>
                     <div className="d-flex justify-content-end px-2 gap-2 mb-0 py-0">
                       <MainButton
-                        class={"btn btn-sm btn-primary mb-3"}
+                        class={"btn btn-sm primary-gradient mb-3"}
                         type={"submit"}
                         text={"Submit"}
                         onClick={() => {
@@ -1010,7 +1010,7 @@ export function AcademicYearSetup() {
                     <div className="bg-white w-100">
                       <div className="w-100 text-end mt-3">
                         <MainButton
-                          class={"btn btn-primary"}
+                          class={"btn primary-gradient"}
                           type={"submit"}
                           onClick={() => {}}
                           databstoggle={"modal"}
@@ -1048,7 +1048,7 @@ export function AcademicYearSetup() {
                     </div>
                     <div className="d-flex justify-content-end px-2 gap-2 mb-0 py-0">
                       <MainButton
-                        class={"btn btn-sm btn-primary mb-3"}
+                        class={"btn btn-sm primary-gradient mb-3"}
                         type={"submit"}
                         text={"Submit"}
                         onClick={() => {
@@ -1081,7 +1081,7 @@ export function AcademicYearSetup() {
                     </div>
                     <div className="d-flex justify-content-end px-2 gap-2 mb-0 py-0">
                       <MainButton
-                        class={"btn btn-sm btn-primary mb-3"}
+                        class={"btn btn-sm primary-gradient mb-3"}
                         type={"submit"}
                         text={"Submit"}
                         onClick={() => {
@@ -1134,7 +1134,7 @@ export function AcademicYearSetup() {
                         }
                       />
                       <MainButton
-                        class={"btn btn-sm btn-primary mb-3"}
+                        class={"btn btn-sm primary-gradient mb-3"}
                         type={"submit"}
                         text={"Submit"}
                         onClick={() => {
@@ -1147,7 +1147,7 @@ export function AcademicYearSetup() {
                     <div className="mb-3 text-end px-2">
                       {pageconfig.filterByProgram !== "" ? (
                         <button
-                          className="btn btn-outline-primary btn-sm"
+                          className="btn primary-outline-gradient btn-sm"
                           onClick={() =>
                             setPageConfig((prev) => ({
                               ...prev,

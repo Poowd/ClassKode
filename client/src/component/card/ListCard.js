@@ -11,9 +11,7 @@ export class ListCard extends React.Component {
           <h6 className="p-0 m-0">{this.props.slot1}</h6>
         </section>
         <section className="col-7 col-lg-6 p-0 m-0">
-          <h5 className="p-0 m-0 custom-text-gradient fw-bold">
-            {this.props.slot2}
-          </h5>
+          <h5 className="p-0 m-0 primary-text fw-bold">{this.props.slot2}</h5>
           <small>
             <p className="p-0 m-0 text-secondary">
               <span>{this.props.slot3}</span>
@@ -35,7 +33,7 @@ export class ListCard extends React.Component {
             <LinkButton
               to={this.props.link}
               state={this.props.state}
-              class="bg-info"
+              class="primary-gradient"
               icon={this.props.view}
             />
           ) : null}

@@ -16,7 +16,7 @@
   color: white;
 }
 
-.gradient-bg-blue {
+.primary-gradient {
   background-image: linear-gradient(
     to bottom right,
     #083d6d,

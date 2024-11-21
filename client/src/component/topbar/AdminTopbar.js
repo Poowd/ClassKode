@@ -16,6 +16,7 @@ import Logo from "../../assets/imgs/logo/ClassKode Logo (1).png";
 import { useQuickNavigate } from "../../hook/useQuickNavigate";
 import useDatabase from "../../hook/useDatabase";
 import { FaUserCircle } from "react-icons/fa";
+import { StatusModal } from "../modal/StatusModal";
 
 export function AdminTopbar() {
   const dateObject = new Date();
@@ -231,7 +232,7 @@ export function AdminTopbar() {
         <div className="px-1 ms-2">
           <main className="d-flex gap-1">
             <DefaultButton
-              class="text-white"
+              class="text-white border-0"
               text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
               function={() => {}}
               toggle="modal"
@@ -241,31 +242,37 @@ export function AdminTopbar() {
               <FaUserCircle />
             </div>
           </main>
-          <ViewModal
+          <StatusModal
             id={"MenuModal"}
-            title={<h6 className="text-center text-black">Menu</h6>}
+            title={<h6 className="text-center text-black">Kwa-Goodbye</h6>}
             content={
-              <>
-                <main className="w-100 bottom-0 end-0 d-flex align-items-center justify-content-end">
-                  <section className="w-100 p-0 m-0 border rounded-pill p-2 px-3 text-dark">
-                    <p className="p-0 m-0">Are you leaving ?</p>
-                  </section>
+              <main className="">
+                <main className="w-100 mb-3 p-0 m-0 d-flex flex-column align-items-center">
                   <img
                     src={owie}
                     alt="..."
                     className=""
                     style={{ height: "10em" }}
                   />
+                  <h3 className="primary-text fw-bold">Are you leaving?</h3>
                 </main>
-                <DefaultButton
-                  class="w-100 danger-color py-2"
-                  reversed={true}
-                  icon={<PiQuestionMarkBold />}
-                  text="Logout"
-                  function={handleLogout}
-                  dismiss={"modal"}
-                />
-              </>
+                <section className="d-flex gap-2">
+                  <DefaultButton
+                    class="w-auto primary-outline-gradient py-2 px-3"
+                    reversed={true}
+                    text="No"
+                    function={() => {}}
+                    dismiss={"modal"}
+                  />
+                  <DefaultButton
+                    class="w-100 primary-gradient py-2"
+                    reversed={true}
+                    text="Yes"
+                    function={handleLogout}
+                    dismiss={"modal"}
+                  />
+                </section>
+              </main>
             }
           />
         </div>

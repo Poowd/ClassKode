@@ -16,6 +16,7 @@ import useDatabase from "../../hook/useDatabase";
 import { CoffeeLoader } from "../loader/CoffeeLoader";
 import { useQuickNavigate } from "../../hook/useQuickNavigate";
 import { FaUserCircle } from "react-icons/fa";
+import { StatusModal } from "../modal/StatusModal";
 
 export function SuperAdminTopbar() {
   const dateObject = new Date();
@@ -251,6 +252,11 @@ export function SuperAdminTopbar() {
                                 navigate={"/miscellaneous/setup"}
                                 text={"Setup"}
                               />
+                              <SidebarItem
+                                icon={info.icons.modules.users}
+                                navigate={"/miscellaneous/report"}
+                                text={"Schedule Reports"}
+                              />
                             </main>
                           </>
                         }
@@ -295,7 +301,7 @@ export function SuperAdminTopbar() {
           <div className="px-1 ms-2">
             <main className="d-flex gap-1">
               <DefaultButton
-                class="text-white"
+                class="text-white border-0"
                 text={`${loggeduser.LastName}, ${loggeduser.FirstName}`}
                 function={() => {}}
                 toggle="modal"
@@ -305,25 +311,23 @@ export function SuperAdminTopbar() {
                 <FaUserCircle />
               </div>
             </main>
-            <ViewModal
+            <StatusModal
               id={"MenuModal"}
               title={<h6 className="text-center text-black">Kwa-Goodbye</h6>}
               content={
-                <>
-                  <main className="w-100 bottom-0 end-0 d-flex align-items-start justify-content-end">
-                    <section className="w-100 p-0 m-0 border rounded p-2 px-3 text-dark">
-                      <p className="p-0 m-0">{`Are you leaving ? ${loggeduser.LastName}, ${loggeduser.FirstName}`}</p>
-                    </section>
+                <main className="">
+                  <main className="w-100 mb-3 p-0 m-0 d-flex flex-column align-items-center">
                     <img
                       src={owie}
                       alt="..."
                       className=""
                       style={{ height: "10em" }}
                     />
+                    <h3 className="primary-text fw-bold">Are you leaving?</h3>
                   </main>
                   <section className="d-flex gap-2">
                     <DefaultButton
-                      class="w-auto primary-outline-gradient py-2 px-5"
+                      class="w-auto primary-outline-gradient py-2 px-3"
                       reversed={true}
                       text="No"
                       function={() => {}}
@@ -337,7 +341,7 @@ export function SuperAdminTopbar() {
                       dismiss={"modal"}
                     />
                   </section>
-                </>
+                </main>
               }
             />
           </div>

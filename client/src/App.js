@@ -51,6 +51,8 @@ import { SectionExamination } from "./pages/private/utilities/examination/Sectio
 import { StudentViewExaminations } from "./pages/private/user view/StudentViewExaminations";
 import { CoachViewExaminations } from "./pages/private/user view/CoachViewExaminations";
 import { RoomAvailability } from "./pages/private/user view/RoomAvailability";
+import { Reports } from "./pages/private/miscellaneous/Reports";
+import { DepartmentList } from "./pages/private/user view/DepartmentList";
 
 function App() {
   const navigate = useNavigate();
@@ -205,6 +207,10 @@ function App() {
                           <Route
                             path={"/miscellaneous/log"}
                             element={<Logs />}
+                          ></Route>
+                          <Route
+                            path={"/miscellaneous/report"}
+                            element={<Reports />}
                           ></Route>
                           <Route
                             path={"/miscellaneous/user"}
@@ -377,6 +383,10 @@ function App() {
                             <Route
                               path={"/faculty-locator"}
                               element={<Locator />}
+                            ></Route>
+                            <Route
+                              path={"/departments"}
+                              element={<DepartmentList />}
                             ></Route>
                           </Route>
                         ) : null}

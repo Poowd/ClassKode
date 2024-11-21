@@ -8,9 +8,12 @@ import { DefaultButton } from "../../component/button/DefaultButton";
 import useDatabase from "../../hook/useDatabase";
 import useConfiguration from "../../hook/useConfiguration";
 import useHandleChange from "../../hook/useHandleChange";
+import useModal from "../../hook/useModal";
+import { StatusModal } from "../../component/modal/StatusModal";
 
 export function Login() {
   const dateObject = new Date();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
   const navigate = useNavigate();
   const [info] = useConfiguration();
   const [values, setValues] = useState({
@@ -71,14 +74,33 @@ export function Login() {
               setLogs
             );
             setCookies(JSON.stringify(data.data));
-            //navigate("/");
-            // window.location.reload(true);
             window.location.assign("/");
           } else {
             navigate("/register");
           }
         } else {
-          alert(data.Status === undefined ? "A problem occurred" : data.Status);
+          showModal(
+            "StatusModal",
+            "",
+            <main className="d-flex flex-column">
+              <section className="text-center">
+                <h1 className="text-danger">{info.icons.status.danger}</h1>
+                <h3 className="text-danger fw-bold">Login Failed</h3>
+                <p className="text-secondary">
+                  {data.Status === undefined
+                    ? "A problem occurred"
+                    : data.Status}
+                </p>
+                <button
+                  type="button"
+                  class="btn danger-color mt-3"
+                  data-bs-dismiss="modal"
+                >
+                  Okay
+                </button>
+              </section>
+            </main>
+          );
         }
       } catch (error) {}
     } catch (error) {}
@@ -141,7 +163,7 @@ export function Login() {
                         }}
                       />
                     </main>
-                    <main className="d-flex align-items-center gap-2 mt-4">
+                    <main className="mt-4">
                       <DefaultButton
                         class="warning-color fw-bold text-dark py-3 px-5"
                         type="submit"
@@ -221,17 +243,23 @@ export function Login() {
                             }}
                           />
                         </main>
-                        <main className="d-flex align-items-center gap-2 mt-4">
+                        <small>
+                          <p className="m-0 d-flex gap-3 justify-content-end mt-2">
+                            <Link
+                              to={"https://www.stimunoz.edu.ph/contact-us/"}
+                              target="_blank"
+                              className="text-light"
+                            >
+                              Forgot Password?
+                            </Link>
+                          </p>
+                        </small>
+                        <main className="mt-4">
                           <DefaultButton
-                            class="warning-color fw-bold text-dark py-3 px-5"
+                            class="w-75 warning-color fw-bold text-dark py-2 mx-auto"
                             type="submit"
                             text={<h6 className="m-0">Login</h6>}
                           />
-                          <p className="m-0 d-flex gap-3 justify-content-center">
-                            <Link to={"/termspolicy"} className="text-light">
-                              Forgot Password
-                            </Link>
-                          </p>
                         </main>
                       </div>
                     </div>
@@ -242,6 +270,16 @@ export function Login() {
           </main>
         </main>
       </main>
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
+      />
     </>
   );
 }

@@ -77,7 +77,7 @@ export function StudentViewExaminations() {
             {section.map((section, o) =>
               section.Section === studentSection.Section ? (
                 <>
-                  <h1>{`${section.Section}`}</h1>
+                  <h1 className="fw-bold primary-text display-1">{`${section.Section}`}</h1>
                   <p className="m-0 fst-italic">{`Number of Students: ${section.Population} student/s`}</p>
                 </>
               ) : null

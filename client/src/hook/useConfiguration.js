@@ -63,6 +63,7 @@ import { FaGear } from "react-icons/fa6";
 import { MdEditSquare } from "react-icons/md";
 import { IoMdHelpCircle } from "react-icons/io";
 import { FaCameraRetro } from "react-icons/fa6";
+import { FaLink } from "react-icons/fa";
 
 import m1 from "./../assets/imgs/stimap/m1.png";
 import m2 from "./../assets/imgs/stimap/m2.png";
@@ -83,6 +84,7 @@ import pagaoa from "./../assets/imgs/misc/pagaoa.png";
 import esporsado from "./../assets/imgs/misc/esporsado.JPG";
 import silverio from "./../assets/imgs/misc/silverio.JPG";
 import oliveros from "./../assets/imgs/misc/oliveros.JPG";
+import vinarao from "./../assets/imgs/misc/vinarao.JPG";
 
 import scheduler from "./../assets/imgs/misc/Scheduler.png";
 import locator from "./../assets/imgs/misc/Locator.png";
@@ -138,6 +140,11 @@ export default function useConfiguration() {
           Name: "Joshua Oliveros",
           Role: "Thesis Adviser",
           Image: oliveros,
+        },
+        {
+          Name: "Chary Vinarao",
+          Role: "English Adviser",
+          Image: vinarao,
         },
         {
           Name: "Cristelyn Esporsado",
@@ -307,6 +314,7 @@ export default function useConfiguration() {
         info: <IoAlertCircle />,
         list: <FaListUl />,
         camera: <FaCameraRetro />,
+        link: <FaLink />,
       },
       status: {
         success: <PiCheckFatFill />,

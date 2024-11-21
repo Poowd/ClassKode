@@ -28,11 +28,11 @@ const Schedules = require("./routes/Tables/Schedules.js");
 
 const _User = require("./routes/Tables/_User.js");
 
-const RandomCode = require("./routes/Logic/RandomCode.js");
-const Generate = require("./routes/Logic/GenerateSchedule.js");
-const SaveImage = require("./routes/Logic/SaveImage.js");
-const Login = require("./routes/Logic/Login.js");
-const Statistics = require("./routes/Logic/Statistics.js");
+const RandomCode = require("./routes/logic/RandomCode.js");
+const Generate = require("./routes/logic/GenerateSchedule.js");
+const SaveImage = require("./routes/logic/SaveImage.js");
+const Login = require("./routes/logic/Login.js");
+const Statistics = require("./routes/logic/Statistics.js");
 // = = >
 const multer = require("multer");
 const path = require("path");

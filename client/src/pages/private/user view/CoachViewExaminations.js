@@ -79,7 +79,7 @@ export function CoachViewExaminations() {
             {coach.map((coach, o) =>
               coach.SCHLID === loggeduser.SCHLID ? (
                 <>
-                  <h1>{`${coach.LastName}, ${coach.FirstName}`}</h1>
+                  <h1 className="fw-bold primary-text display-1">{`${coach.LastName}, ${coach.FirstName}`}</h1>
                   <p className="m-0 fst-italic">{`${coach.Department}`}</p>
                 </>
               ) : null

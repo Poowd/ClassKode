@@ -111,7 +111,7 @@ export function RoomAvailability() {
       <main className="h-100 w-100 d-flex align-items-center">
         <main className="h-100 flex-fill py-2">
           <header className="p-2 text-center">
-            <h1>{`Room Availability`}</h1>
+            <h1 className="fw-bold display-1 primary-text">{`Room Availability`}</h1>
             <p className="m-0 fst-italic">{`Room Available`}</p>
             <hr />
           </header>

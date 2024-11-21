@@ -408,7 +408,7 @@ export function LandingPage() {
           </main>
         </section>
         <section className="col-9 h-100 p-2">
-          <main className="h-100 overflow-y-auto pe-2">
+          <main className="h-100 overflow-y-auto pe-2 ps-1">
             {loggeduser.PermissionLevel === "1" ? (
               <main className="bg-white shadow-sm rounded p-2 mb-2">
                 <section className="d-flex gap-2 mb-2">
@@ -453,7 +453,7 @@ export function LandingPage() {
               </main>
             ) : null}
             {posts.map((item, i) => (
-              <main className="bg-white p-3 mb-2">
+              <main className="bg-white rounded shadow-sm p-5 mb-3">
                 <header>
                   <small>
                     <h6 className="m-0">{`${item.LastName}, ${item.FirstName}`}</h6>
@@ -462,16 +462,18 @@ export function LandingPage() {
                 </header>
                 <main>
                   <section className="ms-3">
-                    <h5>{item.SubjectMatter}</h5>
+                    <h3 className="text-primary fw-bold">{item.SubjectMatter}</h3>
                     <pre>{item.Details}</pre>
                   </section>
-                  <footer className="mt-3">
+                  <footer className="mt-5">
+                    <hr />
                     <small>
-                      <p className="m-0 text-secondary">{`${item.Date} at ${item.Time}`}</p>
+                      <small>
+                        <p className="m-0 text-secondary text-end">{`${item.Date} at ${item.Time}`}</p>
+                      </small>
                     </small>
                   </footer>
                 </main>
-                <hr />
               </main>
             ))}
           </main>

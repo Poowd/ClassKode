@@ -191,7 +191,7 @@ export function Homepage() {
             content={
               <main>
                 <header className="w-100 text-center mb-5">
-                  <h1 className="fw-bold text-3xl">Special Thanks</h1>
+                  <h1 className="fw-bold text-3xl primary-text">Special Thanks</h1>
                 </header>
                 <main>
                   <ul className="d-flex flex-wrap justify-content-center gap-5">

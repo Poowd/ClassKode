@@ -75,7 +75,7 @@ export function StudentViewSchedule() {
             {section.map((section, o) =>
               section.Section === studentSection.Section ? (
                 <>
-                  <h1>{`${section.Section}`}</h1>
+                  <h1 className="fw-bold primary-text display-1">{`${section.Section}`}</h1>
                   <p className="m-0 fst-italic">{`Number of Students: ${section.Population} student/s`}</p>
                 </>
               ) : null
@@ -89,7 +89,7 @@ export function StudentViewSchedule() {
               background={"shadow-sm rounded text-center w-100 p-3"}
               title={day}
               content={
-                <section className="w-100 d-flex">
+                <section className="w-100 d-lg-flex">
                   {time.map((time, j) =>
                     schedule.length > 0
                       ? schedule.map((schedule, k) =>

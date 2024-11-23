@@ -8,7 +8,9 @@ import useConfiguration from "../../../hook/useConfiguration";
 import { useToasty } from "../../../hook/useToasty";
 import { useNavigate } from "react-router-dom";
 import owlie from "../../../assets/imgs/misc/owie.png";
+import * as XLSX from "xlsx";
 import { createFileName, useScreenshot } from "use-react-screenshot";
+import { useLogs } from "../../../hook/useLogs";
 
 export function Setup() {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ export function Setup() {
   const [info] = useConfiguration([]);
   const [toasty, showToast] = useToasty();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [academicLevel, setAcademicLevel] = useState([]);
   const [yearLevel, setYearLevel] = useState([]);
@@ -24,6 +27,8 @@ export function Setup() {
   const [building, setBuilding] = useState([]);
   const [floor, setFloor] = useState([]);
   const [facility, setFacility] = useState([]);
+
+  const [everyData, setEveryData] = useState([]);
 
   const [code, setCode] = useState({
     ActionCode: "",
@@ -61,13 +66,80 @@ export function Setup() {
   function getFunctionCode(input) {
     if (input === "-SCREENSHOT -OWLIE") {
       getImage();
+      recordLog(
+        "Took a Screenshot",
+        "Setup Module",
+        "A user took a screenshot of owlie"
+      );
       return;
     }
     if (document.getElementById(`search`) !== null) {
       return (document.getElementById(`search`).value = "");
     }
+    if (input === "-GT -ALL -DT") {
+      getAllData();
+      recordLog(
+        "Requested All Data",
+        "Setup Module",
+        "A user requested the current set of data"
+      );
+      return;
+    }
+    if (input === "-GT -ALL -STP") {
+      getAllSetups();
+      recordLog(
+        "Requested All Setup Data",
+        "Setup Module",
+        "A user requested the current set of setup data"
+      );
+      return;
+    }
     return;
   }
+
+  const getAllData = () => {
+    function getSheet(data, sheetName) {
+      XLSX.utils.book_append_sheet(
+        workbook,
+        XLSX.utils.json_to_sheet(data),
+        sheetName
+      );
+    }
+    const workbook = XLSX.utils.book_new();
+    getSheet(everyData.department, "department");
+    getSheet(everyData.program, "program");
+    getSheet(everyData.course, "course");
+    getSheet(everyData.coach, "coach");
+    getSheet(everyData.section, "section");
+    getSheet(everyData.room, "room");
+    getSheet(everyData.setup, "setup");
+    getSheet(everyData.assignment, "assignment");
+    getSheet(everyData.projection, "projection");
+    XLSX.writeFile(workbook, "CK_STI_Data.xlsx");
+  };
+
+  const getAllSetups = () => {
+    function getSheet(data, sheetName) {
+      XLSX.utils.book_append_sheet(
+        workbook,
+        XLSX.utils.json_to_sheet(data),
+        sheetName
+      );
+    }
+    const workbook = XLSX.utils.book_new();
+    getSheet(academicLevel, "academicLevel");
+    getSheet(yearLevel, "yearLevel");
+    getSheet(semester, "semester");
+    getSheet(coachType, "coachType");
+    getSheet(building, "building");
+    getSheet(floor, "floor");
+    getSheet(facility, "facility");
+    XLSX.writeFile(workbook, "CK_STI_Setups.xlsx");
+  };
+
+  useEffect(() => {
+    data_get("get-all-data", setEveryData);
+  }, [getAllData]);
 
   return (
     <main className="h-100 row m-0 p-0">
@@ -124,7 +196,7 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Academic Level</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {academicLevel &&
                     academicLevel.map((acadLevel, i) => (
                       <li key={i} className="list-group-item">
@@ -145,10 +217,10 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Semester</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {semester &&
                     semester.map((semester, i) => (
-                      <li key={i} class="list-group-item">
+                      <li key={i} className="list-group-item">
                         <main className="row m-0 p-0">
                           <section className="col-8 p-0">
                             {semester.Semester}
@@ -166,10 +238,10 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Year Level</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {yearLevel &&
                     yearLevel.map((yearLevel, i) => (
-                      <li key={i} class="list-group-item">
+                      <li key={i} className="list-group-item">
                         <main className="row m-0 p-0">
                           <section className="col-8 p-0">
                             {yearLevel.YearLevel}
@@ -187,10 +259,10 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Coach Type</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {coachType &&
                     coachType.map((coachType, i) => (
-                      <li key={i} class="list-group-item">
+                      <li key={i} className="list-group-item">
                         <main className="row m-0 p-0">
                           <section className="col-8 p-0">
                             {coachType.Type}
@@ -208,10 +280,10 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Building</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {building &&
                     building.map((building, i) => (
-                      <li key={i} class="list-group-item">
+                      <li key={i} className="list-group-item">
                         <main className="row m-0 p-0">
                           <section className="col-8 p-0">
                             {building.Building}
@@ -229,10 +301,10 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Floor</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {floor &&
                     floor.map((floor, i) => (
-                      <li key={i} class="list-group-item">
+                      <li key={i} className="list-group-item">
                         <main className="row m-0 p-0">
                           <section className="col-8 p-0">{floor.Floor}</section>
                           <section className="col-4 p-0"></section>
@@ -248,10 +320,10 @@ export function Setup() {
             <main className="p-3">
               <p className="m-0 fw-semibold">Facility</p>
               <main>
-                <ul class="list-group list-group-flush">
+                <ul className="list-group list-group-flush">
                   {facility &&
                     facility.map((facility, i) => (
-                      <li key={i} class="list-group-item">
+                      <li key={i} className="list-group-item">
                         <main className="row m-0 p-0">
                           <section className="col-8 p-0">
                             {facility.Facility}

@@ -119,4 +119,44 @@ router.get("/data-entry-count", (req, res) => {
   }
 });
 
+router.get("/get-all-data", (req, res) => {
+  try {
+    pool.query(`SELECT * FROM department`, (err, department) => {
+      pool.query(`SELECT * FROM program`, (err, program) => {
+        pool.query(`SELECT * FROM course`, (err, course) => {
+          pool.query(`SELECT * FROM coach`, (err, coach) => {
+            pool.query(`SELECT * FROM section`, (err, section) => {
+              pool.query(`SELECT * FROM room`, (err, room) => {
+                pool.query(`SELECT * FROM setup`, (err, setup) => {
+                  pool.query(`SELECT * FROM assignment`, (err, assignment) => {
+                    pool.query(
+                      `SELECT * FROM projection`,
+                      (err, projection) => {
+                        return res.json({
+                          department: department.rows,
+                          program: program.rows,
+                          course: course.rows,
+                          coach: coach.rows,
+                          section: section.rows,
+                          room: room.rows,
+                          setup: setup.rows,
+                          assignment: assignment.rows,
+                          projection: projection.rows,
+                        });
+                      }
+                    );
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

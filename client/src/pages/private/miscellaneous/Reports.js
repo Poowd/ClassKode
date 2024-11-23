@@ -4,10 +4,12 @@ import { useCoachUnits } from "../../../hook/useCoachUnits";
 import useTimeFormat from "../../../hook/useTimeFormat";
 import * as XLSX from "xlsx";
 import { useRoomUsage } from "../../../hook/useRoomUsage";
+import { useLogs } from "../../../hook/useLogs";
 
 export function Reports() {
   const [getRoomUsage, getRoomUsageWeek] = useRoomUsage();
   const [get, post, data_get, data_post] = useDatabase();
+  const [recordLog] = useLogs();
   const [convertMinutes] = useTimeFormat();
   const [academicYear, setAcademicYear] = useState([]);
   const [sections, setSections] = useState([]);
@@ -175,7 +177,7 @@ export function Reports() {
       XLSX.utils.book_append_sheet(workbook, coaches, "Coaches");
       XLSX.utils.book_append_sheet(workbook, sections, "Sections");
       XLSX.utils.book_append_sheet(workbook, rooms, "Rooms");
-      XLSX.writeFile(workbook, "data.xlsx");
+      XLSX.writeFile(workbook, "CK_STI_Reports.xlsx");
     }, 1000);
   }
 

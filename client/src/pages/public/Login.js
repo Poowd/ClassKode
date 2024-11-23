@@ -10,12 +10,14 @@ import useConfiguration from "../../hook/useConfiguration";
 import useHandleChange from "../../hook/useHandleChange";
 import useModal from "../../hook/useModal";
 import { StatusModal } from "../../component/modal/StatusModal";
+import { useLogs } from "../../hook/useLogs";
 
 export function Login() {
   const dateObject = new Date();
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const navigate = useNavigate();
   const [info] = useConfiguration();
+  const [recordLog] = useLogs();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -61,18 +63,7 @@ export function Login() {
             //test wether if that account has academic code
             sessionStorage.setItem("user", JSON.stringify(data.data));
             sessionStorage.setItem("loggedin", true);
-            data_post(
-              "log-me",
-              {
-                Action: "Login",
-                Module: "Login Module",
-                User: data.data.SCHLID,
-                Details: "A User has Logged-In",
-                Date: `${dateObject.getMonth()}-${dateObject.getDate()}-${dateObject.getFullYear()}`,
-                Time: `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`,
-              },
-              setLogs
-            );
+            recordLog("Login", "Login Module", "A User has Logged-In");
             setCookies(JSON.stringify(data.data));
             window.location.assign("/");
           } else {
@@ -163,17 +154,23 @@ export function Login() {
                         }}
                       />
                     </main>
+                    <small>
+                      <p className="m-0 d-flex gap-3 justify-content-end mt-2">
+                        <Link
+                          to={"https://www.stimunoz.edu.ph/contact-us/"}
+                          target="_blank"
+                          className="text-light"
+                        >
+                          Forgot Password?
+                        </Link>
+                      </p>
+                    </small>
                     <main className="mt-4">
                       <DefaultButton
-                        class="warning-color fw-bold text-dark py-3 px-5"
+                        class="w-75 warning-color fw-bold text-dark py-2 mx-auto"
                         type="submit"
                         text={<h6 className="m-0">Login</h6>}
                       />
-                      <p className="m-0 d-flex gap-3 justify-content-center">
-                        <Link to={"/termspolicy"} className="text-light">
-                          Forgot Password
-                        </Link>
-                      </p>
                     </main>
                   </div>
                 </div>

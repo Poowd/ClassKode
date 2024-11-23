@@ -14,7 +14,7 @@ export function Logs() {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(logs);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Logs");
-    XLSX.writeFile(workbook, "data.xlsx");
+    XLSX.writeFile(workbook, "CK_STI_Logs.xlsx");
   }
   return (
     <main className="w-100 h-100 overflow-y-auto p-2">

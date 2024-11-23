@@ -69,8 +69,8 @@ export function EditProgram() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Program"}
-        description={"This module creates a program"}
+        title={info.text.moduleText.program.edit}
+        description={info.text.moduleText.program.editDescrition}
         control={
           <>
             <DefaultButton

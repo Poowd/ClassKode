@@ -73,8 +73,8 @@ export function EditCoach() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Edit A Coach"}
-        description={"This module edits a coach"}
+        title={info.text.moduleText.coach.edit}
+        description={info.text.moduleText.coach.editDescrition}
         control={
           <>
             <DefaultButton

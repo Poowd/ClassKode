@@ -7,6 +7,7 @@ import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/PROJECTIONbatchupload.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useLogs } from "../../../../hook/useLogs";
 
 export function GenerateProjection() {
   const { state } = useLocation();
@@ -16,6 +17,7 @@ export function GenerateProjection() {
   const [file, sheets, FileUpload, setSheets] = useSheetImport();
   const [data, setData] = useState([]);
   const [info] = useConfiguration();
+  const [recordLog] = useLogs();
 
   const [toasty, showToast] = useToasty();
 
@@ -26,6 +28,11 @@ export function GenerateProjection() {
         "Sheet Upload",
         `${file} is successfully uploaded!`
       );
+    recordLog(
+      "Uploaded a file for Projection",
+      "Projection Module",
+      "A user uploaded a file for Projections of Section"
+    );
     setData(sheets);
   }, [sheets]);
 
@@ -61,6 +68,11 @@ export function GenerateProjection() {
       }
       //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
+        recordLog(
+          "Saved a Uploaded Projection",
+          "Projection Module",
+          "A user saved Projections of Section"
+        );
         navigate(-1);
       }, 2500); // 2 second delay
     }

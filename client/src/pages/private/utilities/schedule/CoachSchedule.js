@@ -181,7 +181,7 @@ export function CoachSchedule() {
                   </td>
                   {day.map((daytime, index) => (
                     <td
-                      className={`border-end position-relative ${
+                      className={`border-end position-relative overflow-hidden  ${
                         (timeindex - 1) % 2 == 0 ? "border-bottom" : ""
                       }`}
                     >
@@ -198,21 +198,9 @@ export function CoachSchedule() {
                               onClick={() => alert(schedule.Course)}
                             >
                               <main>
-                                <p className="m-0">
-                                  <small className="fw-bold">
-                                    {`${schedule.Course}`}
-                                  </small>
-                                </p>
-                                <p className="m-0">
-                                  <small className="fw-bold">
-                                    {`${schedule.Section}`}
-                                  </small>
-                                </p>
-                                <p className="m-0">
-                                  <small className="fw-bold">
-                                    {`${schedule.Room}`}
-                                  </small>
-                                </p>
+                                <small className="fw-bold">
+                                  <p className="m-0">{`${schedule.Course}`}</p>
+                                </small>
                               </main>
                             </div>
                           ) : +schedule.StartTime +

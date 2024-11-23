@@ -62,8 +62,8 @@ export function EditCourse() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Edit A Course"}
-        description={"This module creates a course"}
+        title={info.text.moduleText.course.edit}
+        description={info.text.moduleText.course.editDescrition}
         control={
           <>
             <DefaultButton

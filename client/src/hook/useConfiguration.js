@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { TbEdit } from "react-icons/tb";
 import { MdFolderDelete } from "react-icons/md";
 import { TbListDetails } from "react-icons/tb";
 import { FaSearch } from "react-icons/fa";
@@ -15,13 +14,9 @@ import { FaBook } from "react-icons/fa";
 import { FaBookOpen } from "react-icons/fa";
 import { FaRegBuilding } from "react-icons/fa";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { GrChapterAdd } from "react-icons/gr";
-import { VscSettingsGear } from "react-icons/vsc";
 import { BsMenuButtonWideFill } from "react-icons/bs";
 import { FaUserSecret } from "react-icons/fa6";
-import { LuHelpCircle } from "react-icons/lu";
 import { MdRestore } from "react-icons/md";
-import { MdOutlineQuickreply } from "react-icons/md";
 import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
 import { VscSettings } from "react-icons/vsc";
@@ -74,7 +69,6 @@ import a3 from "./../assets/imgs/stimap/a3.png";
 import b1 from "./../assets/imgs/stimap/b1.png";
 import b2 from "./../assets/imgs/stimap/b2.png";
 import b3 from "./../assets/imgs/stimap/b3.png";
-import temp_dp from "./../assets/imgs/misc/char.png";
 
 import lape from "./../assets/imgs/misc/lape.jpg";
 import gerena from "./../assets/imgs/misc/gerena.jpg";
@@ -320,6 +314,127 @@ export default function useConfiguration() {
         success: <PiCheckFatFill />,
         warning: <RiAlarmWarningFill />,
         danger: <ImCross />,
+      },
+    },
+    text: {
+      statusText: {
+        active: "Active",
+        inactive: "Inactive",
+        empty: "Empty List",
+      },
+      instructionText: {
+        Curriculum1: "Please select a Department and Program First.",
+        FacultyLocator1: "Please select an Active Coach.",
+        Setup1: "Type the code below to run the Command.",
+        Archive1: "Type the generated code -",
+        Archive2: "to archive the entry -",
+      },
+      moduleText: {
+        department: {
+          title: "Department",
+          create: "New Entry for Departments",
+          createDescrition: "...",
+          edit: "Modify Entry for Departments",
+          editDescrition: "...",
+        },
+        program: {
+          title: "Program",
+          create: "New Entry for Programs",
+          createDescrition: "...",
+          edit: "Modify Entry for Programs",
+          editDescrition: "...",
+        },
+        course: {
+          title: "Course",
+          create: "New Entry for Courses",
+          createDescrition: "...",
+          edit: "Modify Entry for Courses",
+          editDescrition: "...",
+        },
+        coach: {
+          title: "Coach",
+          create: "New Entry for Coaches",
+          createDescrition: "...",
+          edit: "Modify Entry for Coaches",
+          editDescrition: "...",
+        },
+        room: {
+          title: "Room",
+          create: "New Entry for Rooms",
+          createDescrition: "...",
+          edit: "Modify Entry for Rooms",
+          editDescrition: "...",
+        },
+        section: {
+          title: "Section",
+          create: "New Entry for Sections",
+          createDescrition: "...",
+          edit: "Modify Entry for Sections",
+          editDescrition: "...",
+          generate: "Generate Entries for Sections",
+          generateDescrition: "...",
+        },
+        curriculum: {
+          title: "Curriculum Course",
+          create: "New Entry for Curriculum",
+          createDescrition: "...",
+          edit: "Modify Entry for Curriculum",
+          editDescrition: "...",
+          upload: "Uploaded Entries for Curriculum",
+          uploadDescrition: "...",
+        },
+        assignment: {
+          title: "Assignment",
+          create: "New Entry for Coach's Assignments",
+          createDescrition: "...",
+          edit: "Modify Entry for Coach's Assignments",
+          editDescrition: "...",
+        },
+        projection: {
+          title: "Projection",
+          create: "New Entry for Projections",
+          createDescrition: "...",
+          edit: "Modify Entry for Projections",
+          editDescrition: "...",
+          upload: "Uploaded Entries for Projections",
+          uploadDescrition: "...",
+        },
+        classSchedule: {
+          title: "Class Schedule",
+          create: "New Entry for Classes",
+          createDescrition: "...",
+          edit: "Modify Entry for Classes",
+          editDescrition: "...",
+          generate: "Generate Entries for Classes",
+          generateDescrition: "...",
+        },
+        examSchedule: {
+          title: "Exam Schedule",
+          create: "New Entry for Exams",
+          createDescrition: "...",
+          edit: "Modify Entry for Exams",
+          editDescrition: "...",
+          generate: "Generate Entries for Exams",
+          generateDescrition: "...",
+        },
+        user: {
+          title: "User",
+          create: "New Entry for Users",
+          createDescrition: "...",
+          edit: "Modify Entry for Users",
+          editDescrition: "...",
+          upload: "Uploaded Entries for Users",
+          uploadDescrition: "...",
+        },
+      },
+      actionText: {
+        generate: {
+          schedule: "Generated a set of Schedules",
+          user: "",
+          projection: "",
+          curriculum: "",
+          section: "",
+        },
       },
     },
     maps: {

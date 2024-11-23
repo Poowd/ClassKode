@@ -14,6 +14,7 @@ import { SelectButtonItemSelected } from "../../../../component/dropdown/select/
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
 import useHandleChange from "../../../../hook/useHandleChange";
 import { StatusModal } from "../../../../component/modal/StatusModal";
+import { useLogs } from "../../../../hook/useLogs";
 
 export function GenerateExaminations() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ export function GenerateExaminations() {
   const [data, setData] = useState([]);
   const [schedulestatus, setScheduleStatus] = useState([]);
   const [dataChange] = useHandleChange(setGenSelection);
+  const [recordLog] = useLogs();
 
   useEffect(() => {
     data_get("current-academic-year", setAY);
@@ -105,6 +107,11 @@ export function GenerateExaminations() {
           "set-exam-status",
           { data: ay.Code, level: genSelection },
           setScheduleStatus
+        );
+        recordLog(
+          "Saved a Generated Schedule",
+          "Exam Schedule Module",
+          "A user saved a set of Exam Schedules"
         );
         showModal(
           "StatusModal",
@@ -183,6 +190,11 @@ export function GenerateExaminations() {
                         setExamSchedule
                       );
                       setTimeout(() => {
+                        recordLog(
+                          "Generated a Set of Schedule",
+                          "Exam Schedule Module",
+                          "A user generated a set of Exam Schedules for Tertiary"
+                        );
                         hideModal();
                       }, 2500); // 2 second delay
                     }}
@@ -205,6 +217,11 @@ export function GenerateExaminations() {
                         setExamSchedule
                       );
                       setTimeout(() => {
+                        recordLog(
+                          "Generated a Set of Schedule",
+                          "Exam Schedule Module",
+                          "A user generated a set of Exam Schedules for SHS"
+                        );
                         hideModal();
                       }, 2500); // 2 second delay
                     }}

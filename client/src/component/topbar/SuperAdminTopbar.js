@@ -269,7 +269,7 @@ export function SuperAdminTopbar() {
           </div>
           <div className="d-flex gap-2">
             <h5 className="p-0 m-0">
-              <span className="fw-bold">ClassKode</span>
+              <span className="fw-bold gold-text">ClassKode</span>
             </h5>
           </div>
         </div>

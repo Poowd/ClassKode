@@ -136,8 +136,8 @@ export function CreateSection() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Section"}
-        description={"This module creates a section"}
+        title={info.text.moduleText.section.create}
+        description={info.text.moduleText.section.createDescrition}
         control={
           <>
             <DefaultButton

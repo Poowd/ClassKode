@@ -11,12 +11,14 @@ import useDatabase from "../../../../hook/useDatabase";
 import useConfiguration from "../../../../hook/useConfiguration";
 import { useToasty } from "../../../../hook/useToasty";
 import { DefaultToast } from "../../../../component/toast/DefaultToast";
+import { useLogs } from "../../../../hook/useLogs";
 
 export function GenerateSection() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
+  const [recordLog] = useLogs();
 
   const [sectionlist, setSectionList] = useState([]);
   const [semester, setSemester] = useState([]);
@@ -78,19 +80,12 @@ export function GenerateSection() {
     });
 
     setSectionList(generated_phase1);
+    recordLog(
+      "Generated a Set of Sections",
+      "Sections Module",
+      `A user genereted a set of Sections for ${data.Code}`
+    );
   }, [data.Code]);
-
-  function sleep(time) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, time || 1000);
-    });
-  }
-
-  async function TestData(data) {
-    setTimeout(() => {
-      data_post("section-generate", data, setData);
-    }, 1000); // 2 second delay
-  }
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -113,9 +108,14 @@ export function GenerateSection() {
         } while (data.Status === "Success");
       }
       showToast(info.icons.others.info, "Sections", `Sections are saved!`);
+      recordLog(
+        "Saved a Generated Sections",
+        "Sections Module",
+        "A user saved a set of Sections"
+      );
       setTimeout(() => {
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 

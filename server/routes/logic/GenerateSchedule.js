@@ -301,7 +301,151 @@ router.post("/gen-class", (req, res) => {
   console.log(sct_classes);
   //console.log(rooms);
 
-  return res.json(class_schedules);
+  //return res.json(class_schedules);
+
+  const POPULATION_SIZE = 1000;
+  const GENERATIONS = 100;
+  const MUTATION_RATE = 0.01;
+
+  function generateInitialPopulation() {
+    let population = [];
+    for (let i = 0; i < POPULATION_SIZE; i++) {
+      let individual = SHUFFLE(class_schedules);
+      population.push(individual);
+    }
+    return population;
+  }
+
+  function fitness(individual) {
+    let schedule = [];
+    let conflicts = 0;
+
+    for (let i = 0; i < individual.length; i++) {
+      let classData = individual[i];
+      let coach = ADD_COACH(classData.CRS_Code, classData.Units);
+      let room = findRoom(classData, schedule);
+
+      if (room) {
+        schedule.push({
+          ...classData,
+          SCHLID: coach.SCHLID,
+          CCH: coach.LastName,
+          ROM: room.Room,
+          DAY: room.Day,
+          STR_TME: room.Units * 60 + startofday,
+          END_TME: (room.Units + classData.Units) * 60 + startofday,
+        });
+      } else {
+        conflicts++;
+      }
+    }
+
+    return schedule.length / classes.length - conflicts / classes.length;
+  }
+
+  function findRoom(classData, schedule) {
+    for (let room of rooms) {
+      if (
+        room.Availability === "Free" &&
+        room.Capacity >= classData.Population
+      ) {
+        let conflict = false;
+        for (let scheduledClass of schedule) {
+          if (
+            scheduledClass.ROM === room.Room &&
+            scheduledClass.DAY === room.Day
+          ) {
+            if (isTimeConflict(scheduledClass, classData, room.Units)) {
+              conflict = true;
+              break;
+            }
+          }
+        }
+        if (!conflict) {
+          room.Availability = "Not Available";
+          return room;
+        }
+      }
+    }
+    return null;
+  }
+
+  function isTimeConflict(scheduledClass, newClass, newClassStart) {
+    let scheduledStart = scheduledClass.STR_TME;
+    let scheduledEnd = scheduledClass.END_TME;
+    let newStart = newClassStart * 60 + startofday;
+    let newEnd = (newClassStart + newClass.Units) * 60 + startofday;
+
+    return !(newStart >= scheduledEnd || newEnd <= scheduledStart);
+  }
+
+  function selection(population) {
+    return population
+      .sort((a, b) => fitness(b) - fitness(a))
+      .slice(0, POPULATION_SIZE / 2);
+  }
+
+  function crossover(parent1, parent2) {
+    let crossoverPoint = Math.floor(Math.random() * classes.length);
+    let child = parent1
+      .slice(0, crossoverPoint)
+      .concat(parent2.slice(crossoverPoint));
+    return child;
+  }
+
+  function mutation(individual) {
+    if (Math.random() < MUTATION_RATE) {
+      let index1 = Math.floor(Math.random() * classes.length);
+      let index2 = Math.floor(Math.random() * classes.length);
+      [individual[index1], individual[index2]] = [
+        individual[index2],
+        individual[index1],
+      ];
+    }
+    return individual;
+  }
+
+  function geneticAlgorithm() {
+    let population = generateInitialPopulation();
+
+    for (let i = 0; i < GENERATIONS; i++) {
+      let selected = selection(population);
+      let newPopulation = [];
+
+      while (newPopulation.length < POPULATION_SIZE) {
+        let parent1 = selected[Math.floor(Math.random() * selected.length)];
+        let parent2 = selected[Math.floor(Math.random() * selected.length)];
+        let child = crossover(parent1, parent2);
+        child = mutation(child);
+        newPopulation.push(child);
+      }
+
+      population = newPopulation;
+    }
+
+    return population[0];
+  }
+
+  let bestSchedule = geneticAlgorithm();
+  let finalSchedule = [];
+
+  for (let classData of bestSchedule) {
+    let coach = ADD_COACH(classData.CRS_Code, classData.Units);
+    let room = findRoom(classData, finalSchedule);
+
+    if (room) {
+      finalSchedule.push({
+        ...classData,
+        SCHLID: coach.SCHLID,
+        CCH: coach.LastName,
+        ROM: room.Room,
+        DAY: room.Day,
+        STR_TME: room.Units * 60 + startofday,
+        END_TME: (room.Units + classData.Units) * 60 + startofday,
+      });
+    }
+  }
+  return res.json(bestSchedule);
 });
 
 router.post("/gen-exam-shs", (req, res) => {

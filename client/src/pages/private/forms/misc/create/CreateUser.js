@@ -93,8 +93,8 @@ export function CreateUser() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A User"}
-        description={"This module creates a user"}
+        title={info.text.moduleText.user.create}
+        description={info.text.moduleText.user.createDescrition}
         control={
           <>
             <DefaultButton

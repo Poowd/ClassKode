@@ -88,8 +88,8 @@ export function EditUser() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Edit A User"}
-        description={"This module edit a user"}
+        title={info.text.moduleText.user.edit}
+        description={info.text.moduleText.user.editDescrition}
         control={
           <>
             <DefaultButton

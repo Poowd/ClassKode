@@ -94,8 +94,8 @@ export function CreateDepartment() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Department"}
-        description={"This module creates a department"}
+        title={info.text.moduleText.department.create}
+        description={info.text.moduleText.department.createDescrition}
         control={
           <>
             <DefaultButton

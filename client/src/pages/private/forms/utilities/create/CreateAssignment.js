@@ -117,10 +117,8 @@ export function CreateAssignment() {
   return (
     <form className="h-100" onSubmit={handleSubmit}>
       <DataControllerTemplate
-        title={"Coach Assignment"}
-        description={
-          "Assign a coach to a set of units and target course for this academic year"
-        }
+        title={info.text.moduleText.assignment.create}
+        description={info.text.moduleText.assignment.createDescrition}
         extradata={
           <>
             <label className="p-0 m-0">

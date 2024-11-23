@@ -6,12 +6,14 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
 import useHandleChange from "../../../../../hook/useHandleChange";
 import useDatabase from "../../../../../hook/useDatabase";
+import useConfiguration from "../../../../../hook/useConfiguration";
 
 export function EditCurriculum() {
   const params = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
+  const [info] = useConfiguration();
 
   const [curriculum, setCurriculum] = useState([]);
   const [data, setData] = useState({
@@ -36,8 +38,8 @@ export function EditCurriculum() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Edit A Curriculum"}
-        description={"This module edit a curriculum"}
+        title={info.text.moduleText.curriculum.edit}
+        description={info.text.moduleText.curriculum.editDescrition}
         control={
           <>
             <DefaultButton

@@ -10,6 +10,7 @@ import { LoaderModal } from "../../../../component/modal/LoaderModal";
 import { StatusModal } from "../../../../component/modal/StatusModal";
 import { DefaultDropdown } from "../../../../component/dropdown/default/DefaultDropdown";
 import { DefaultDropdownItem } from "../../../../component/dropdown/default/DefaultDropdownItem";
+import { useLogs } from "../../../../hook/useLogs";
 
 export function GenerateSchedule() {
   const bootstrap = require("bootstrap");
@@ -18,6 +19,7 @@ export function GenerateSchedule() {
   const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [convertMinutes] = useTimeFormat();
   const [info] = useConfiguration();
+  const [recordLog] = useLogs();
 
   const [expected, setExpected] = useState([]);
   const [room, setRoom] = useState([]);
@@ -99,6 +101,11 @@ export function GenerateSchedule() {
       //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
         data_post("set-schedule-status", { data: ay.Code }, setScheduleStatus);
+        recordLog(
+          "Saved a Generated Schedule",
+          "Class Schedule Module",
+          "A user saved a set of Class Schedules"
+        );
         showModal(
           "StatusModal",
           "",
@@ -106,6 +113,9 @@ export function GenerateSchedule() {
             <section className="text-center">
               <h1 className="text-success">{info.icons.status.success}</h1>
               <h3 className="text-success fw-bold">Success</h3>
+              <p className="m-0">
+                Generation of Schedules is Temporarily Disabled
+              </p>
               <button
                 type="button"
                 class="btn safe-color mt-3"
@@ -117,7 +127,7 @@ export function GenerateSchedule() {
           </main>
         );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 500); // 2 second delay
     }
   };
 
@@ -188,7 +198,11 @@ export function GenerateSchedule() {
                     icon={info.icons.forms.generate}
                     text="Generate"
                     function={() => {
-                      showModal("AwaitModal", "", "Schedules are being made.");
+                      showModal(
+                        "AwaitModal",
+                        "",
+                        "Schedules are being made. This may take a while."
+                      );
                       data_post(
                         "gen-class",
                         {
@@ -203,8 +217,13 @@ export function GenerateSchedule() {
                         setSchedule
                       );
                       setTimeout(() => {
+                        recordLog(
+                          "Generated a Set of Schedule",
+                          "Class Schedule Module",
+                          "A user generated a set of Class Schedules"
+                        );
                         hideModal();
-                      }, 2500); // 2 second delay
+                      }, 2000); // 2 second delay
                     }}
                     disabled={ay.GeneratedSchedules === true ? true : false}
                   />
@@ -389,7 +408,7 @@ export function GenerateSchedule() {
         title={modalcontent.Title}
         content={
           <>
-            <main>{modalcontent.Content}</main>
+            <main className="text-center">{modalcontent.Content}</main>
           </>
         }
         trigger={() => {}}

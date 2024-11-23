@@ -177,7 +177,7 @@ export function SectionSchedule() {
                   </td>
                   {day.map((daytime, index) => (
                     <td
-                      className={`border-end position-relative ${
+                      className={`border-end position-relative overflow-hidden  ${
                         (timeindex - 1) % 2 == 0 ? "border-bottom" : ""
                       }`}
                     >
@@ -185,7 +185,7 @@ export function SectionSchedule() {
                         schedule.Day === daytime ? (
                           +schedule.StartTime === timeslot ? (
                             <div
-                              className={`p-2 z-2 w-100 d-flex align-items-center justify-content-center position-absolute top-0 text-break text-wrap border-top border-dark border-start border-end ${
+                              className={`p-2 z-2 w-100 d-flex align-items-center justify-content-center position-absolute top-0 text-break text-wrap border-top border-dark border-start border-end text-center ${
                                 schedule.Component.includes("Minor") ||
                                 schedule.Component.includes("General")
                                   ? "plotted2-2"
@@ -193,22 +193,10 @@ export function SectionSchedule() {
                               }`}
                               onClick={() => alert(schedule.Course)}
                             >
-                              <main>
-                                <p className="m-0">
-                                  <small className="fw-bold">
-                                    {`${schedule.Course}`}
-                                  </small>
-                                </p>
-                                <p className="m-0">
-                                  <small className="fw-bold">
-                                    {`${schedule.Section}`}
-                                  </small>
-                                </p>
-                                <p className="m-0">
-                                  <small className="fw-bold">
-                                    {`${schedule.Room}`}
-                                  </small>
-                                </p>
+                              <main className="">
+                                <small className="fw-bold">
+                                  <p className="m-0">{`${schedule.Course}`}</p>
+                                </small>
                               </main>
                             </div>
                           ) : +schedule.StartTime +

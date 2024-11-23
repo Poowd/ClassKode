@@ -75,8 +75,8 @@ export function Login() {
             "",
             <main className="d-flex flex-column">
               <section className="text-center">
-                <h1 className="text-danger">{info.icons.status.danger}</h1>
-                <h3 className="text-danger fw-bold">Login Failed</h3>
+                <h1 className="danger-text">{info.icons.status.danger}</h1>
+                <h3 className="danger-text fw-bold">Login Failed</h3>
                 <p className="text-secondary">
                   {data.Status === undefined
                     ? "A problem occurred"

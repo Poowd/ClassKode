@@ -63,8 +63,8 @@ export function CreateSetup() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Setup"}
-        description={"This module creates a setup"}
+        title={info.text.moduleText.curriculum.create}
+        description={info.text.moduleText.curriculum.createDescrition}
         control={
           <>
             <DefaultButton

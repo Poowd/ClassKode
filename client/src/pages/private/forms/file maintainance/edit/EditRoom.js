@@ -68,8 +68,8 @@ export function EditRoom() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Room"}
-        description={"This module creates a room"}
+        title={info.text.moduleText.room.edit}
+        description={info.text.moduleText.room.editDescrition}
         control={
           <>
             <DefaultButton

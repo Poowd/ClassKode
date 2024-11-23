@@ -91,8 +91,8 @@ export function CreateProgram() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Program"}
-        description={"This module creates a program"}
+        title={info.text.moduleText.program.create}
+        description={info.text.moduleText.program.createDescrition}
         control={
           <>
             <DefaultButton

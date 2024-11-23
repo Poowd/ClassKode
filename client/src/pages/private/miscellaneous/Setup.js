@@ -174,7 +174,7 @@ export function Setup() {
                   <section className="pt-2">
                     <div className="h-100 alert alert-primary m-0" role="alert">
                       <p className="m-0 fw-semibold">
-                        Code for each Action are the following:
+                        {info.text.instructionText.Setup1}
                       </p>
                       <section className="px-5 py-2">
                         <p className="m-0">

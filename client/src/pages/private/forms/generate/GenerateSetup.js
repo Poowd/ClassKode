@@ -11,6 +11,7 @@ import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/CURRICULUMbatchupload.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useLogs } from "../../../../hook/useLogs";
 
 export function GenerateSetup() {
   const { state } = useLocation();
@@ -21,6 +22,7 @@ export function GenerateSetup() {
   const [data, setData] = useState([]);
   const [dataentry, setDataEntry] = useState([]);
   const [info] = useConfiguration();
+  const [recordLog] = useLogs();
 
   const [toasty, showToast] = useToasty();
   const [course, setCourse] = useState([]);
@@ -44,6 +46,11 @@ export function GenerateSetup() {
         "Sheet Upload",
         `${file} is successfully uploaded!`
       );
+    recordLog(
+      "Uploaded a Set of Curriculum",
+      "Curriculum Module",
+      "A user uploaded a set of Curriculum"
+    );
     setData(sheets);
     setDataEntry(sheets);
   }, [sheets]);
@@ -101,12 +108,21 @@ export function GenerateSetup() {
           }
         }
 
-        showToast(info.icons.others.info, "Users", "User Data are saved!");
+        showToast(
+          info.icons.others.info,
+          "Curriculum",
+          "Curriculum Data are saved!"
+        );
+        recordLog(
+          "Saved an Uploaded Curriculum",
+          "Curriculum Module",
+          "A user saved a set of Curriculum"
+        );
         setTimeout(() => {
           navigate(-1);
         }, 2500); // 2 second delay
       } catch (err) {
-        showToast(info.icons.others.info, "Users", err);
+        showToast(info.icons.others.info, "Curriculum", err);
       }
     }
   };

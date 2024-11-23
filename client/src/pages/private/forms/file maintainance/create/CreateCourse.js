@@ -84,8 +84,8 @@ export function CreateCourse() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Course"}
-        description={"This module creates a course"}
+        title={info.text.moduleText.course.create}
+        description={info.text.moduleText.course.createDescrition}
         control={
           <>
             <DefaultButton

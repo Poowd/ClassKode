@@ -12,7 +12,7 @@ export class StatusModal extends React.Component {
       >
         <div className="modal-dialog modal-dialog-scrollable modal-dialog-centered ">
           <div className="modal-content">
-            <div className="modal-body p-5 d-flex justify-content-between align-items-center flex-column">
+            <div className="modal-body p-5 d-flex justify-content-between text-center align-items-center flex-column">
               <div>{this.props.content}</div>
             </div>
           </div>

@@ -64,10 +64,8 @@ export function CreateProjection() {
 
   return (
     <DataControllerTemplate
-      title={"Coach Assignment"}
-      description={
-        "Assign a coach to a set of units and target course for this academic year"
-      }
+    title={info.text.moduleText.projection.create}
+    description={info.text.moduleText.projection.createDescrition}
       additional={<main className="px-3"></main>}
       control={
         <>

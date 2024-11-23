@@ -117,8 +117,8 @@ export function EditSchedule() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Edit A Schedule"}
-        description={`This module edits a schedule ${academicYear.AcademicYear}`}
+        title={info.text.moduleText.classSchedule.edit}
+        description={info.text.moduleText.classSchedule.editDescrition}
         control={
           <>
             <DefaultButton

@@ -112,8 +112,8 @@ export function CreateSchedule() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Schedule"}
-        description={`This module creates a schedule ${academicYear.AcademicYear}`}
+        title={info.text.moduleText.classSchedule.create}
+        description={info.text.moduleText.classSchedule.createDescrition}
         control={
           <>
             <DefaultButton

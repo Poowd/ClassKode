@@ -197,8 +197,8 @@ export function CreateCoach() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={"Create A Coach"}
-        description={"This module creates a coach"}
+        title={info.text.moduleText.coach.create}
+        description={info.text.moduleText.coach.createDescrition}
         control={
           <>
             <DefaultButton

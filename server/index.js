@@ -119,28 +119,12 @@ router.use("/", WeeklyEvent);
 router.use("/", ExpectedClass);
 router.use("/", Logs);
 
-// = = >
-// app.listen(() => {
-//   console.log("Running");
-// });
-// app.get("/", (req, res) => {
-//   res.send("server is running");
-// });
-
-app.listen(8081, () => {
+app.listen(() => {
   console.log("Running");
 });
-app.get("/status", (req, res) => {
+app.get("/", (req, res) => {
   res.send("server is running");
 });
-
-// pool.query(`SELECT * FROM _user`, (err, res) => {
-//   if (!err) {
-//     console.log(res.rows);
-//   } else {
-//     console.log(err.message);
-//   }
-// });
 
 app.post("/test-data", (req, res) => {
   try {

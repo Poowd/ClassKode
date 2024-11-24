@@ -70,6 +70,43 @@ import b1 from "./../assets/imgs/stimap/b1.png";
 import b2 from "./../assets/imgs/stimap/b2.png";
 import b3 from "./../assets/imgs/stimap/b3.png";
 
+import cl1 from "./../assets/imgs/stimap/roommap/cl1.png";
+import cl2 from "./../assets/imgs/stimap/roommap/cl2.png";
+import cl3 from "./../assets/imgs/stimap/roommap/cl3.png";
+import cl4 from "./../assets/imgs/stimap/roommap/cl4.png";
+import m301 from "./../assets/imgs/stimap/roommap/301m.png";
+import m302 from "./../assets/imgs/stimap/roommap/302m.png";
+import m303 from "./../assets/imgs/stimap/roommap/303m.png";
+import m304 from "./../assets/imgs/stimap/roommap/304m.png";
+import thesisr from "./../assets/imgs/stimap/roommap/thesisr.png";
+import englab from "./../assets/imgs/stimap/roommap/englab.png";
+import confe from "./../assets/imgs/stimap/roommap/confe.png";
+import hr1 from "./../assets/imgs/stimap/roommap/hr1.png";
+import scilab from "./../assets/imgs/stimap/roommap/scilab.png";
+import kitlab1 from "./../assets/imgs/stimap/roommap/kitlab1.png";
+import kitlab2 from "./../assets/imgs/stimap/roommap/kitlab2.png";
+import kitlab3 from "./../assets/imgs/stimap/roommap/kitlab3.png";
+import dinelab from "./../assets/imgs/stimap/roommap/dinelab.png";
+import bar from "./../assets/imgs/stimap/roommap/bar.png";
+import court from "./../assets/imgs/stimap/roommap/court.png";
+import drawlab from "./../assets/imgs/stimap/roommap/drawlab.png";
+import b101 from "./../assets/imgs/stimap/roommap/101b.png";
+import b102 from "./../assets/imgs/stimap/roommap/102b.png";
+import b103 from "./../assets/imgs/stimap/roommap/103b.png";
+import b104 from "./../assets/imgs/stimap/roommap/104b.png";
+import b105 from "./../assets/imgs/stimap/roommap/105b.png";
+import b106 from "./../assets/imgs/stimap/roommap/106b.png";
+import b107 from "./../assets/imgs/stimap/roommap/107b.png";
+import b201 from "./../assets/imgs/stimap/roommap/201b.png";
+import b202 from "./../assets/imgs/stimap/roommap/202b.png";
+import b203 from "./../assets/imgs/stimap/roommap/203b.png";
+import b204 from "./../assets/imgs/stimap/roommap/204b.png";
+import b205 from "./../assets/imgs/stimap/roommap/205b.png";
+import b206 from "./../assets/imgs/stimap/roommap/206b.png";
+import avr1 from "./../assets/imgs/stimap/roommap/avr1.png";
+import avr2 from "./../assets/imgs/stimap/roommap/avr2.png";
+import avr3 from "./../assets/imgs/stimap/roommap/avr3.png";
+
 import lape from "./../assets/imgs/misc/lape.jpg";
 import gerena from "./../assets/imgs/misc/gerena.jpg";
 import repil from "./../assets/imgs/misc/repil.jpg";
@@ -380,7 +417,7 @@ export default function useConfiguration() {
           createDescrition: "...",
           edit: "Modify Entry for Curriculum",
           editDescrition: "...",
-          upload: "Uploaded Entries for Curriculum",
+          upload: "Upload Entries for Curriculum",
           uploadDescrition: "...",
         },
         assignment: {
@@ -396,7 +433,7 @@ export default function useConfiguration() {
           createDescrition: "...",
           edit: "Modify Entry for Projections",
           editDescrition: "...",
-          upload: "Uploaded Entries for Projections",
+          upload: "Upload Entries for Projections",
           uploadDescrition: "...",
         },
         classSchedule: {
@@ -423,7 +460,7 @@ export default function useConfiguration() {
           createDescrition: "...",
           edit: "Modify Entry for Users",
           editDescrition: "...",
-          upload: "Uploaded Entries for Users",
+          upload: "Upload Entries for Users",
           uploadDescrition: "...",
         },
       },
@@ -438,6 +475,50 @@ export default function useConfiguration() {
       },
     },
     maps: {
+      roommaps: {
+        main: {
+          comlab1: cl1,
+          comlab2: cl2,
+          comlab3: cl3,
+          comlab4: cl4,
+          room301m: m301,
+          room302m: m302,
+          room303m: m303,
+          room304m: m304,
+        },
+        annexa: {
+          scilab: scilab,
+          thesisroom: thesisr,
+          engilab: englab,
+          conferoom: confe,
+          hr1: hr1,
+          kitlab1: kitlab1,
+          kitlab2: kitlab2,
+          kitlab3: kitlab3,
+          bar: bar,
+          dinelab: dinelab,
+        },
+        annexb: {
+          room101b: b101,
+          room102b: b102,
+          room103b: b103,
+          room104b: b104,
+          room105b: b105,
+          room106b: b106,
+          room107b: b107,
+          room201b: b201,
+          room202b: b202,
+          room203b: b203,
+          room204b: b204,
+          room205b: b205,
+          room206b: b206,
+          court: court,
+          drawlab: drawlab,
+          avr1: avr1,
+          avr2: avr2,
+          avr3: avr3,
+        },
+      },
       m1: (
         <figure className="w-100 h-100 d-flex justify-content-center">
           <img src={m1} alt="m1" className="h-100"></img>

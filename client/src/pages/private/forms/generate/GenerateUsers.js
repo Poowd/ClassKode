@@ -11,14 +11,19 @@ import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/USERbatchupload.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useNavigate } from "react-router-dom";
+import { useLogs } from "../../../../hook/useLogs";
+import useModal from "../../../../hook/useModal";
+import { StatusModal } from "../../../../component/modal/StatusModal";
 
 export function GenerateUsers() {
   //const bootstrap = require("bootstrap");
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
-  const [file, sheets, FileUpload, setSheets] = useSheetImport();
+  const [file, sheets, FileUpload, setSheets, setFile] = useSheetImport();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [data, setData] = useState([]);
   const [info] = useConfiguration();
+  const [recordLog] = useLogs();
 
   const [toasty, showToast] = useToasty();
   const [details, setDetails] = useState({});
@@ -27,8 +32,9 @@ export function GenerateUsers() {
   const [savestatus, setSaveStatus] = useState(null);
 
   function removeSelectedFile() {
-    setData([]);
-    setSheets([]);
+    setData(null);
+    setSheets(null);
+    setFile(null);
     document.getElementById("formFile").value = "";
     document
       .getElementById("formFile")
@@ -66,10 +72,31 @@ export function GenerateUsers() {
           const entry = await response.json();
           console.log(entry);
         }
-        showToast(info.icons.others.info, "Users", "User Data are saved!");
         setTimeout(() => {
+          recordLog(
+            "Saved a Generated Schedule",
+            "Exam Schedule Module",
+            "A user saved a set of Exam Schedules"
+          );
+          showModal(
+            "StatusModal",
+            "",
+            <main className="d-flex flex-column">
+              <section className="text-center">
+                <h1 className="text-success">{info.icons.status.success}</h1>
+                <h3 className="text-success fw-bold">Success</h3>
+                <button
+                  type="button"
+                  class="btn safe-color mt-3"
+                  data-bs-dismiss="modal"
+                >
+                  Okay
+                </button>
+              </section>
+            </main>
+          );
           navigate(-1);
-        }, 2500); // 2 second delay
+        }, 1000); // 2 second delay
       } catch (err) {
         showToast(info.icons.others.info, "Users", err);
       }
@@ -140,12 +167,15 @@ export function GenerateUsers() {
                 onChange={FileUpload}
               />
               <a
+                className="p-0"
                 href={sheetTemplate}
                 download={`UPLOAD SHEET TEMPLATE ( DO NOT RE-ARRANGE)`}
+                style={{ textDecoration: "none" }}
               >
                 <DefaultButton
-                  class="bg-primary text-white"
+                  class="primary-gradient text-white px-2 h-100"
                   icon={info.icons.others.package}
+                  text="Template"
                   function={() => {
                     showToast(
                       info.icons.others.info,
@@ -156,15 +186,16 @@ export function GenerateUsers() {
                 />
               </a>
               <DefaultButton
-                class="bg-primary text-white px-2"
+                class="primary-gradient text-white px-2"
                 icon={info.icons.forms.reset}
                 type="button"
                 text="Reset"
                 function={removeSelectedFile}
               />
               <DefaultButton
-                class="bg-primary text-white"
+                class="primary-gradient text-white px-2"
                 icon={info.icons.forms.add}
+                text="Save"
                 function={saveUserData}
                 disabled={file !== null ? false : true}
               />
@@ -210,58 +241,86 @@ export function GenerateUsers() {
           <main className="h-100 bg-white rounded shadow-sm p-3">
             <section>
               <header className="">
-                <h5 className="p-0 m-0">{`Sheet Details`}</h5>
-                <p>{`Filename: ${
-                  file !== null
-                    ? file.substring(file.length, file.length - 5) === ".xlsx"
-                      ? file
-                      : "Invalid file"
-                    : "No file selected"
-                }`}</p>
+                <h5 className="p-0 m-0">{info.text.moduleText.user.upload}</h5>
+                <p className="m-0 text-secondary">
+                  {info.text.moduleText.user.uploadDescrition}
+                </p>
+                <hr />
               </header>
-              {file && (
-                <main className="mt-2">
-                  <small>
-                    <p className="fw-semibold p-0 m-0">User Types</p>
-                  </small>
-                  <ul class="list-group list-group-flush">
-                    {details.map((item, i) => (
-                      <li class="list-group-item">
-                        <main className="d-flex justify-content-between">
-                          <section>
-                            {item.icon} {item.title}
-                          </section>
-                          <section>
-                            {item.count} {item.shortform}
-                          </section>
-                        </main>
-                      </li>
-                    ))}
-                    <li class="list-group-item">
-                      <main className="d-flex justify-content-between">
-                        <section>
-                          {info.icons.usertypes.invalid} Invalid
-                        </section>
-                        <section>
-                          {`${
-                            file !== null
-                              ? sheets.length -
-                                (itemCounter(sheets, "Developer", "Type") +
-                                  itemCounter(sheets, "Manager", "Type") +
-                                  itemCounter(sheets, "Admin", "Type") +
-                                  itemCounter(sheets, "User", "Type"))
-                              : "0"
-                          } row/s`}
-                        </section>
+              <main>
+                <ul className="m-0 p-0">
+                  <li className="bg-white rounded shadow-sm p-3 mb-2">
+                    <h6 className="m-0">Filename</h6>
+                    <p className="m-0">{`${
+                      file !== null
+                        ? file.substring(file.length, file.length - 5) ===
+                          ".xlsx"
+                          ? file
+                          : "Invalid file"
+                        : "No file selected"
+                    }`}</p>
+                  </li>
+                  <li className="bg-white rounded shadow-sm p-3 mb-2">
+                    <h6 className="m-0">User Types</h6>
+                    {file !== null ? (
+                      <main className="mt-2">
+                        <ul class="list-group list-group-flush">
+                          {details.map((item, i) => (
+                            <li class="list-group-item">
+                              <main className="d-flex justify-content-between">
+                                <section>
+                                  {item.icon} {item.title}
+                                </section>
+                                <section>
+                                  {item.count} {item.shortform}
+                                </section>
+                              </main>
+                            </li>
+                          ))}
+                          <li class="list-group-item">
+                            <main className="d-flex justify-content-between">
+                              <section>
+                                {info.icons.usertypes.invalid} Invalid
+                              </section>
+                              <section>
+                                {`${
+                                  file !== null
+                                    ? sheets.length -
+                                      (itemCounter(
+                                        sheets,
+                                        "Developer",
+                                        "Type"
+                                      ) +
+                                        itemCounter(sheets, "Manager", "Type") +
+                                        itemCounter(sheets, "Admin", "Type") +
+                                        itemCounter(sheets, "User", "Type"))
+                                    : "0"
+                                } row/s`}
+                              </section>
+                            </main>
+                          </li>
+                        </ul>
                       </main>
-                    </li>
-                  </ul>
-                </main>
-              )}
+                    ) : (
+                      "No file selected"
+                    )}
+                  </li>
+                </ul>
+              </main>
             </section>
           </main>
         </section>
       </main>
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main className="text-center">{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
+      />
     </>
   );
 }

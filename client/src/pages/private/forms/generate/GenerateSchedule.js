@@ -136,9 +136,11 @@ export function GenerateSchedule() {
       <main className="h-100 position-relative p-1">
         <main className="h-100 bg-white rounded shadow-sm p-3 overflow-y-auto">
           <header>
-            <h3 className="m-0 p-0">Generate Schedule</h3>
-            <p className="m-0 p-0 text-secondary">
-              Please Generate me a new Schedule
+            <h1 className="fw-bold primary-text pb-2">
+              {info.text.moduleText.classSchedule.generate}
+            </h1>
+            <p className="text-secondary">
+              {info.text.moduleText.classSchedule.generateDescrition}
             </p>
             <hr className="p-0 mx-0 my-2" />
           </header>
@@ -348,7 +350,7 @@ export function GenerateSchedule() {
                             <div className="fw-bold">{item.Section}</div>
                             {item.Course}
                           </div>
-                          <span className="badge text-bg-primary rounded-pill">
+                          <span className="badge text-primary-gradient rounded-pill">
                             {item.Population}
                           </span>
                         </li>
@@ -371,7 +373,7 @@ export function GenerateSchedule() {
                             <div className="fw-bold">{item.Section}</div>
                             {item.Course}
                           </div>
-                          <span className="badge text-bg-primary rounded-pill">
+                          <span className="badge text-primary-gradient rounded-pill">
                             {item.Population}
                           </span>
                         </li>

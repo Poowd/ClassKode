@@ -53,7 +53,7 @@ export function User() {
       setTimeout(() => {
         data_get("random-code-generator", setCode);
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     } else {
       showModal(
         "Modal",

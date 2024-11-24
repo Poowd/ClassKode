@@ -12,6 +12,9 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { MainInput } from "../../../../../component/input/MainInput";
 import useValidation from "../../../../../hook/useValidation";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateUser() {
   const navigate = useNavigate();
@@ -20,6 +23,9 @@ export function CreateUser() {
   const [info] = useConfiguration();
   const [ValiAI, trueValiAIBool] = useValidation();
   const [roomName, setRoomName] = useState("");
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
+
   const [data, setData] = useState({
     SchoolID: "",
     Firstname: "",
@@ -80,14 +86,31 @@ export function CreateUser() {
     e.preventDefault();
     if (true) {
       data_post("user-insert", data, setData);
-      showToast(
-        info.icons.others.info,
-        "User",
-        `User ${data.SchoolID} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Added an User Entry",
+          "User Module",
+          `A user added an entry with an ID ${data.SchoolID}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
   return (
@@ -203,6 +226,16 @@ export function CreateUser() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

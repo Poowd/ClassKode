@@ -47,7 +47,7 @@ export function ViewProgram() {
       );
       setTimeout(() => {
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     } else {
       showModal(
         "Modal",

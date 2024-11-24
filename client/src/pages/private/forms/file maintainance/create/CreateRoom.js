@@ -12,11 +12,16 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { MainInput } from "../../../../../component/input/MainInput";
 import useValidation from "../../../../../hook/useValidation";
+import { useLogs } from "../../../../../hook/useLogs";
+import useModal from "../../../../../hook/useModal";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateRoom() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
   const [info] = useConfiguration();
   const [ValiAI, trueValiAIBool] = useValidation();
   const [roomName, setRoomName] = useState("");
@@ -110,14 +115,31 @@ export function CreateRoom() {
       !checkDuplicateRoom(data.Room)
     ) {
       data_post("room-insert", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Room",
-        `Room ${data.Room} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Saved an Room Entry",
+          "Room Module",
+          `A user saved an entry with an Room ${data.Room}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
   return (
@@ -268,6 +290,16 @@ export function CreateRoom() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

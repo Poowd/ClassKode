@@ -10,6 +10,9 @@ import useDatabase from "../../../../../hook/useDatabase";
 import { useToasty } from "../../../../../hook/useToasty";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import useConfiguration from "../../../../../hook/useConfiguration";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateSetup() {
   const [toasty, showToast] = useToasty();
@@ -17,6 +20,8 @@ export function CreateSetup() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [yearlevel, setYearLevel] = useState([]);
   const [semester, setSemester] = useState([]);
@@ -49,14 +54,31 @@ export function CreateSetup() {
     e.preventDefault();
     if (true) {
       data_post("setup-insert", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Setup",
-        `Setup ${data.Course} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Added an Setup Entry",
+          "Setup Module",
+          `A user added an entry with a Curriculum ${data.Curriculum}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -238,6 +260,16 @@ export function CreateSetup() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

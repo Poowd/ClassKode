@@ -15,6 +15,9 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import useValidation from "../../../../../hook/useValidation";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateAcademicYear() {
   const navigate = useNavigate();
@@ -25,6 +28,8 @@ export function CreateAcademicYear() {
   const [semester, setSemester] = useState([]);
   const [academicCode, setAcademicCode] = useState("");
   const [ValiAI, trueValiAIBool] = useValidation();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [data, setData] = useState({
     AcademicYear: "",
@@ -92,14 +97,31 @@ export function CreateAcademicYear() {
       } catch (error) {
         console.log(error);
       }
-      showToast(
-        info.icons.others.info,
-        "AcademicYear",
-        `AcademicYear ${data.AcademicYear} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Added an Academic Year Entry",
+          "Academic Year Module",
+          `A user added an entry with an Code ${data.AcademicCode}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -277,6 +299,16 @@ export function CreateAcademicYear() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

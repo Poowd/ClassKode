@@ -2,25 +2,24 @@ import React, { useEffect, useState } from "react";
 import useSheetImport from "../../../../hook/useSheetImport";
 import { useToasty } from "../../../../hook/useToasty";
 import { DefaultToast } from "../../../../component/toast/DefaultToast";
-import { useClipboard } from "../../../../hook/useClipboard";
 import useConfiguration from "../../../../hook/useConfiguration";
-import { ViewCard } from "../../../../component/card/ViewCard";
-import { ListCard } from "../../../../component/card/ListCard";
-import useItemCounter from "../../../../hook/useItemCounter";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
 import sheetTemplate from "../../../../assets/template/CURRICULUMbatchupload.xlsx";
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLogs } from "../../../../hook/useLogs";
+import useModal from "../../../../hook/useModal";
+import { StatusModal } from "../../../../component/modal/StatusModal";
 
 export function GenerateSetup() {
   const { state } = useLocation();
   //const bootstrap = require("bootstrap");
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
-  const [file, sheets, FileUpload, setSheets] = useSheetImport();
+  const [file, sheets, FileUpload, setSheets, setFile] = useSheetImport();
   const [data, setData] = useState([]);
   const [dataentry, setDataEntry] = useState([]);
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [info] = useConfiguration();
   const [recordLog] = useLogs();
 
@@ -107,20 +106,31 @@ export function GenerateSetup() {
             data_get("course-list", setCourse);
           }
         }
-
-        showToast(
-          info.icons.others.info,
-          "Curriculum",
-          "Curriculum Data are saved!"
-        );
-        recordLog(
-          "Saved an Uploaded Curriculum",
-          "Curriculum Module",
-          "A user saved a set of Curriculum"
-        );
         setTimeout(() => {
+          recordLog(
+            "Saved an Uploaded Curriculum",
+            "Curriculum Module",
+            "A user saved a set of Curriculum"
+          );
+          showModal(
+            "StatusModal",
+            "",
+            <main className="d-flex flex-column">
+              <section className="text-center">
+                <h1 className="text-success">{info.icons.status.success}</h1>
+                <h3 className="text-success fw-bold">Success</h3>
+                <button
+                  type="button"
+                  class="btn safe-color mt-3"
+                  data-bs-dismiss="modal"
+                >
+                  Okay
+                </button>
+              </section>
+            </main>
+          );
           navigate(-1);
-        }, 2500); // 2 second delay
+        }, 1000); // 2 second delay
       } catch (err) {
         showToast(info.icons.others.info, "Curriculum", err);
       }
@@ -167,7 +177,7 @@ export function GenerateSetup() {
                 style={{ textDecoration: "none" }}
               >
                 <DefaultButton
-                  class="bg-primary text-white px-2 h-100"
+                  class="primary-gradient text-white px-2 h-100"
                   icon={info.icons.others.package}
                   text="Template"
                   function={() => {
@@ -181,14 +191,14 @@ export function GenerateSetup() {
               </a>
 
               <DefaultButton
-                class="bg-primary text-white px-2"
+                class="primary-gradient text-white px-2"
                 icon={info.icons.forms.reset}
                 type="button"
                 text="Reset"
                 function={removeSelectedFile}
               />
               <DefaultButton
-                class="bg-primary text-white px-2"
+                class="primary-gradient text-white px-2"
                 icon={info.icons.forms.add}
                 text="Save"
                 function={saveUserData}
@@ -254,15 +264,44 @@ export function GenerateSetup() {
           <main className="h-100 bg-white rounded shadow-sm p-3">
             <section>
               <header className="">
-                <h5 className="p-0 m-0">{`Sheet Details`}</h5>
-                <p>{state.program}</p>
-                <p>{state.department}</p>
-                <p>{state.curriculum}</p>
+                <h5 className="p-0 m-0">
+                  {info.text.moduleText.curriculum.upload}
+                </h5>
+                <p className="m-0 text-secondary">
+                  {info.text.moduleText.curriculum.uploadDescrition}
+                </p>
+                <hr />
               </header>
+              <main>
+                <ul className="m-0 p-0">
+                  <li className="bg-white rounded shadow-sm p-3 mb-2">
+                    <h6 className="m-0">Program</h6>
+                    <p className="m-0">{state.program}</p>
+                  </li>
+                  <li className="bg-white rounded shadow-sm p-3 mb-2">
+                    <h6 className="m-0">Department</h6>
+                    <p className="m-0">{state.department}</p>
+                  </li>
+                  <li className="bg-white rounded shadow-sm p-3 mb-2">
+                    <h6 className="m-0">Curriculum</h6>
+                    <p className="m-0">{state.curriculum}</p>
+                  </li>
+                </ul>
+              </main>
             </section>
           </main>
         </section>
       </main>
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
+      />
     </>
   );
 }

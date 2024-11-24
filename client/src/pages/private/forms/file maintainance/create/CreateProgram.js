@@ -12,11 +12,16 @@ import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import useValidation from "../../../../../hook/useValidation";
+import { useLogs } from "../../../../../hook/useLogs";
+import useModal from "../../../../../hook/useModal";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateProgram() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
   const [info] = useConfiguration();
   const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
@@ -77,12 +82,29 @@ export function CreateProgram() {
       !checkDuplicateAbbrev(data.Abbrev)
     ) {
       data_post("program-insert", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Program",
-        `Program ${data.Program} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Saved an Program Entry",
+          "Program Module",
+          `A user saved an entry with an Code ${data.Code}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
       }, 1000); // 2 second delay
     }
@@ -202,6 +224,16 @@ export function CreateProgram() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

@@ -13,6 +13,9 @@ import { RadioButton } from "../../../../../component/radiogroup/RadioButton";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function EditCoach() {
   const params = useParams();
@@ -20,6 +23,8 @@ export function EditCoach() {
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [data, setData] = useState({
     SCHLID: null,
@@ -59,14 +64,31 @@ export function EditCoach() {
     e.preventDefault();
     if (true) {
       data_post("coach-edit", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Coach",
-        `Coach  ${data.FirstName} ${data.LastName} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Modified an Coach Entry",
+          "Coach Module",
+          `A user modified an entry with an ID ${data.SCHLID}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -223,6 +245,16 @@ export function EditCoach() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

@@ -16,7 +16,7 @@ export function useToasty() {
     toastToast.show();
     setTimeout(() => {
       toastToast.hide();
-    }, 2500); // delay in seconds
+    }, 1000); // delay in seconds
   }
 
   return [toasty, showToast];

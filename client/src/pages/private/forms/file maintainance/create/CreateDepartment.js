@@ -9,12 +9,17 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { useToasty } from "../../../../../hook/useToasty";
 import useConfiguration from "../../../../../hook/useConfiguration";
 import useValidation from "../../../../../hook/useValidation";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import useModal from "../../../../../hook/useModal";
 
 export function CreateDepartment() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
   const [ValiAI, trueValiAIBool] = useValidation();
   const [data, setData] = useState({
     DPTID: "",
@@ -80,14 +85,31 @@ export function CreateDepartment() {
       !checkDuplicateAbbrev(data.Abbrev)
     ) {
       data_post("department-insert", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Department",
-        `Department ${data.Department} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Saved an Department Entry",
+          "Department Module",
+          `A user saved an entry with an Code ${data.Code}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -155,6 +177,16 @@ export function CreateDepartment() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

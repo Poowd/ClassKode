@@ -11,6 +11,9 @@ import useHandleChange from "../../../../../hook/useHandleChange";
 import useDatabase from "../../../../../hook/useDatabase";
 import { DataControllerTemplate } from "../../../../../layout/grid/DataControllerTemplate";
 import useConfiguration from "../../../../../hook/useConfiguration";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateAssignment() {
   const navigate = useNavigate();
@@ -20,6 +23,8 @@ export function CreateAssignment() {
   const [selectedValues, setSelectedValues] = useState([]);
   const coursecheckbox = document.querySelectorAll(".course-checkbox");
   const [info] = useConfiguration();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [coach, setCoach] = useState([]);
   const [assignment, setAssignment] = useState([]);
@@ -110,7 +115,31 @@ export function CreateAssignment() {
           }
         } while (data.Status === "Success");
       }
-      navigate(-1);
+      setTimeout(() => {
+        recordLog(
+          "Added an Assignment Entry",
+          "Assignment Module",
+          `A user added an entry with an ID ${data.SCHLID}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
+        navigate(-1);
+      }, 1000); // 2 second delay
     }
   };
 
@@ -267,6 +296,16 @@ export function CreateAssignment() {
             </section>
           </main>
         }
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

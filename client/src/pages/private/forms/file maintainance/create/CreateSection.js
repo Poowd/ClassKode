@@ -12,11 +12,16 @@ import { SelectButtonItemSelected } from "../../../../../component/dropdown/sele
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import useValidation from "../../../../../hook/useValidation";
+import { useLogs } from "../../../../../hook/useLogs";
+import useModal from "../../../../../hook/useModal";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function CreateSection() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
   const [info] = useConfiguration();
   const [sectionName, setSectionName] = useState("");
   const [ValiAI, trueValiAIBool] = useValidation();
@@ -122,14 +127,31 @@ export function CreateSection() {
       !checkDuplicateSection(data.Section)
     ) {
       data_post("section-insert", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Section",
-        `Section ${data.Section} is saved!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Saved an Section Entry",
+          "Section Module",
+          `A user saved an entry with an Section ${data.Section}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -246,6 +268,16 @@ export function CreateSection() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

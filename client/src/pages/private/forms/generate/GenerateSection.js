@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DefaultButton } from "../../../../component/button/DefaultButton";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { DataControllerTemplate } from "../../../../layout/grid/DataControllerTemplate";
 import { SelectButtonItemSelected } from "../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../component/dropdown/select/SelectButtonItem";
@@ -12,12 +11,15 @@ import useConfiguration from "../../../../hook/useConfiguration";
 import { useToasty } from "../../../../hook/useToasty";
 import { DefaultToast } from "../../../../component/toast/DefaultToast";
 import { useLogs } from "../../../../hook/useLogs";
+import useModal from "../../../../hook/useModal";
+import { StatusModal } from "../../../../component/modal/StatusModal";
 
 export function GenerateSection() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [recordLog] = useLogs();
 
   const [sectionlist, setSectionList] = useState([]);
@@ -107,13 +109,29 @@ export function GenerateSection() {
           }
         } while (data.Status === "Success");
       }
-      showToast(info.icons.others.info, "Sections", `Sections are saved!`);
-      recordLog(
-        "Saved a Generated Sections",
-        "Sections Module",
-        "A user saved a set of Sections"
-      );
       setTimeout(() => {
+        recordLog(
+          "Saved a Generated Sections",
+          "Sections Module",
+          "A user saved a set of Sections"
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
       }, 1000); // 2 second delay
     }
@@ -187,6 +205,16 @@ export function GenerateSection() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

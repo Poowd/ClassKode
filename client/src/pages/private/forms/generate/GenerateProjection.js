@@ -8,18 +8,31 @@ import sheetTemplate from "../../../../assets/template/PROJECTIONbatchupload.xls
 import useDatabase from "../../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLogs } from "../../../../hook/useLogs";
+import useModal from "../../../../hook/useModal";
+import { StatusModal } from "../../../../component/modal/StatusModal";
 
 export function GenerateProjection() {
   const { state } = useLocation();
   //const bootstrap = require("bootstrap");
   const navigate = useNavigate();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
   const [get, post, data_get, data_post] = useDatabase();
-  const [file, sheets, FileUpload, setSheets] = useSheetImport();
+  const [file, sheets, FileUpload, setSheets, setFile] = useSheetImport();
   const [data, setData] = useState([]);
   const [info] = useConfiguration();
   const [recordLog] = useLogs();
 
   const [toasty, showToast] = useToasty();
+
+  const [academicyear, setCurrentAcademicYear] = useState(null);
+
+  useEffect(() => {
+    data_post(
+      "academic-year-target",
+      { data: state.academicyear },
+      setCurrentAcademicYear
+    );
+  }, []);
 
   useEffect(() => {
     sheets &&
@@ -37,8 +50,9 @@ export function GenerateProjection() {
   }, [sheets]);
 
   function removeSelectedFile() {
-    setData([]);
-    setSheets([]);
+    setData(null);
+    setSheets(null);
+    setFile(null);
     document.getElementById("formFile").value = "";
     document
       .getElementById("formFile")
@@ -66,15 +80,31 @@ export function GenerateProjection() {
           }
         } while (data.Status === "Success");
       }
-      //showToast(info.icons.others.info, "Sections", `Sections are saved!`);
       setTimeout(() => {
         recordLog(
           "Saved a Uploaded Projection",
           "Projection Module",
           "A user saved Projections of Section"
         );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -109,7 +139,7 @@ export function GenerateProjection() {
                 style={{ textDecoration: "none" }}
               >
                 <DefaultButton
-                  class="bg-primary text-white px-2 h-100"
+                  class="primary-gradient text-white px-2 h-100"
                   icon={info.icons.others.package}
                   text="Template"
                   function={() => {
@@ -122,14 +152,14 @@ export function GenerateProjection() {
                 />
               </a>
               <DefaultButton
-                class="bg-primary text-white px-2"
+                class="primary-gradient text-white px-2"
                 icon={info.icons.forms.reset}
                 type="button"
                 text="Reset"
                 function={removeSelectedFile}
               />
               <DefaultButton
-                class="bg-primary text-white px-2"
+                class="primary-gradient text-white px-2"
                 icon={info.icons.forms.add}
                 text="Save"
                 function={submitForm}
@@ -176,15 +206,38 @@ export function GenerateProjection() {
           <main className="h-100 bg-white rounded shadow-sm p-3">
             <section>
               <header className="">
-                <h5 className="p-0 m-0">{`Sheet Details`}</h5>
-                <p>{state.program}</p>
-                <p>{state.department}</p>
-                <p>{state.curriculum}</p>
+                <h5 className="p-0 m-0">
+                  {info.text.moduleText.projection.upload}
+                </h5>
+                <p className="m-0 text-secondary">
+                  {info.text.moduleText.projection.uploadDescrition}
+                </p>
+                <hr />
               </header>
+              <main>
+                <ul className="m-0 p-0">
+                  <li className="bg-white rounded shadow-sm p-3">
+                    <h6 className="m-0">Academic Year</h6>
+                    <p className="m-0">
+                      {academicyear && academicyear.AcademicYear}
+                    </p>
+                  </li>
+                </ul>
+              </main>
             </section>
           </main>
         </section>
       </main>
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
+      />
     </>
   );
 }

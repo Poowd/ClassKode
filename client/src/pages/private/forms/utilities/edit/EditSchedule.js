@@ -14,6 +14,9 @@ import { SelectButtonItem } from "../../../../../component/dropdown/select/Selec
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import useTimeFormat from "../../../../../hook/useTimeFormat";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function EditSchedule() {
   const params = useParams();
@@ -22,6 +25,8 @@ export function EditSchedule() {
   const [toasty, showToast] = useToasty();
   const [info] = useConfiguration();
   const [convertMinutes] = useTimeFormat();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [curriculum, setCurriculum] = useState([]);
   const [course, setCourse] = useState([]);
@@ -107,10 +112,31 @@ export function EditSchedule() {
     e.preventDefault();
     if (true) {
       data_post("class-schedule-edit", data, setData);
-      showToast(info.icons.others.info, "Schedule", `Schedule is updated!`);
       setTimeout(() => {
+        recordLog(
+          "Modified a Schedule Entry",
+          "Schedule Module",
+          `A user modified an entry with a Course ${data.Course} and Section ${data.Section} at Room ${data.Room} for ${data.SCHLID}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 

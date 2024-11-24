@@ -33,7 +33,7 @@ router.post("/academic-year-target", (req, res) => {
           console.error("Query error:", err);
           return;
         }
-        res.json(rslt.rows);
+        res.json(rslt.rows[0]);
       }
     );
   } catch (err) {

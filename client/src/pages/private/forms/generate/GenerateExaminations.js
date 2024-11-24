@@ -131,18 +131,20 @@ export function GenerateExaminations() {
           </main>
         );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
   return (
     <>
       <main>
-        <main className="h-100 position-relative overflow-y-auto px-1">
+        <main className="h-100 position-relative p-3">
           <header>
-            <h3 className="m-0 p-0">Generate Schedule</h3>
-            <p className="m-0 p-0 text-secondary">
-              Please Generate me a new Schedule
+            <h1 className="fw-bold primary-text pb-2">
+              {info.text.moduleText.examSchedule.generate}
+            </h1>
+            <p className="text-secondary">
+              {info.text.moduleText.examSchedule.generateDescrition}
             </p>
             <hr className="p-0 mx-0 my-2" />
           </header>
@@ -196,7 +198,7 @@ export function GenerateExaminations() {
                           "A user generated a set of Exam Schedules for Tertiary"
                         );
                         hideModal();
-                      }, 2500); // 2 second delay
+                      }, 1000); // 2 second delay
                     }}
                     disabled={ay.GeneratedTertiaryExams === true ? true : false}
                   />
@@ -223,7 +225,7 @@ export function GenerateExaminations() {
                           "A user generated a set of Exam Schedules for SHS"
                         );
                         hideModal();
-                      }, 2500); // 2 second delay
+                      }, 1000); // 2 second delay
                     }}
                     disabled={ay.GeneratedSHSExams === true ? true : false}
                   />
@@ -298,7 +300,7 @@ export function GenerateExaminations() {
                           <div className="fw-bold">{schedule.Course}</div>
                           {schedule.Component}
                         </div>
-                        <span className="badge text-bg-primary rounded-pill">
+                        <span className="badge text-primary-gradient rounded-pill">
                           {schedule.Population}
                         </span>
                       </li>
@@ -319,7 +321,7 @@ export function GenerateExaminations() {
                           <div className="fw-bold">{schedule.Course}</div>
                           {schedule.Component}
                         </div>
-                        <span className="badge text-bg-primary rounded-pill">
+                        <span className="badge text-primary-gradient rounded-pill">
                           {schedule.Population}
                         </span>
                       </li>

@@ -16,6 +16,9 @@ import { RadioButton } from "../../../../../component/radiogroup/RadioButton";
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import useValidation from "../../../../../hook/useValidation";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 const supabase = createClient(
   "https://pgcztzkowuxixfyiqera.supabase.co",
@@ -32,6 +35,8 @@ export function CreateCoach() {
   const [ValiAI, trueValiAIBool] = useValidation();
   const [info] = useConfiguration();
   const [coach, setCoach] = useState([]);
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
   const [data, setData] = useState({
     SCHLID: "",
     FirstName: "",
@@ -183,14 +188,31 @@ export function CreateCoach() {
       } catch (error) {
         console.log(error);
       }
-      showToast(
-        info.icons.others.info,
-        "Coach",
-        `Coach ${data.FirstName} ${data.LastName} is saved!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Saved an Coach Entry",
+          "Coach Module",
+          `A user saved an entry with an ID ${data.SCHLID}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -441,6 +463,16 @@ export function CreateCoach() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

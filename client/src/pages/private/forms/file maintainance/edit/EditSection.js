@@ -11,6 +11,9 @@ import { DefaultToast } from "../../../../../component/toast/DefaultToast";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { SelectButtonItemSelected } from "../../../../../component/dropdown/select/SelectButtonItemSelected";
 import { SelectButtonItem } from "../../../../../component/dropdown/select/SelectButtonItem";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function EditSection() {
   const { state } = useLocation();
@@ -18,6 +21,8 @@ export function EditSection() {
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
   const [toasty, showToast] = useToasty();
   const [sectionName, setSectionName] = useState("");
   const [data, setData] = useState({
@@ -60,7 +65,32 @@ export function EditSection() {
     e.preventDefault();
     if (true) {
       data_post("section-edit", data, setData);
-      navigate(-1);
+
+      setTimeout(() => {
+        recordLog(
+          "Modified an Section Entry",
+          "Section Module",
+          `A user modified an entry with an Section ${data.Section}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
+        navigate(-1);
+      }, 1000); // 2 second delay
     }
   };
 
@@ -165,6 +195,16 @@ export function EditSection() {
           </>
         }
         entry={<main className="p-3"></main>}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

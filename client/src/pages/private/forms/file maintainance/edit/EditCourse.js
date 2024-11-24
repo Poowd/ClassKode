@@ -15,6 +15,9 @@ import { useToasty } from "../../../../../hook/useToasty";
 import { MainSelect } from "../../../../../component/dropdown/select/MainSelect";
 import { MainInput } from "../../../../../component/input/MainInput";
 import { DefaultToast } from "../../../../../component/toast/DefaultToast";
+import useModal from "../../../../../hook/useModal";
+import { useLogs } from "../../../../../hook/useLogs";
+import { StatusModal } from "../../../../../component/modal/StatusModal";
 
 export function EditCourse() {
   const { state } = useLocation();
@@ -23,6 +26,8 @@ export function EditCourse() {
   const [get, post, data_get, data_post] = useDatabase();
   const [info] = useConfiguration();
   const [toasty, showToast] = useToasty();
+  const [modalcontent, showModal, hideModal, getModal] = useModal();
+  const [recordLog] = useLogs();
 
   const [department, setDepartment] = useState([]);
   const [data, setData] = useState({
@@ -48,14 +53,31 @@ export function EditCourse() {
     e.preventDefault();
     if (true) {
       data_post("course-edit", data, setData);
-      showToast(
-        info.icons.others.info,
-        "Course",
-        `Course ${data.Course} is updated!`
-      );
       setTimeout(() => {
+        recordLog(
+          "Modified an Course Entry",
+          "Course Module",
+          `A user modified an entry with an Code ${data.Code}`
+        );
+        showModal(
+          "StatusModal",
+          "",
+          <main className="d-flex flex-column">
+            <section className="text-center">
+              <h1 className="text-success">{info.icons.status.success}</h1>
+              <h3 className="text-success fw-bold">Success</h3>
+              <button
+                type="button"
+                class="btn safe-color mt-3"
+                data-bs-dismiss="modal"
+              >
+                Okay
+              </button>
+            </section>
+          </main>
+        );
         navigate(-1);
-      }, 2500); // 2 second delay
+      }, 1000); // 2 second delay
     }
   };
 
@@ -135,6 +157,16 @@ export function EditCourse() {
         icon={toasty.icon}
         title={toasty.title}
         content={toasty.content}
+      />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main>{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
       />
     </form>
   );

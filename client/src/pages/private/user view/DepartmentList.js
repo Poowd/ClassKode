@@ -106,7 +106,7 @@ export function DepartmentList() {
                 schoolFacilities.map((item, item_index) => (
                   <button
                     className="btn border-0 p-0 text-wrap"
-                    style={{ width: "13em" }}
+                    style={{ width: "12em" }}
                     onClick={() =>
                       setSelection({
                         Image: item.Image,

@@ -119,7 +119,7 @@ router.use("/", WeeklyEvent);
 router.use("/", ExpectedClass);
 router.use("/", Logs);
 
-app.listen(() => {
+app.listen(8081, () => {
   console.log("Running");
 });
 app.get("/", (req, res) => {

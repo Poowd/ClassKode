@@ -72,6 +72,52 @@ router.post("/gen-class", (req, res) => {
     });
   });
 
+  class_schedules.push({
+    ACY: "o",
+    CRR: "o",
+    SCT: "Any Section",
+    CRS_CODE: "o",
+    CRS: "Kamustahan",
+    SCHLID: "None",
+    CCH: "CSG",
+    CPT: "Seminar",
+    UNT: 0,
+    ACDLVL: "All Levels",
+    YRLVL: "All Levels",
+    ROM: "Court",
+    DAY: "Wednesday",
+    STR_TME: 780,
+    END_TME: 870,
+    CPC: "o",
+    ROM_UNT: 0,
+    PPL: 45,
+    CCH_UNT: 0,
+    CONFLICT: false,
+  });
+
+  class_schedules.push({
+    ACY: "o",
+    CRR: "o",
+    SCT: "Any Section",
+    CRS_CODE: "o",
+    CRS: "Morning Assembly",
+    SCHLID: "None",
+    CCH: "Morning Assignment",
+    CPT: "Assembly",
+    UNT: 0,
+    ACDLVL: "All Levels",
+    YRLVL: "All Levels",
+    ROM: "Court",
+    DAY: "Monday",
+    STR_TME: 420,
+    END_TME: 480,
+    CPC: "o",
+    ROM_UNT: 0,
+    PPL: 45,
+    CCH_UNT: 0,
+    CONFLICT: false,
+  });
+
   const GenerateSchedule = {
     Phases: {
       coach: function () {
@@ -185,8 +231,7 @@ router.post("/gen-class", (req, res) => {
                       rooms[j].Units * 60 + startofday,
                       (rooms[j].Units + schedules[k].UNT) * 60 + startofday,
                       schedules[k].SCT,
-                      rooms[j].Day,
-                      schedules[k].CCH
+                      rooms[j].Day
                     ),
                   });
                   ADD_UNITS_TO_ROOM(rooms[j].Room, schedules[k].UNT);
@@ -201,13 +246,7 @@ router.post("/gen-class", (req, res) => {
     },
   };
 
-  function conflictSection(
-    start_time,
-    end_time,
-    target_section,
-    target_day,
-    target_coach
-  ) {
+  function conflictSection(start_time, end_time, target_section, target_day) {
     for (var i = 0; i < class_schedules.length; i++) {
       if (class_schedules[i].SCT === target_section) {
         if (class_schedules[i].DAY === target_day) {
@@ -220,10 +259,8 @@ router.post("/gen-class", (req, res) => {
                 +class_schedules[i].END_TME <= +start_time)
             )
           ) {
-            //if (class_schedules[i].CCH === target_coach) {
             console.log("conflict");
             return false;
-            // }
           }
         }
       }
@@ -298,12 +335,11 @@ router.post("/gen-class", (req, res) => {
   SHUFFLE(classes);
   GenerateSchedule.Phases.coach();
   GenerateSchedule.Phases.room();
-  console.log(sct_classes);
   //console.log(rooms);
 
   //return res.json(class_schedules);
 
-  const POPULATION_SIZE = 1000;
+  const POPULATION_SIZE = classes.length;
   const GENERATIONS = 100;
   const MUTATION_RATE = 0.01;
 
@@ -426,8 +462,8 @@ router.post("/gen-class", (req, res) => {
     return population[0];
   }
 
-  let bestSchedule = geneticAlgorithm();
   let finalSchedule = [];
+  let bestSchedule = geneticAlgorithm();
 
   for (let classData of bestSchedule) {
     let coach = ADD_COACH(classData.CRS_Code, classData.Units);
@@ -445,6 +481,9 @@ router.post("/gen-class", (req, res) => {
       });
     }
   }
+
+  console.log(finalSchedule);
+
   return res.json(bestSchedule);
 });
 

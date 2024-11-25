@@ -450,6 +450,16 @@ export function EditSchedule() {
         title={toasty.title}
         content={toasty.content}
       />
+      <StatusModal
+        id={"StatusModal"}
+        title={modalcontent.Title}
+        content={
+          <>
+            <main className="text-center">{modalcontent.Content}</main>
+          </>
+        }
+        trigger={() => {}}
+      />
     </form>
   );
 }

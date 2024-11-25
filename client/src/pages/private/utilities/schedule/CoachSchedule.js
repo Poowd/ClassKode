@@ -7,6 +7,7 @@ import { DefaultInput } from "../../../../component/input/DefaultInput";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useConfiguration from "../../../../hook/useConfiguration";
 import { createFileName, useScreenshot } from "use-react-screenshot";
+import { LinkButton } from "../../../../component/button/LinkButton";
 
 export function CoachSchedule() {
   const { state } = useLocation();
@@ -123,32 +124,34 @@ export function CoachSchedule() {
         className="h-100 col-lg-9 h-100 p-1 m-0 pe-2 overflow-y-auto height-auto"
         ref={ref}
       >
-        <main className="w-100 d-flex justify-content-end">
-          <section className="d-flex align-items-center gap-2 mb-2">
+        <main className="w-100 d-flex justify-content-end mb-2">
+          <section className="w-100 d-flex align-items-center justify-content-between">
             <DefaultButton
               class="px-2 border"
               icon={info.icons.others.camera}
               function={getImage}
             />
-            <DefaultButton
-              class="border-0"
-              icon={info.icons.navigation.previous}
-              function={() => {
-                previousSection();
-              }}
-            />
-            <h6 className="m-0 p-0">
-              {coach.map((coach, o) =>
-                coach.SCHLID === currcoach
-                  ? `${coach.LastName}, ${coach.FirstName}`
-                  : null
-              )}
-            </h6>
-            <DefaultButton
-              class="border-0"
-              icon={info.icons.navigation.next}
-              function={() => nextSection()}
-            />
+            <main className="d-flex align-items-center justify-content-end gap-2">
+              <DefaultButton
+                class="border-0"
+                icon={info.icons.navigation.previous}
+                function={() => {
+                  previousSection();
+                }}
+              />
+              <h6 className="m-0 p-0 text-truncate text-center" style={{ width: "12em" }}>
+                {coach.map((coach, o) =>
+                  coach.SCHLID === currcoach
+                    ? `${coach.LastName}, ${coach.FirstName}`
+                    : null
+                )}
+              </h6>
+              <DefaultButton
+                class="border-0"
+                icon={info.icons.navigation.next}
+                function={() => nextSection()}
+              />
+            </main>
           </section>
         </main>
         <main className="flex-fill h-100">
@@ -282,7 +285,7 @@ export function CoachSchedule() {
                   schedule.SCHLID === currcoach ? (
                     <>
                       <main className="p-3 shadow-sm rounded mb-2 hover-darken">
-                        <main className="row m-0 p-0">
+                        <main className="row m-0 p-0 mb-2">
                           <section className="col-12 p-0 m-0">
                             <section>
                               <h6 className="p-0 m-0">{schedule.CourseID}</h6>
@@ -298,12 +301,20 @@ export function CoachSchedule() {
                                   </span>
                                 </p>
                                 <p className="p-0 m-0 text-secondary fst-italic">
+                                  {`${schedule.Section} ( ${schedule.Population} )`}
+                                </p>
+                                <p className="p-0 m-0 text-secondary fst-italic">
                                   {schedule.Room}
                                 </p>
                               </small>
                             </section>
                           </section>
                         </main>
+                        <LinkButton
+                          to={`/schedule/edit/${schedule.CLSID}`}
+                          class="bg-warning px-2"
+                          icon={info.icons.forms.edit}
+                        />
                       </main>
                     </>
                   ) : null

@@ -121,7 +121,7 @@ import scheduler from "./../assets/imgs/misc/Scheduler.png";
 import locator from "./../assets/imgs/misc/Locator.png";
 import team from "./../assets/imgs/misc/Team.png";
 import host from "./../assets/imgs/misc/Host.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiLightningBolt } from "react-icons/hi";
 
 export default function useConfiguration() {
@@ -129,36 +129,392 @@ export default function useConfiguration() {
   const [info, setInfo] = useState({
     conn: {
       server: "http://localhost:8081/",
-      client: "",
+      client: "http://localhost:3000/",
     },
     details: {
       app_name: "Class Kode",
       sub_name: "Scheduling and Faculty Locator",
+      introduction:
+        "Class Kode: Web-Based Scheduling System and Faculty Locator for STI College Muñoz-EDSA will enhance the current process of plotting and managing the schedules and enable users to locate faculty members using a locator.",
+      details:
+        "A web-based system designed to enhance the plotting and managing of the schedules. The system can detect and resolve the conflicts of plotting the schedules such as overlapping time, day, sections, coaches, and room assignments. It will make sure to maximize and utilize the use of school facilities by ensuring the allocation of rooms and providing exact details of the school facility. Aside from that, the system has a faculty locator for users to know the specific location of coaches.",
+      about: [
+        {
+          title: "Class Kode",
+          subtitle: "Class Scheduling and Faculty Locator System",
+          description: (
+            <article className="px-5">
+              <h6>Scheduling System</h6>
+              <p>
+                A scheduling system is a software application designed to manage
+                and organize the allocation of time slots for classes, exams,
+                and other events within an educational institution. It automates
+                the process of creating, modifying, and optimizing schedules,
+                ensuring that resources such as classrooms and instructors are
+                effectively utilized. By employing algorithms, such as genetic
+                algorithms, these systems can handle complex scheduling
+                scenarios, detect conflicts, and provide flexible options for
+                users.
+              </p>
+              <h6>Faculty Locator</h6>
+              <p>
+                A faculty locator is a tool that helps students and staff
+                identify the locations and availability of faculty members
+                within an institution. This system typically includes a database
+                of faculty profiles, which may contain information such as
+                names, departments, images, and current status (e.g., available,
+                in a meeting). The faculty locator enhances communication and
+                accessibility, allowing students to easily find and connect with
+                their instructors.
+              </p>
+            </article>
+          ),
+        },
+        {
+          title: "Class Schedules and Faculty Locator",
+          subtitle:
+            "Significance of Scheduling in Areas with Limited Resources",
+          description: (
+            <article className="px-5">
+              <ul>
+                <li>
+                  <p className="m-0 fw-semibold">
+                    Maximizing Resource Efficiency
+                  </p>
+                  <p>
+                    Educational institutions often face constraints in terms of
+                    available classrooms, faculty, and time. A scheduling system
+                    helps optimize the use of these limited resources, ensuring
+                    that classes and exams are scheduled in a way that minimizes
+                    conflicts and maximizes occupancy.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Improving Accessibility</p>
+                  <p>
+                    In areas where faculty members may be spread across multiple
+                    locations or campuses, a faculty locator provides essential
+                    information that helps students find their instructors
+                    quickly. This is particularly important in resource-limited
+                    settings where personal interactions may be less frequent.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Enhancing Learning Outcomes</p>
+                  <p>
+                    By streamlining the scheduling process and improving faculty
+                    accessibility, these systems contribute to a more organized
+                    and supportive learning environment. This can lead to better
+                    academic performance and student satisfaction, which is
+                    vital in areas striving for educational improvement.
+                  </p>
+                </li>
+              </ul>
+            </article>
+          ),
+        },
+        {
+          title: "STI College Muñoz-EDSA",
+          subtitle: "Educational Institution",
+          description: (
+            <article className="px-5">
+              <p>
+                STI College is one of the largest networks of educational
+                institutions in the Philippines, with over 63 campuses
+                nationwide. Established in 1983, STI has built a reputation for
+                providing quality education and training that prepares students
+                for the demands of the modern workforce. The college offers a
+                wide array of programs across various fields, including
+                Information Technology, Hospitality and Tourism, Multimedia
+                Arts, and Business and Accountancy.
+              </p>
+              <p>
+                STI College is committed to delivering superior learning systems
+                that equip students with the skills and knowledge necessary to
+                be future-ready. The institution emphasizes practical training
+                and real-world applications, ensuring that graduates are
+                well-prepared to enter the job market or pursue further
+                education. With its focus on quality and innovation, STI College
+                continues to play a significant role in shaping the educational
+                landscape in the Philippines.
+              </p>
+            </article>
+          ),
+        },
+      ],
+      features: [
+        {
+          title: "Flexible Schedules",
+          subtitle: "",
+          description: (
+            <article className="px-5">
+              <h6>Purpose</h6>
+              <p>
+                The flexible schedule feature is designed to improve the
+                adaptability of class and exam timetables within educational
+                institutions. By utilizing a genetic algorithm, the system
+                automates the scheduling process, enabling the creation of
+                schedules that can be easily modified and reused.
+              </p>
+              <h6>Advantages</h6>
+              <ul>
+                <li>
+                  <p className="m-0 fw-semibold">Efficiency</p>
+                  <p>
+                    Automating the scheduling process significantly reduces the
+                    time and effort required for manual scheduling, which can
+                    often be cumbersome and prone to errors.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Customization</p>
+                  <p>
+                    Flexible schedules accommodate diverse student needs and
+                    preferences, taking into account various learning styles and
+                    commitments.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Resource Optimization</p>
+                  <p>
+                    By reusing schedules, schools can maximize resource use,
+                    ensuring classes and exams are held at optimal times.
+                  </p>
+                </li>
+              </ul>
+              <h6>Expansions</h6>
+              <p className="m-0">
+                This feature can include real-time adjustments based on
+                unforeseen circumstances, such as instructor availability or
+                changes in student enrollment. Additionally, integrating machine
+                learning could enhance the algorithm's ability to predict and
+                adapt to scheduling conflicts proactively.
+              </p>
+            </article>
+          ),
+        },
+        {
+          title: "Conflict Detection",
+          subtitle: "",
+          description: (
+            <article className="px-5">
+              <h6>Purpose</h6>
+              <p>
+                Conflict detection is essential for maintaining a smooth
+                scheduling process. This feature identifies and resolves
+                potential conflicts arising from overlapping classes, exams, or
+                resource allocations.
+              </p>
+              <h6>Advantages</h6>
+              <ul>
+                <li>
+                  <p className="m-0 fw-semibold">Improved Coordination</p>
+                  <p>
+                    The system automatically detects conflicts, ensuring all
+                    stakeholders are aware of scheduling issues before they
+                    escalate.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Enhanced User Experience</p>
+                  <p>
+                    Students and faculty can rely on the system for clear and
+                    conflict-free schedules, reducing frustration and confusion.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Time Savings</p>
+                  <p>
+                    Resolving conflicts early in the scheduling process saves
+                    time for administrators who would otherwise need to address
+                    these issues manually.
+                  </p>
+                </li>
+              </ul>
+              <h6>Expansions</h6>
+
+              <p className="m-0">
+                Future enhancements could include predictive analytics that
+                forecast potential conflicts based on historical data, allowing
+                for preemptive adjustments. Additionally, integrating user
+                feedback mechanisms could refine conflict resolution strategies.
+              </p>
+            </article>
+          ),
+        },
+        {
+          title: "Room Utilization",
+          subtitle: "",
+          description: (
+            <article className="px-5">
+              <h6>Purpose</h6>
+              <p>
+                This feature optimizes the use of school facilities by tracking
+                and analyzing room occupancy and specifications, providing
+                insights into space utilization throughout the academic year.
+              </p>
+              <h6>Advantages</h6>
+              <ul>
+                <li>
+                  <p className="m-0 fw-semibold">Maximized Resource Use</p>
+                  <p>
+                    Understanding room usage patterns allows schools to allocate
+                    spaces more effectively, preventing underutilization of
+                    facilities.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Data-Driven Decisions</p>
+                  <p>
+                    Detailed occupancy statistics enable administrators to make
+                    informed decisions regarding facility management and future
+                    expansions.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Cost Efficiency</p>
+                  <p>
+                    Improved room utilization can lead to cost savings by
+                    reducing the need for additional facilities or renovations.
+                  </p>
+                </li>
+              </ul>
+              <h6>Expansions</h6>
+
+              <p className="m-0">
+                The system could be enhanced with real-time occupancy tracking
+                through IoT devices, offering live data on room usage. Moreover,
+                integrating this feature with scheduling could enable dynamic
+                room assignments based on current needs.
+              </p>
+            </article>
+          ),
+        },
+        {
+          title: "Faculty Locator",
+          subtitle: "",
+          description: (
+            <article className="px-5">
+              <h6>Purpose</h6>
+              <p>
+                The faculty locator feature is designed to help students and
+                staff easily find the locations of instructors and coaches
+                within the institution. It provides important details about each
+                faculty member, enhancing communication and accessibility.
+              </p>
+              <h6>Advantages</h6>
+              <ul>
+                <li>
+                  <p className="m-0 fw-semibold">Increased Accessibility</p>
+                  <p>
+                    Students can quickly locate their instructors, fostering
+                    better communication and support.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Enhanced Engagement</p>
+                  <p>
+                    Knowing where faculty members are located encourages
+                    students to seek help or engage in discussions.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Streamlined Operations</p>
+                  <p>
+                    This feature helps administrative staff manage faculty
+                    assignments and availability more effectively.
+                  </p>
+                </li>
+              </ul>
+              <h6>Expansions</h6>
+
+              <p className="m-0">
+                Future developments could include a mobile application that
+                allows users to access the faculty locator on the go.
+                Additionally, integrating a messaging feature could facilitate
+                direct communication between students and faculty.
+              </p>
+            </article>
+          ),
+        },
+        {
+          title: "Schedule Related Reports",
+          subtitle: "",
+          description: (
+            <article className="px-5">
+              <h6>Purpose</h6>
+              <p>
+                This feature generates detailed reports related to class and
+                exam schedules, providing valuable insights for both students
+                and administrators.
+              </p>
+              <h6>Advantages</h6>
+              <ul>
+                <li>
+                  <p className="m-0 fw-semibold">Data Exporting</p>
+                  <p>
+                    Users can export reports in various formats (JPEG, CSV,
+                    XLSX), making data sharing and analysis easy.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Enhanced Transparency</p>
+                  <p>
+                    Access to schedule-related reports promotes transparency and
+                    accountability within the institution.
+                  </p>
+                </li>
+                <li>
+                  <p className="m-0 fw-semibold">Informed Decision-Making</p>
+                  <p>
+                    Administrators can assess scheduling effectiveness and make
+                    necessary adjustments using these reports.
+                  </p>
+                </li>
+              </ul>
+              <h6>Expansions</h6>
+              <p className="m-0">
+                The reporting feature could be expanded to include customizable
+                report templates, allowing users to tailor reports to their
+                specific needs. Furthermore, integrating analytics tools could
+                provide deeper insights into scheduling trends and patterns over
+                time
+              </p>
+            </article>
+          ),
+        },
+      ],
       dev_team: [
         {
           Name: "Mark Lape",
           Role: "Leader / Project Manager",
           Image: lape,
+          Quote:
+            "If things go South, learn that you are alone. Hi! I am Mark Lape, a student of STI College Muñoz-EDSA taking Bachelor of Science in Computer Science. My career path would be focused around Application Development which includes Fullstack Development. With the help of the current technologies, I optd to find as much resources as I could, making sure me and my team will have the best of offers while still maintaining the performance and quality of Class Kode. We are thrilled to introduce to you our System, Class Kode!",
         },
         {
           Name: "Yranimez Repil",
           Role: "Backend / Manager Assistant",
           Image: repil,
+          Quote: "Hello World.",
         },
         {
           Name: "James Gereña",
           Role: "Backend / Assistant",
           Image: gerena,
+          Quote: "Be Wise.",
         },
         {
           Name: "Mia Maddara",
           Role: "Documentation",
           Image: maddara,
+          Quote: "Jeremiah 29:11.",
         },
         {
           Name: "Aeron Pagaoa",
           Role: "Documentation",
           Image: pagaoa,
+          Quote: "Anticipate, Prepare, Project or Speculate, Rinse and Repeat.",
         },
       ],
       special_thanks: [
@@ -210,7 +566,7 @@ export default function useConfiguration() {
             <button
               className="rounded-pill btn warning-color px-3 py-2"
               onClick={() => {
-                navigate("/about");
+                navigate("/features");
               }}
             >
               See Details
@@ -226,7 +582,7 @@ export default function useConfiguration() {
             <button
               className="rounded-pill btn primary-gradient px-3 py-2"
               onClick={() => {
-                navigate("/about");
+                navigate("/team");
               }}
             >
               See Details
@@ -239,14 +595,13 @@ export default function useConfiguration() {
           SubTitle: "Quezon City, Philippines",
           Content: "",
           Additionals: (
-            <button
+            <Link
               className="rounded-pill btn warning-color px-3 py-2"
-              onClick={() => {
-                navigate("/about");
-              }}
+              to={"https://www.stimunoz.edu.ph"}
+              target="_blank"
             >
               See Details
-            </button>
+            </Link>
           ),
           Image: host,
         },

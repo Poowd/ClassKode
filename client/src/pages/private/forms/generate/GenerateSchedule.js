@@ -54,29 +54,28 @@ export function GenerateSchedule() {
     data_post("expected-class-list", { data: ay.Code }, setExpected);
   }, []);
 
-  const checkConflict = (start_time, end_time, target_coach, target_day) => {
-    schedule.forEach((sche) => {
-      if (
-        !(
-          (+start_time < +sche.STR_TME && +end_time <= +sche.STR_TME) ||
-          (+start_time > +sche.STR_TME &&
-            +end_time >= +sche.STR_TME &&
-            +sche.END_TME <= +start_time)
-        ) &&
-        sche.CCH === target_coach &&
-        sche.DAY === target_day
-      ) {
-        return "bg-danger";
-      }
-    });
-    return "";
-  };
-
-  function sleep(time) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, time || 1000);
-    });
-  }
+  // function checkConflict(
+  //   start_time,
+  //   end_time,
+  //   target_coach,
+  //   target_day,
+  //   target_section
+  // ) {
+  //   schedule.forEach((sche) => {
+  //     if (
+  //       (+start_time === +sche.STR_TME &&
+  //         +end_time === +sche.END_TME &&
+  //         !(
+  //           (+start_time > +sche.STR_TME && +start_time >= +sche.END_TME) ||
+  //           (+start_time < +sche.STR_TME && +end_time <= +sche.STR_TME)
+  //         )) ||
+  //       "Monday" === target_day
+  //     ) {
+  //       return true;
+  //     }
+  //   });
+  //   return false;
+  // }
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -287,17 +286,7 @@ export function GenerateSchedule() {
                   ? schedule.map((sc, i) =>
                       search.setbyAcademicLevel === "" ||
                       search.setbyAcademicLevel === sc.ACDLVL ? (
-                        <tr
-                          key={i}
-                          className={`${
-                            sc.CCH == "n/a" ? "bg-warning" : ""
-                          } ${checkConflict(
-                            sc.STR_TME,
-                            sc.END_TME,
-                            sc.CCH,
-                            sc.DAY
-                          )}`}
-                        >
+                        <tr key={i} className={``}>
                           <td className="bg-transparent py-3">{sc.CRS_CODE}</td>
                           <td className="bg-transparent text-start py-3">
                             {sc.CRS}

@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TbStairs } from "react-icons/tb";
 import useTimeFormat from "../../../../hook/useTimeFormat";
 import useConfiguration from "../../../../hook/useConfiguration";
+import { LinkButton } from "../../../../component/button/LinkButton";
 
 export function RoomSchedule() {
   const { state } = useLocation();
@@ -177,7 +178,7 @@ export function RoomSchedule() {
                           key={i}
                           className="p-3 shadow-sm rounded mb-2 hover-darken"
                         >
-                          <main className="row m-0 p-0">
+                          <main className="row m-0 p-0 mb-2">
                             <section className="col-3 p-0 m-0">
                               <section>
                                 <h6 className="p-0 m-0">{schedule.Room}</h6>
@@ -198,6 +199,11 @@ export function RoomSchedule() {
                               </section>
                             </section>
                           </main>
+                        <LinkButton
+                          to={`/schedule/edit/${schedule.CLSID}`}
+                          class="bg-warning px-2"
+                          icon={info.icons.forms.edit}
+                        />
                         </main>
                       ) : null
                     )

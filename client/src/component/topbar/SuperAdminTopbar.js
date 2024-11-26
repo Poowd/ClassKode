@@ -223,6 +223,14 @@ export function SuperAdminTopbar() {
                         navigate={"/utilities/locator"}
                         text={"Faculty Locator"}
                       />
+                      <SidebarItem
+                        class={"fw-medium w-100"}
+                        classlink={"py-2"}
+                        icon={info.icons.modules.locator}
+                        navigate={"/utilities/room-availability"}
+                        text={"Room Availability"}
+                      />
+
                       <SidebarDropdown
                         icon={info.icons.modules.misc}
                         reference={"#misc"}

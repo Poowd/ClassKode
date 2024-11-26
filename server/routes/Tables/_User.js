@@ -339,4 +339,58 @@ router.post("/user-login", (req, res) => {
   }
 });
 
+router.get("/user-list-archived", (req, res) => {
+  try {
+    pool.query(
+      `SELECT * FROM _user WHERE "UUI_Status"='ARCHIVE'`,
+      (err, rslt) => {
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/user-archive", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `UPDATE _user SET "UUI_Status"='ARCHIVE' WHERE "SCHLID"='${id}' OR "UUID"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/user-restore", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `UPDATE _user SET "UUI_Status"='ACTIVE' WHERE "SCHLID"='${id}' OR "UUID"='${id}'`,
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;

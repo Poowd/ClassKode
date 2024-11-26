@@ -27,6 +27,7 @@ export function User() {
   const [modalcontent, showModal, hideModal, getModal] = useModal();
 
   const [data, setData] = useState([]);
+  const [toArchive, setToArchive] = useState(null);
   const [search, setSearch] = useState({
     Confirm: "",
     Search: "",
@@ -44,15 +45,15 @@ export function User() {
   const archiveEntry = (e) => {
     e.preventDefault();
     if (code === search.Confirm) {
-      data_post("department-archive", { data: params.id }, setData);
+      data_post("user-archive", { data: toArchive.SCHLID }, setData);
       showToast(
         info.icons.others.info,
         "Department",
-        `Department ${data[0].Department} is set to archive!`
+        `Department ${toArchive.LastName}, ${toArchive.FirstName} is set to archive!`
       );
       setTimeout(() => {
         data_get("random-code-generator", setCode);
-        navigate(-1);
+        data_get("user-list", setUsers);
       }, 1000); // 2 second delay
     } else {
       showModal(
@@ -62,7 +63,7 @@ export function User() {
           <span>Type the code </span>
           <span className="fw-bold text-black">{code}</span>
           <span> to archive </span>
-          <span className="fw-bold text-black">{data[0].Department}</span>
+          <span className="fw-bold text-black">{`${toArchive.LastName}, ${toArchive.FirstName}`}</span>
         </p>
       );
     }
@@ -254,7 +255,8 @@ export function User() {
                             <DefaultButton
                               class="danger-color px-2"
                               icon={info.icons.forms.archive}
-                              function={() =>
+                              function={() => {
+                                setToArchive(item);
                                 showModal(
                                   "Modal",
                                   "Archive Entry",
@@ -264,12 +266,10 @@ export function User() {
                                       {code}
                                     </span>
                                     <span> to archive </span>
-                                    <span className="fw-bold text-black">
-                                      {item.SCHLID}
-                                    </span>
+                                    <span className="fw-bold text-black">{`${item.LastName}, ${item.FirstName}`}</span>
                                   </p>
-                                )
-                              }
+                                );
+                              }}
                             />
                           </>
                         }

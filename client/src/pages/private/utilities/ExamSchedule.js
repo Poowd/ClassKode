@@ -212,12 +212,12 @@ export function ExamSchedule() {
                             </main>
                           }
                           slot4={null}
-                          slot5={null}
+                          slot5={`${sc.Coach !== ", " ? sc.Coach : "No Coach"}`}
                           slot6={sc.Component}
                           custom={
                             <>
                               <LinkButton
-                                to={`/schedule/edit/${sc.ELSID}`}
+                                to={`/examinations/edit/${sc.ELSID}`}
                                 class="bg-warning px-2"
                                 icon={info.icons.forms.edit}
                               />

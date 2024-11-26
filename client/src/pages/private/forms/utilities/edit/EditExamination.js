@@ -18,7 +18,7 @@ import useModal from "../../../../../hook/useModal";
 import { useLogs } from "../../../../../hook/useLogs";
 import { StatusModal } from "../../../../../component/modal/StatusModal";
 
-export function EditSchedule() {
+export function EditExamination() {
   const params = useParams();
   const navigate = useNavigate();
   const [get, post, data_get, data_post] = useDatabase();
@@ -38,7 +38,8 @@ export function EditSchedule() {
   const [schedules, setSchedules] = useState([]);
   const [academicYear, setCurrentAcademicYear] = useState([]);
   const [data, setData] = useState({
-    CLSID: params.id,
+    ELSID: params.id,
+    Code: null,
     Section: null,
     YearLevel: null,
     Population: null,
@@ -87,7 +88,7 @@ export function EditSchedule() {
   }, [data.Component, academicYear, data.Room, data.Section]);
 
   useEffect(() => {
-    data_post("class-schedule-target", { data: params.id }, setData);
+    data_post("exam-schedule-target", { data: params.id }, setData);
   }, []);
   useEffect(() => {
     data_get("curriculum-list", setCurriculum);
@@ -98,24 +99,40 @@ export function EditSchedule() {
     data_get("component-list", setComponent);
     data_get("assign-list", setCoach);
     data_get("current-academic-year", setCurrentAcademicYear);
-    data_get("class-schedule-list", setSchedules);
+    data_get("exam-schedule-list", setSchedules);
   }, [curriculum]);
 
   useEffect(() => {
     setData((prev) => ({
       ...prev,
-      EndTime: +data.StartTime + data.Units * 60,
+      EndTime: +data.StartTime + 1.5 * 60,
     }));
-  }, [data.StartTime, data.Units]);
+  }, [data.StartTime]);
+
+  useEffect(() => {
+    setData((prev) => ({
+      ...prev,
+      Course: getCourseName(data.Code),
+    }));
+  }, [data.Code]);
+
+  function getCourseName(code) {
+    course.forEach((item) => {
+      if (item.CourseID === code) {
+        return item.Course;
+      }
+    });
+    return "";
+  }
 
   const submitForm = (e) => {
     e.preventDefault();
     if (true) {
-      data_post("class-schedule-edit", data, setData);
+      data_post("exam-schedule-edit", data, setData);
       setTimeout(() => {
         recordLog(
-          "Modified a Schedule Entry",
-          "Schedule Module",
+          "Modified a Exam Entry",
+          "Exam Module",
           `A user modified an entry with a Course ${data.Course} and Section ${data.Section} at Room ${data.Room} for ${data.SCHLID}`
         );
         showModal(
@@ -143,7 +160,7 @@ export function EditSchedule() {
   return (
     <form className="h-100" onSubmit={submitForm}>
       <DataControllerTemplate
-        title={info.text.moduleText.classSchedule.edit}
+        title={`Modify Entry for Examination`}
         description={info.text.moduleText.classSchedule.editDescrition}
         control={
           <>
@@ -223,24 +240,22 @@ export function EditSchedule() {
             />
             <MainSelect
               label="Course"
-              id="Course"
+              id="Code"
               trigger={dataChange}
               required={true}
               option={
                 <>
                   <SelectButtonItemSelected
                     content={course.map((option) => (
-                      <>
-                        {option.CourseID === data.Course ? option.Course : ""}
-                      </>
+                      <>{option.Course === data.Course ? option.Course : ""}</>
                     ))}
                   />
                   {course.map((option, i) => (
                     <>
-                      {data.Course !== option.CourseID ? (
+                      {data.Course !== option.Course ? (
                         <SelectButtonItem
                           key={i}
-                          value={option.CourseID}
+                          value={option.Course}
                           content={option.Course}
                         />
                       ) : (
@@ -346,10 +361,8 @@ export function EditSchedule() {
             <main className="w-100 d-flex justify-content-end m-0 p-0">
               <section>
                 <small className="text-secondary fst-italic">{`should end at ${convertMinutes(
-                  +data.StartTime + data.Units * 60
-                )} based from ${data.Component} with ${
-                  data.Units
-                } units`}</small>
+                  +data.StartTime + 1.5 * 60
+                )} based from Examination Hours with ${1.5} units`}</small>
               </section>
             </main>
             <MainSelect
@@ -428,7 +441,8 @@ export function EditSchedule() {
                   />
                   {coach.map((option, i) => (
                     <>
-                      {data.Coach !== option.SCHLID ? (
+                      {data.Coach !== option.SCHLID &&
+                      option.CoachType === "Fulltime" ? (
                         <SelectButtonItem
                           key={i}
                           value={option.SCHLID}

@@ -27,6 +27,7 @@ export function Archives() {
   const [program, setProgram] = useState([]);
   const [course, setCourse] = useState([]);
   const [coach, setCoach] = useState([]);
+  const [user, setUser] = useState([]);
   const [section, setSection] = useState([]);
   const [room, setRoom] = useState([]);
   const [academicyear, setAcademicYear] = useState([]);
@@ -44,12 +45,13 @@ export function Archives() {
       "Section",
       "Room",
     ],
-    utilities: ["Curriculum", "Academic_Year", "Schedules"],
+    utilities: ["Curriculum", "Academic_Year", "Schedules", "Users"],
   });
 
   useEffect(() => {
     data_get("archive-count", setArchiveCount);
     data_get("department-list-archived", setDepartment);
+    data_get("user-list-archived", setUser);
     data_get("program-list-archived", setProgram);
     data_get("course-list-archived", setCourse);
     data_get("coach-list-archived", setCoach);
@@ -463,6 +465,36 @@ export function Archives() {
                           info.icons.others.info,
                           "Schedules",
                           `Schedules ${sched.Schedules} is set to active!`
+                        );
+                      }}
+                    />
+                  }
+                />
+              ))
+            : selection === "Users"
+            ? user.map((user, i) => (
+                <ListCard
+                  slot1={user.SCHLID}
+                  slot2={`${user.LastName}, ${user.FirstName}`}
+                  slot3={user.Email}
+                  slot4={`${user.UserType}`}
+                  slot5={`${user.Created}`}
+                  link={null}
+                  state={null}
+                  custom={
+                    <DefaultButton
+                      class="warning-color"
+                      icon={info.icons.forms.restore}
+                      function={() => {
+                        data_post(
+                          "user-restore",
+                          { data: user.SCHLID },
+                          setData
+                        );
+                        showToast(
+                          info.icons.others.info,
+                          "User",
+                          `User ${user.LastName} is set to active!`
                         );
                       }}
                     />

@@ -197,7 +197,7 @@ function App() {
                           <Route path={"/utilities/locator"}>
                             <Route index element={<Locator />}></Route>
                             <Route
-                              path={"/utilities/room-availability"}
+                              path={"/utilities/locator/room-availability"}
                               element={<RoomAvailability />}
                             ></Route>
                           </Route>

@@ -7,6 +7,7 @@ import useTimeFormat from "../../../../hook/useTimeFormat";
 import { DefaultInput } from "../../../../component/input/DefaultInput";
 import useHandleChange from "../../../../hook/useHandleChange";
 import useConfiguration from "../../../../hook/useConfiguration";
+import { LinkButton } from "../../../../component/button/LinkButton";
 
 export function SectionExamination() {
   const { state } = useLocation();
@@ -122,11 +123,11 @@ export function SectionExamination() {
               style={{ tableLayout: "fixed" }}
             >
               <thead>
-                <tr>
+                <tr className="fw-bold">
                   <td
-                    className="p-1 border"
+                    className="p-1 border text-center"
                     colSpan={2}
-                    style={{ width: "10%" }}
+                    style={{ width: "15%" }}
                   >
                     Day / Time
                   </td>
@@ -146,7 +147,7 @@ export function SectionExamination() {
                     </td>
                     {day.map((daytime, dayindex) => (
                       <td
-                        className={`border-end ${
+                        className={`border-end position-relative overflow-hidden ${
                           (timeindex - 1) % 2 == 0 ? "border-bottom" : ""
                         }`}
                       >
@@ -154,23 +155,25 @@ export function SectionExamination() {
                           schedule.Day === daytime ? (
                             +schedule.StartTime === timeslot ? (
                               <div
-                                className={`p-2 h-100 w-100 d-flex align-items-center text-truncate text-start text-break text-wrap ${
+                                className={`p-2 z-2 w-100 d-flex align-items-center justify-content-center position-absolute top-0 text-break text-wrap border-top border-dark border-start border-end text-center ${
                                   schedule.Component.includes("Minor") ||
-                                  schedule.Component.includes("Basic")
-                                    ? "plotted1-2"
-                                    : "plotted1"
+                                  schedule.Component.includes("General")
+                                    ? "plotted2-2"
+                                    : "plotted2"
                                 }`}
                                 onClick={() => alert(schedule.Course)}
                               >
-                                <small className="fw-bold">
-                                  {`${schedule.Course}`}
-                                </small>
+                                <main className="">
+                                  <small className="fw-bold">
+                                    <p className="m-0">{`${schedule.Course}`}</p>
+                                  </small>
+                                </main>
                               </div>
                             ) : +schedule.StartTime + 60 === timeslot ? (
                               <div
-                                className={`h-100 w-100 d-flex align-items-center ${
+                                className={`h-100 w-100 d-flex align-items-center border-dark border-bottom border-start border-end ${
                                   schedule.Component.includes("Minor") ||
-                                  schedule.Component.includes("Basic")
+                                  schedule.Component.includes("General")
                                     ? "plotted2-2"
                                     : "plotted2"
                                 }`}
@@ -181,9 +184,9 @@ export function SectionExamination() {
                             ) : +schedule.StartTime + 60 > timeslot &&
                               +schedule.StartTime < timeslot ? (
                               <div
-                                className={`h-100 w-100 d-flex align-items-center ${
+                                className={`h-100 w-100 d-flex align-items-center border-dark border-start border-end ${
                                   schedule.Component.includes("Minor") ||
-                                  schedule.Component.includes("Basic")
+                                  schedule.Component.includes("General")
                                     ? "plotted2-2"
                                     : "plotted2"
                                 }`}
@@ -204,67 +207,6 @@ export function SectionExamination() {
               </tbody>
             </table>
           </main>
-          {/* <main className="h-100 flex-fill py-2">
-            <header className="p-2">
-              {section.map((section, o) =>
-                section.Section === currsection ? (
-                  <>
-                    <h3>{`${section.Section}`}</h3>
-                    <p className="m-0">{`Number of Students: ${section.Population} student/s`}</p>
-                  </>
-                ) : null
-              )}
-              <hr />
-            </header>
-            {day.map((day, i) => (
-              <main className="p-2">
-                <section>
-                  <h6>{day}</h6>
-                </section>
-                <section className="w-100 d-flex">
-                  {time.map((time, j) =>
-                    schedule.length > 0
-                      ? schedule.map((schedule, k) =>
-                          schedule.Section === currsection ? (
-                            schedule.Day === day ? (
-                              +schedule.StartTime === time ? (
-                                <section
-                                  className={
-                                    schedule.Component.includes("Minor") ||
-                                    schedule.Component.includes("Basic")
-                                      ? "border border-white gradient-bg-yellow custom-text-blue rounded p-3 w-100"
-                                      : "border border-white gradient-bg-light-blue rounded p-3 w-100"
-                                  }
-                                  onClick={() => {
-                                    alert(schedule.Course);
-                                  }}
-                                >
-                                  <small>
-                                    <h6 className="fw-bold m-0 p-0">
-                                      {schedule.Course}
-                                    </h6>
-                                    <p className="fw-semibold m-0 p-0">
-                                      {`${convertMinutes(
-                                        schedule.StartTime
-                                      )} : ${convertMinutes(schedule.EndTime)}`}
-                                    </p>
-                                    <p className="fw-semibold m-0 p-0">
-                                      {schedule.Room}
-                                    </p>
-                                  </small>
-                                </section>
-                              ) : (
-                                ""
-                              )
-                            ) : null
-                          ) : null
-                        )
-                      : null
-                  )}
-                </section>
-              </main>
-            ))}
-          </main> */}
           <main>
             <DefaultButton
               class="border-0"
@@ -310,7 +252,7 @@ export function SectionExamination() {
                   schedule.Section === currsection ? (
                     <>
                       <main className="p-3 shadow-sm rounded mb-2 hover-darken">
-                        <main className="row m-0 p-0">
+                        <main className="row m-0 p-0 mb-2">
                           <section className="col-12 p-0 m-0">
                             <section>
                               <h6 className="p-0 m-0">{schedule.Course}</h6>
@@ -331,6 +273,11 @@ export function SectionExamination() {
                             </section>
                           </section>
                         </main>
+                        <LinkButton
+                          to={`/examinations/edit/${schedule.ELSID}`}
+                          class="bg-warning px-2"
+                          icon={info.icons.forms.edit}
+                        />
                       </main>
                     </>
                   ) : null

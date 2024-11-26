@@ -3,10 +3,8 @@ import { DefaultButton } from "../../../component/button/DefaultButton";
 import useDatabase from "../../../hook/useDatabase";
 import { useLocation, useNavigate } from "react-router-dom";
 import useTimeFormat from "../../../hook/useTimeFormat";
-import { DefaultInput } from "../../../component/input/DefaultInput";
 import useHandleChange from "../../../hook/useHandleChange";
 import useConfiguration from "../../../hook/useConfiguration";
-import { CollapseButton } from "../../../component/button/CollapsButton";
 
 import defalt from "../../../assets/imgs/stimap/roommap/defalt.png";
 
@@ -90,6 +88,16 @@ export function RoomAvailability() {
       }
     }
     return false;
+  }
+
+  function getBuilding(rom) {
+    const room = rooms.find((checkroom) => checkroom.Room === rom);
+    return room !== undefined ? room.Building : "";
+  }
+
+  function getFloor(rom) {
+    const room = rooms.find((checkroom) => checkroom.Room === rom);
+    return room !== undefined ? room.Floor : "";
   }
 
   function checkClassDetails(room) {
@@ -189,35 +197,46 @@ export function RoomAvailability() {
   }
 
   return (
-    <main className="h-100 row m-0 p-2">
-      <main className="h-100 w-100 d-flex align-items-center">
-        <main className="h-100 flex-fill py-2">
-          <header className="p-2 text-center">
-            <h1 className="fw-bold display-1 primary-text">{`Room Availability`}</h1>
-            <p className="m-0 fst-italic">{`Room Available`}</p>
-            <hr />
-          </header>
-          <main className="row m-0 p-0">
-            <section className="col-lg-8 p-1 m-0">
-              <main className="row row-cols-4 p-2">
-                {rooms &&
-                  rooms.map((room, roomindex) => (
-                    <section
-                      key={roomindex}
-                      className="col p-1 m-0"
-                      onClick={() => setCurrentRoom(room.Room)}
+    <main className="h-100 row m-0 p-0 overflow-hidden">
+      <main className="h-100  m-0 p-0">
+        <main className="h-100 row m-0 p-0">
+          <section className="col-lg-8 h-100 p-1 height-auto">
+            <main className="row row-cols-4 p-2 m-0  bg-white rounded shadow-sm h-100  overflow-y-auto  position-relative ">
+              <section className="sticky-top w-100 bg-white rounded shadow-sm p-2 mb-2">
+                <div className="d-flex justify-content-end gap-2">
+                  <div className="w-100">
+                    <div className="d-flex gap-2 justify-content-end">
+                      <DefaultButton
+                        class="px-2"
+                        icon={info.icons.navigation.back}
+                        text="Back"
+                        function={() => navigate(-1)}
+                      />
+                      <main className="w-100"></main>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              {rooms &&
+                rooms.map((room, roomindex) => (
+                  <section
+                    key={roomindex}
+                    className="col p-1 m-0"
+                    onClick={() => setCurrentRoom(room.Room)}
+                  >
+                    <main
+                      className={`rounded shadow-sm p-2 hover-darken ${
+                        checkClassStatus(room.Room)
+                          ? "safe-color text-white"
+                          : "bg-light"
+                      }`}
+                      style={{ height: "10em" }}
                     >
-                      <main
-                        className={`rounded shadow-sm p-2 hover-darken ${
-                          checkClassStatus(room.Room)
-                            ? "safe-color text-white"
-                            : "bg-secondary-subtle"
-                        }`}
-                        style={{ height: "10em" }}
-                      >
-                        <main className="border bg-light w-100 h-100 rounded shadow-sm d-flex justify-content-center align-items-center flex-column ">
-                          <h6 className="m-0">{room.Room}</h6>
-                          <section className="text-center">
+                      <main className="border w-100 h-100 rounded shadow-sm d-flex justify-content-center align-items-center flex-column ">
+                        <h6 className="m-0">{room.Room}</h6>
+                        <small>
+                          <p className="m-0">{`${room.Capacity} seats`}</p>
+                          <section className="text-center mt-1">
                             {checkClassStatus(room.Room)
                               ? "On-Going Classes"
                               : "Available"}
@@ -245,23 +264,26 @@ export function RoomAvailability() {
                                 ) : null
                               )}
                           </section>
-                        </main>
+                        </small>
                       </main>
-                    </section>
-                  ))}
-              </main>
-            </section>
-            <section className="col-lg-4 p-3 m-0">
-              <figure>
-                <img
-                  className="ratio ratio-1x1 object-fit-contain"
-                  style={{ height: "60vh" }}
-                  src={checkRoomMap(currentRoom) || defalt}
-                  alt=""
-                ></img>
-              </figure>
-            </section>
-          </main>
+                    </main>
+                  </section>
+                ))}
+            </main>
+          </section>
+          <section className="col-lg-4 h-100 p-1 height-auto">
+            <figure className="d-flex align-items-center justify-content-center flex-column h-100 p-2 m-0 bg-white rounded shadow-sm">
+              <h5>{`${getBuilding(currentRoom)} - ${getFloor(
+                currentRoom
+              )}`}</h5>
+              <img
+                className="ratio ratio-1x1 object-fit-contain"
+                style={{ height: "60vh" }}
+                src={checkRoomMap(currentRoom) || defalt}
+                alt=""
+              ></img>
+            </figure>
+          </section>
         </main>
       </main>
     </main>

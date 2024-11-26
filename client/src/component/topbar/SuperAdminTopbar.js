@@ -227,7 +227,7 @@ export function SuperAdminTopbar() {
                         class={"fw-medium w-100"}
                         classlink={"py-2"}
                         icon={info.icons.modules.locator}
-                        navigate={"/utilities/room-availability"}
+                        navigate={"/utilities/locator/room-availability"}
                         text={"Room Availability"}
                       />
 

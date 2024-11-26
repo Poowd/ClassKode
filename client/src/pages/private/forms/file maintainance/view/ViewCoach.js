@@ -208,7 +208,7 @@ export function ViewCoach() {
                               getCoachUnits(units.sum, assign.MAX) > 100
                                 ? "text-danger"
                                 : getCoachUnits(units.sum, assign.MAX) <= 100 &&
-                                  getCoachUnits(units.sum, assign.MAX) > 50
+                                  getCoachUnits(units.sum, assign.MAX) >= 50
                                 ? "text-warning"
                                 : "text-success"
                             }`}

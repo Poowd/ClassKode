@@ -33,8 +33,22 @@ router.get("/class-schedule-list", (req, res) => {
 router.get("/exam-schedule-list", (req, res) => {
   try {
     pool.query(
-      `SELECT * FROM exam_schedules WHERE "Status"='ACTIVE' AND "AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
+      `SELECT exam_schedules."ELSID", exam_schedules."Code", exam_schedules."Course", exam_schedules."Section", exam_schedules."Day", exam_schedules."StartTime",exam_schedules."EndTime", exam_schedules."Level", exam_schedules."Room", exam_schedules. "Population", exam_schedules."Created", exam_schedules."Status", exam_schedules."Component", exam_schedules."Capacity", exam_schedules."AcademicYear", coach."SCHLID", CONCAT(coach."LastName", ', ', coach."FirstName") as "Coach" FROM exam_schedules LEFT JOIN coach ON exam_schedules."Coach" = coach."SCHLID" WHERE exam_schedules."Status"='ACTIVE' AND exam_schedules."AcademicYear"=(SELECT "Code" FROM academic_year WHERE "Status"='ACTIVE' ORDER BY "ACYID" DESC LIMIT 1)`,
       (err, rslt) => res.json(rslt.rows)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/exam-schedule-target", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.data;
+    pool.query(
+      `SELECT * FROM exam_schedules WHERE "ELSID"='${id}'`,
+      (err, rslt) => res.json(rslt.rows[0])
     );
   } catch (err) {
     console.error(err);
@@ -160,6 +174,59 @@ router.post("/class-schedule-edit", (req, res) => {
       "AcademicYear"='${academicyear}'  
       
       WHERE "CLSID"='${id}'`,
+
+      (err, rslt) => {
+        if (err) {
+          console.error("Query error:", err);
+          return;
+        }
+        console.log(clientData);
+        res.json(rslt.rows);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/exam-schedule-edit", (req, res) => {
+  try {
+    const clientData = JSON.parse(req.body);
+    var id = clientData.ELSID;
+    var code = clientData.Code;
+    var course = clientData.Course;
+    var section = clientData.Section;
+    var yearlevel = clientData.Level;
+    var day = clientData.Day;
+    var starttime = clientData.StartTime;
+    var endtime = clientData.EndTime;
+    var room = clientData.Room;
+    var component = clientData.Component;
+    var coach = clientData.Coach;
+    var population = clientData.Population;
+    var units = clientData.Units;
+    var capacity = clientData.Capacity;
+    var academicyear = clientData.AcademicYear;
+    pool.query(
+      `UPDATE exam_schedules 
+
+      SET 
+      "Code"='${code}', 
+      "Course"='${course}', 
+      "Section"='${section}', 
+      "Day"='${day}', 
+      "StartTime"='${starttime}', 
+      "EndTime"='${endtime}' ,  
+      "Level"='${yearlevel}', 
+      "Room"='${room}' , 
+      "Coach"='${coach}' ,
+      "Population"='${population}'   ,
+      "Component"='${component}' ,  
+      "Capacity"='${capacity}'   , 
+      "AcademicYear"='${academicyear}' 
+      
+      WHERE "ELSID"='${id}'`,
 
       (err, rslt) => {
         if (err) {

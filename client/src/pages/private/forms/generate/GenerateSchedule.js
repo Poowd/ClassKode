@@ -154,7 +154,14 @@ export function GenerateSchedule() {
                     function={() => navigate(-1)}
                   />
                 </div>
-                <div className="d-flex gap-2 ">
+                <div className="d-flex align gap-2 ">
+                  <DefaultButton
+                    class="px-2 border-0"
+                    text={`${schedule.length - 2} / ${
+                      expected.length
+                    } schedules generated`}
+                    function={() => {}}
+                  />
                   <DefaultDropdown
                     class="border p-2"
                     reversed={true}

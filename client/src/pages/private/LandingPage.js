@@ -44,8 +44,8 @@ export function LandingPage() {
   const [posts, setPosts] = useState([]);
 
   const [classStatus, setClassStatus] = useState([
-    "On-Going",
-    "No Class",
+    "On Campus",
+    "Off Campus",
     "Absent",
     "Not Set",
   ]);
@@ -184,9 +184,9 @@ export function LandingPage() {
   return (
     <main className="h-100 overflow-y-auto">
       <main className="row h-100 m-0 p-0">
-        <section className="col-3 h-100 p-2">
-          <main className="h-100 p-3 shadow-sm rounded">
-            <main className="h-25">
+        <section className="col-lg-3 h-100 p-2 height-auto">
+          <main className="h-100 p-3 shadow-sm rounded height-auto">
+            <main className="h-25 mb-3 mb-lg-0">
               <h5 className="m-0">{`${loggeduser.LastName}, ${loggeduser.FirstName}`}</h5>
               <p className="m-0">{`${loggeduser.SCHLID}`}</p>
               <p className="m-0">{`${loggeduser.Email}`}</p>
@@ -257,7 +257,7 @@ export function LandingPage() {
             {loggeduser.PermissionLevel === "0" ? (
               <main className="h-75 overflow-y-auto">
                 <main>
-                  <h6 className="m-0 text-secondary fw-normal text-end px-1">
+                  <h6 className="m-0 text-secondary fw-normal text-center px-1">
                     On-Going
                   </h6>
                   {schedules.map((schedule, i) =>
@@ -290,7 +290,7 @@ export function LandingPage() {
                     ) : null
                   )}
                   <hr className="m-0 p-0 my-3"></hr>
-                  <h6 className="m-0 text-secondary fw-normal text-end px-1">
+                  <h6 className="m-0 text-secondary fw-normal text-center px-1">
                     Classes
                   </h6>
                   {schedules.length > 0
@@ -332,7 +332,7 @@ export function LandingPage() {
             ) : (
               <main className="h-75 overflow-y-auto">
                 <main>
-                  <h6 className="m-0 text-secondary fw-normal mb-2 text-end px-1">
+                  <h6 className="m-0 text-secondary fw-normal mb-2 text-center px-1">
                     On-Going
                   </h6>
                   {schedules.map((schedule, i) =>
@@ -365,7 +365,7 @@ export function LandingPage() {
                     ) : null
                   )}
                   <hr className="m-0 p-0 my-3"></hr>
-                  <h6 className="m-0 text-secondary fw-normal text-end px-1">
+                  <h6 className="m-0 text-secondary fw-normal text-center px-1">
                     Classes
                   </h6>
                   {schedules.length > 0
@@ -407,7 +407,7 @@ export function LandingPage() {
             )}
           </main>
         </section>
-        <section className="col-9 h-100 p-2">
+        <section className="col-lg-9 h-100 p-2 height-auto">
           <main className="h-100 overflow-y-auto pe-2 ps-1">
             {loggeduser.PermissionLevel === "1" ? (
               <main className="bg-white shadow-sm rounded p-2 mb-2">
@@ -462,7 +462,9 @@ export function LandingPage() {
                 </header>
                 <main>
                   <section className="ms-3">
-                    <h3 className="text-primary fw-bold">{item.SubjectMatter}</h3>
+                    <h3 className="text-primary fw-bold">
+                      {item.SubjectMatter}
+                    </h3>
                     <pre>{item.Details}</pre>
                   </section>
                   <footer className="mt-5">

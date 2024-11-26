@@ -121,7 +121,7 @@ export function SectionStudentSchedule() {
                 <section>
                   <h6>{day}</h6>
                 </section>
-                <section className="w-100 d-flex">
+                <section className="w-100 d-lg-flex">
                   {time.map((time, j) =>
                     schedule.length > 0
                       ? schedule.map((schedule, k) =>

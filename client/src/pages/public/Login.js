@@ -169,7 +169,7 @@ export function Login() {
                       <DefaultButton
                         class="w-75 warning-color fw-bold text-dark py-2 mx-auto"
                         type="submit"
-                        text={<h6 className="m-0">Login</h6>}
+                        text={"Login"}
                       />
                     </main>
                   </div>

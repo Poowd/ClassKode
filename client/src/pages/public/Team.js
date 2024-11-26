@@ -36,7 +36,9 @@ export function Team() {
           content={
             <main className="">
               <section className="">
-                <h3 className="text-center mb-5 fw-bold mt-0 p-0">Team Members</h3>
+                <h3 className="text-center mb-5 fw-bold mt-0 p-0">
+                  Team Members
+                </h3>
                 <main className="d-flex flex-wrap">
                   {info.details.dev_team.map((team, team_index) => (
                     <main
@@ -48,7 +50,7 @@ export function Team() {
                       <section>
                         <figure
                           className="ratio ratio-1x1 rounded object-fit-cover border"
-                          style={{ width: team_index == 0 ? "20em" : "10em" }}
+                          style={{ width: team_index == 0 ? "30em" : "10em" }}
                         >
                           <img
                             className="object-fit-cover object-position-top rounded"

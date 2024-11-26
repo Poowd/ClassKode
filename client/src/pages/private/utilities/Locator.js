@@ -87,12 +87,12 @@ export function Locator() {
             schedules[i].EndTime
         ) {
           if (schedules[i].SCHLID === coach) {
-            return "On Going";
+            return "On Campus";
           }
         }
       }
     }
-    return "No Class";
+    return "Off Campus";
   }
 
   const [classStatus, setClassStatus] = useState([
@@ -103,10 +103,10 @@ export function Locator() {
   ]);
 
   const checkStatusHours = (status) => {
-    if (status === "On-Going") {
+    if (status === "On Campus") {
       return "bg-success";
     }
-    if (status === "No Class") {
+    if (status === "Off Campus") {
       return "bg-warning";
     }
     if (status === "Absent") {
@@ -136,7 +136,7 @@ export function Locator() {
                             <main className="border rounded p-3">
                               <header>
                                 <h6 className="fw-bold text-success">
-                                  ON GOING
+                                  On Campus
                                 </h6>
                               </header>
                               <main>
@@ -183,7 +183,7 @@ export function Locator() {
                     )
                   : null}
 
-                {checkClassStatus(currcoach) === "No Class" ? (
+                {checkClassStatus(currcoach) === "Off Campus" ? (
                   <main className="border rounded p-3">
                     <header>
                       <h6 className="fw-normal text-secondary m-0 p-0">
@@ -234,20 +234,20 @@ export function Locator() {
                       <main className="d-flex">
                         <section>
                           <DefaultDropdownItem
-                            title={"On Going"}
+                            title={"On Campus"}
                             trigger={() =>
                               setFilter((prev) => ({
                                 ...prev,
-                                setbyClass: "On Going",
+                                setbyClass: "On Campus",
                               }))
                             }
                           />
                           <DefaultDropdownItem
-                            title={"No Class"}
+                            title={"Off Campus"}
                             trigger={() =>
                               setFilter((prev) => ({
                                 ...prev,
-                                setbyClass: "No Class",
+                                setbyClass: "Off Campus",
                               }))
                             }
                           />
@@ -410,7 +410,7 @@ export function Locator() {
                                       className={`btn w-100 btn-sm d-flex align-items-center justify-content-start gap-2 p-2 primary-gradient`}
                                       disabled={
                                         checkClassStatus(coach.SCHLID) ===
-                                        "On Going"
+                                        "On Campus"
                                           ? false
                                           : true
                                       }
@@ -423,7 +423,7 @@ export function Locator() {
                                       </span>
                                       <span className="text-start fw-bold text-white">
                                         {checkClassStatus(coach.SCHLID) ===
-                                        "On Going"
+                                        "On Campus"
                                           ? schedules.length > 0
                                             ? schedules.map((schedule, i) =>
                                                 schedule.SCHLID === coach.SCHLID

@@ -75,7 +75,7 @@ export function CoachViewSchedule() {
               background={"shadow-sm rounded text-center w-100 p-3"}
               title={day}
               content={
-                <section className="w-100 d-flex">
+                <section className="w-100 d-lg-flex">
                   {time.map((time, j) =>
                     schedule.length > 0
                       ? schedule.map((schedule, k) =>

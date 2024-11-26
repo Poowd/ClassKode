@@ -99,12 +99,13 @@ export function DepartmentList() {
   return (
     <main className="h-100 overflow-y-auto">
       <main className="h-100 row m-0 p-0">
-        <section className="col-lg-8 h-100 p-2">
+        <section className="col-lg-8 h-100 p-2 height-auto">
           <main className="bg-white rounded shadow-sm p-3 h-100">
-            <main className="h-100 d-flex justify-content-equal align-content-start flex-wrap gap-3">
+            <main className="h-100 d-flex justify-content-center align-content-start flex-wrap gap-3">
               {schoolFacilities &&
                 schoolFacilities.map((item, item_index) => (
                   <button
+                    key={item_index}
                     className="btn border-0 p-0 text-wrap"
                     style={{ width: "12em" }}
                     onClick={() =>

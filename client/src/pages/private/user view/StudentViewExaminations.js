@@ -91,7 +91,7 @@ export function StudentViewExaminations() {
               background={"shadow-sm rounded text-center w-100 p-3"}
               title={day}
               content={
-                <section className="w-100 d-flex">
+                <section className="w-100 d-lg-flex">
                   {time.map((time, j) =>
                     exams.length > 0
                       ? exams.map((schedule, k) =>
